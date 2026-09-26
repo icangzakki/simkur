@@ -1159,19 +1159,16 @@
 
         <!-- VIEW 2: JADWAL PER GURU PENGAMPU (INDIVIDU GURU) -->
         <div id="sched-view-teacher" class="sched-view-pane" style="display: none;">
-          <div class="filter-toolbar">
-            <div class="filter-group">
-              <label class="form-label">Pilih Guru Pengampu:</label>
+          <div class="filter-toolbar" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+            <div class="filter-group" style="flex: 2; min-width: 260px;">
+              <label class="form-label">Pilih Guru Pengampu (87 Guru):</label>
               <select id="sched-select-teacher" class="filter-select" onchange="window.SIMKUR_APP.filterScheduleTeacher(this.value)">
-                <option value="Ahmad Gajali" selected>Ahmad Gajali — TJKT (24 JP)</option>
-                <option value="Muhammad Ihsan">Muhammad Ihsan — TJKT (24 JP)</option>
-                <option value="Hendra Surya Pratama">Hendra Surya Pratama — DKV (24 JP)</option>
-                <option value="Akhmad Hanafi Maulana, SE">Akhmad Hanafi Maulana, SE — MPLB (24 JP)</option>
-                <option value="Oky Wulan Maulina">Oky Wulan Maulina — AKL (24 JP)</option>
-                <option value="Futri Indri Septiani">Futri Indri Septiani — Pemasaran (26 JP)</option>
-                <option value="Rusnani">Rusnani — Waka Kurikulum (24 JP)</option>
-                <option value="Agustin Purnomosari">Agustin Purnomosari — Kepala Sekolah (24 JP)</option>
+                <option value="Ahmad Gajali" selected>Memuat daftar 87 guru...</option>
               </select>
+            </div>
+            <div class="filter-group" style="flex: 1; min-width: 200px;">
+              <label class="form-label">Cari Nama / NIP Guru:</label>
+              <input type="text" id="sched-search-teacher" class="form-input" placeholder="Ketik nama atau NIP guru..." oninput="window.SIMKUR_APP.searchScheduleTeacher(this.value)" style="padding: 0.45rem 0.75rem; font-size: 0.8125rem;">
             </div>
           </div>
 
@@ -4627,7 +4624,7 @@
 <!-- SCRIPTS -->
 <script src="js/data.js?v=3.1.5"></script>
 <script src="js/auth_users.js?v=3.1.5"></script>
-<script src="js/app.js?v=3.3.3"></script>
+<script src="js/app.js?v=3.3.4"></script>
 
 </body>
 </html>

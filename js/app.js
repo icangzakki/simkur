@@ -1712,6 +1712,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renderSchedule(activeScheduleRombel);
       showToast(`Memuat tampilan: Matriks Jadwal Rombel (${activeScheduleRombel})`);
     } else if (viewType === 'teacher') {
+      populateTeacherDropdowns();
       filterScheduleTeacher(activeScheduleTeacher);
       showToast(`Memuat tampilan: Jadwal Individu Guru (${activeScheduleTeacher})`);
     } else if (viewType === 'ptm') {
@@ -1734,6 +1735,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 1. Matriks Jadwal per Rombel (Kelas)
   function renderSchedule(rombel) {
+    populateTeacherDropdowns();
+    setupScheduleSubtabs();
     const targetRombel = rombel || activeScheduleRombel;
     activeScheduleRombel = targetRombel;
     const tableBody = document.getElementById('schedule-grid-body');
@@ -1778,18 +1781,155 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast(`Memuat matriks jadwal untuk rombel: ${rombel}`);
   }
 
-  // 2. Jadwal per Guru Pengampu (Individu Guru)
+  // 2. Jadwal per Guru Pengampu (Individu Guru — Seluruh 88 Guru)
+  function populateTeacherDropdowns(filterQuery = '') {
+    const teacherSelect = document.getElementById('sched-select-teacher');
+    const modalTeacherSelect = document.getElementById('modal-input-sched-teacher');
+    const supTeacherSelect = document.getElementById('sched-sup-teacher');
+
+    const authUsers = (window.SIMKUR_AUTH_USERS || []).filter(u => u.role === 'guru' || u.role === 'kajur' || u.role === 'waka' || u.role === 'kepsek');
+    
+    // Hitung JP dari scheduleMatrix untuk setiap guru
+    const teacherJpMap = {};
+    (data.scheduleMatrix || []).forEach(slot => {
+      if (slot.teacher) {
+        const tName = slot.teacher.trim();
+        teacherJpMap[tName] = (teacherJpMap[tName] || 0) + (slot.duration || 1);
+      }
+    });
+
+    const depts = [
+      { key: 'TJKT', label: 'Teknik Jaringan Komputer & Telekomunikasi (TJKT)' },
+      { key: 'DKV', label: 'Desain Komunikasi Visual (DKV)' },
+      { key: 'AKL', label: 'Akuntansi & Keuangan Lembaga (AKL)' },
+      { key: 'MPLB', label: 'Manajemen Perkantoran & Layanan Bisnis (MPLB)' },
+      { key: 'PEMASARAN', label: 'Bisnis Digital & Pemasaran' },
+      { key: 'UMUM', label: 'Mata Pelajaran Umum & Manajemen Sekolah' }
+    ];
+
+    const q = (filterQuery || '').toLowerCase().trim();
+    const filteredUsers = q ? authUsers.filter(u => 
+      u.name.toLowerCase().includes(q) || 
+      (u.nip && u.nip.includes(q)) || 
+      (u.department && u.department.toLowerCase().includes(q)) ||
+      (u.subject && u.subject.toLowerCase().includes(q))
+    ) : authUsers;
+
+    const grouped = {};
+    depts.forEach(d => grouped[d.key] = []);
+
+    filteredUsers.forEach(u => {
+      let k = (u.department || 'UMUM').toUpperCase();
+      if (k === 'MANAJEMEN' || !grouped[k]) k = 'UMUM';
+      grouped[k].push(u);
+    });
+
+    // Urutkan abjad nama guru dalam masing-masing jurusan
+    depts.forEach(d => {
+      grouped[d.key].sort((a, b) => a.name.localeCompare(b.name));
+    });
+
+    let htmlOptions = '';
+    depts.forEach(d => {
+      const list = grouped[d.key] || [];
+      if (list.length > 0) {
+        htmlOptions += `<optgroup label="${d.label} (${list.length} Guru)">`;
+        list.forEach(t => {
+          let jp = teacherJpMap[t.name];
+          if (!jp) {
+            const matchKey = Object.keys(teacherJpMap).find(k => 
+              k.toLowerCase().includes(t.name.split(',')[0].toLowerCase().trim()) ||
+              t.name.toLowerCase().includes(k.toLowerCase().trim())
+            );
+            jp = matchKey ? teacherJpMap[matchKey] : 24;
+          }
+          htmlOptions += `<option value="${t.name}">${t.name} — ${t.department || 'Umum'} (${jp} JP)</option>`;
+        });
+        htmlOptions += `</optgroup>`;
+      }
+    });
+
+    if (!htmlOptions) {
+      htmlOptions = `<option value="">Tidak ditemukan guru dengan kata kunci "${filterQuery}"</option>`;
+    }
+
+    if (teacherSelect) {
+      const prevVal = teacherSelect.value;
+      teacherSelect.innerHTML = htmlOptions;
+      if (prevVal && teacherSelect.querySelector(`option[value="${prevVal}"]`)) {
+        teacherSelect.value = prevVal;
+      } else if (activeScheduleTeacher && teacherSelect.querySelector(`option[value="${activeScheduleTeacher}"]`)) {
+        teacherSelect.value = activeScheduleTeacher;
+      } else {
+        const firstOpt = teacherSelect.querySelector('option[value]');
+        if (firstOpt && firstOpt.value) {
+          activeScheduleTeacher = firstOpt.value;
+          teacherSelect.value = firstOpt.value;
+        }
+      }
+    }
+
+    if (!filterQuery) {
+      if (modalTeacherSelect) {
+        modalTeacherSelect.innerHTML = htmlOptions;
+      }
+
+      if (supTeacherSelect) {
+        let supHtml = '';
+        depts.forEach(d => {
+          const list = grouped[d.key] || [];
+          if (list.length > 0) {
+            supHtml += `<optgroup label="${d.label} (${list.length} Guru)">`;
+            list.forEach(t => {
+              supHtml += `<option value="${t.name}|${t.nip}|${t.department || 'Kejuruan'}|${t.subject || 'Produktif'}|Lab ${t.department || 'Kejuruan'}">${t.name} — ${t.department || 'Umum'} (${t.subject || 'Mapel'})</option>`;
+            });
+            supHtml += `</optgroup>`;
+          }
+        });
+        supTeacherSelect.innerHTML = supHtml;
+      }
+    }
+  }
+
+  function searchScheduleTeacher(query) {
+    populateTeacherDropdowns(query);
+    const teacherSelect = document.getElementById('sched-select-teacher');
+    if (teacherSelect && teacherSelect.options.length > 0 && teacherSelect.value) {
+      filterScheduleTeacher(teacherSelect.value);
+    }
+  }
+
   function filterScheduleTeacher(teacherName) {
+    if (!teacherName) return;
     activeScheduleTeacher = teacherName;
+
+    const teacherSelect = document.getElementById('sched-select-teacher');
+    if (teacherSelect && teacherSelect.value !== teacherName && teacherSelect.querySelector(`option[value="${teacherName}"]`)) {
+      teacherSelect.value = teacherName;
+    }
+
     const banner = document.getElementById('sched-teacher-profile-banner');
-    const teacherDoc = data.documentsList.find(d => d.teacherName === teacherName) || {
-      teacherName: teacherName,
-      nip: "19890609 202521 1 023",
-      department: "Kejuruan",
-      subject: "Pengampu Mapel Kejuruan",
-      weeklyHours: 24,
-      classes: "XI A-TJKT, XI B-TJKT"
-    };
+    const authUser = (window.SIMKUR_AUTH_USERS || []).find(u => 
+      u.name.toLowerCase().trim() === teacherName.toLowerCase().trim() ||
+      teacherName.toLowerCase().includes(u.name.toLowerCase().trim())
+    );
+
+    const teacherDoc = (data.documentsList || []).find(d => 
+      d.teacherName.toLowerCase().trim() === teacherName.toLowerCase().trim() ||
+      teacherName.toLowerCase().includes(d.teacherName.toLowerCase().trim())
+    ) || {};
+
+    const nip = (authUser && authUser.nip) || teacherDoc.nip || '—';
+    const dept = (authUser && authUser.department) || teacherDoc.department || 'Kejuruan';
+    const subject = (authUser && authUser.subject) || teacherDoc.subject || 'Pengampu Mata Pelajaran';
+
+    const actualJP = (data.scheduleMatrix || [])
+      .filter(s => s.teacher && (
+        s.teacher.toLowerCase().includes(teacherName.split(',')[0].toLowerCase().trim()) ||
+        teacherName.toLowerCase().includes(s.teacher.toLowerCase().trim())
+      ))
+      .reduce((acc, curr) => acc + (curr.duration || 1), 0);
+    const weeklyHours = actualJP > 0 ? actualJP : (teacherDoc.weeklyHours || 24);
 
     if (banner) {
       banner.innerHTML = `
@@ -1799,16 +1939,16 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div>
             <div style="font-weight: 700; color: #0f172a; font-size: 0.9375rem;">${teacherName}</div>
-            <div style="font-size: 0.75rem; color: #64748b;" class="font-mono">NIP. ${teacherDoc.nip} • Jurusan: ${teacherDoc.department}</div>
+            <div style="font-size: 0.75rem; color: #64748b;" class="font-mono">NIP. ${nip} • Jurusan: ${dept} • ${subject}</div>
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 12px;">
           <div style="text-align: right;">
             <div style="font-size: 0.6875rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Total Beban Kerja (PTM)</div>
-            <div style="font-weight: 800; font-size: 1.125rem; color: ${teacherDoc.weeklyHours >= 24 ? '#059669' : '#d97706'};">${teacherDoc.weeklyHours} JP / Minggu</div>
+            <div style="font-weight: 800; font-size: 1.125rem; color: ${weeklyHours >= 24 ? '#059669' : '#d97706'};">${weeklyHours} JP / Minggu</div>
           </div>
-          <span class="badge-status ${teacherDoc.weeklyHours >= 24 ? 'badge-approved' : 'badge-review'}" style="font-size: 0.75rem;">
-            ${teacherDoc.weeklyHours >= 24 ? '✓ Memenuhi Syarat TPG 24 JP' : `⚠ Kurang ${24 - teacherDoc.weeklyHours} JP`}
+          <span class="badge-status ${weeklyHours >= 24 ? 'badge-approved' : 'badge-review'}" style="font-size: 0.75rem;">
+            ${weeklyHours >= 24 ? '✓ Memenuhi Syarat TPG 24 JP' : `⚠ Terjadwal ${weeklyHours} JP`}
           </span>
         </div>
       `;
@@ -1816,6 +1956,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderScheduleTeacherGrid(teacherName);
   }
+
 
   function renderScheduleTeacherGrid(teacherName) {
     const tableBody = document.getElementById('schedule-teacher-grid-body');
@@ -4404,6 +4545,8 @@ document.addEventListener('DOMContentLoaded', () => {
     /* SCHEDULE & PTM ACTIONS */
     filterScheduleRombel: (rombel) => filterScheduleRombel(rombel),
     filterScheduleTeacher: (teacherName) => filterScheduleTeacher(teacherName),
+    searchScheduleTeacher: (query) => searchScheduleTeacher(query),
+    populateTeacherDropdowns: (query) => populateTeacherDropdowns(query),
     filterPTMTable: (query) => filterPTMTable(query),
     openAddScheduleModal: () => openAddScheduleModal(),
     closeAddScheduleModal: () => closeAddScheduleModal(),
