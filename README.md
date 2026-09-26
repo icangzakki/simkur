@@ -112,5 +112,3 @@ SIMKUR/
 ## 📄 Lisensi & Hak Cipta
 
 Dikembangkan untuk **SMKN 1 Banjarmasin** © 2026. Seluruh hak cipta dilindungi.
-# simkur
-# simkur
