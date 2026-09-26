@@ -471,6 +471,28 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderDashboard() {
     // Heading welcome di-handle oleh syncWelcomeHeadings() — tidak perlu di sini
 
+    // 0. Update Perangkat Ajar KPI Metrics dynamically from documentsList
+    const docs = data.documentsList || [];
+    const totalTeachers = docs.length || 82;
+    const fullyComplete = docs.filter(d => 
+      d.modulAjar?.status === 'approved' && 
+      d.atp?.status === 'approved' && 
+      d.prota?.status === 'approved' && 
+      d.prosem?.status === 'approved'
+    ).length;
+    const pct = ((fullyComplete / totalTeachers) * 100).toFixed(1);
+    const pendingReminder = totalTeachers - fullyComplete;
+
+    const kpiPct = document.getElementById('kpi-perangkat-pct');
+    const kpiSub = document.getElementById('kpi-perangkat-sub');
+    const kpiBar = document.getElementById('kpi-perangkat-bar');
+    const kpiPending = document.getElementById('kpi-perangkat-pending');
+
+    if (kpiPct) kpiPct.textContent = `${pct}%`;
+    if (kpiSub) kpiSub.textContent = `${fullyComplete} / ${totalTeachers} Guru Lengkap`;
+    if (kpiBar) kpiBar.style.width = `${pct}%`;
+    if (kpiPending) kpiPending.textContent = `${pendingReminder} Guru Perlu Reminder`;
+
     // 1. Render Department breakdown list
     const deptListContainer = document.getElementById('dashboard-dept-list');
     if (deptListContainer) {
@@ -618,6 +640,58 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderVerifikasiTable() {
     const tableBody = document.getElementById('verifikasi-table-body');
     if (!tableBody) return;
+
+    // Update Document KPI Cards dynamically
+    const docs = data.documentsList || [];
+    const total = docs.length || 82;
+    let modulCount = 0, atpCount = 0, protaCount = 0, prosemCount = 0;
+    docs.forEach(d => {
+      if (d.modulAjar?.status === 'approved') modulCount++;
+      if (d.atp?.status === 'approved') atpCount++;
+      if (d.prota?.status === 'approved') protaCount++;
+      if (d.prosem?.status === 'approved') prosemCount++;
+    });
+
+    const modulPct = ((modulCount / total) * 100).toFixed(1);
+    const atpPct = ((atpCount / total) * 100).toFixed(1);
+    const protaPct = ((protaCount / total) * 100).toFixed(1);
+    const prosemPct = ((prosemCount / total) * 100).toFixed(1);
+
+    const elModulPct = document.getElementById('verif-kpi-modul-pct');
+    const elModulSub = document.getElementById('verif-kpi-modul-sub');
+    const elModulBar = document.getElementById('verif-kpi-modul-bar');
+    const elModulFoot = document.getElementById('verif-kpi-modul-foot');
+    if (elModulPct) elModulPct.textContent = `${modulPct}%`;
+    if (elModulSub) elModulSub.textContent = `${modulCount}/${total} Disetujui`;
+    if (elModulBar) elModulBar.style.width = `${modulPct}%`;
+    if (elModulFoot) elModulFoot.textContent = `${total - modulCount} Pending`;
+
+    const elAtpPct = document.getElementById('verif-kpi-atp-pct');
+    const elAtpSub = document.getElementById('verif-kpi-atp-sub');
+    const elAtpBar = document.getElementById('verif-kpi-atp-bar');
+    const elAtpFoot = document.getElementById('verif-kpi-atp-foot');
+    if (elAtpPct) elAtpPct.textContent = `${atpPct}%`;
+    if (elAtpSub) elAtpSub.textContent = `${atpCount}/${total} Disetujui`;
+    if (elAtpBar) elAtpBar.style.width = `${atpPct}%`;
+    if (elAtpFoot) elAtpFoot.textContent = total === atpCount ? '✓ Tuntas 100%' : `${total - atpCount} Pending`;
+
+    const elProtaPct = document.getElementById('verif-kpi-prota-pct');
+    const elProtaSub = document.getElementById('verif-kpi-prota-sub');
+    const elProtaBar = document.getElementById('verif-kpi-prota-bar');
+    const elProtaFoot = document.getElementById('verif-kpi-prota-foot');
+    if (elProtaPct) elProtaPct.textContent = `${protaPct}%`;
+    if (elProtaSub) elProtaSub.textContent = `${protaCount}/${total} Disetujui`;
+    if (elProtaBar) elProtaBar.style.width = `${protaPct}%`;
+    if (elProtaFoot) elProtaFoot.textContent = total === protaCount ? '✓ Tuntas 100%' : `${total - protaCount} Pending`;
+
+    const elProsemPct = document.getElementById('verif-kpi-prosem-pct');
+    const elProsemSub = document.getElementById('verif-kpi-prosem-sub');
+    const elProsemBar = document.getElementById('verif-kpi-prosem-bar');
+    const elProsemFoot = document.getElementById('verif-kpi-prosem-foot');
+    if (elProsemPct) elProsemPct.textContent = `${prosemPct}%`;
+    if (elProsemSub) elProsemSub.textContent = `${prosemCount}/${total} Disetujui`;
+    if (elProsemBar) elProsemBar.style.width = `${prosemPct}%`;
+    if (elProsemFoot) elProsemFoot.textContent = `${total - prosemCount} Pending`;
 
     const deptFilter = document.getElementById('filter-verifikasi-dept')?.value || 'ALL';
     const statusFilter = document.getElementById('filter-verifikasi-status')?.value || 'ALL';
@@ -2692,9 +2766,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (filtered.length === 0) {
       tableBody.innerHTML = `
         <tr>
-          <td colspan="7" style="text-align: center; padding: 2.5rem; color: #94a3b8;">
-            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📭</div>
-            Tidak ada data siswa PKL untuk kelas / pencarian ini.
+          <td colspan="7" class="table-empty-cell">
+            <div class="empty-state-box" style="margin: 0 auto; max-width: 460px; border: none; background: transparent; padding: 2rem 1rem;">
+              <div class="empty-state-icon-wrap">
+                <span style="font-size: 1.75rem;">🏭</span>
+              </div>
+              <div class="empty-state-title">Belum Ada Data Siswa PKL</div>
+              <div class="empty-state-desc">Pilih filter kelas atau ubah kata kunci pencarian. Data penempatan siswa magang DUDI akan tampil di sini.</div>
+            </div>
           </td>
         </tr>
       `;
@@ -2790,8 +2869,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (list.length === 0) {
         tableBody.innerHTML = `
           <tr>
-            <td colspan="8" style="text-align: center; padding: 2rem; color: #64748b;">
-              Tidak ada skema UKK yang sesuai dengan kriteria filter.
+            <td colspan="8" class="table-empty-cell">
+              <div class="empty-state-box" style="margin: 0 auto; max-width: 460px; border: none; background: transparent; padding: 2rem 1rem;">
+                <div class="empty-state-icon-wrap">
+                  <span style="font-size: 1.75rem;">🎓</span>
+                </div>
+                <div class="empty-state-title">Tidak Ada Skema UKK Ditemukan</div>
+                <div class="empty-state-desc">Sesuaikan filter jurusan atau jalur pengujian (LSP-P1 / Mandiri DUDI) untuk menampilkan daftar skema sertifikasi.</div>
+              </div>
             </td>
           </tr>
         `;
@@ -2924,23 +3009,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('supervisi-table-body');
     if (!tableBody) return;
 
+    // Update KPI metrics
+    const supList = data.supervisionData || [];
+    const supSum = data.supervisionSummary || {};
+    const totalTeachers = supSum.totalTeachers || (data.documentsList ? data.documentsList.length : 82);
+    const scheduledCount = supSum.scheduled || supList.length || 0;
+    const completedCount = supSum.completed || supList.filter(s => s.status === 'Refleksi Tuntas').length || 0;
+    const pendingCount = supSum.pendingFollowUp || supList.filter(s => s.status === 'Perlu Dialog' || s.status === 'Observasi Selesai').length || 0;
+    const schedPct = ((scheduledCount / totalTeachers) * 100).toFixed(1);
+
+    const elSched = document.getElementById('sup-kpi-scheduled');
+    const elSchedSub = document.getElementById('sup-kpi-scheduled-sub');
+    const elSchedBar = document.getElementById('sup-kpi-scheduled-bar');
+    const elSchedFoot = document.getElementById('sup-kpi-scheduled-foot');
+    if (elSched) elSched.textContent = `${scheduledCount} / ${totalTeachers}`;
+    if (elSchedSub) elSchedSub.textContent = `Guru (${schedPct}%)`;
+    if (elSchedBar) elSchedBar.style.width = `${schedPct}%`;
+    if (elSchedFoot) elSchedFoot.textContent = `${totalTeachers - scheduledCount} Guru Siap Dijadwalkan`;
+
+    const elComp = document.getElementById('sup-kpi-completed');
+    const elCompBar = document.getElementById('sup-kpi-completed-bar');
+    const elCompScore = document.getElementById('sup-kpi-completed-score');
+    const elCompPred = document.getElementById('sup-kpi-completed-pred');
+    if (elComp) elComp.textContent = completedCount;
+    if (elCompBar) elCompBar.style.width = scheduledCount > 0 ? `${((completedCount / scheduledCount) * 100).toFixed(1)}%` : '0%';
+    if (elCompScore) elCompScore.textContent = supSum.avgScore ? `Rata-rata Skor: ${supSum.avgScore}` : 'Rata-rata Skor: —';
+    if (elCompPred) elCompPred.textContent = completedCount > 0 ? 'Kategori Baik' : 'Belum Dimulai';
+
+    const elPend = document.getElementById('sup-kpi-pending');
+    const elPendBar = document.getElementById('sup-kpi-pending-bar');
+    if (elPend) elPend.textContent = pendingCount;
+    if (elPendBar) elPendBar.style.width = scheduledCount > 0 ? `${((pendingCount / scheduledCount) * 100).toFixed(1)}%` : '0%';
+
     if (!data.supervisionData || data.supervisionData.length === 0) {
       tableBody.innerHTML = `
         <tr>
-          <td colspan="7" style="text-align: center; padding: 3rem 1rem; color: #64748b;">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" style="margin: 0 auto 0.75rem;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <div style="font-weight: 700; color: #334155; font-size: 0.9375rem; margin-bottom: 0.25rem;">Belum Ada Riwayat Supervisi Akademik</div>
-            <div style="font-size: 0.8125rem;">Klik tombol <strong>"+ Jadwalkan Supervisi"</strong> untuk menjadwalkan atau merekam observasi kelas guru.</div>
+          <td colspan="7" class="table-empty-cell">
+            <div class="empty-state-box" style="margin: 0 auto; max-width: 480px; border: none; background: transparent; padding: 2rem 1rem;">
+              <div class="empty-state-icon-wrap">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="empty-state-title">Belum Ada Riwayat Supervisi Akademik</div>
+              <div class="empty-state-desc">Pusat observasi kelas dan supervisi kurikulum. Klik tombol di bawah untuk menjadwalkan atau merekam observasi kelas guru.</div>
+              <div class="empty-state-action">
+                <button type="button" class="btn btn-primary btn-sm" onclick="window.SIMKUR_APP.openSupervisionForm()">
+                  + Jadwalkan Supervisi Pertama
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
       `;
       const detailPane = document.getElementById('supervisi-detail-pane');
       if (detailPane) {
         detailPane.innerHTML = `
-          <div style="text-align: center; padding: 3rem 1rem; color: #64748b;">
-            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📋</div>
-            <div style="font-weight: 700; color: #334155; margin-bottom: 0.25rem;">Pilih Catatan Supervisi</div>
-            <div style="font-size: 0.8125rem;">Detail dialog pasca-observasi dan 4 pilar asesmen guru akan ditampilkan di sini.</div>
+          <div class="empty-state-box" style="border: none; background: transparent; padding: 2.5rem 1rem;">
+            <div class="empty-state-icon-wrap" style="font-size: 1.5rem;">📋</div>
+            <div class="empty-state-title">Pilih Catatan Supervisi</div>
+            <div class="empty-state-desc">Detail dialog pasca-observasi dan 4 pilar asesmen guru akan ditampilkan di sini.</div>
           </div>
         `;
       }
@@ -3160,14 +3286,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('cbt-classes-table-body');
     if (!tableBody) return;
 
+    // Update CBT KPI metrics dynamically
+    const cbt = data.cbtData || {};
+    const avgVal = cbt.schoolAvgScore > 0 ? cbt.schoolAvgScore.toFixed(1) : '—';
+    const kktpRate = cbt.kktpCompletionRate || 0;
+    const remediCount = cbt.studentsNeedingRemedial || 0;
+    const examsCount = cbt.activeExamsCount || 0;
+
+    const elCbtAvg = document.getElementById('cbt-kpi-avg');
+    const elCbtAvgBar = document.getElementById('cbt-kpi-avg-bar');
+    const elCbtAvgDelta = document.getElementById('cbt-kpi-avg-delta');
+    const elCbtAvgSub = document.getElementById('cbt-kpi-avg-sub');
+    if (elCbtAvg) elCbtAvg.textContent = avgVal;
+    if (elCbtAvgBar) elCbtAvgBar.style.width = cbt.schoolAvgScore > 0 ? `${cbt.schoolAvgScore}%` : '0%';
+    if (elCbtAvgDelta) elCbtAvgDelta.textContent = cbt.scoreTrendDelta ? `Trend: ${cbt.scoreTrendDelta}` : 'Siap Sinkron Server';
+    if (elCbtAvgSub) elCbtAvgSub.textContent = examsCount > 0 ? `${cbt.classesSummary?.length || 0} Rombel Ujian` : '0 Siswa Ujian';
+
+    const elCbtKktp = document.getElementById('cbt-kpi-kktp');
+    const elCbtKktpBar = document.getElementById('cbt-kpi-kktp-bar');
+    const elCbtKktpStatus = document.getElementById('cbt-kpi-kktp-status');
+    if (elCbtKktp) elCbtKktp.textContent = `${kktpRate}%`;
+    if (elCbtKktpBar) elCbtKktpBar.style.width = `${kktpRate}%`;
+    if (elCbtKktpStatus) elCbtKktpStatus.textContent = kktpRate >= 85 ? 'Tercapai Target' : (kktpRate > 0 ? 'Perlu Intervensi' : 'Menunggu Data Ujian');
+
+    const elCbtRemedi = document.getElementById('cbt-kpi-remedi');
+    const elCbtRemediBar = document.getElementById('cbt-kpi-remedi-bar');
+    if (elCbtRemedi) elCbtRemedi.textContent = remediCount;
+    if (elCbtRemediBar) elCbtRemediBar.style.width = remediCount > 0 ? `${Math.min(remediCount * 2, 100)}%` : '0%';
+
+    const elCbtExams = document.getElementById('cbt-kpi-exams');
+    const elCbtExamsBar = document.getElementById('cbt-kpi-exams-bar');
+    if (elCbtExams) elCbtExams.textContent = examsCount;
+    if (elCbtExamsBar) elCbtExamsBar.style.width = examsCount > 0 ? '100%' : '0%';
+
     // Render classes CBT table
     if (!data.cbtData.classesSummary || data.cbtData.classesSummary.length === 0) {
       tableBody.innerHTML = `
         <tr>
-          <td colspan="8" style="text-align: center; padding: 2.5rem 1rem; color: #64748b;">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" style="margin: 0 auto 0.5rem;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            <div style="font-weight: 700; color: #334155; margin-bottom: 0.25rem;">Belum Ada Rekap Nilai CBT</div>
-            <div style="font-size: 0.8125rem;">Klik tombol <strong>"Import Nilai CBT"</strong> di atas untuk memuat berkas hasil ujian semester siswa.</div>
+          <td colspan="8" class="table-empty-cell">
+            <div class="empty-state-box" style="margin: 0 auto; max-width: 480px; border: none; background: transparent; padding: 2rem 1rem;">
+              <div class="empty-state-icon-wrap">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
+              <div class="empty-state-title">Belum Ada Rekap Nilai CBT</div>
+              <div class="empty-state-desc">Pusat integrasi nilai CBT PTS, PAS, PAT, & UKK. Klik tombol di bawah untuk mengimpor berkas hasil ujian semester siswa.</div>
+              <div class="empty-state-action">
+                <button type="button" class="btn btn-primary btn-sm" onclick="window.SIMKUR_APP.openImportCbtModal()">
+                  📥 Impor Berkas JSON CBT
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
       `;

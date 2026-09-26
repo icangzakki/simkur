@@ -2648,3 +2648,79 @@ body.role-kajur #group-title-admin,
 body.role-kajur .topbar-import-btn {
   display: none !important;
 }
+
+/* ==========================================================================
+   UNIFIED EMPTY STATE STYLES & VISUAL POLISH
+   ========================================================================== */
+
+.empty-state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: #f8fafc;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: var(--radius-lg, 12px);
+  margin: 1rem 0;
+  transition: all 0.2s ease;
+}
+
+.empty-state-box:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.empty-state-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: #64748b;
+  font-size: 1.75rem;
+}
+
+.empty-state-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.35rem;
+}
+
+.empty-state-desc {
+  font-size: 0.8125rem;
+  color: #64748b;
+  max-width: 440px;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-action {
+  margin-top: 0.75rem;
+}
+
+/* Polished table empty cells */
+td.table-empty-cell {
+  text-align: center;
+  padding: 3.5rem 1.5rem !important;
+  color: #64748b;
+  background: #fafbfc;
+}
+
+/* Smooth subtle transitions for cards and buttons */
+.kpi-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+

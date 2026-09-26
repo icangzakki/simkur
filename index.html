@@ -266,14 +266,14 @@
               </div>
             </div>
             <div class="kpi-value-row">
-              <span class="kpi-value">78%</span>
-              <span class="kpi-subtext">54 / 68 Guru Lengkap</span>
+              <span class="kpi-value" id="kpi-perangkat-pct">85.4%</span>
+              <span class="kpi-subtext" id="kpi-perangkat-sub">70 / 82 Guru Lengkap</span>
             </div>
             <div class="progress-bar-container">
-              <div class="progress-fill" style="width: 78%;"></div>
+              <div class="progress-fill" id="kpi-perangkat-bar" style="width: 85.4%;"></div>
             </div>
             <div class="kpi-footnote">
-              <span style="color: #d97706; font-weight: 600;">14 Guru Perlu Reminder</span>
+              <span style="color: #d97706; font-weight: 600;" id="kpi-perangkat-pending">12 Guru Perlu Reminder</span>
               <span class="font-mono">Tenggat 28 Mar</span>
             </div>
           </div>
@@ -316,7 +316,7 @@
             </div>
             <div class="kpi-footnote">
               <span class="badge-status badge-approved" style="padding: 0.1rem 0.4rem;">0 Bentrok Jadwal</span>
-              <span>24 Rombel Klop</span>
+              <span>45 Rombel Terjadwal</span>
             </div>
           </div>
 
@@ -448,41 +448,41 @@
           <div class="kpi-card">
             <div class="kpi-label">Modul Ajar / RPP</div>
             <div class="kpi-value-row">
-              <span class="kpi-value">88%</span>
-              <span class="kpi-subtext">60/68 Disetujui</span>
+              <span class="kpi-value" id="verif-kpi-modul-pct">85.4%</span>
+              <span class="kpi-subtext" id="verif-kpi-modul-sub">70/82 Disetujui</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 88%;"></div></div>
-            <div class="kpi-footnote"><span>Standar Deep Learning</span><span class="font-mono">8 Review</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-modul-bar" style="width: 85.4%;"></div></div>
+            <div class="kpi-footnote"><span>Standar Deep Learning</span><span class="font-mono" id="verif-kpi-modul-foot">12 Pending</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Alur Tujuan Pembelajaran (ATP)</div>
             <div class="kpi-value-row">
-              <span class="kpi-value">94%</span>
-              <span class="kpi-subtext">64/68 Disetujui</span>
+              <span class="kpi-value" id="verif-kpi-atp-pct">100%</span>
+              <span class="kpi-subtext" id="verif-kpi-atp-sub">82/82 Disetujui</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 94%;"></div></div>
-            <div class="kpi-footnote"><span>Fase E & Fase F</span><span class="font-mono">4 Review</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-atp-bar" style="width: 100%;"></div></div>
+            <div class="kpi-footnote"><span>Fase E & Fase F</span><span class="font-mono" id="verif-kpi-atp-foot" style="color: #059669; font-weight: 700;">✓ Tuntas 100%</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Program Tahunan (Prota)</div>
             <div class="kpi-value-row">
-              <span class="kpi-value">97%</span>
-              <span class="kpi-subtext">66/68 Disetujui</span>
+              <span class="kpi-value" id="verif-kpi-prota-pct">100%</span>
+              <span class="kpi-subtext" id="verif-kpi-prota-sub">82/82 Disetujui</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 97%;"></div></div>
-            <div class="kpi-footnote"><span>Alokasi Jam Efektif</span><span class="font-mono">2 Review</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-prota-bar" style="width: 100%;"></div></div>
+            <div class="kpi-footnote"><span>Alokasi Jam Efektif</span><span class="font-mono" id="verif-kpi-prota-foot" style="color: #059669; font-weight: 700;">✓ Tuntas 100%</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Program Semester (Prosem)</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" style="color: #d97706;">79%</span>
-              <span class="kpi-subtext">54/68 Disetujui</span>
+              <span class="kpi-value" id="verif-kpi-prosem-pct" style="color: #0d9488;">92.7%</span>
+              <span class="kpi-subtext" id="verif-kpi-prosem-sub">76/82 Disetujui</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill amber" style="width: 79%;"></div></div>
-            <div class="kpi-footnote"><span style="color: #d97706; font-weight: 600;">Tertunda Paling Banyak</span><span class="font-mono">14 Guru</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-prosem-bar" style="width: 92.7%;"></div></div>
+            <div class="kpi-footnote"><span>Kalender Akademik</span><span class="font-mono" id="verif-kpi-prosem-foot">6 Pending</span></div>
           </div>
         </div>
 
@@ -1086,7 +1086,7 @@
           </div>
           <div class="schedule-stat-item">
             <span class="schedule-stat-label">Status Penjadwalan</span>
-            <span class="schedule-stat-value" style="color: #059669;">24 Rombel Klop (100%)</span>
+            <span class="schedule-stat-value" style="color: #059669;">45 Rombel Terjadwal (100%)</span>
           </div>
           <div class="schedule-stat-item">
             <span class="schedule-stat-label">Deteksi Konflik</span>
@@ -1300,40 +1300,40 @@
           <div class="kpi-card">
             <div class="kpi-label">Rata-rata Nilai CBT</div>
             <div class="kpi-value-row">
-              <span class="kpi-value">81.6</span>
+              <span class="kpi-value" id="cbt-kpi-avg">—</span>
               <span class="kpi-subtext">/ 100 Skala CBT</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 81.6%;"></div></div>
-            <div class="kpi-footnote"><span style="color: #059669; font-weight: 600;">▲ +2.4 Poin dari PTS</span><span>360 Siswa Ujian</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="cbt-kpi-avg-bar" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span style="color: #64748b;" id="cbt-kpi-avg-delta">Siap Sinkron Server</span><span id="cbt-kpi-avg-sub">0 Siswa Ujian</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Tingkat Ketuntasan KKTP</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" style="color: #059669;">87.2%</span>
+              <span class="kpi-value" id="cbt-kpi-kktp" style="color: #059669;">0%</span>
               <span class="kpi-subtext">Tuntas KKTP</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 87.2%;"></div></div>
-            <div class="kpi-footnote"><span>Target Sekolah: 85%</span><span style="color: #059669; font-weight: 600;">Tercapai</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="cbt-kpi-kktp-bar" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span>Target Sekolah: 85%</span><span style="color: #64748b;" id="cbt-kpi-kktp-status">Menunggu Data Ujian</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Siswa Butuh Remedial</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" style="color: #e11d48;">42</span>
+              <span class="kpi-value" id="cbt-kpi-remedi" style="color: #059669;">0</span>
               <span class="kpi-subtext">Siswa Perlu Remedi</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill amber" style="width: 12.8%;"></div></div>
-            <div class="kpi-footnote"><span style="color: #d97706; font-weight: 600;">Paling Banyak: Pemasaran</span><span>Paket Soal Siap</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="cbt-kpi-remedi-bar" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span style="color: #64748b;">Analisis Otomatis AI</span><span>Paket Soal Siap</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Ujian Terintegrasi</div>
             <div class="kpi-value-row">
-              <span class="kpi-value">5</span>
+              <span class="kpi-value" id="cbt-kpi-exams">0</span>
               <span class="kpi-subtext">Ujian Terhubung API</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 100%;"></div></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="cbt-kpi-exams-bar" style="width: 0%;"></div></div>
             <div class="kpi-footnote"><span>PTS, Teori UKK, Sumatif</span><span class="font-mono">Server v4.2</span></div>
           </div>
         </div>
@@ -1443,30 +1443,30 @@
           <div class="kpi-card">
             <div class="kpi-label">Total Terjadwal Siklus Genap</div>
             <div class="kpi-value-row">
-              <span class="kpi-value">48 / 68</span>
-              <span class="kpi-subtext">Guru (70.5%)</span>
+              <span class="kpi-value" id="sup-kpi-scheduled">0 / 82</span>
+              <span class="kpi-subtext" id="sup-kpi-scheduled-sub">Guru Terjadwal</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 70.5%;"></div></div>
-            <div class="kpi-footnote"><span>Fase Observasi Kelas</span><span>20 Guru Tahap 2</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="sup-kpi-scheduled-bar" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span>Fase Observasi Kelas</span><span id="sup-kpi-scheduled-foot">82 Guru Siap Dijadwalkan</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Observasi Selesai</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" style="color: #059669;">32</span>
+              <span class="kpi-value" id="sup-kpi-completed" style="color: #059669;">0</span>
               <span class="kpi-subtext">Guru Tuntas</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 66.6%;"></div></div>
-            <div class="kpi-footnote"><span style="color: #059669; font-weight: 600;">Rata-rata Skor: 89.4</span><span>Kategori Amat Baik</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="sup-kpi-completed-bar" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span style="color: #64748b;" id="sup-kpi-completed-score">Rata-rata Skor: —</span><span id="sup-kpi-completed-pred">Belum Dimulai</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Menunggu Refleksi / Tindak Lanjut</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" style="color: #d97706;">8</span>
+              <span class="kpi-value" id="sup-kpi-pending" style="color: #d97706;">0</span>
               <span class="kpi-subtext">Guru Perlu Dialog</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill amber" style="width: 25%;"></div></div>
+            <div class="progress-bar-container"><div class="progress-fill amber" id="sup-kpi-pending-bar" style="width: 0%;"></div></div>
             <div class="kpi-footnote"><span>Dialog Pasca Observasi</span><span>Pendampingan</span></div>
           </div>
 
@@ -1625,14 +1625,6 @@
                 <!-- Rendered via app.js -->
               </tbody>
             </table>
-          </div>
-        </div>
-
-              </p>
-              <button class="btn btn-outline" style="width: 100%; font-size: var(--text-xs); justify-content: center;" onclick="showToast('Konversi Nilai PKL 44 JP/Pekan telah disinkronkan ke KOSP & e-Rapor!')">
-                Lihat Format Konversi Nilai Rapor (KOSP)
-              </button>
-            </div>
           </div>
         </div>
 
@@ -1980,7 +1972,7 @@
               <span class="kpi-subtext">Guru Tuntas PTM</span>
             </div>
             <div class="progress-bar-container"><div class="progress-fill" style="width: 100%;"></div></div>
-            <div class="kpi-footnote"><span>Memenuhi 24 JP Sertifikasi</span><span class="font-mono">68 Guru</span></div>
+            <div class="kpi-footnote"><span>Memenuhi 24 JP Sertifikasi</span><span class="font-mono">82 Guru</span></div>
           </div>
 
           <div class="kpi-card">
@@ -2296,7 +2288,7 @@
                         <span>📋</span>
                         <span>Data Guru & Jam Mengajar</span>
                       </td>
-                      <td style="padding: 0.75rem; color: #475569;">68 GTK / 280 JP Mingguan</td>
+                      <td style="padding: 0.75rem; color: #475569;">90 GTK (82 Guru) / 503 JP Terjadwal</td>
                       <td style="padding: 0.75rem;">
                         <span style="font-size: 0.6875rem; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">
                           ● Valid (Klop Jadwal PTM)
@@ -2313,12 +2305,12 @@
                         <span>👥</span>
                         <span>Rombel & Siswa 5 Jurusan</span>
                       </td>
-                      <td style="padding: 0.75rem; color: #475569;">1.296 Siswa Terdaftar</td>
+                      <td style="padding: 0.75rem; color: #475569;">1.564 Siswa Terdaftar (45 Rombel)</td>
                       <td style="padding: 0.75rem; font-size: 0.75rem; color: #64748b;">
                         24 Sep 2026, 08:30 WITA
                       </td>
                       <td style="padding: 0.75rem; text-align: right;">
-                        <button class="btn btn-ghost btn-sm" onclick="showToast('✓ Pemeriksaan Rombel: Seluruh 36 rombel aktif terpetakan ke wali kelas dan jurusan.')" style="font-size: 0.6875rem; font-weight: 600; border: 1px solid #e2e8f0;">
+                        <button class="btn btn-ghost btn-sm" onclick="showToast('✓ Pemeriksaan Rombel: Seluruh 45 rombel aktif terpetakan ke wali kelas dan jurusan.')" style="font-size: 0.6875rem; font-weight: 600; border: 1px solid #e2e8f0;">
                           Periksa
                         </button>
                       </td>
@@ -4533,7 +4525,7 @@
                 </div>
                 <div style="font-size: 0.75rem; color: #475569; margin-top: 4px; line-height: 1.4;">
                   Mengosongkan presensi PTM harian, lembar nilai observasi UKK, jurnal supervisi kelas, dan antrean pesan WAHA. 
-                  <strong style="color: #065f46;">Master 68 Guru, 36 Rombel Dapodik, Struktur Kurikulum, & Akun Login tetap UTUH dan aman.</strong>
+                  <strong style="color: #065f46;">Master 90 GTK (82 Guru), 45 Rombel Dapodik (1.564 Siswa), Struktur Kurikulum, & Akun Login tetap UTUH dan aman.</strong>
                 </div>
               </div>
             </label>
