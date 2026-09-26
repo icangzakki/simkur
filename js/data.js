@@ -3152,76 +3152,7 @@ window.SIMKUR_DATA = {
   ],
 
   // Modul 6.5: Live Jurnal Mengajar Feed (SMKN 1 Banjarmasin)
-  teachingJournals: [
-    {
-      id: "JRN-101",
-      teacher: "Ahmad Gajali",
-      nip: "198906092025211023",
-      department: "TJKT",
-      classCode: "XI A-TJKT",
-      subject: "Administrasi Sistem Jaringan & Cloud Infrastructure",
-      period: "Jam Ke 1-4 (07:15 - 10:15 WITA)",
-      date: "2026-09-24",
-      topic: "Konfigurasi MikroTik RouterOS: Implementasi VLAN Trunking dan DHCP Server pada Lab Jaringan",
-      method: "Project Based Learning (PjBL) & Praktikum Lab",
-      attendance: { present: 32, total: 33, sick: 1, namesSick: ["Aditya Raul Prima"] },
-      notes: "Siswa kelompok 2 perlu pendampingan crimping serat optik. Sisa modul dilanjutkan Kamis.",
-      hasPhoto: true,
-      timestamp: "10:18 WITA",
-      status: "verified"
-    },
-    {
-      id: "JRN-102",
-      teacher: "Akhmad Hanafi Maulana, SE",
-      nip: "198912152024211025",
-      department: "MPLB",
-      classCode: "XI A-MPLB",
-      subject: "Otomatisasi Tata Kelola Kearsipan Modern",
-      period: "Jam Ke 3-6 (08:45 - 11:45 WITA)",
-      date: "2026-09-24",
-      topic: "Manajemen Kearsipan Digital Berbasis Cloud Storage & Klasifikasi Retensi Arsip",
-      method: "Praktik Simulasi Kantor & Diskusi",
-      attendance: { present: 36, total: 36, sick: 0, namesSick: [] },
-      notes: "Seluruh siswa berhasil mengonfigurasi indeks penomoran arsip digital sesuai ANRI.",
-      hasPhoto: true,
-      timestamp: "11:50 WITA",
-      status: "verified"
-    },
-    {
-      id: "JRN-103",
-      teacher: "Hendra Surya Pratama",
-      nip: "199305162022211001",
-      department: "DKV",
-      classCode: "XII A-DKV",
-      subject: "Produksi Aset 3D Modeling & Rendering Portfolio",
-      period: "Jam Ke 5-8 (10:30 - 13:45 WITA)",
-      date: "2026-09-24",
-      topic: "Penerapan Lighting Three-Point pada Blender 4.2 untuk Portofolio Produk DUDI",
-      method: "Project Based Learning (PjBL)",
-      attendance: { present: 34, total: 34, sick: 0, namesSick: [] },
-      notes: "Progres rendering siswa mencapai rata-rata 88%. Siap kurasi portofolio industri.",
-      hasPhoto: true,
-      timestamp: "13:52 WITA",
-      status: "verified"
-    },
-    {
-      id: "JRN-104",
-      teacher: "Muliyani Yohana",
-      nip: "197505102008012015",
-      department: "AKL",
-      classCode: "X A-AKL",
-      subject: "Praktikum Akuntansi Perusahaan Jasa & Dagang",
-      period: "Jam Ke 1-2 (07:15 - 08:45 WITA)",
-      date: "2026-09-24",
-      topic: "Penyusunan Jurnal Penyesuaian dan Neraca Lajur Berbasis Standar Akuntansi ETAP",
-      method: "Problem Based Learning",
-      attendance: { present: 35, total: 36, sick: 1, namesSick: ["ALIYAH PUTRI HARAHAP"] },
-      notes: "Tuntas latihan siklus akuntansi tahap 1. Evaluasi formatif berjalan lancar.",
-      hasPhoto: false,
-      timestamp: "08:50 WITA",
-      status: "verified"
-    }
-  ],
+  teachingJournals: [],
 
   // Modul 6.3: Jadwal Pelajaran & Time-Grid Anti-Bentrok
   scheduleMatrix: [
@@ -9767,39 +9698,29 @@ window.SIMKUR_DATA = {
 ],
 
   // Modul 6.1: Kalender & Agenda Akademik Waka
-  upcomingAgendas: [
-    { date: "28 Mar 2026", daysLeft: 4, title: "Batas Akhir Unggah Modul Ajar Siklus 2", type: "urgent", desc: "Target 100% kelengkapan perangkat ajar semester genap." },
-    { date: "05 Apr 2026", daysLeft: 12, title: "Sinkronisasi Kurikulum DUDI bersama Telkom & Astra", type: "event", desc: "Reviu Capaian Pembelajaran Fase F & sinkronisasi materi PKL." },
-    { date: "14 Apr 2026", daysLeft: 21, title: "Rapat Koordinasi MGMP Sekolah Asesmen Sumatif", type: "meeting", desc: "Penyusunan kisi-kisi dan kartu soal terstandar." },
-    { date: "21 Apr 2026", daysLeft: 28, title: "Jadwal Supervisi Akademik Guru Senior (Fase 2)", type: "audit", desc: "Observasi kelas sesuai Standar Proses Permendikdasmen No. 1/2026." },
-    { date: "11 Mei 2026", daysLeft: 48, title: "Uji Kompetensi Keahlian (UKK) Gelombang 1", type: "exam", desc: "Uji sertifikasi LSP-P1 Lisensi BNSP dan UKK Mandiri DUDI." }
-  ],
+  upcomingAgendas: [],
 
   // System Alerts Box
-  systemAlerts: [
-    { id: 1, type: "warning", message: "Beban PTM Pak Rahmat Hidayat (DKV) saat ini 20 JP (kurang 4 JP dari standar linier 24 JP Kemendikdasmen)." },
-    { id: 2, type: "info", message: "Gateway WAHA aktif: 98 Pesan reminder otomatis terkirim hari ini (Siklus 07:00 WIB)." },
-    { id: 3, type: "success", message: "Sinkronisasi Kurikulum Merdeka Fase E & F diverifikasi 100% sesuai Permendikdasmen No. 13/2025." }
-  ],
+  systemAlerts: [],
 
   // Modul 6.8 & 6.9: PKL & UKK SMK Data
   pklSummary: {
-    totalStudents: 288,
-    activeInDudi: 242,
-    completed: 46,
+    totalStudents: 0,
+    activeInDudi: 0,
+    completed: 0,
     partnersCount: 42,
     byDepartment: [
-      { dept: "TJKT", students: 72, partners: 12, topDudi: "PT Telkom & Indosat" },
-      { dept: "DKV", students: 60, partners: 8, topDudi: "PT Mediatama & Studio Nusa" },
-      { dept: "MPLB", students: 60, partners: 9, topDudi: "Bank Mandiri & Astra International" },
-      { dept: "AKL", students: 48, partners: 7, topDudi: "Bank BCA & KAP Santoso" },
-      { dept: "Pemasaran", students: 48, partners: 6, topDudi: "Indomarco & Tokopedia" }
+      { dept: "TJKT", students: 0, partners: 0, topDudi: "—" },
+      { dept: "DKV", students: 0, partners: 0, topDudi: "—" },
+      { dept: "MPLB", students: 0, partners: 0, topDudi: "—" },
+      { dept: "AKL", students: 0, partners: 0, topDudi: "—" },
+      { dept: "Pemasaran", students: 0, partners: 0, topDudi: "—" }
     ]
   },
 
   ukkSummary: {
     period: "Tahun Ajaran 2026/2027",
-    totalCandidates: 288,
+    totalCandidates: 0,
     tracks: {
       lspP1: {
         title: "Jalur Lembaga Sertifikasi Profesi (LSP-P1 Lisensi BNSP)",
@@ -9807,7 +9728,7 @@ window.SIMKUR_DATA = {
         licenseNo: "KEP.0841/BNSP/IV/2024",
         certificateIssued: "Sertifikat Garuda Emas BNSP",
         departments: ["TJKT", "DKV", "AKL"],
-        candidates: 180,
+        candidates: 0,
         tukVerified: "3 Lab Terverifikasi BNSP"
       },
       mandiriDudi: {
@@ -9815,7 +9736,7 @@ window.SIMKUR_DATA = {
         status: "MoU Kerjasama DUDI Tuntas",
         certificateIssued: "Sertifikat Kompetensi Sekolah & DUDI",
         departments: ["MPLB", "Pemasaran"],
-        candidates: 108,
+        candidates: 0,
         tukVerified: "Lab Perkantoran & Business Center"
       }
     }
@@ -9823,180 +9744,34 @@ window.SIMKUR_DATA = {
 
   // Modul 6.6: Supervisi Akademik Data (Stitch Screen 3 & Permendikdasmen No. 1/2026)
   supervisionSummary: {
-    scheduled: 48,
-    totalTeachers: 68,
-    completed: 32,
-    avgScore: 89.4,
-    pendingFollowUp: 8,
-    pdpStatus: "Akses Terproteksi (Hanya Kepsek, Waka, dan Guru Bersangkutan)"
+    scheduled: 0,
+    totalTeachers: 82,
+    completed: 0,
+    avgScore: 0,
+    pendingFollowUp: 0,
+    pdpStatus: "Siap Mulai Supervisi Akademik"
   },
 
-  supervisionData: [
-    {
-      id: "SUP-01",
-      teacher: "Ahmad Gajali",
-      nip: "19850412 201101 1 008",
-      department: "TJKT",
-      subject: "Administrasi Sistem Jaringan & Cloud Infrastructure",
-      classRoom: "XI TJKT 1 (Lab Jaringan 2)",
-      date: "2026-03-22",
-      supervisor: "Rusnani",
-      score: 94,
-      predicate: "Amat Baik",
-      status: "Refleksi Tuntas",
-      aspects: {
-        planning: 4.0,       // Kesiapan Perangkat Ajar & Alur Pembelajaran (4/4)
-        deepLearning: 3.8,   // Pengelolaan Kelas & Deep Learning Engagement (3.8/4)
-        industryTefa: 4.0,   // Keterpaduan Praktik Industri / TeFa / PjBL (4/4)
-        formativeAssess: 3.5 // Asesmen Formatif & Umpan Balik Murid (3.5/4)
-      },
-      dialogNotes: "Guru sangat interaktif saat demonstrasi konfigurasi server MikroTik. Catatan tindak lanjut: beri variasi pertanyaan pemantik untuk siswa yang pasif di baris belakang.",
-      verifiedDigital: true
-    },
-    {
-      id: "SUP-02",
-      teacher: "Risa Rusniarti",
-      nip: "19900218 201503 2 004",
-      department: "DKV",
-      subject: "Desain Publikasi & Tipografi Cetak",
-      classRoom: "X DKV 1 (Lab Desain Komputer)",
-      date: "2026-03-26 (Besok 08:00 WIB)",
-      supervisor: "Rusnani",
-      score: null,
-      predicate: "Siap Diobservasi",
-      status: "Terjadwal",
-      aspects: { planning: 3.9, deepLearning: null, industryTefa: null, formativeAssess: null },
-      dialogNotes: "Perangkat ajar modul publikasi telah diverifikasi. Siap observasi kelas.",
-      verifiedDigital: false
-    },
-    {
-      id: "SUP-03",
-      teacher: "Oky Wulan Maulina",
-      nip: "19891026 201503 2 002",
-      department: "AKL",
-      subject: "Praktikum Akuntansi Lembaga & Perusahaan Dagang",
-      classRoom: "XI AKL 1 (Lab Akuntansi Komputer)",
-      date: "2026-03-18",
-      supervisor: "Agustin Purnomosari (Kepala Sekolah)",
-      score: 76,
-      predicate: "Cukup",
-      status: "Perlu Pendampingan Asesmen",
-      aspects: { planning: 3.2, deepLearning: 3.0, industryTefa: 3.2, formativeAssess: 2.8 },
-      dialogNotes: "Perlu penguatan alur diferensiasi pembelajaran dan instrumen rubrik penilaian jurnal penyesuaian.",
-      verifiedDigital: true
-    },
-    {
-      id: "SUP-04",
-      teacher: "Akhmad Hanafi Maulana, SE",
-      nip: "19891215 202421 1 025",
-      department: "MPLB",
-      subject: "Otomatisasi Tata Kelola Kearsipan Digital",
-      classRoom: "XI MPLB 2 (Lab Perkantoran)",
-      date: "2026-03-29",
-      supervisor: "Rusnani",
-      score: null,
-      predicate: "Menunggu Jadwal",
-      status: "Terjadwal",
-      aspects: { planning: 3.8, deepLearning: null, industryTefa: null, formativeAssess: null },
-      dialogNotes: "Jadwal observasi siklus pekan ke-4 Maret.",
-      verifiedDigital: false
-    },
-    {
-      id: "SUP-05",
-      teacher: "Futri Indri Septiani",
-      nip: "19880917 201402 2 001",
-      department: "Pemasaran",
-      subject: "Digital Marketing & Strategi E-Commerce",
-      classRoom: "XI PM 1 (Business Center)",
-      date: "2026-03-15",
-      supervisor: "Rusnani",
-      score: 88,
-      predicate: "Baik",
-      status: "Rekomendasi Terkirim",
-      aspects: { planning: 3.5, deepLearning: 3.7, industryTefa: 3.8, formativeAssess: 3.4 },
-      dialogNotes: "Praktek langsung live commerce di TikTok Shop sangat hidup. Rekomendasi: integrasikan analitik dashboard penjualan.",
-      verifiedDigital: true
-    }
-  ],
+  supervisionData: [],
 
   // Modul 6.7: Manajemen Penilaian & Integrasi CBT (Stitch Screen 2)
   cbtData: {
-    serverStatus: "Online",
-    lastSync: "15 menit lalu (Auto-Pull API)",
-    schoolAvgScore: 81.6,
-    scoreTrendDelta: "+2.4 poin dari PTS",
-    kktpCompletionRate: 87.2,
-    studentsNeedingRemedial: 42,
-    activeExamsCount: 5,
+    serverStatus: "Siap Sinkron",
+    lastSync: "Belum Ada Sinkronisasi",
+    schoolAvgScore: 0,
+    scoreTrendDelta: "+0.0",
+    kktpCompletionRate: 0,
+    studentsNeedingRemedial: 0,
+    activeExamsCount: 0,
     departmentKktp: [
-      { dept: "TJKT", rate: 91, avg: 84.5, needRemedial: 6 },
-      { dept: "AKL", rate: 89, avg: 83.2, needRemedial: 5 },
-      { dept: "DKV", rate: 88, avg: 82.0, needRemedial: 7 },
-      { dept: "MPLB", rate: 86, avg: 80.4, needRemedial: 9 },
-      { dept: "Pemasaran", rate: 82, avg: 78.1, needRemedial: 15 } // Perlu atensi
+      { dept: "TJKT", rate: 0, avg: 0, needRemedial: 0 },
+      { dept: "AKL", rate: 0, avg: 0, needRemedial: 0 },
+      { dept: "DKV", rate: 0, avg: 0, needRemedial: 0 },
+      { dept: "MPLB", rate: 0, avg: 0, needRemedial: 0 },
+      { dept: "Pemasaran", rate: 0, avg: 0, needRemedial: 0 }
     ],
-    classesSummary: [
-      {
-        rombel: "XI A-TJKT",
-        subject: "Administrasi Sistem Jaringan",
-        teacher: "Ahmad Gajali",
-        participants: 36,
-        avgScore: 85.4,
-        completionRate: 94.4,
-        remedialCount: 2,
-        syncStatus: "Tersinkron CBT Server",
-        lowestTopic: "Routing Dinamis OSPF & Firewall Filter"
-      },
-      {
-        rombel: "XI A-DKV",
-        subject: "UI/UX & Desain Web",
-        teacher: "Jamaluddin",
-        participants: 32,
-        avgScore: 82.8,
-        completionRate: 87.5,
-        remedialCount: 4,
-        syncStatus: "Tersinkron CBT Server",
-        lowestTopic: "Responsive CSS Grid & Design Tokens"
-      },
-      {
-        rombel: "XI A-MPLB",
-        subject: "Kearsipan & Dokumen Kantor",
-        teacher: "Akhmad Hanafi Maulana, SE",
-        participants: 36,
-        avgScore: 81.0,
-        completionRate: 86.1,
-        remedialCount: 5,
-        syncStatus: "Tersinkron CBT Server",
-        lowestTopic: "Klasifikasi Retensi Arsip Elektronik"
-      },
-      {
-        rombel: "X A-AKL",
-        subject: "Matematika Kejuruan",
-        teacher: "Amnah, M. PD",
-        participants: 36,
-        avgScore: 83.5,
-        completionRate: 88.9,
-        remedialCount: 4,
-        syncStatus: "Tersinkron CBT Server",
-        lowestTopic: "Perhitungan Anuitas Pinjaman Usaha"
-      },
-      {
-        rombel: "XI A-PM",
-        subject: "Bisnis Retail & Akuntansi Dagang",
-        teacher: "Futri Indri Septiani",
-        participants: 34,
-        avgScore: 75.2,
-        completionRate: 73.5,
-        remedialCount: 9,
-        syncStatus: "Perlu Intervensi",
-        lowestTopic: "Laporan Laba Rugi Toko & Stock Opname"
-      }
-    ],
-    remedialRecommendations: [
-      { topic: "Laporan Laba Rugi & Stock Opname (Pemasaran)", failPercent: 26.5, remedy: "Pemberian materi pengayaan video & bank soal CBT remedial" },
-      { topic: "Routing Dinamis OSPF & Mikrotik (TJKT)", failPercent: 5.6, remedy: "Tutor sebaya di lab jaringan 2 pada Kamis sore" },
-      { topic: "CSS Grid & Mobile Breakpoint (DKV)", failPercent: 12.5, remedy: "Praktek portofolio ulang modul 3" }
-    ]
+    classesSummary: [],
+    remedialRecommendations: []
   },
 
   // Modul 6.10: Laporan & Dashboard Eksekutif Kurikulum (Stitch Screen 1)
@@ -10060,310 +9835,27 @@ window.SIMKUR_DATA = {
   // ==========================================================================
   pklModule: {
     summary: {
-      placed: "356 / 360",
-      placedPct: 98.9,
-      placedSub: "Tingkat XII (Fase F) • 4 Siswa Menunggu Verifikasi MoU",
+      placed: "0 / 0",
+      placedPct: 0,
+      placedSub: "Tingkat XII (Fase F)",
       activeDudi: 42,
-      activeDudiSub: "Tier-1 Nasional (Telkom, Astra, BCA, TransMedia, Kompas Gramedia)",
-      todayLogbooks: 338,
-      todayLogbooksPct: 94.9,
-      todayLogbooksSub: "Presensi & Aktivitas Lapangan Terverifikasi Pembimbing DUDI",
-      monitoringVisits: "18 / 24",
-      monitoringVisitsPct: 75.0,
-      monitoringVisitsSub: "Progres Supervisi Guru Pembimbing ke Lokasi Magang"
+      activeDudiSub: "Mitra DUDI Terdaftar",
+      todayLogbooks: 0,
+      todayLogbooksPct: 0,
+      todayLogbooksSub: "Presensi & Aktivitas Magang Terverifikasi",
+      monitoringVisits: "0 / 0",
+      monitoringVisitsPct: 0,
+      monitoringVisitsSub: "Supervisi Guru Pembimbing ke Lokasi"
     },
     distributionByMajor: [
-      { major: "TJKT", students: 72, total: 72, companies: 12, pct: 100 },
-      { major: "DKV", students: 72, total: 72, companies: 9, pct: 100 },
-      { major: "AKL", students: 72, total: 72, companies: 8, pct: 100 },
-      { major: "MPLB", students: 72, total: 72, companies: 7, pct: 100 },
-      { major: "Pemasaran", students: 68, total: 72, companies: 6, pct: 94.4, note: "4 Siswa matching final" }
+      { major: "TJKT", students: 0, total: 0, companies: 0, pct: 0 },
+      { major: "DKV", students: 0, total: 0, companies: 0, pct: 0 },
+      { major: "AKL", students: 0, total: 0, companies: 0, pct: 0 },
+      { major: "MPLB", students: 0, total: 0, companies: 0, pct: 0 },
+      { major: "Pemasaran", students: 0, total: 0, companies: 0, pct: 0 }
     ],
-    upcomingVisits: [
-      {
-        date: "27 Mar 2026",
-        company: "PT Telkom Akses Regional III",
-        teacher: "Rusnani",
-        studentsCount: 6,
-        major: "TJKT",
-        status: "Terjadwal",
-        statusColor: "#059669"
-      },
-      {
-        date: "28 Mar 2026",
-        company: "Bank Syariah Indonesia KCP Sudirman",
-        teacher: "Dra. Siti Nurjanah, M.Pd",
-        studentsCount: 4,
-        major: "AKL",
-        status: "Terkonfirmasi",
-        statusColor: "#0d9488"
-      },
-      {
-        date: "30 Mar 2026",
-        company: "Pikiran Rakyat Digital Media Studio",
-        teacher: "Hendra Surya Pratama",
-        studentsCount: 5,
-        major: "DKV",
-        status: "Draf Agenda",
-        statusColor: "#d97706"
-      }
-    ],
-    students: [
-      {
-        id: "PKL-01",
-        name: "Aditya Raul Prima Wijaya",
-        nisn: "0068412901",
-        rombel: "XII TJKT 1",
-        avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80",
-        company: "PT Telkom Akses Witel Kalsel - Banjarmasin",
-        companyTier: "Tier-1 Industri Telekomunikasi",
-        companyAddress: "Jl. Gegerkalong Hilir No. 47, Banjarmasin",
-        schoolMentor: "Ir. Hendra Kusuma, M.T",
-        dudiMentor: "Bpk. Yudianto (Field Manager Telkom)",
-        duration: "6 Bulan (Jan - Jun 2026)",
-        progressMonth: "Bulan ke-3 dari 6",
-        progressPct: 50,
-        logbookPct: 96,
-        status: "Sedang Magang",
-        statusClass: "badge-approved",
-        needsMonitoring: false,
-        portfolio: {
-          projectTitle: "Implementasi Fiber To The Home (FTTH) Cluster Buah Batu & Splicing Core Backbone",
-          projectScope: "Pemasangan Optical Distribution Point (ODP), perapihan kabel drop core 1 Core 3 Seling, proses fusion splicing dengan redaman < 0.02 dB, serta pengujian link loss menggunakan OTDR dan Power Meter.",
-          dudiEndorsement: "Aditya memiliki kecakapan teknis splicing yang sangat rapi, pemahaman topologi jaringan fiber optik yang kuat, dan inisiatif tinggi saat penanganan trouble ticket di lapangan.",
-          certificateId: "CERT-TLKM-2026-0819",
-          certificateStatus: "Tervalidasi Industri (Tier-1 Telco)",
-          logbookCount: "48 dari 50 Catatan Terverifikasi",
-          attendanceRate: "98.0% (49 Hari Kerja, 1 Sakit, 0 Alpa)",
-          artifacts: [
-            { name: "Laporan_Akhir_PKL_Aditya_TJKT.pdf", size: "2.4 MB", type: "pdf", tag: "Laporan Resmi" },
-            { name: "Dokumentasi_Fusion_Splicing_ODP.jpg", size: "1.8 MB", type: "img", tag: "Foto Lapangan" },
-            { name: "Hasil_Uji_OTDR_FiberLink_Loss.pdf", size: "850 KB", type: "data", tag: "Log Pengujian" }
-          ]
-        },
-        grades: {
-          dudiTechnical: 92,
-          dudiSoftSkill: 90,
-          schoolSupervisor: 88,
-          schoolDefense: 90,
-          finalGrade: 90,
-          predicate: "Sangat Baik (A)",
-          status: "Tervalidasi e-Rapor",
-          competencyDesc: "Menunjukkan kemahiran sangat baik dalam penggelaran jaringan FTTH, penyambungan fusion splicing serat optik, dan kepatuhan K3 keselamatan kerja telco."
-        }
-      },
-      {
-        id: "PKL-02",
-        name: "Aisha Salma Juneeta",
-        nisn: "0068412944",
-        rombel: "XII A-DKV",
-        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80",
-        company: "Infinite Studios & Design House",
-        companyTier: "Tier-1 Industri Kreatif & Animasi",
-        companyAddress: "Kawasan Industri Batam Studio & Creative Park",
-        schoolMentor: "Hendra Surya Pratama",
-        dudiMentor: "Maya Sandrina (Art Director)",
-        duration: "6 Bulan (Jan - Jun 2026)",
-        progressMonth: "Bulan ke-3 dari 6",
-        progressPct: 50,
-        logbookPct: 98,
-        status: "Sedang Magang",
-        statusClass: "badge-approved",
-        needsMonitoring: false,
-        portfolio: {
-          projectTitle: "Desain Identitas Visual & Aset Animasi 2D Kampanye Edukasi Lingkungan",
-          projectScope: "Penyusunan moodboard, key visual vector character sheet, storyboard animasi 60 detik, serta rendering aset media sosial dan merchandise interaktif klien korporat.",
-          dudiEndorsement: "Annisa sangat berbakat dalam ilustrasi digital dan workflow Adobe Illustrator/After Effects, cepat merespons revisi brief klien dan disiplin deadline.",
-          certificateId: "CERT-INF-2026-0312",
-          certificateStatus: "Tervalidasi Studio Kreatif",
-          logbookCount: "52 dari 53 Catatan Terverifikasi",
-          attendanceRate: "100.0% (50 Hari Kerja, 0 Sakit, 0 Alpa)",
-          artifacts: [
-            { name: "Portfolio_Karya_Annisa_DKV.pdf", size: "12.1 MB", type: "pdf", tag: "Portofolio Visual" },
-            { name: "Brand_Guideline_Mockup_CleanEarth.pdf", size: "4.5 MB", type: "pdf", tag: "Design Guide" },
-            { name: "Storyboard_Keyframe_Animasi_2D.png", size: "3.2 MB", type: "img", tag: "Storyboard Art" }
-          ]
-        },
-        grades: {
-          dudiTechnical: 95,
-          dudiSoftSkill: 92,
-          schoolSupervisor: 90,
-          schoolDefense: 94,
-          finalGrade: 93,
-          predicate: "Sangat Baik (A)",
-          status: "Tervalidasi e-Rapor",
-          competencyDesc: "Sangat terampil dalam penciptaan aset grafis vektor profesional, pemahaman estetika komunikasi visual modern, dan manajemen waktu kreatif industri."
-        }
-      },
-      {
-        id: "PKL-03",
-        name: "Ahmad faizall",
-        nisn: "0068413012",
-        rombel: "XII AKL 1",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80",
-        company: "Bank Mandiri (Persero) Tbk KCP Asia Afrika",
-        companyTier: "BUMN Perbankan Nasional",
-        companyAddress: "Jl. Asia Afrika No. 107, Banjarmasin",
-        schoolMentor: "Oky Wulan Maulina",
-        dudiMentor: "Bambang Sutrisno (Branch Ops)",
-        duration: "6 Bulan (Jan - Jun 2026)",
-        progressMonth: "Bulan ke-3 dari 6",
-        progressPct: 50,
-        logbookPct: 92,
-        status: "Sedang Magang",
-        statusClass: "badge-approved",
-        needsMonitoring: false,
-        portfolio: {
-          projectTitle: "Rekonsiliasi Kas Operasional & Digitalisasi Pembukuan Transaksi Kliring",
-          projectScope: "Pemeriksaan kesesuaian mutasi saldo rekening koran harian dengan register teller, penyesuaian transaksi kliring BI-FAST, serta penataan arsip bukti kas debit/kredit perbankan.",
-          dudiEndorsement: "Farhan bekerja dengan akurasi angka yang tinggi, menjaga kerahasiaan data nasabah dengan integritas kuat, dan santun dalam pelayanan front office pendukung.",
-          certificateId: "CERT-BMR-2026-1102",
-          certificateStatus: "Tervalidasi Bank BUMN",
-          logbookCount: "46 dari 50 Catatan Terverifikasi",
-          attendanceRate: "96.0% (48 Hari Kerja, 2 Izin, 0 Alpa)",
-          artifacts: [
-            { name: "Laporan_Rekonsiliasi_Kas_Farhan.pdf", size: "3.1 MB", type: "pdf", tag: "Laporan Akuntansi" },
-            { name: "Template_Audit_Harian_Mandiri.xlsx", size: "540 KB", type: "data", tag: "Spreadsheet Audit" }
-          ]
-        },
-        grades: {
-          dudiTechnical: 88,
-          dudiSoftSkill: 90,
-          schoolSupervisor: 86,
-          schoolDefense: 88,
-          finalGrade: 88,
-          predicate: "Sangat Baik (A)",
-          status: "Tervalidasi e-Rapor",
-          competencyDesc: "Menguasai tata cara rekonsiliasi kas bank harian, audit dokumen bukti transaksi akuntansi lembaga perbankan, dan etika kerja lembaga keuangan."
-        }
-      },
-      {
-        id: "PKL-04",
-        name: "AULIA PUTRI",
-        nisn: "0068413155",
-        rombel: "XII MPLB 1",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
-        company: "Kantor Pertanahan BPN Kota Banjarmasin",
-        companyTier: "Instansi Pemerintah Kementerian ATR/BPN",
-        companyAddress: "Jl. Soekarno Hatta No. 586, Banjarmasin",
-        schoolMentor: "Akhmad Hanafi Maulana, SE",
-        dudiMentor: "Dra. Endang Wahyuni (Kasubbag TU)",
-        duration: "6 Bulan (Jan - Jun 2026)",
-        progressMonth: "Bulan ke-3 dari 6",
-        progressPct: 50,
-        logbookPct: 88,
-        status: "Butuh Monitoring",
-        statusClass: "badge-review",
-        needsMonitoring: true,
-        portfolio: {
-          projectTitle: "Digitalisasi & Manajemen Arsip Warkah Pertanahan Berbasis Electronic Filing System",
-          projectScope: "Scanning berkas warkah sertifikat tanah buku tanah, pengindeksan metadata digital, penataan retensi berkas inaktif, serta pendampingan sistem informasi loket pelayanan pertanahan.",
-          dudiEndorsement: "Nabila sangat sopan dan cekatan melayani masyarakat di loket. Perlu sedikit peningkatan kecepatan saat klasifikasi kode berkas arsip warkah lama.",
-          certificateId: "CERT-BPN-2026-0498",
-          certificateStatus: "Tervalidasi Instansi Pemerintah",
-          logbookCount: "44 dari 50 Catatan Terverifikasi",
-          attendanceRate: "92.0% (46 Hari Kerja, 3 Sakit, 1 Izin)",
-          artifacts: [
-            { name: "Laporan_Sistem_Arsip_Warkah_Nabila.pdf", size: "2.8 MB", type: "pdf", tag: "Laporan Kearsipan" },
-            { name: "Alur_Klasifikasi_Arsip_Elektronik.pdf", size: "1.2 MB", type: "pdf", tag: "SOP Kearsipan" }
-          ]
-        },
-        grades: {
-          dudiTechnical: 84,
-          dudiSoftSkill: 86,
-          schoolSupervisor: 82,
-          schoolDefense: 85,
-          finalGrade: 84,
-          predicate: "Baik (B)",
-          status: "Draf Nilai (Perlu Review)",
-          competencyDesc: "Mampu mengelola tata naskah dinas, pengarsipan berkas warkah digital, dan komunikasi pelayanan administrasi perkantoran dengan etika yang baik."
-        }
-      },
-      {
-        id: "PKL-05",
-        name: "Dimas Surya Wijaya",
-        nisn: "0068413289",
-        rombel: "XII Pemasaran 1",
-        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80",
-        company: "E-Commerce Fulfillment Center Tokopedia & Mitra",
-        companyTier: "Tech & Retail Modern Multinasional",
-        companyAddress: "Kawasan Industri Cimahi Selatan, Cimahi",
-        schoolMentor: "Futri Indri Septiani",
-        dudiMentor: "Firman Hidayat (Ops Supervisor)",
-        duration: "6 Bulan (Jan - Jun 2026)",
-        progressMonth: "Bulan ke-3 dari 6",
-        progressPct: 50,
-        logbookPct: 95,
-        status: "Sedang Magang",
-        statusClass: "badge-approved",
-        needsMonitoring: false,
-        portfolio: {
-          projectTitle: "Optimalisasi Live Stream Selling & Merchandising Campaign Ramadan di Platform TikTok Shop & Tokopedia",
-          projectScope: "Penyusunan naskah script siaran interaktif live selling, kurasi produk etalase flash sale, manajemen stok fulfillment gudang, serta analitik conversion rate harian toko.",
-          dudiEndorsement: "Dimas memiliki energi promosi yang tinggi, sangat komunikatif di depan kamera, dan berhasil meningkatkan engagement rate sesi live shopping sebesar 28%.",
-          certificateId: "CERT-TKPD-2026-0771",
-          certificateStatus: "Tervalidasi E-Commerce Hub",
-          logbookCount: "47 dari 50 Catatan Terverifikasi",
-          attendanceRate: "98.0% (49 Hari Kerja, 1 Izin, 0 Alpa)",
-          artifacts: [
-            { name: "Laporan_LiveCommerce_Campaign_Dimas.pdf", size: "4.6 MB", type: "pdf", tag: "Laporan Bisnis" },
-            { name: "Analytics_Conversion_Rate_Report.pdf", size: "2.1 MB", type: "data", tag: "Data Sales" }
-          ]
-        },
-        grades: {
-          dudiTechnical: 90,
-          dudiSoftSkill: 92,
-          schoolSupervisor: 87,
-          schoolDefense: 89,
-          finalGrade: 90,
-          predicate: "Sangat Baik (A)",
-          status: "Tervalidasi e-Rapor",
-          competencyDesc: "Sangat cakap dalam strategi pemasaran digital live commerce, negosiasi penawaran produk ritel modern, dan analisis data konversi penjualan omnichannel."
-        }
-      },
-      {
-        id: "PKL-06",
-        name: "Muhammad Rizky",
-        nisn: "0068413310",
-        rombel: "XII TJKT 2",
-        avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=120&q=80",
-        company: "PT Lintasarta Cyber Hub",
-        companyTier: "Tier-1 Telco Data Center",
-        companyAddress: "TB Simatupang Cyber Building, Jakarta Selatan",
-        schoolMentor: "Ahmad Gajali",
-        dudiMentor: "Deni Irawan (NOC Engineer Lead)",
-        duration: "6 Bulan (Jan - Jun 2026)",
-        progressMonth: "Bulan ke-3 dari 6",
-        progressPct: 50,
-        logbookPct: 78,
-        status: "Logbook Tertunda",
-        statusClass: "badge-missing",
-        needsMonitoring: true,
-        portfolio: {
-          projectTitle: "Monitoring Utilisasi Bandwidth Router Core & Pemeliharaan Server Rack NOC",
-          projectScope: "Pemeriksaan log SNMP perangkat routing enterprise, deteksi packet loss jaringan metro ethernet, perapihan kabel patch cord server rack, dan pencatatan tiket eskalasi pelanggan korporat.",
-          dudiEndorsement: "Pengetahuan teknis troubleshooting jaringan bagus dan cepat paham instruksi teknis. Namun pelaporan logbook harian sering terlambat dan perlu meningkatkan kedisiplinan jam kerja.",
-          certificateId: "CERT-LNT-2026-0155 (Draf Evaluasi)",
-          certificateStatus: "Menunggu Kelengkapan Logbook",
-          logbookCount: "39 dari 50 Catatan Terverifikasi",
-          attendanceRate: "88.0% (44 Hari Kerja, 3 Sakit, 3 Belum Terverif)",
-          artifacts: [
-            { name: "Draf_Laporan_NOC_Monitoring_Rizky.pdf", size: "1.9 MB", type: "pdf", tag: "Draf Laporan" },
-            { name: "Grafik_Utilisasi_Bandwidth_MRTG.pdf", size: "920 KB", type: "data", tag: "Grafik MRTG" }
-          ]
-        },
-        grades: {
-          dudiTechnical: 82,
-          dudiSoftSkill: 75,
-          schoolSupervisor: 74,
-          schoolDefense: 80,
-          finalGrade: 78,
-          predicate: "Baik (B)",
-          status: "Draf Nilai (Perlu Remediasi)",
-          competencyDesc: "Memiliki pemahaman dasar pemantauan traffic data center yang baik, perlu peningkatan disiplin dokumentasi logbook aktivitas dan ketepatan waktu kerja."
-        }
-      }
-    ]
+    upcomingVisits: [],
+    students: []
   },
 
   // ==========================================================================
@@ -10371,7 +9863,7 @@ window.SIMKUR_DATA = {
   // ==========================================================================
   ukkModule: {
     summary: {
-      totalCandidates: 360,
+      totalCandidates: 0,
       totalCandidatesSub: "216 Siswa Jalur LSP-P1 • 144 Siswa Jalur Mandiri DUDI",
       tukCount: 5,
       tukCountSub: "3 TUK Terlisensi BNSP • 2 Workshop Industri DUDI",
@@ -10389,7 +9881,7 @@ window.SIMKUR_DATA = {
         status: "Aktif / Terverifikasi BNSP",
         certifiedAssessors: 12,
         verifiedSchemes: 3,
-        candidateStudents: 216
+        candidateStudents: 0
       },
       mandiriDudi: {
         name: "Jalur Mandiri Terakreditasi Bersama DUDI",
@@ -10398,7 +9890,7 @@ window.SIMKUR_DATA = {
         status: "MoU Sah & Tervalidasi Cabang Dinas",
         practitionerAssessors: 10,
         verifiedSchemes: 2,
-        candidateStudents: 144
+        candidateStudents: 0
       }
     },
     schemes: [
@@ -10412,7 +9904,7 @@ window.SIMKUR_DATA = {
         certificate: "Sertifikat Garuda Emas BNSP",
         tukLocation: "TUK Lab Jaringan Cisco & Fiber Optic (Terlisensi BNSP)",
         assessors: "Muhammad Ihsan (MET.000.01292023) / Tim DUDI PT Telkom",
-        candidatesCount: 72,
+        candidatesCount: 0,
         sessionsInfo: "4 Gelombang x 18 Sesi",
         scheduleDate: "14 - 17 April 2026 (08.00 - 15.00 WIB)",
         status: "TUK & Perangkat Siap",
@@ -10448,12 +9940,7 @@ window.SIMKUR_DATA = {
           { wave: "Gelombang 3", date: "16 April 2026", time: "08.00 - 15.00 WIB", count: 18, room: "Lab Jaringan Cisco & Cloud (TUK-01)" },
           { wave: "Gelombang 4", date: "17 April 2026", time: "08.00 - 15.00 WIB", count: 18, room: "Lab Jaringan Cisco & Cloud (TUK-01)" }
         ],
-        candidates: [
-          { id: "AS-01", name: "Aditya Raul Prima Wijaya", nisn: "0068412901", rombel: "XII TJKT 1", prepScore: 92, processScore: 94, resultScore: 90, attitudeScore: 95, finalScore: 92.5, recommendation: "Kompeten (K)" },
-          { id: "AS-02", name: "Muhammad Rizky", nisn: "0068413310", rombel: "XII TJKT 2", prepScore: 85, processScore: 86, resultScore: 82, attitudeScore: 88, finalScore: 84.8, recommendation: "Kompeten (K)" },
-          { id: "AS-03", name: "Bagus Setiawan", nisn: "0068413345", rombel: "XII TJKT 1", prepScore: 90, processScore: 91, resultScore: 88, attitudeScore: 92, finalScore: 89.9, recommendation: "Kompeten (K)" },
-          { id: "AS-04", name: "Deni Saputra", nisn: "0068413378", rombel: "XII TJKT 2", prepScore: 88, processScore: 85, resultScore: 84, attitudeScore: 90, finalScore: 86.1, recommendation: "Kompeten (K)" }
-        ]
+        candidates: []
       },
       {
         id: "SCH-02",
@@ -10465,7 +9952,7 @@ window.SIMKUR_DATA = {
         certificate: "Sertifikat Garuda Emas BNSP",
         tukLocation: "TUK Lab Komputer Akuntansi MYOB & Accurate",
         assessors: "Oky Wulan Maulina (MET.000.018239) / Penguji Ikatan Akuntan Indonesia",
-        candidatesCount: 72,
+        candidatesCount: 0,
         sessionsInfo: "4 Gelombang x 18 Sesi",
         scheduleDate: "18 - 21 April 2026 (08.00 - 15.00 WIB)",
         status: "TUK & Perangkat Siap",
@@ -10501,11 +9988,7 @@ window.SIMKUR_DATA = {
           { wave: "Gelombang 3", date: "20 April 2026", time: "08.00 - 15.00 WIB", count: 18, room: "Lab Komputer Akuntansi 1" },
           { wave: "Gelombang 4", date: "21 April 2026", time: "08.00 - 15.00 WIB", count: 18, room: "Lab Komputer Akuntansi 1" }
         ],
-        candidates: [
-          { id: "AS-05", name: "Ahmad faizall", nisn: "0068413012", rombel: "XII AKL 1", prepScore: 92, processScore: 90, resultScore: 91, attitudeScore: 94, finalScore: 91.2, recommendation: "Kompeten (K)" },
-          { id: "AS-06", name: "Siti Alawiyah", nisn: "0068413045", rombel: "XII AKL 1", prepScore: 94, processScore: 95, resultScore: 93, attitudeScore: 96, finalScore: 94.4, recommendation: "Kompeten (K)" },
-          { id: "AS-07", name: "Rizka Amelia", nisn: "0068413078", rombel: "XII AKL 2", prepScore: 88, processScore: 87, resultScore: 89, attitudeScore: 91, finalScore: 88.4, recommendation: "Kompeten (K)" }
-        ]
+        candidates: []
       },
       {
         id: "SCH-03",
@@ -10517,7 +10000,7 @@ window.SIMKUR_DATA = {
         certificate: "Sertifikat Garuda Emas BNSP",
         tukLocation: "TUK Lab Perkantoran & Business Simulation Center",
         assessors: "Akhmad Hanafi Maulana, SE (MET.000.014290) / Tim Asosiasi Arsiparis",
-        candidatesCount: 72,
+        candidatesCount: 0,
         sessionsInfo: "4 Gelombang x 18 Sesi",
         scheduleDate: "21 - 24 April 2026 (08.00 - 15.00 WIB)",
         status: "TUK & Perangkat Siap",
@@ -10552,10 +10035,7 @@ window.SIMKUR_DATA = {
           { wave: "Gelombang 3", date: "23 April 2026", time: "08.00 - 15.00 WIB", count: 18, room: "Lab Simulasi Perkantoran Modern" },
           { wave: "Gelombang 4", date: "24 April 2026", time: "08.00 - 15.00 WIB", count: 18, room: "Lab Simulasi Perkantoran Modern" }
         ],
-        candidates: [
-          { id: "AS-08", name: "AULIA PUTRI", nisn: "0068413155", rombel: "XII MPLB 1", prepScore: 90, processScore: 92, resultScore: 88, attitudeScore: 94, finalScore: 90.4, recommendation: "Kompeten (K)" },
-          { id: "AS-09", name: "Fitria Handayani", nisn: "0068413188", rombel: "XII MPLB 1", prepScore: 92, processScore: 93, resultScore: 90, attitudeScore: 95, finalScore: 92.2, recommendation: "Kompeten (K)" }
-        ]
+        candidates: []
       },
       {
         id: "SCH-04",
@@ -10567,7 +10047,7 @@ window.SIMKUR_DATA = {
         certificate: "Sertifikat Kompetensi Bersama DUDI & ADGI",
         tukLocation: "TUK Studio Desain Multimedia & Lab Kreatif",
         assessors: "Hendra Surya Pratama / Maya Sandrina (Infinite Studios & ADGI)",
-        candidatesCount: 72,
+        candidatesCount: 0,
         sessionsInfo: "3 Gelombang x 24 Sesi",
         scheduleDate: "15 - 18 April 2026 (08.00 - 15.00 WIB)",
         status: "TUK & Portofolio Siap",
@@ -10601,10 +10081,7 @@ window.SIMKUR_DATA = {
           { wave: "Gelombang 2", date: "16 April 2026", time: "08.00 - 15.00 WIB", count: 24, room: "Studio Desain Kreatif & Render Lab" },
           { wave: "Gelombang 3", date: "17 April 2026", time: "08.00 - 15.00 WIB", count: 24, room: "Studio Desain Kreatif & Render Lab" }
         ],
-        candidates: [
-          { id: "AS-10", name: "Aisha Salma Juneeta", nisn: "0068412944", rombel: "XII A-DKV", prepScore: 96, processScore: 95, resultScore: 94, attitudeScore: 98, finalScore: 95.3, recommendation: "Kompeten (K)" },
-          { id: "AS-11", name: "Fathir Mahesa", nisn: "0068412977", rombel: "XII A-DKV", prepScore: 90, processScore: 91, resultScore: 89, attitudeScore: 92, finalScore: 90.3, recommendation: "Kompeten (K)" }
-        ]
+        candidates: []
       },
       {
         id: "SCH-05",
@@ -10616,7 +10093,7 @@ window.SIMKUR_DATA = {
         certificate: "Sertifikat Kompetensi Bersama DUDI & Asosiasi Ritel",
         tukLocation: "TUK Business Center Mini Market Mandiri & Studio Live Commerce",
         assessors: "Futri Indri Septiani / Firman Hidayat (PT Sumber Alfaria Trijaya & Tokopedia)",
-        candidatesCount: 72,
+        candidatesCount: 0,
         sessionsInfo: "3 Gelombang x 24 Sesi",
         scheduleDate: "22 - 25 April 2026 (08.00 - 15.00 WIB)",
         status: "TUK & Fasilitas Siap",
@@ -10650,10 +10127,7 @@ window.SIMKUR_DATA = {
           { wave: "Gelombang 2", date: "23 April 2026", time: "08.00 - 15.00 WIB", count: 24, room: "Business Center Mini Market & Live Studio" },
           { wave: "Gelombang 3", date: "24 April 2026", time: "08.00 - 15.00 WIB", count: 24, room: "Business Center Mini Market & Live Studio" }
         ],
-        candidates: [
-          { id: "AS-12", name: "Dimas Surya Wijaya", nisn: "0068413289", rombel: "XII Pemasaran 1", prepScore: 92, processScore: 94, resultScore: 91, attitudeScore: 96, finalScore: 93.1, recommendation: "Kompeten (K)" },
-          { id: "AS-13", name: "Siti Rahayu", nisn: "0068413322", rombel: "XII Pemasaran 1", prepScore: 90, processScore: 91, resultScore: 89, attitudeScore: 93, finalScore: 90.5, recommendation: "Kompeten (K)" }
-        ]
+        candidates: []
       }
     ]
   },

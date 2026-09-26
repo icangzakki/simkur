@@ -511,41 +511,70 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Render Upcoming Agenda
     const agendaContainer = document.getElementById('dashboard-agenda-timeline');
     if (agendaContainer) {
-      agendaContainer.innerHTML = data.upcomingAgendas.map(item => {
-        const parts = item.date.split(' ');
-        const day = parts[0];
-        const month = parts[1];
-        return `
-          <div class="timeline-agenda-item">
-            <div class="agenda-date-box">
-              <div class="agenda-date-day">${day}</div>
-              <div class="agenda-date-month">${month}</div>
-            </div>
-            <div class="agenda-content">
-              <div class="agenda-title">${item.title}</div>
-              <div class="agenda-desc">${item.desc}</div>
-              ${item.daysLeft <= 7 ? `<span class="agenda-badge-urgent">Tersisa ${item.daysLeft} Hari Lagi</span>` : ''}
-            </div>
+      if (!data.upcomingAgendas || data.upcomingAgendas.length === 0) {
+        agendaContainer.innerHTML = `
+          <div style="text-align: center; padding: 2rem 1rem; color: #64748b; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px;">
+            <div style="font-weight: 700; color: #334155; margin-bottom: 0.25rem;">Belum Ada Agenda Terdekat</div>
+            <div style="font-size: 0.8125rem;">Jadwal batas waktu perangkat ajar, rapat MGMP, dan agenda akademik akan tercantum di sini.</div>
           </div>
         `;
-      }).join('');
+      } else {
+        agendaContainer.innerHTML = data.upcomingAgendas.map(item => {
+          const parts = item.date.split(' ');
+          const day = parts[0];
+          const month = parts[1];
+          return `
+            <div class="timeline-agenda-item">
+              <div class="agenda-date-box">
+                <div class="agenda-date-day">${day}</div>
+                <div class="agenda-date-month">${month}</div>
+              </div>
+              <div class="agenda-content">
+                <div class="agenda-title">${item.title}</div>
+                <div class="agenda-desc">${item.desc}</div>
+                ${item.daysLeft <= 7 ? `<span class="agenda-badge-urgent">Tersisa ${item.daysLeft} Hari Lagi</span>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
     }
 
     // 4. Render System Alerts Box
     const alertsContainer = document.getElementById('dashboard-system-alerts');
     if (alertsContainer) {
-      alertsContainer.innerHTML = data.systemAlerts.map(alert => `
-        <div class="alert-item-box alert-${alert.type}">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <div>${alert.message}</div>
-        </div>
-      `).join('');
+      if (!data.systemAlerts || data.systemAlerts.length === 0) {
+        alertsContainer.innerHTML = `
+          <div class="alert-item-box alert-success" style="border-left: 4px solid #059669;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <div><strong>Sistem Normal:</strong> Seluruh modul kurikulum, jadwal pembelajaran, dan sinkronisasi Dapodik beroperasi dengan baik.</div>
+          </div>
+        `;
+      } else {
+        alertsContainer.innerHTML = data.systemAlerts.map(alert => `
+          <div class="alert-item-box alert-${alert.type}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div>${alert.message}</div>
+          </div>
+        `).join('');
+      }
     }
   }
 
   function renderJournalFeed() {
     const journalContainer = document.getElementById('dashboard-journal-feed');
     if (!journalContainer) return;
+
+    if (!data.teachingJournals || data.teachingJournals.length === 0) {
+      journalContainer.innerHTML = `
+        <div style="text-align: center; padding: 2.5rem 1rem; color: #64748b; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" style="margin: 0 auto 0.5rem;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <div style="font-weight: 700; color: #334155; margin-bottom: 0.25rem;">Belum Ada Jurnal Mengajar Hari Ini</div>
+          <div style="font-size: 0.8125rem;">Aktivitas KBM yang disimpan guru di Portal Guru akan langsung tercatat dan tampil secara real-time di sini.</div>
+        </div>
+      `;
+      return;
+    }
 
     journalContainer.innerHTML = data.teachingJournals.map(j => `
       <div class="journal-feed-item">
@@ -870,9 +899,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('guru-journal-history-list');
     if (!container) return;
 
-    container.innerHTML = data.teachingJournals
-      .filter(j => j.teacher.includes('Ahmad Gajali'))
-      .map(j => `
+    const teacherName = (activeScheduleTeacher || 'Ahmad Gajali').split(',')[0].trim();
+    const myJournals = data.teachingJournals.filter(j => 
+      j.teacher.toLowerCase().includes(teacherName.toLowerCase()) || 
+      teacherName.toLowerCase().includes(j.teacher.toLowerCase())
+    );
+
+    if (myJournals.length === 0) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 2.5rem 1rem; color: #64748b; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" style="margin: 0 auto 0.5rem;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <div style="font-weight: 700; color: #334155; margin-bottom: 0.25rem;">Belum Ada Riwayat Jurnal Mengajar</div>
+          <div style="font-size: 0.8125rem;">Jurnal yang Anda simpan melalui tab "Isi Jurnal Hari Ini" akan otomatis tercatat dan tersinkronisasi di sini.</div>
+        </div>
+      `;
+      renderGuruDocsTable();
+      return;
+    }
+
+    container.innerHTML = myJournals.map(j => `
         <div class="journal-feed-item">
           <div class="journal-item-header">
             <div>
@@ -2879,6 +2924,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('supervisi-table-body');
     if (!tableBody) return;
 
+    if (!data.supervisionData || data.supervisionData.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align: center; padding: 3rem 1rem; color: #64748b;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" style="margin: 0 auto 0.75rem;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <div style="font-weight: 700; color: #334155; font-size: 0.9375rem; margin-bottom: 0.25rem;">Belum Ada Riwayat Supervisi Akademik</div>
+            <div style="font-size: 0.8125rem;">Klik tombol <strong>"+ Jadwalkan Supervisi"</strong> untuk menjadwalkan atau merekam observasi kelas guru.</div>
+          </td>
+        </tr>
+      `;
+      const detailPane = document.getElementById('supervisi-detail-pane');
+      if (detailPane) {
+        detailPane.innerHTML = `
+          <div style="text-align: center; padding: 3rem 1rem; color: #64748b;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📋</div>
+            <div style="font-weight: 700; color: #334155; margin-bottom: 0.25rem;">Pilih Catatan Supervisi</div>
+            <div style="font-size: 0.8125rem;">Detail dialog pasca-observasi dan 4 pilar asesmen guru akan ditampilkan di sini.</div>
+          </div>
+        `;
+      }
+      return;
+    }
+
     tableBody.innerHTML = data.supervisionData.map(s => `
       <tr style="cursor: pointer;" data-sup-id="${s.id}" onclick="window.SIMKUR_APP.inspectSupervisionRecord('${s.id}')">
         <td>
@@ -3093,36 +3161,48 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!tableBody) return;
 
     // Render classes CBT table
-    tableBody.innerHTML = data.cbtData.classesSummary.map(c => `
-      <tr>
-        <td><strong>${c.rombel}</strong></td>
-        <td>
-          <div style="font-weight: 600;">${c.subject}</div>
-          <div style="font-size: 0.6875rem; color: #64748b;">${c.teacher}</div>
-        </td>
-        <td><span class="font-mono">${c.participants}</span> Siswa</td>
-        <td><strong style="color: var(--primary); font-size: var(--text-md);">${c.avgScore}</strong></td>
-        <td>
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="font-weight: 700; color: ${c.completionRate >= 85 ? '#059669' : '#d97706'};">${c.completionRate}%</span>
-            <div class="progress-bar-container" style="width: 60px; margin: 0;">
-              <div class="progress-fill ${c.completionRate < 85 ? 'amber' : ''}" style="width: ${c.completionRate}%;"></div>
+    if (!data.cbtData.classesSummary || data.cbtData.classesSummary.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align: center; padding: 2.5rem 1rem; color: #64748b;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" style="margin: 0 auto 0.5rem;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <div style="font-weight: 700; color: #334155; margin-bottom: 0.25rem;">Belum Ada Rekap Nilai CBT</div>
+            <div style="font-size: 0.8125rem;">Klik tombol <strong>"Import Nilai CBT"</strong> di atas untuk memuat berkas hasil ujian semester siswa.</div>
+          </td>
+        </tr>
+      `;
+    } else {
+      tableBody.innerHTML = data.cbtData.classesSummary.map(c => `
+        <tr>
+          <td><strong>${c.rombel}</strong></td>
+          <td>
+            <div style="font-weight: 600;">${c.subject}</div>
+            <div style="font-size: 0.6875rem; color: #64748b;">${c.teacher}</div>
+          </td>
+          <td><span class="font-mono">${c.participants}</span> Siswa</td>
+          <td><strong style="color: var(--primary); font-size: var(--text-md);">${c.avgScore}</strong></td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-weight: 700; color: ${c.completionRate >= 85 ? '#059669' : '#d97706'};">${c.completionRate}%</span>
+              <div class="progress-bar-container" style="width: 60px; margin: 0;">
+                <div class="progress-fill ${c.completionRate < 85 ? 'amber' : ''}" style="width: ${c.completionRate}%;"></div>
+              </div>
             </div>
-          </div>
-        </td>
-        <td>
-          <span style="color: ${c.remedialCount > 5 ? '#e11d48' : '#334155'}; font-weight: 700;">${c.remedialCount} Siswa</span>
-        </td>
-        <td>
-          <span class="badge-status ${c.syncStatus.includes('Perlu') ? 'badge-revision' : 'badge-approved'}">${c.syncStatus}</span>
-        </td>
-        <td>
-          <button class="btn btn-outline btn-sm" onclick="alert('Topik Butuh Intervensi (${c.rombel}):\\n${c.lowestTopic}\\n\\nPaket soal CBT remedial siap dibuat.')">
-            Intervensi
-          </button>
-        </td>
-      </tr>
-    `).join('');
+          </td>
+          <td>
+            <span style="color: ${c.remedialCount > 5 ? '#e11d48' : '#334155'}; font-weight: 700;">${c.remedialCount} Siswa</span>
+          </td>
+          <td>
+            <span class="badge-status ${c.syncStatus.includes('Perlu') ? 'badge-revision' : 'badge-approved'}">${c.syncStatus}</span>
+          </td>
+          <td>
+            <button class="btn btn-outline btn-sm" onclick="alert('Topik Butuh Intervensi (${c.rombel}):\\n${c.lowestTopic}\\n\\nPaket soal CBT remedial siap dibuat.')">
+              Intervensi
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
 
     // Department bars
     const deptBarsContainer = document.getElementById('cbt-dept-bars-container');
@@ -3143,13 +3223,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Smart recommendations list
     const remedyList = document.getElementById('cbt-remedial-list');
     if (remedyList) {
-      remedyList.innerHTML = data.cbtData.remedialRecommendations.map(r => `
-        <div style="padding: 0.75rem; background: #ffffff; border: 1px solid var(--outline-light); border-radius: var(--radius-sm); margin-bottom: 0.5rem; font-size: var(--text-xs);">
-          <div style="font-weight: 700; color: #ba1a1a;">⚠ ${r.topic}</div>
-          <div style="color: #64748b; margin: 0.25rem 0;">${r.failPercent}% Siswa di bawah KKTP</div>
-          <div style="color: #0f766e; font-weight: 600;">Rekomendasi: ${r.remedy}</div>
-        </div>
-      `).join('');
+      if (!data.cbtData.remedialRecommendations || data.cbtData.remedialRecommendations.length === 0) {
+        remedyList.innerHTML = `
+          <div style="padding: 1rem; text-align: center; color: #059669; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-sm); font-size: var(--text-xs);">
+            <div style="font-weight: 700; margin-bottom: 0.25rem;">✓ Tidak Ada Rekomendasi Remedial</div>
+            <div>Seluruh peserta didik telah mencapai kriteria ketercapaian tujuan pembelajaran (KKTP).</div>
+          </div>
+        `;
+      } else {
+        remedyList.innerHTML = data.cbtData.remedialRecommendations.map(r => `
+          <div style="padding: 0.75rem; background: #ffffff; border: 1px solid var(--outline-light); border-radius: var(--radius-sm); margin-bottom: 0.5rem; font-size: var(--text-xs);">
+            <div style="font-weight: 700; color: #ba1a1a;">⚠ ${r.topic}</div>
+            <div style="color: #64748b; margin: 0.25rem 0;">${r.failPercent}% Siswa di bawah KKTP</div>
+            <div style="color: #0f766e; font-weight: 600;">Rekomendasi: ${r.remedy}</div>
+          </div>
+        `).join('');
+      }
     }
   }
 
