@@ -19,6 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeScheduleRombel = (data.studentRoster && Object.keys(data.studentRoster)[0]) || 'X A-AKL';
   let activeScheduleTeacher = 'Ahmad Gajali';
   let activeScheduleView = 'matrix';
+  let guruUploadSelectedFile = null;
+  let guruUploadMethod = 'file';
+  let _pklActiveKelas = 'ALL';
+  let _pklSearchQuery = '';
+  let _pklDeptFilter = null;
+  let activeSupervisionRecord = null;
+  let selectedCbtJsonData = null;
 
   const scheduleTimeSlots = [
     { period: 1,  label: "Jam 1  · 07:30 – 08:10" },
@@ -320,28 +327,60 @@ document.addEventListener('DOMContentLoaded', () => {
     // Selalu sync nama login ke semua heading setiap ganti screen
     syncWelcomeHeadings();
 
-    // Scroll top
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+  window.switchScreen = switchScreen;
 
-  // Helper: baca session dan update SEMUA welcome heading sekaligus
+
+  // Helper: baca session atau konfigurasi activeRole dan update SEMUA welcome heading sekaligus
   function syncWelcomeHeadings() {
-    let name = 'Rusnani';
+    let name = '';
+    let title = '';
+    let avatar = '';
+
+    // 1. Coba dari session aktif di localStorage
     try {
       const s = localStorage.getItem('simkur_session');
       if (s) {
         const parsed = JSON.parse(s);
-        if (parsed && parsed.name) name = parsed.name;
+        // Jika peran cocok atau activeRole belum diset
+        if (parsed && parsed.name && (!activeRole || !parsed.role || parsed.role === activeRole)) {
+          name = parsed.name;
+          title = parsed.title;
+          avatar = parsed.avatar;
+        }
       }
     } catch(e) {}
 
+    // 2. Jika tidak ada dari session, gunakan identitas bawaan dari activeRole
+    if (!name) {
+      const cfg = (typeof rolePermissions !== 'undefined' && rolePermissions[activeRole]) ? rolePermissions[activeRole] : (rolePermissions ? rolePermissions.waka : null);
+      if (cfg) {
+        name = cfg.name;
+        title = cfg.title;
+        avatar = cfg.avatar;
+      }
+    }
+
+    // 3. Fallback absolut jika masih belum ditemukan
+    if (!name) name = 'Rusnani';
+
     const els = [
       document.getElementById('dashboard-welcome-heading'),
-      document.getElementById('portal-guru-greeting'),
-      document.getElementById('current-user-name')
+      document.getElementById('portal-guru-greeting')
     ];
-    els.forEach(el => { if (el) el.textContent = el.id === 'current-user-name' ? name : `Selamat Datang, ${name}`; });
+    els.forEach(el => {
+      if (el) el.textContent = `Selamat Datang, ${name}`;
+    });
+
+    const nameEl = document.getElementById('current-user-name');
+    if (nameEl) nameEl.textContent = name;
+    const roleEl = document.getElementById('current-user-role');
+    if (roleEl && title) roleEl.textContent = title;
+    const avEl = document.getElementById('current-user-avatar');
+    if (avEl && avatar) avEl.src = avatar;
   }
+
 
   /* ==========================================================================
      ROLE & SESSION INITIALIZATION ENGINE
@@ -776,11 +815,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const photoToSave = activeJournalPhoto ? activeJournalPhoto.url : "assets/teacher_avatar.jpg";
 
+        let curTeacherName = "Ahmad Gajali";
+        let curTeacherNip = "19890609 202521 1 023";
+        let curTeacherDept = "TJKT";
+        try {
+          const s = localStorage.getItem('simkur_session');
+          if (s) {
+            const parsed = JSON.parse(s);
+            if (parsed.name) curTeacherName = parsed.name;
+            if (parsed.nip) curTeacherNip = parsed.nip;
+            if (parsed.department) curTeacherDept = parsed.department;
+          }
+        } catch(e) {}
+
         const newJournal = {
           id: `JRN-${Date.now()}`,
-          teacher: "Ahmad Gajali",
-          nip: "19890609 202521 1 023",
-          department: "TJKT",
+          teacher: curTeacherName,
+          nip: curTeacherNip,
+          department: curTeacherDept,
           classCode: classCode,
           subject: "Administrasi Sistem Jaringan & Cloud Infrastructure",
           period: "Jam Ke 1-4 (07:15 - 10:15 WIB)",
@@ -857,8 +909,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      TEACHER DOCUMENT & CURRICULUM ASSET MODULE (UNGGAH PERANGKAT AJAR GURU)
      ========================================================================== */
-  let guruUploadSelectedFile = null;
-  let guruUploadMethod = 'file';
 
   function renderGuruDocsTable() {
     const tableBody = document.getElementById('guru-docs-table-body');
@@ -2364,9 +2414,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      MODUL 6.8: MONITORING PKL — SEDERHANA (Filter Kelas + Cari Siswa)
      ========================================================================== */
-  let _pklActiveKelas = 'ALL';
-  let _pklSearchQuery = '';
-  let _pklDeptFilter = null; // null = semua, 'DKV' = khusus DKV, dll
 
   function renderPKL() {
     // Deteksi department dari session (khusus kajur)
@@ -2511,44 +2558,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.SIMKUR_APP = window.SIMKUR_APP || {};
 
 
-    const subtabs = document.querySelectorAll('#pkl-subtabs .subtab-btn');
-    subtabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        subtabs.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeSubtab = btn.getAttribute('data-tab');
-        renderStudentsTable();
-      });
-    });
 
-    // Setup Filters
-    const majorSelect = document.getElementById('filter-pkl-major');
-    if (majorSelect) {
-      majorSelect.addEventListener('change', (e) => {
-        filterMajor = e.target.value;
-        renderStudentsTable();
-      });
-    }
 
-    const statusSelect = document.getElementById('filter-pkl-status');
-    if (statusSelect) {
-      statusSelect.addEventListener('change', (e) => {
-        filterStatus = e.target.value;
-        renderStudentsTable();
-      });
-    }
-
-    const searchInput = document.getElementById('search-pkl-input');
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        searchQuery = e.target.value;
-        renderStudentsTable();
-      });
-    }
-
-    renderStudentsTable();
-    window._refreshPklStudentsTable = renderStudentsTable;
-  }
 
   /* ==========================================================================
      MODUL 6.9: UJI KOMPETENSI KEAHLIAN (UKK) & SERTIFIKASI LSP (Stitch Screen 2)
@@ -2722,7 +2733,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      MODUL 6.6: SUPERVISI AKADEMIK & OBSERVASI KELAS (Stitch Screen 3)
      ========================================================================== */
-  let activeSupervisionRecord = null;
 
   function renderSupervision() {
     const tableBody = document.getElementById('supervisi-table-body');
@@ -3003,7 +3013,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* CBT JSON IMPORT ACTIONS */
-  let selectedCbtJsonData = null;
 
   function openImportCbtModal() {
     const modal = document.getElementById('modal-import-cbt');
@@ -4416,8 +4425,55 @@ document.addEventListener('DOMContentLoaded', () => {
     processCbtJsonImport: () => processCbtJsonImport(),
     validateCurriculumCompliance: () => {
       showToast("✓ Validasi Sukses: Struktur Kurikulum 48 JP/minggu telah 100% selaras dengan Dapodik Kemendikdasmen & Permendikdasmen No. 13/2025!");
+    },
+
+    /* ADMIN INTEGRASI & PAGINATION */
+    switchAdminTab: (btn, tabKey) => {
+      document.querySelectorAll('.admin-tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.style.background = 'transparent';
+        b.style.color = '#64748b';
+        b.style.fontWeight = '600';
+      });
+      if (btn) {
+        btn.classList.add('active');
+        btn.style.background = '#0f172a';
+        btn.style.color = '#ffffff';
+        btn.style.fontWeight = '700';
+      }
+      const tabNames = {
+        'dapodik': 'Sinkronisasi Dapodik Kemendikbud',
+        'cbt': 'Server CBT & Nilai Semester',
+        'rombel': 'Data Rombel & Laboratorium/TUK',
+        'bnsp': 'Integrasi BNSP / Mitra DUDI'
+      };
+      showToast(`✓ Tab aktif: ${tabNames[tabKey] || tabKey}`);
+    },
+
+    navigateAdminPage: (page) => {
+      let targetPage = page;
+      if (page === 'prev') targetPage = 1;
+      if (page === 'next') targetPage = 2;
+      [1, 2, 3].forEach(p => {
+        const pBtn = document.getElementById(`admin-page-${p}`);
+        if (pBtn) {
+          if (p === targetPage) {
+            pBtn.className = 'btn btn-primary btn-sm';
+            pBtn.style.minWidth = '24px';
+          } else {
+            pBtn.className = 'btn btn-ghost btn-sm';
+            pBtn.style.minWidth = '24px';
+          }
+        }
+      });
+      const prevBtn = document.getElementById('admin-page-prev');
+      const nextBtn = document.getElementById('admin-page-next');
+      if (prevBtn) prevBtn.disabled = (targetPage === 1);
+      if (nextBtn) nextBtn.disabled = (targetPage === 3);
+      showToast(`Halaman ${targetPage} dari 3 (GTK & Mitra)`);
     }
   };
+
 
   function showToast(message) {
     const container = document.getElementById('toast-container');
