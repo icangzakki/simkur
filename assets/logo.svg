@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" fill="none">
+  <!-- SIMKUR Logo Emblem -->
+  <g transform="translate(4, 4)">
+    <!-- Base Background Shield / Rounded Rect with subtle gradient -->
+    <defs>
+      <linearGradient id="simkurGradPrimary" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#0f172a"/>
+        <stop offset="100%" stop-color="#1e293b"/>
+      </linearGradient>
+      <linearGradient id="simkurGradTeal" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#14b8a6"/>
+        <stop offset="100%" stop-color="#0d9488"/>
+      </linearGradient>
+      <linearGradient id="simkurGradAmber" x1="0" y1="0" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#fbbf24"/>
+        <stop offset="100%" stop-color="#d97706"/>
+      </linearGradient>
+      <filter id="simkurShadow" x="-2" y="-2" width="60" height="60" filterUnits="userSpaceOnUse">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.15"/>
+      </filter>
+    </defs>
+
+    <!-- Outer Rounded Container -->
+    <rect width="56" height="56" rx="14" fill="url(#simkurGradPrimary)" filter="url(#simkurShadow)"/>
+    <rect x="0.75" y="0.75" width="54.5" height="54.5" rx="13.25" stroke="#334155" stroke-width="1.5" stroke-opacity="0.8"/>
+
+    <!-- Dynamic Vocational Gear & Curriculum Book Silhouette -->
+    <!-- Open Book Pages (Curriculum) -->
+    <path d="M14 38C19 36 24 36.5 28 39C32 36.5 37 36 42 38V21C37 19.5 32 20 28 22.5C24 20 19 19.5 14 21V38Z" fill="#ffffff" fill-opacity="0.95"/>
+    <path d="M28 22.5V39" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round"/>
+
+    <!-- Central Tech/Gear Accent in Teal -->
+    <path d="M28 13L31 16H35L36 20L40 22L39 26L41 29L38 32H35L33 35L29 34L28 36L27 34L23 35L21 32H18L15 29L17 26L16 22L20 20L21 16H25L28 13Z" fill="url(#simkurGradTeal)" fill-opacity="0.3"/>
+    
+    <!-- Precision Checkmark / Graduation Spark in Amber -->
+    <circle cx="39" cy="17" r="4.5" fill="url(#simkurGradAmber)"/>
+    <path d="M37.5 17L38.8 18.2L40.8 15.8" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Typography Text -->
+  <g transform="translate(70, 16)">
+    <!-- Wordmark -->
+    <text x="0" y="22" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="24" font-weight="800" fill="#0f172a" letter-spacing="-0.5">
+      SIMKUR<tspan fill="#0d9488">.</tspan>
+    </text>
+    <!-- Subtitle / Badge -->
+    <text x="0" y="36" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#64748b" letter-spacing="1.2" text-transform="uppercase">
+      SISTEM KURIKULUM SMK
+    </text>
+  </g>
+</svg>

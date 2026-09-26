@@ -1,0 +1,24 @@
+# Raw Excel & Data files
+*.xlsx
+*.xls
+*.csv
+
+# SQL & Database dumps
+database/
+*.sql
+
+# Archives & Temp files
+*.zip
+*.tar.gz
+test.jpg
+
+# Python scripts
+*.py
+scripts/
+__pycache__/
+
+# Scratch & Metadata
+stitch_raw/
+stitch_*metadata.json
+.DS_Store
+.git/

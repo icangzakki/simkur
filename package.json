@@ -1,0 +1,9 @@
+{
+  "name": "simkur-smkn1-banjarmasin",
+  "version": "2.6.0",
+  "description": "Sistem Informasi Manajemen Kurikulum SMKN 1 Banjarmasin",
+  "private": true,
+  "scripts": {
+    "dev": "python3 -m http.server 8000"
+  }
+}

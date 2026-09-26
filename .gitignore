@@ -1,0 +1,23 @@
+# Raw Excel & Data files
+*.xlsx
+*.xls
+*.csv
+
+# Backup & Temp
+*.bak
+*.zip
+*.tar.gz
+test.jpg
+
+# Python
+*.py
+scripts/
+__pycache__/
+
+# Scratch & Metadata
+scratch/
+stitch_raw/
+stitch_*metadata.json
+.DS_Store
+.vercel
+
