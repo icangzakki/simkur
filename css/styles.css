@@ -89,10 +89,16 @@ a:hover {
 }
 
 .sidebar-logo {
-  height: 38px;
+  height: 56px;
   width: auto;
+  max-width: 220px;
   display: block;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.2));
+  transition: transform 0.2s ease;
+}
+
+.sidebar-logo:hover {
+  transform: scale(1.02);
 }
 
 .btn-close-mobile-sidebar {
