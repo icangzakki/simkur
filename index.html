@@ -116,25 +116,114 @@
       box-shadow: 0 2px 6px rgba(239, 68, 68, 0.35);
     }
     .method-tag-btn {
-      padding: 0.35rem 0.85rem;
+      padding: 0.45rem 1rem;
       border-radius: 999px;
-      border: 1px solid #e2e8f0;
-      background: #f8fafc;
-      font-size: 0.775rem;
+      border: 1.5px solid #E2E8F0;
+      background: #FFFFFF;
+      font-size: 0.8125rem;
       font-weight: 600;
       color: #475569;
       cursor: pointer;
-      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      user-select: none;
     }
     .method-tag-btn:hover {
-      border-color: var(--primary);
-      color: var(--primary);
+      border-color: #8B5CF6;
+      background: #F5F3FF;
+      color: #6D28D9;
+      transform: translateY(-1px);
     }
     .method-tag-btn.active {
-      background: rgba(75, 34, 184, 0.12);
-      border-color: var(--primary);
-      color: var(--primary);
+      background: #EDE8F5;
+      border-color: #4B22B8;
+      color: #4B22B8;
       font-weight: 700;
+      box-shadow: 0 2px 6px rgba(75, 34, 184, 0.16);
+    }
+    .method-tag-btn.active::before {
+      content: '✓';
+      font-weight: 800;
+      color: #4B22B8;
+      font-size: 0.8125rem;
+    }
+    .quick-chip-btn {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      color: #475569;
+      font-size: 0.725rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .quick-chip-btn:hover {
+      background: #EDE8F5;
+      border-color: #C4B5FD;
+      color: #4B22B8;
+      transform: translateY(-1px);
+    }
+    .jurnal-section-block {
+      background: #FFFFFF;
+      border: 1px solid #ECECF2;
+      border-radius: 12px;
+      padding: 1.125rem 1.25rem;
+      margin-bottom: 1.125rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .jurnal-section-block:focus-within {
+      border-color: #C4B5FD;
+      box-shadow: 0 4px 12px rgba(75, 34, 184, 0.05);
+    }
+    .jurnal-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.875rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .jurnal-section-title {
+      font-size: 0.8125rem;
+      font-weight: 800;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .jurnal-stepper-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid #D1D5DB;
+      background: #FFFFFF;
+      color: #374151;
+      font-weight: 800;
+      font-size: 1.125rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .jurnal-stepper-btn:hover {
+      background: #EDE8F5;
+      border-color: #4B22B8;
+      color: #4B22B8;
+    }
+    .jurnal-stepper-btn:active {
+      transform: scale(0.95);
     }
     .modal-overlay {
       position: fixed;
@@ -943,107 +1032,198 @@
         <!-- PANE 1: FORMULIR JURNAL MENGAJAR & RIWAYAT -->
         <div id="guru-pane-jurnal">
           
-          <div class="content-card" style="margin-bottom: 1.5rem;">
-            <div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-              <div>
-                <h3 style="font-size: 1.0625rem; font-weight: 700; color: #262626; margin: 0;">Formulir Jurnal Mengajar Harian (Standar Proses Permendikdasmen 2026)</h3>
-                <p style="font-size: 0.8125rem; color: #777777; margin: 2px 0 0 0;">Diisi setiap selesai sesi tatap muka KBM. Data otomatis tersinkron ke dashboard monitoring Waka Kurikulum.</p>
+          <div class="content-card" style="margin-bottom: 1.5rem; border: 1px solid #ECECF2; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; background: #ffffff;">
+            <!-- Header Kartu -->
+            <div class="content-card-header" style="background: linear-gradient(180deg, #FFFFFF 0%, #FAF9FD 100%); border-bottom: 1px solid #ECECF2; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #4B22B8 0%, #6D28D9 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(75, 34, 184, 0.25); flex-shrink: 0;">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 style="font-size: 1.125rem; font-weight: 800; color: #1F2937; margin: 0; line-height: 1.2;">Formulir Jurnal Mengajar Harian</h3>
+                  <p style="font-size: 0.8125rem; color: #6B7280; margin: 3px 0 0 0;">Standar Proses Kurikulum Merdeka (Permendikdasmen 2026) — Terintegrasi ke monitoring Waka Kurikulum</p>
+                </div>
               </div>
-              <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #10B981; font-weight: 700;">● Sinkronisasi Real-Time</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="badge" style="background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; font-weight: 700; padding: 0.4rem 0.85rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 7px; font-size: 0.78125rem;">
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);"></span>
+                  Sinkronisasi Real-Time
+                </span>
+              </div>
             </div>
 
             <div class="content-card-body" style="padding: 1.5rem;">
               <form id="form-guru-jurnal">
                 
-                <div class="guru-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                  <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                      <label class="form-label" style="font-size: 0.8125rem; font-weight: 600; margin: 0;">Kelas & Rombel (Sesuai SK PTM) <span style="color: #dc2626;">*</span></label>
-                      <label style="font-size: 0.71875rem; color: #6B7280; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; user-select: none;" title="Centang jika ingin memilih kelas lain di luar rombel binaan/mengajar">
-                        <input type="checkbox" id="check-show-all-jurnal-classes" onchange="window.PORTAL_APP.toggleShowAllClasses(this.checked)"> Semua Kelas
-                      </label>
+                <!-- BAGIAN 1: IDENTITAS SESI KBM -->
+                <div class="jurnal-section-block">
+                  <div class="jurnal-section-header">
+                    <div class="jurnal-section-title">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4B22B8" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      1. Waktu & Rombel Belajar Tatap Muka
                     </div>
-                    <select id="input-guru-jurnal-class" class="form-input" required onchange="window.PORTAL_APP.handleJurnalClassChange(this.value)">
-                      <!-- Populated via app.js -->
-                    </select>
+                    <span style="font-size: 0.75rem; color: #9CA3AF; font-weight: 500;">Wajib Diisi</span>
                   </div>
-                  <div>
-                    <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 4px;">Mata Pelajaran <span style="color: #dc2626;">*</span></label>
-                    <input type="text" id="input-guru-jurnal-subject" class="form-input" value="Administrasi Sistem Jaringan & Cloud Infrastructure" required>
+
+                  <div class="guru-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.125rem; margin-bottom: 1.125rem;">
+                    <div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <label class="form-label" style="font-size: 0.8125rem; font-weight: 700; color: #374151; margin: 0;">
+                          Kelas & Rombel Mengajar <span style="color: #DC2626;">*</span>
+                        </label>
+                        <label style="font-size: 0.725rem; font-weight: 600; color: #4B22B8; background: #F3F0FA; border: 1px solid #DDD6FE; padding: 2px 8px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; user-select: none;" title="Centang untuk memilih dari seluruh 45 rombel sekolah">
+                          <input type="checkbox" id="check-show-all-jurnal-classes" onchange="window.PORTAL_APP.toggleShowAllClasses(this.checked)" style="accent-color: #4B22B8; cursor: pointer;"> Semua 45 Rombel
+                        </label>
+                      </div>
+                      <select id="input-guru-jurnal-class" class="form-input" required onchange="window.PORTAL_APP.handleJurnalClassChange(this.value)" style="height: 44px; border-radius: 10px; font-weight: 600; width: 100%; border: 1.5px solid #D1D5DB; background: #FFFFFF; color: #1F2937;">
+                        <!-- Populated via app.js -->
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 700; color: #374151; margin-bottom: 6px;">
+                        Mata Pelajaran yang Diampu <span style="color: #DC2626;">*</span>
+                      </label>
+                      <input type="text" id="input-guru-jurnal-subject" class="form-input" value="Administrasi Sistem Jaringan & Cloud Infrastructure" required style="height: 44px; border-radius: 10px; font-weight: 600; width: 100%; border: 1.5px solid #D1D5DB; color: #1F2937; background: #FFFFFF;">
+                    </div>
+                  </div>
+
+                  <div class="guru-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.125rem;">
+                    <div>
+                      <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 700; color: #374151; margin-bottom: 6px;">
+                        Tanggal Pelaksanaan KBM <span style="color: #DC2626;">*</span>
+                      </label>
+                      <input type="date" id="input-guru-jurnal-date" class="form-input" required style="height: 44px; border-radius: 10px; font-weight: 600; width: 100%; border: 1.5px solid #D1D5DB; color: #1F2937; background: #FFFFFF;">
+                    </div>
+
+                    <div>
+                      <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 700; color: #374151; margin-bottom: 6px;">
+                        Jam Pertemuan Tatap Muka (WITA) <span style="color: #DC2626;">*</span>
+                      </label>
+                      <select id="input-guru-jurnal-time" class="form-input" required style="height: 44px; border-radius: 10px; font-weight: 600; width: 100%; border: 1.5px solid #D1D5DB; color: #1F2937; background: #FFFFFF;">
+                        <option value="Jam 1-4 (07:15 - 10:15 WITA)">Jam 1-4 (07:15 - 10:15 WITA) • 4 JP Pagi</option>
+                        <option value="Jam 5-8 (10:30 - 13:30 WITA)">Jam 5-8 (10:30 - 13:30 WITA) • 4 JP Siang</option>
+                        <option value="Jam 9-10 (14:00 - 15:30 WITA)">Jam 9-10 (14:00 - 15:30 WITA) • 2 JP Sore</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
-                <div class="guru-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                  <div>
-                    <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 4px;">Tanggal Pelaksanaan KBM <span style="color: #dc2626;">*</span></label>
-                    <input type="date" id="input-guru-jurnal-date" class="form-input" required>
-                  </div>
-                  <div>
-                    <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 4px;">Jam Pertemuan Tatap Muka <span style="color: #dc2626;">*</span></label>
-                    <select id="input-guru-jurnal-time" class="form-input" required>
-                      <option value="Jam 1-4 (07:15 - 10:15 WITA)">Jam 1-4 (07:15 - 10:15 WITA)</option>
-                      <option value="Jam 5-8 (10:30 - 13:30 WITA)">Jam 5-8 (10:30 - 13:30 WITA)</option>
-                      <option value="Jam 9-10 (14:00 - 15:30 WITA)">Jam 9-10 (14:00 - 15:30 WITA)</option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- Presensi Quick Summary Field -->
-                <div style="background: #F8F9FD; border: 1px solid #ECECF2; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 8px;">
-                    <label class="form-label" style="font-weight: 700; color: #262626; font-size: 0.8125rem; margin: 0;">Presensi Kehadiran Siswa Sesi Ini:</label>
-                    <button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.switchGuruTab('presensi')" style="color: #4B22B8; font-weight: 700; font-size: 0.78125rem;">
-                      📋 Buka Tab Presensi Detail Siswa (H/S/I/A) →
+                <!-- BAGIAN 2: PRESENSI & METODE PEMBELAJARAN -->
+                <div class="jurnal-section-block">
+                  <div class="jurnal-section-header">
+                    <div class="jurnal-section-title">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4B22B8" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                      2. Presensi Siswa & Model Pembelajaran
+                    </div>
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.switchGuruTab('presensi')" style="color: #4B22B8; font-weight: 700; font-size: 0.78125rem; display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px;">
+                      📋 Lembar Presensi Detail (H/S/I/A) →
                     </button>
                   </div>
-                  <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                      <input type="number" id="input-guru-jurnal-hadir-count" class="form-input" value="34" min="0" max="40" style="width: 70px; text-align: center; font-weight: 700;">
-                      <span style="font-size: 0.8125rem; color: #555555; font-weight: 600;" id="jurnal-hadir-total-label">/ 36 Siswa Hadir</span>
+
+                  <!-- Widget Presensi Stepper Modern -->
+                  <div style="background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%); border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.125rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                      <span style="font-size: 0.8125rem; font-weight: 700; color: #1F2937;">Jumlah Siswa Hadir:</span>
+                      
+                      <!-- Stepper Touch Control -->
+                      <div style="display: inline-flex; align-items: center; gap: 6px; background: #FFFFFF; padding: 3px; border-radius: 10px; border: 1px solid #D1D5DB;">
+                        <button type="button" class="jurnal-stepper-btn" onclick="window.PORTAL_APP.stepHadirCount(-1)" title="Kurangi Hadir">-</button>
+                        <input type="number" id="input-guru-jurnal-hadir-count" class="form-input" value="34" min="0" max="40" style="width: 58px; height: 36px; text-align: center; font-size: 1.125rem; font-weight: 800; color: #4B22B8; border: none; background: transparent; padding: 0;" oninput="window.PORTAL_APP.syncJurnalAttendanceBadge()">
+                        <button type="button" class="jurnal-stepper-btn" onclick="window.PORTAL_APP.stepHadirCount(1)" title="Tambah Hadir">+</button>
+                      </div>
+
+                      <span style="font-size: 0.875rem; color: #4B5563; font-weight: 700;" id="jurnal-hadir-total-label">/ 36 Siswa Hadir</span>
                     </div>
-                    <span class="badge" id="jurnal-attendance-badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; font-size: 0.8125rem;">
+
+                    <!-- Badge Rekap Presensi -->
+                    <div id="jurnal-attendance-badge" style="background: #DEF7EC; border: 1px solid #BCF0DA; color: #03543F; font-weight: 700; font-size: 0.8125rem; padding: 0.45rem 0.95rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;">
                       34 Hadir, 2 Sakit dari 36 Siswa (94.4%)
-                    </span>
+                    </div>
+                  </div>
+
+                  <!-- Model & Metode Pembelajaran Tags -->
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+                      <label class="form-label" style="font-size: 0.8125rem; font-weight: 700; color: #374151; margin: 0;">
+                        Model & Metode Pembelajaran (Permendikdasmen 2026):
+                      </label>
+                      <span style="font-size: 0.725rem; color: #6B7280;">Bisa pilih lebih dari satu</span>
+                    </div>
+                    
+                    <div id="guru-methods-group" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                      <button type="button" class="method-tag-btn active" onclick="window.PORTAL_APP.toggleMethodTag(this)">🛠️ Project Based Learning (PjBL)</button>
+                      <button type="button" class="method-tag-btn active" onclick="window.PORTAL_APP.toggleMethodTag(this)">💻 Praktikum Lab Bengkel</button>
+                      <button type="button" class="method-tag-btn" onclick="window.PORTAL_APP.toggleMethodTag(this)">🧩 Problem Based Learning</button>
+                      <button type="button" class="method-tag-btn" onclick="window.PORTAL_APP.toggleMethodTag(this)">🗣️ Diskusi & Refleksi Interaktif</button>
+                      <button type="button" class="method-tag-btn" onclick="window.PORTAL_APP.toggleMethodTag(this)">🏭 Teaching Factory (TeFa)</button>
+                      <button type="button" class="method-tag-btn" onclick="window.PORTAL_APP.toggleMethodTag(this)">🔍 Penemuan / Inkuiri Terbimbing</button>
+                    </div>
                   </div>
                 </div>
 
-                <!-- Model & Metode Pembelajaran Tags -->
-                <div style="margin-bottom: 1rem;">
-                  <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 6px;">Metode / Model Pembelajaran (Standar Proses 2026):</label>
-                  <div id="guru-methods-group" style="display: flex; flex-wrap: wrap; gap: 6px;">
-                    <button type="button" class="method-tag-btn active" onclick="window.PORTAL_APP.toggleMethodTag(this)">Project Based Learning (PjBL)</button>
-                    <button type="button" class="method-tag-btn active" onclick="window.PORTAL_APP.toggleMethodTag(this)">Praktikum Lab Bengkel</button>
-                    <button type="button" class="method-tag-btn" onclick="window.PORTAL_APP.toggleMethodTag(this)">Problem Based Learning</button>
-                    <button type="button" class="method-tag-btn" onclick="window.PORTAL_APP.toggleMethodTag(this)">Diskusi Reflektif</button>
-                    <button type="button" class="method-tag-btn" onclick="window.PORTAL_APP.toggleMethodTag(this)">Teaching Factory (TeFa)</button>
+                <!-- BAGIAN 3: MATERI & CATATAN PERKEMBANGAN -->
+                <div class="jurnal-section-block">
+                  <div class="jurnal-section-header">
+                    <div class="jurnal-section-title">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4B22B8" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                      3. Materi Pembelajaran & Catatan Refleksi
+                    </div>
+                    <span style="font-size: 0.75rem; color: #9CA3AF; font-weight: 500;">Format Narasi Jurnal</span>
+                  </div>
+
+                  <!-- Materi Pokok / Capaian Pembelajaran -->
+                  <div style="margin-bottom: 1.125rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                      <label class="form-label" style="font-size: 0.8125rem; font-weight: 700; color: #374151; margin: 0;">
+                        Materi Pokok / Capaian Pembelajaran (CP) Hari Ini <span style="color: #DC2626;">*</span>
+                      </label>
+                      <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                        <button type="button" class="quick-chip-btn" onclick="window.PORTAL_APP.insertQuickText('input-guru-jurnal-topic', 'Konsep & Teori:')" title="Tambahkan awalan konsep">+ Teori</button>
+                        <button type="button" class="quick-chip-btn" onclick="window.PORTAL_APP.insertQuickText('input-guru-jurnal-topic', 'Praktik Konfigurasi & Lab:')" title="Tambahkan awalan praktik">+ Praktik Lab</button>
+                        <button type="button" class="quick-chip-btn" onclick="window.PORTAL_APP.insertQuickText('input-guru-jurnal-topic', 'Asesmen Formatif & Kuis:')" title="Tambahkan awalan asesmen">+ Asesmen</button>
+                      </div>
+                    </div>
+                    <textarea id="input-guru-jurnal-topic" class="form-input" rows="3" placeholder="Tuliskan materi pokok, topik modul ajar, materi praktikum, atau capaian pembelajaran tatap muka sesi ini..." required style="min-height: 85px; width: 100%; box-sizing: border-box; padding: 0.75rem 1rem; line-height: 1.5; font-size: 0.875rem; border-radius: 10px; border: 1.5px solid #D1D5DB;"></textarea>
+                  </div>
+
+                  <!-- Catatan Perkembangan Siswa -->
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                      <label class="form-label" style="font-size: 0.8125rem; font-weight: 700; color: #374151; margin: 0;">
+                        Catatan Keaktifan Siswa / Refleksi Kendala Belajar
+                      </label>
+                      <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                        <button type="button" class="quick-chip-btn" onclick="window.PORTAL_APP.insertQuickText('input-guru-jurnal-notes', 'Seluruh siswa aktif dan target modul praktikum tercapai 100%.')" title="Siswa tuntas">+ Tuntas 100%</button>
+                        <button type="button" class="quick-chip-btn" onclick="window.PORTAL_APP.insertQuickText('input-guru-jurnal-notes', 'Sebagian kelompok siswa memerlukan bimbingan modul lanjutan.')" title="Perlu pendampingan">+ Perlu Bimbingan</button>
+                        <button type="button" class="quick-chip-btn" onclick="window.PORTAL_APP.insertQuickText('input-guru-jurnal-notes', 'Fasilitas jaringan dan lab komputer berjalan optimal.')" title="Fasilitas ok">+ Fasilitas Lab OK</button>
+                      </div>
+                    </div>
+                    <textarea id="input-guru-jurnal-notes" class="form-input" rows="3" placeholder="Catatan keaktifan siswa, kendala perangkat/lab bengkel, serta rencana tindak lanjut pertemuan berikutnya..." style="min-height: 75px; width: 100%; box-sizing: border-box; padding: 0.75rem 1rem; line-height: 1.5; font-size: 0.875rem; border-radius: 10px; border: 1.5px solid #D1D5DB;"></textarea>
                   </div>
                 </div>
 
-                <div style="margin-bottom: 1rem;">
-                  <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 4px;">Materi Pokok / Capaian Pembelajaran Hari Ini <span style="color: #dc2626;">*</span></label>
-                  <textarea id="input-guru-jurnal-topic" class="form-input" rows="2" placeholder="Contoh: Konfigurasi MikroTik RouterOS: VLAN Trunking, Inter-VLAN Routing & DHCP Server pada lab workstation..." required></textarea>
-                </div>
-
-                <div style="margin-bottom: 1.25rem;">
-                  <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 4px;">Catatan Perkembangan Siswa / Refleksi Kendala Belajar</label>
-                  <textarea id="input-guru-jurnal-notes" class="form-input" rows="2" placeholder="Contoh: Kelompok 3 memerlukan pendampingan crimping serat optik. Sisa modul konfigurasi firewall dilanjutkan Kamis..."></textarea>
-                </div>
-
-                <!-- Foto Dokumentasi KBM -->
-                <div style="margin-bottom: 1.5rem;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <label class="form-label" style="font-size: 0.8125rem; font-weight: 600; margin: 0;">📸 Dokumentasi Foto KBM (Opsional):</label>
+                <!-- BAGIAN 4: DOKUMENTASI FOTO KBM -->
+                <div class="jurnal-section-block">
+                  <div class="jurnal-section-header">
+                    <div class="jurnal-section-title">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4B22B8" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                      4. Dokumentasi Foto Pelaksanaan KBM (Opsional)
+                    </div>
                     <span style="font-size: 0.75rem; color: #10B981; font-weight: 600;">Mendukung Kamera HP Langsung</span>
                   </div>
-                  
-                  <div class="guru-photo-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('jurnal-camera-input').click()" style="display: flex; align-items: center; gap: 6px;">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                      Ambil Foto Kamera HP
+
+                  <div class="guru-photo-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('jurnal-camera-input').click()" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; border-color: #4B22B8; color: #4B22B8; background: #FFFFFF; padding: 0.55rem 1.1rem; border-radius: 10px; box-shadow: 0 1px 3px rgba(75, 34, 184, 0.1);">
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                      Ambil Foto Kamera HP Langsung
                     </button>
-                    <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('jurnal-gallery-input').click()" style="display: flex; align-items: center; gap: 6px; border: 1px solid var(--border);">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                      Pilih dari Galeri / File
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('jurnal-gallery-input').click()" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600; border: 1.5px solid #D1D5DB; background: #FFFFFF; padding: 0.55rem 1.1rem; border-radius: 10px; color: #374151;">
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      Pilih dari File / Galeri
                     </button>
                   </div>
 
@@ -1051,25 +1231,35 @@
                   <input type="file" id="jurnal-gallery-input" accept="image/*" style="display: none;" onchange="window.PORTAL_APP.handleJournalPhotoUpload(event)">
 
                   <!-- Photo Preview Box -->
-                  <div id="jurnal-photo-preview-box" style="display: none; margin-top: 10px; background: #F8F9FD; border: 1px solid #ECECF2; border-radius: 12px; padding: 10px 14px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                      <img id="jurnal-preview-img" src="" alt="Dokumentasi" style="width: 52px; height: 52px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);">
+                  <div id="jurnal-photo-preview-box" style="display: none; margin-top: 12px; background: #F8FAFC; border: 1.5px dashed #CBD5E1; border-radius: 12px; padding: 12px 16px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                      <img id="jurnal-preview-img" src="" alt="Dokumentasi" style="width: 56px; height: 56px; object-fit: cover; border-radius: 10px; border: 1px solid #E2E8F0; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
                       <div style="flex: 1; min-width: 0;">
                         <span class="badge" style="background: #DEF7EC; color: #03543F; font-size: 0.6875rem; font-weight: 700;">✓ Foto KBM Terlampir</span>
-                        <div id="jurnal-photo-filename" style="font-weight: 600; font-size: 0.8125rem; color: #262626; margin-top: 2px;">foto_kbm.jpg</div>
-                        <div id="jurnal-photo-details" style="font-size: 0.75rem; color: #777777;">Ukuran: 1.2 MB</div>
+                        <div id="jurnal-photo-filename" style="font-weight: 700; font-size: 0.8125rem; color: #1F2937; margin-top: 3px;">foto_kbm.jpg</div>
+                        <div id="jurnal-photo-details" style="font-size: 0.75rem; color: #6B7280;">Ukuran: 1.2 MB</div>
                       </div>
-                      <button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.removeJournalPhoto()" style="color: #dc2626;">Hapus</button>
+                      <button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.removeJournalPhoto()" style="color: #DC2626; font-weight: 600;">Hapus Foto</button>
                     </div>
                   </div>
                 </div>
 
-                <div class="guru-form-submit-row" style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #ECECF2; padding-top: 1.25rem;">
-                  <button type="reset" class="btn btn-ghost" onclick="window.PORTAL_APP.removeJournalPhoto()">Reset</button>
-                  <button type="submit" class="btn btn-primary btn-submit-journal" style="background: var(--jobie-primary, #4B22B8); border-color: var(--jobie-primary, #4B22B8); display: flex; align-items: center; gap: 6px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                    ✓ Simpan & Terbitkan Jurnal Mengajar
-                  </button>
+                <!-- SUBMIT & RESET ROW -->
+                <div class="guru-form-submit-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 0.5rem;">
+                  <div style="display: flex; align-items: center; gap: 7px; color: #6B7280; font-size: 0.78125rem;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Data KBM otomatis terekap ke monitoring kurikulum sekolah</span>
+                  </div>
+
+                  <div style="display: flex; gap: 10px; align-items: center;">
+                    <button type="reset" class="btn btn-ghost" onclick="window.PORTAL_APP.removeJournalPhoto()" style="font-weight: 600; color: #6B7280; padding: 0.65rem 1.1rem;">
+                      Bersihkan Formulir
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-submit-journal" style="background: linear-gradient(135deg, #4B22B8 0%, #6D28D9 100%); border: none; padding: 0.65rem 1.4rem; border-radius: 10px; font-weight: 800; font-size: 0.9375rem; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(75, 34, 184, 0.35); cursor: pointer; color: #FFFFFF;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                      Simpan & Terbitkan Jurnal
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>

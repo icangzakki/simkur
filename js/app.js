@@ -2358,17 +2358,48 @@
 
     const hadirInput = document.getElementById('input-guru-jurnal-hadir-count');
     const totalSpan = document.getElementById('jurnal-hadir-total-label');
-    const badge = document.getElementById('jurnal-attendance-badge');
 
     if (hadirInput) {
       hadirInput.max = total;
       hadirInput.value = defaultHadir;
     }
     if (totalSpan) totalSpan.textContent = '/ ' + total + ' Siswa Hadir';
-    if (badge) {
-      const pct = ((defaultHadir / total) * 100).toFixed(1);
-      badge.textContent = defaultHadir + ' Hadir, 2 Sakit dari ' + total + ' Siswa (' + pct + '%)';
+
+    syncJurnalAttendanceBadge();
+  }
+
+  function stepHadirCount(delta) {
+    const hadirInput = document.getElementById('input-guru-jurnal-hadir-count');
+    if (!hadirInput) return;
+    const max = parseInt(hadirInput.max, 10) || 36;
+    let current = parseInt(hadirInput.value, 10) || 0;
+    current = Math.min(max, Math.max(0, current + delta));
+    hadirInput.value = current;
+    syncJurnalAttendanceBadge();
+  }
+
+  function syncJurnalAttendanceBadge() {
+    const hadirInput = document.getElementById('input-guru-jurnal-hadir-count');
+    const badge = document.getElementById('jurnal-attendance-badge');
+    if (!hadirInput || !badge) return;
+
+    const max = parseInt(hadirInput.max, 10) || 36;
+    const hadir = Math.min(max, Math.max(0, parseInt(hadirInput.value, 10) || 0));
+    const tidakHadir = max - hadir;
+    const pct = max > 0 ? ((hadir / max) * 100).toFixed(1) : '100';
+
+    badge.innerHTML = hadir + ' Hadir' + (tidakHadir > 0 ? ', ' + tidakHadir + ' Sakit/Izin' : '') + ' dari ' + max + ' Siswa (' + pct + '%)';
+  }
+
+  function insertQuickText(targetId, text) {
+    const el = document.getElementById(targetId);
+    if (!el) return;
+    if (el.value.trim() === '') {
+      el.value = text + ' ';
+    } else {
+      el.value = el.value.trim() + ' • ' + text + ' ';
     }
+    el.focus();
   }
 
   function toggleShowAllClasses(checked) {
@@ -3108,7 +3139,10 @@
     deleteGuruDoc: deleteGuruDoc,
     toggleShowAllClasses: toggleShowAllClasses,
     handleJurnalClassChange: handleJurnalClassChange,
-    getClassesForTeacher: getClassesForTeacher
+    getClassesForTeacher: getClassesForTeacher,
+    stepHadirCount: stepHadirCount,
+    syncJurnalAttendanceBadge: syncJurnalAttendanceBadge,
+    insertQuickText: insertQuickText
   };
 
   // Backwards compatibility alias
