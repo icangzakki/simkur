@@ -22255,5 +22255,1915 @@ window.SIMKUR_DATA = {
         "address": "Jl.Bandarmasih KOMP.DPR.GG.PGRI 1 NO.45"
       }
     ]
-  }
+  },
+  "teacherRombelMap": {
+  "T-001": [
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-002": [
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-003": [
+    {
+      "className": "X A-AKL",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Rombel Binaan"
+    }
+  ],
+  "T-004": [
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-005": [
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-006": [
+    {
+      "className": "XI A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-007": [
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-008": [
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Rombel MPLB"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Rombel MPLB"
+    },
+    {
+      "className": "XI B-MPLB",
+      "role": "Rombel MPLB"
+    }
+  ],
+  "T-009": [
+    {
+      "className": "XI A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-010": [
+    {
+      "className": "XI A-AKL",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-011": [
+    {
+      "className": "XII B-TJKT",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-012": [
+    {
+      "className": "XI C-AKL",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-013": [
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-014": [
+    {
+      "className": "X C-TJKT",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Rombel TJKT"
+    }
+  ],
+  "T-015": [
+    {
+      "className": "XII B-PM",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-016": [
+    {
+      "className": "X A-PM",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-017": [
+    {
+      "className": "XII A-MPLB",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-018": [
+    {
+      "className": "XI C-DKV",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-019": [
+    {
+      "className": "X B-TJKT",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-020": [
+    {
+      "className": "X A-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Rombel AKL"
+    }
+  ],
+  "T-021": [
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-022": [
+    {
+      "className": "XI C-PM",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-023": [
+    {
+      "className": "X C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-024": [
+    {
+      "className": "XI A-PM",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-025": [
+    {
+      "className": "XI A-DKV",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-026": [
+    {
+      "className": "XII B-DKV",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI B-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-027": [
+    {
+      "className": "XI B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-028": [
+    {
+      "className": "XI B-MPLB",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-029": [
+    {
+      "className": "X A-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Rombel TJKT"
+    }
+  ],
+  "T-030": [
+    {
+      "className": "X A-TJKT",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-031": [
+    {
+      "className": "X A-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Rombel AKL"
+    }
+  ],
+  "T-032": [
+    {
+      "className": "X A-DKV",
+      "role": "Rombel DKV"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Rombel DKV"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Rombel DKV"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Rombel DKV"
+    }
+  ],
+  "T-033": [
+    {
+      "className": "X C-AKL",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-034": [
+    {
+      "className": "XII B-AKL",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Rombel AKL"
+    }
+  ],
+  "T-035": [
+    {
+      "className": "XI A-TJKT",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Rombel TJKT"
+    }
+  ],
+  "T-036": [
+    {
+      "className": "X A-AKL",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Rombel Binaan"
+    }
+  ],
+  "T-037": [
+    {
+      "className": "X D-AKL",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-038": [
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-039": [
+    {
+      "className": "XII A-DKV",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-040": [
+    {
+      "className": "XI B-TJKT",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-041": [
+    {
+      "className": "XII A-TJKT",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-042": [
+    {
+      "className": "X A-MPLB",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-043": [
+    {
+      "className": "X B-PM",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-044": [
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-045": [
+    {
+      "className": "X A-AKL",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Rombel Binaan"
+    }
+  ],
+  "T-046": [
+    {
+      "className": "X A-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Rombel TJKT"
+    }
+  ],
+  "T-047": [
+    {
+      "className": "X A-AKL",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-048": [
+    {
+      "className": "X A-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Rombel AKL"
+    }
+  ],
+  "T-049": [
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-050": [
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-051": [
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-052": [
+    {
+      "className": "XII A-AKL",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-053": [
+    {
+      "className": "XII A-PM",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-054": [
+    {
+      "className": "X B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-055": [
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-056": [
+    {
+      "className": "XI B-AKL",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-057": [
+    {
+      "className": "XI B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-058": [
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-059": [
+    {
+      "className": "X A-AKL",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Rombel Binaan"
+    }
+  ],
+  "T-060": [
+    {
+      "className": "XI B-DKV",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-061": [
+    {
+      "className": "XII C-DKV",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI C-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-062": [
+    {
+      "className": "XII C-MPLB",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-063": [
+    {
+      "className": "X B-DKV",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-064": [
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-065": [
+    {
+      "className": "XI B-PM",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI A-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-066": [
+    {
+      "className": "X A-DKV",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-067": [
+    {
+      "className": "X C-DKV",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-068": [
+    {
+      "className": "X B-AKL",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-069": [
+    {
+      "className": "XII C-AKL",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-070": [
+    {
+      "className": "XI B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-071": [
+    {
+      "className": "X B-MPLB",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-072": [
+    {
+      "className": "X A-AKL",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Rombel Binaan"
+    }
+  ],
+  "T-073": [
+    {
+      "className": "X C-PM",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI A-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-074": [
+    {
+      "className": "X A-AKL",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Rombel Binaan"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Rombel Binaan"
+    }
+  ],
+  "T-075": [
+    {
+      "className": "XI C-TJKT",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Rombel TJKT"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Rombel TJKT"
+    }
+  ],
+  "T-076": [
+    {
+      "className": "X A-DKV",
+      "role": "Rombel DKV"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Rombel DKV"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Rombel DKV"
+    },
+    {
+      "className": "XI A-DKV",
+      "role": "Rombel DKV"
+    }
+  ],
+  "T-077": [
+    {
+      "className": "XII B-MPLB",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-078": [
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-079": [
+    {
+      "className": "XII C-TJKT",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-080": [
+    {
+      "className": "XI A-MPLB",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-DKV",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-081": [
+    {
+      "className": "X A-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Rombel AKL"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Rombel AKL"
+    }
+  ],
+  "T-082": [
+    {
+      "className": "XII D-PM",
+      "role": "Wali Kelas"
+    }
+  ],
+  "T-083": [
+    {
+      "className": "X A-MPLB",
+      "role": "Rombel MPLB"
+    },
+    {
+      "className": "X B-MPLB",
+      "role": "Rombel MPLB"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Rombel MPLB"
+    },
+    {
+      "className": "XI B-MPLB",
+      "role": "Rombel MPLB"
+    }
+  ],
+  "T-084": [
+    {
+      "className": "XII C-PM",
+      "role": "Wali Kelas"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-085": [
+    {
+      "className": "XI A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI C-AKL",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X D-AKL",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-086": [
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-087": [
+    {
+      "className": "X B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-MPLB",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-088": [
+    {
+      "className": "XI B-MPLB",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-MPLB",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-089": [
+    {
+      "className": "XI C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI B-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "XI A-TJKT",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X B-TJKT",
+      "role": "Jadwal Mengajar"
+    }
+  ],
+  "T-090": [
+    {
+      "className": "X B-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X C-PM",
+      "role": "Jadwal Mengajar"
+    },
+    {
+      "className": "X A-PM",
+      "role": "Jadwal Mengajar"
+    }
+  ]
+}
 };

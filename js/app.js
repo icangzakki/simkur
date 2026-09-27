@@ -266,7 +266,8 @@
     // Portal Guru State
     activeGuruTab: 'jurnal', // 'jurnal' | 'presensi' | 'dokumen'
     currentGuruId: 'T-010', // Default Ahmad Gajali
-    presensiClass: 'XI A-TJKT',
+    presensiClass: 'XI A-AKL',
+    showAllClassesForGuru: false,
     presensiStudents: [],
     tempJournalPhoto: null
   };
@@ -1911,23 +1912,8 @@
     const elDocCount = document.getElementById('kpi-guru-doc-count');
     if (elDocCount) elDocCount.textContent = (docs.length || 4) + ' / 4 Berkas';
 
-    // 4. Populate Class Options in Jurnal & Presensi Forms
-    const classes = StorageManager.get('classes');
-    const classSelectJurnal = document.getElementById('input-guru-jurnal-class');
-    if (classSelectJurnal && classSelectJurnal.options.length <= 1) {
-      classSelectJurnal.innerHTML = classes.map(function (c) {
-        const majorLabel = c.major || c.department || '';
-        return '<option value="' + c.name + '"' + (c.name === 'XI A-TJKT' ? ' selected' : '') + '>' + c.name + (majorLabel ? ' (' + majorLabel + ')' : '') + '</option>';
-      }).join('');
-    }
-
-    const classSelectPresensi = document.getElementById('select-presensi-class');
-    if (classSelectPresensi && classSelectPresensi.options.length <= 1) {
-      classSelectPresensi.innerHTML = classes.map(function (c) {
-        const majorLabel = c.major || c.department || '';
-        return '<option value="' + c.name + '"' + (c.name === 'XI A-TJKT' ? ' selected' : '') + '>' + c.name + (majorLabel ? ' (' + majorLabel + ')' : '') + '</option>';
-      }).join('');
-    }
+    // 4. Populate Class Options in Jurnal & Presensi Forms (Filtered by Teacher)
+    populateTeacherClassSelects(currentTeacherId);
 
     // Set default date in forms if empty
     const todayStr = new Date().toISOString().split('T')[0];
@@ -1968,6 +1954,154 @@
     }
   }
 
+  function getClassesForTeacher(teacherId, showAll) {
+    const allMasterClasses = StorageManager.get('classes') || [];
+    const teacherMap = (window.SIMKUR_DATA && window.SIMKUR_DATA.teacherRombelMap) || {};
+    const assigned = teacherMap[teacherId] || [];
+
+    // Also collect any dynamic schedules from StorageManager
+    const dynamicSchedules = StorageManager.get('schedules') || [];
+    const extraClasses = [];
+    dynamicSchedules.forEach(function (s) {
+      if (String(s.teacher_id) === String(teacherId) && s.class_name) {
+        if (!assigned.some(function (a) { return a.className === s.class_name; }) && !extraClasses.includes(s.class_name)) {
+          extraClasses.push(s.class_name);
+        }
+      }
+    });
+
+    const teacherClasses = [].concat(assigned);
+    extraClasses.forEach(function (c) {
+      teacherClasses.push({ className: c, role: 'Jadwal Mengajar' });
+    });
+
+    // If teacher has no assigned classes, fallback to matching department
+    if (teacherClasses.length === 0) {
+      const teacher = (StorageManager.get('teachers') || []).find(function (t) {
+        return String(t.id) === String(teacherId);
+      });
+      if (teacher && teacher.department && teacher.department !== 'Umum' && teacher.department !== 'Normatif Adaptif') {
+        allMasterClasses.forEach(function (c) {
+          if (c.major === teacher.department || c.name.endsWith('-' + teacher.department)) {
+            if (teacherClasses.length < 4) {
+              teacherClasses.push({ className: c.name, role: 'Rombel ' + teacher.department });
+            }
+          }
+        });
+      }
+    }
+
+    if (teacherClasses.length === 0) {
+      allMasterClasses.slice(0, 3).forEach(function (c) {
+        teacherClasses.push({ className: c.name, role: 'Rombel Binaan' });
+      });
+    }
+
+    return {
+      teacherClasses: teacherClasses,
+      allMasterClasses: allMasterClasses
+    };
+  }
+
+  function populateTeacherClassSelects(currentTeacherId) {
+    const classSelectJurnal = document.getElementById('input-guru-jurnal-class');
+    const classSelectPresensi = document.getElementById('select-presensi-class');
+    const showAll = State.showAllClassesForGuru || false;
+
+    const data = getClassesForTeacher(currentTeacherId, showAll);
+    const assigned = data.teacherClasses;
+    const all = data.allMasterClasses;
+
+    // Check if current State.presensiClass is valid for this teacher
+    const assignedNames = assigned.map(function (a) { return a.className; });
+    if (!assignedNames.includes(State.presensiClass)) {
+      State.presensiClass = assignedNames[0] || 'XI A-AKL';
+    }
+
+    // Build options HTML
+    let optionsHtml = '';
+    optionsHtml += '<optgroup label="⭐ Rombel Guru Pengampu (' + assigned.length + ' Kelas)">';
+    assigned.forEach(function (item) {
+      const isSelected = item.className === State.presensiClass;
+      optionsHtml += '<option value="' + item.className + '"' + (isSelected ? ' selected' : '') + '>' +
+        item.className + ' (' + item.role + ')' +
+      '</option>';
+    });
+    optionsHtml += '</optgroup>';
+
+    if (showAll) {
+      const otherClasses = all.filter(function (c) {
+        return !assignedNames.includes(c.name);
+      });
+      if (otherClasses.length > 0) {
+        optionsHtml += '<optgroup label="── Rombel Lainnya di Sekolah (' + otherClasses.length + ' Kelas) ──">';
+        otherClasses.forEach(function (c) {
+          const major = c.major || c.department || '';
+          const isSelected = c.name === State.presensiClass;
+          optionsHtml += '<option value="' + c.name + '"' + (isSelected ? ' selected' : '') + '>' +
+            c.name + (major ? ' (' + major + ')' : '') +
+          '</option>';
+        });
+        optionsHtml += '</optgroup>';
+      }
+    }
+
+    if (classSelectJurnal) {
+      classSelectJurnal.innerHTML = optionsHtml;
+      classSelectJurnal.value = State.presensiClass;
+    }
+
+    if (classSelectPresensi) {
+      classSelectPresensi.innerHTML = optionsHtml;
+      classSelectPresensi.value = State.presensiClass;
+    }
+
+    // Sync checkbox states
+    const c1 = document.getElementById('check-show-all-jurnal-classes');
+    const c2 = document.getElementById('check-show-all-presensi-classes');
+    if (c1) c1.checked = showAll;
+    if (c2) c2.checked = showAll;
+
+    updateJurnalAttendanceSummary(State.presensiClass);
+  }
+
+  function updateJurnalAttendanceSummary(className) {
+    const roster = window.SIMKUR_DATA && window.SIMKUR_DATA.studentRoster;
+    const students = (roster && roster[className]) || [];
+    const total = students.length || 36;
+    const defaultHadir = Math.max(0, total - 2);
+
+    const hadirInput = document.getElementById('input-guru-jurnal-hadir-count');
+    const totalSpan = document.getElementById('jurnal-hadir-total-label');
+    const badge = document.getElementById('jurnal-attendance-badge');
+
+    if (hadirInput) {
+      hadirInput.max = total;
+      hadirInput.value = defaultHadir;
+    }
+    if (totalSpan) totalSpan.textContent = '/ ' + total + ' Siswa Hadir';
+    if (badge) {
+      const pct = ((defaultHadir / total) * 100).toFixed(1);
+      badge.textContent = defaultHadir + ' Hadir, 2 Sakit dari ' + total + ' Siswa (' + pct + '%)';
+    }
+  }
+
+  function toggleShowAllClasses(checked) {
+    State.showAllClassesForGuru = !!checked;
+    populateTeacherClassSelects(State.currentGuruId);
+    showToast(checked ? 'Menampilkan seluruh 45 kelas sekolah.' : 'Hanya menampilkan rombel binaan & mengajar guru.', 'info');
+  }
+
+  function handleJurnalClassChange(className) {
+    State.presensiClass = className;
+    const selectPresensi = document.getElementById('select-presensi-class');
+    if (selectPresensi) selectPresensi.value = className;
+    updateJurnalAttendanceSummary(className);
+    if (State.activeGuruTab === 'presensi') {
+      loadPresensiStudents();
+    }
+  }
+
   function switchGuruTab(tabName) {
     State.activeGuruTab = tabName;
     renderPortalGuru();
@@ -1978,7 +2112,20 @@
     const teacher = StorageManager.get('teachers').find(function (t) {
       return String(t.id) === String(teacherId);
     });
-    showToast('Beralih ke akun: ' + (teacher ? teacher.name : teacherId), 'info');
+
+    // Reset presensiClass to first class of newly selected teacher
+    const data = getClassesForTeacher(teacherId, State.showAllClassesForGuru);
+    if (data.teacherClasses.length > 0) {
+      State.presensiClass = data.teacherClasses[0].className;
+    }
+
+    // Auto-update subject field in Jurnal form to teacher's subject
+    const subjInput = document.getElementById('input-guru-jurnal-subject');
+    if (subjInput && teacher && teacher.subject) {
+      subjInput.value = teacher.subject;
+    }
+
+    showToast('Beralih ke akun: ' + (teacher ? teacher.name : teacherId) + ' (' + (data.teacherClasses.length) + ' rombel binaan)', 'info');
     renderPortalGuru();
   }
 
@@ -2134,8 +2281,14 @@
 
   function loadPresensiStudents() {
     const classSelect = document.getElementById('select-presensi-class');
-    const className = classSelect ? classSelect.value : 'XI A-TJKT';
+    const className = classSelect ? classSelect.value : (State.presensiClass || 'XI A-AKL');
     State.presensiClass = className;
+
+    // Sync Jurnal class select value
+    const jurnalSelect = document.getElementById('input-guru-jurnal-class');
+    if (jurnalSelect && jurnalSelect.value !== className) {
+      jurnalSelect.value = className;
+    }
 
     const roster = window.SIMKUR_DATA && window.SIMKUR_DATA.studentRoster;
     let students = (roster && roster[className]) || [];
@@ -2154,6 +2307,15 @@
         });
       }
     }
+
+    // Update Set Semua Hadir button text
+    const btnSetAll = document.getElementById('btn-set-all-presensi');
+    if (btnSetAll) {
+      btnSetAll.textContent = '✓ Set Semua Hadir (' + students.length + ')';
+    }
+
+    // Update Jurnal attendance summary badge
+    updateJurnalAttendanceSummary(className);
 
     State.presensiStudents = students.map(function (s, idx) {
       return {
@@ -2462,7 +2624,10 @@
     renderGuruDocuments: renderGuruDocuments,
     openUploadGuruDocModal: openUploadGuruDocModal,
     handleSaveGuruDoc: handleSaveGuruDoc,
-    deleteGuruDoc: deleteGuruDoc
+    deleteGuruDoc: deleteGuruDoc,
+    toggleShowAllClasses: toggleShowAllClasses,
+    handleJurnalClassChange: handleJurnalClassChange,
+    getClassesForTeacher: getClassesForTeacher
   };
 
   // Backwards compatibility alias

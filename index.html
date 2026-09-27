@@ -6,8 +6,8 @@
   <title>Portal Waka Kur — SMKN 1 BANJARMASIN</title>
   <meta name="description" content="Portal Waka Kurikulum SMKN 1 Banjarmasin — Pengelolaan Dokumen Kurikulum, Jadwal Pelajaran, dan Data Master Sekolah.">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
-  <link rel="stylesheet" href="css/tokens.css?v=8.0.0">
-  <link rel="stylesheet" href="css/styles.css?v=8.0.0">
+  <link rel="stylesheet" href="css/tokens.css?v=8.1.0">
+  <link rel="stylesheet" href="css/styles.css?v=8.1.0">
   <style>
     /* Styling Tambahan Spesifik Portal Sederhana */
     .day-pill-btn {
@@ -949,8 +949,13 @@
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                   <div>
-                    <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 4px;">Kelas & Rombel (Sesuai SK PTM) <span style="color: #dc2626;">*</span></label>
-                    <select id="input-guru-jurnal-class" class="form-input" required>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                      <label class="form-label" style="font-size: 0.8125rem; font-weight: 600; margin: 0;">Kelas & Rombel (Sesuai SK PTM) <span style="color: #dc2626;">*</span></label>
+                      <label style="font-size: 0.71875rem; color: #6B7280; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; user-select: none;" title="Centang jika ingin memilih kelas lain di luar rombel binaan/mengajar">
+                        <input type="checkbox" id="check-show-all-jurnal-classes" onchange="window.PORTAL_APP.toggleShowAllClasses(this.checked)"> Semua Kelas
+                      </label>
+                    </div>
+                    <select id="input-guru-jurnal-class" class="form-input" required onchange="window.PORTAL_APP.handleJurnalClassChange(this.value)">
                       <!-- Populated via app.js -->
                     </select>
                   </div>
@@ -986,7 +991,7 @@
                   <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                       <input type="number" id="input-guru-jurnal-hadir-count" class="form-input" value="34" min="0" max="40" style="width: 70px; text-align: center; font-weight: 700;">
-                      <span style="font-size: 0.8125rem; color: #555555; font-weight: 600;">/ 36 Siswa Hadir</span>
+                      <span style="font-size: 0.8125rem; color: #555555; font-weight: 600;" id="jurnal-hadir-total-label">/ 36 Siswa Hadir</span>
                     </div>
                     <span class="badge" id="jurnal-attendance-badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; font-size: 0.8125rem;">
                       34 Hadir, 2 Sakit dari 36 Siswa (94.4%)
@@ -1087,8 +1092,13 @@
           <div class="filter-card">
             <div class="filter-group">
               <div>
-                <label class="form-label" style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 2px;">Kelas / Rombel:</label>
-                <select id="select-presensi-class" class="form-input" style="width: auto; min-width: 170px;" onchange="window.PORTAL_APP.loadPresensiStudents()">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                  <label class="form-label" style="font-size: 0.75rem; font-weight: 600; margin: 0;">Kelas / Rombel:</label>
+                  <label style="font-size: 0.71875rem; color: #6B7280; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; user-select: none;" title="Centang jika ingin memilih kelas lain di luar rombel binaan/mengajar">
+                    <input type="checkbox" id="check-show-all-presensi-classes" onchange="window.PORTAL_APP.toggleShowAllClasses(this.checked)"> Semua Kelas
+                  </label>
+                </div>
+                <select id="select-presensi-class" class="form-input" style="width: auto; min-width: 190px;" onchange="window.PORTAL_APP.loadPresensiStudents()">
                   <!-- Populated via app.js -->
                 </select>
               </div>
@@ -1109,7 +1119,7 @@
             </div>
 
             <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.setAllPresensi('H')">
+              <button type="button" class="btn btn-outline btn-sm" id="btn-set-all-presensi" onclick="window.PORTAL_APP.setAllPresensi('H')">
                 ✓ Set Semua Hadir (36)
               </button>
               <button type="button" class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.handleSavePresensi()">
@@ -1747,9 +1757,9 @@
 <div class="toast-container" id="toast-container" style="position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 99999; display: flex; flex-direction: column; gap: 8px;"></div>
 
 <!-- SCRIPTS -->
-<script src="js/data.js?v=8.0.0"></script>
-<script src="js/auth_users.js?v=8.0.0"></script>
-<script src="js/app.js?v=8.0.0"></script>
+<script src="js/data.js?v=8.1.0"></script>
+<script src="js/auth_users.js?v=8.1.0"></script>
+<script src="js/app.js?v=8.1.0"></script>
 
 </body>
 </html>
