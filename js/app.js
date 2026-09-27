@@ -1931,6 +1931,27 @@
 
     const formGuruDoc = document.getElementById('form-modal-guru-doc');
     if (formGuruDoc) formGuruDoc.addEventListener('submit', handleSaveGuruDoc);
+
+    const formChangePwd = document.getElementById('form-modal-change-password');
+    if (formChangePwd) formChangePwd.addEventListener('submit', saveChangePassword);
+
+    // 9. Outside click to close modals
+    document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === this) {
+          closeModal(this.id);
+        }
+      });
+    });
+
+    // 10. Escape key to close active modal
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(function (m) {
+          closeModal(m.id);
+        });
+      }
+    });
   }
 
   // =========================================================================
