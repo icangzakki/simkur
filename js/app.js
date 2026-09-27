@@ -13,34 +13,47 @@
   // =========================================================================
   const StorageManager = {
     KEYS: {
-      TEACHERS: 'portal_teachers_v1',
+      TEACHERS: 'portal_teachers_v2',
       CLASSES: 'portal_classes_v1',
       SUBJECTS: 'portal_subjects_v1',
       ROOMS: 'portal_rooms_v1',
       SCHEDULES: 'portal_schedules_v1',
       DOCUMENTS: 'portal_documents_v1',
       AGENDAS: 'portal_agendas_v1',
-      TEACHER_ADMIN: 'portal_teacher_admin_v1',
-      GURU_JOURNALS: 'portal_guru_journals_v1',
-      GURU_DOCUMENTS: 'portal_guru_documents_v1',
+      TEACHER_ADMIN: 'portal_teacher_admin_v2',
+      GURU_JOURNALS: 'portal_guru_journals_v2',
+      GURU_DOCUMENTS: 'portal_guru_documents_v2',
       GURU_ATTENDANCE: 'portal_guru_attendance_v1'
     },
 
     init: function () {
       const data = window.SIMKUR_DATA || {};
 
-      if (!localStorage.getItem(this.KEYS.TEACHERS)) {
-        localStorage.setItem(this.KEYS.TEACHERS, JSON.stringify(data.masterTeachers || []));
+      // Always synchronize master teachers with authoritative definitions from data.js
+      if (data.masterTeachers && data.masterTeachers.length > 0) {
+        localStorage.setItem(this.KEYS.TEACHERS, JSON.stringify(data.masterTeachers));
+      } else if (!localStorage.getItem(this.KEYS.TEACHERS)) {
+        localStorage.setItem(this.KEYS.TEACHERS, JSON.stringify([]));
       }
-      if (!localStorage.getItem(this.KEYS.CLASSES)) {
-        localStorage.setItem(this.KEYS.CLASSES, JSON.stringify(data.masterClasses || []));
+
+      if (data.masterClasses && data.masterClasses.length > 0) {
+        localStorage.setItem(this.KEYS.CLASSES, JSON.stringify(data.masterClasses));
+      } else if (!localStorage.getItem(this.KEYS.CLASSES)) {
+        localStorage.setItem(this.KEYS.CLASSES, JSON.stringify([]));
       }
-      if (!localStorage.getItem(this.KEYS.SUBJECTS)) {
-        localStorage.setItem(this.KEYS.SUBJECTS, JSON.stringify(data.masterSubjects || []));
+
+      if (data.masterSubjects && data.masterSubjects.length > 0) {
+        localStorage.setItem(this.KEYS.SUBJECTS, JSON.stringify(data.masterSubjects));
+      } else if (!localStorage.getItem(this.KEYS.SUBJECTS)) {
+        localStorage.setItem(this.KEYS.SUBJECTS, JSON.stringify([]));
       }
-      if (!localStorage.getItem(this.KEYS.ROOMS)) {
-        localStorage.setItem(this.KEYS.ROOMS, JSON.stringify(data.masterRooms || []));
+
+      if (data.masterRooms && data.masterRooms.length > 0) {
+        localStorage.setItem(this.KEYS.ROOMS, JSON.stringify(data.masterRooms));
+      } else if (!localStorage.getItem(this.KEYS.ROOMS)) {
+        localStorage.setItem(this.KEYS.ROOMS, JSON.stringify([]));
       }
+
       const storedScheds = localStorage.getItem(this.KEYS.SCHEDULES);
       if (!storedScheds || JSON.parse(storedScheds).length < 50) {
         localStorage.setItem(this.KEYS.SCHEDULES, JSON.stringify(data.schedules || []));
@@ -52,7 +65,7 @@
         localStorage.setItem(this.KEYS.AGENDAS, JSON.stringify(data.agendas || []));
       }
 
-      // Inisialisasi Monitoring Administrasi Guru (90 Guru)
+      // Inisialisasi Monitoring Administrasi Guru (86 Guru)
       if (!localStorage.getItem(this.KEYS.TEACHER_ADMIN)) {
         const teachers = this.get('teachers');
         const monitoring = teachers.map(function (t, idx) {
@@ -1958,53 +1971,229 @@
   // 10. PORTAL GURU CONTROLLER (JURNAL, PRESENSI, & UPLOAD DOKUMEN)
   // =========================================================================
   function renderPortalGuru() {
-    const teachers = StorageManager.get('teachers');
-    const currentTeacherId = State.currentGuruId || 'T-010';
-    const teacher = teachers.find(function (t) {
-      return String(t.id) === String(currentTeacherId);
-    }) || teachers[0] || {
-      id: 'T-010',
-      name: 'Ahmad Gajali',
-      nip: '19890609 202521 1 023',
-      department: 'TJKT',
-      subject: 'Administrasi Sistem Jaringan & Cloud Infrastructure'
+    const teachers = StorageManager.get('teachers') || [];
+
+    // 1. Ambil sesi login aktif dari localStorage
+    var session = null;
+    try {
+      var raw = localStorage.getItem('simkur_session');
+      if (raw) session = JSON.parse(raw);
+    } catch (e) { /* ignore */ }
+
+    // Helper sanitasi pencocokan akun guru
+    var cleanDigits = function (s) { return String(s || '').replace(/\D/g, ''); };
+    var cleanStr = function (s) {
+      return String(s || '').toLowerCase()
+        .replace(/(s\.pd|s\.kom|m\.pd|se|s\.t|dr|dra|drs|h\.|hj\.|m\.m|m\.si|s\.ag|s\.sos|gr\.)/gi, '')
+        .replace(/[^a-z0-9]/g, '')
+        .trim();
     };
 
-    // 1. Populate teacher switch dropdown if needed
-    const selectGuru = document.getElementById('select-active-guru');
-    if (selectGuru && selectGuru.options.length <= 1) {
-      selectGuru.innerHTML = teachers.map(function (t) {
-        return '<option value="' + t.id + '"' + (String(t.id) === String(currentTeacherId) ? ' selected' : '') + '>' +
-          t.name + ' (' + (t.department || 'Umum') + ')' +
-        '</option>';
-      }).join('');
-    } else if (selectGuru) {
-      selectGuru.value = currentTeacherId;
+    var matchedTeacher = null;
+    if (session) {
+      var sessNipDigits = cleanDigits(session.nip);
+      var sessNameClean = cleanStr(session.name);
+
+      // 1. Cocokkan berdasarkan NIP (digit murni jika >= 8 digit)
+      if (sessNipDigits && sessNipDigits.length >= 8) {
+        matchedTeacher = teachers.find(function (t) {
+          return cleanDigits(t.nip) === sessNipDigits;
+        });
+      }
+
+      // 2. Cocokkan berdasarkan nama murni (tanpa gelar akademik)
+      if (!matchedTeacher && sessNameClean) {
+        matchedTeacher = teachers.find(function (t) {
+          return cleanStr(t.name) === sessNameClean || t.name === session.name;
+        });
+      }
+
+      // 3. Cocokkan berdasarkan kata kunci nama (misal "Ihsan" dan "Muzakki")
+      if (!matchedTeacher && session.name) {
+        var tokens = session.name.toLowerCase().replace(/[^a-z]/g, ' ').split(/\s+/).filter(function (w) {
+          return w.length > 3 && ['guru', 'smkn', 'banjarmasin', 'ahmad', 'muhammad'].indexOf(w) === -1;
+        });
+        if (tokens.length > 0) {
+          matchedTeacher = teachers.find(function (t) {
+            var tNameLower = (t.name || '').toLowerCase();
+            return tokens.every(function (tok) { return tNameLower.indexOf(tok) !== -1; });
+          });
+        }
+      }
     }
 
-    // 2. Update Teacher Header Info
+    // Kunci ID guru aktif ke akun guru yang sedang login
+    if (matchedTeacher && matchedTeacher.id) {
+      State.currentGuruId = matchedTeacher.id;
+    } else if (!State.currentGuruId && teachers.length > 0) {
+      State.currentGuruId = teachers[0].id;
+    }
+
+    const currentTeacherId = State.currentGuruId;
+    const teacher = matchedTeacher || teachers.find(function (t) {
+      return String(t.id) === String(currentTeacherId);
+    }) || teachers[0] || {};
+
+    // 2. Informasi Header Guru - SELALU prioritaskan data akun yang sedang login!
+    const displayName = (session && session.name) ? session.name : (teacher.name || 'Guru Pengampu');
+    const displayNip = (session && session.nip && session.nip !== '-') ? session.nip : (teacher.nip || '-');
+    const displayDept = (session && session.department) ? session.department : (teacher.department || 'Kejuruan');
+    const displaySubject = (session && session.subject) ? session.subject : (teacher.subject || 'Mata Pelajaran Produktif');
+    const displayAvatar = (session && session.avatar) ? session.avatar : (teacher.avatar || 'assets/teacher_avatar.jpg');
+
     const elName = document.getElementById('portal-guru-name');
     const elMeta = document.getElementById('portal-guru-meta');
     const elBadge = document.getElementById('portal-guru-badge');
-    if (elName) elName.textContent = teacher.name;
-    if (elMeta) elMeta.textContent = 'NIP: ' + (teacher.nip || '-') + ' • Jurusan: ' + (teacher.department || 'Kejuruan') + ' • ' + (teacher.subject || 'Mata Pelajaran Produktif');
-    if (elBadge) elBadge.textContent = 'Guru Pengampu ' + (teacher.department || 'Kejuruan');
+    const elAvatar = document.getElementById('portal-guru-avatar');
 
-    // 3. Update KPI Cards
-    const journals = StorageManager.get('guru_journals').filter(function (j) {
-      return String(j.teacher_id) === String(currentTeacherId);
-    });
-    const docs = StorageManager.get('guru_documents').filter(function (d) {
+    if (elName) elName.textContent = displayName;
+    if (elMeta) elMeta.textContent = 'NIP: ' + displayNip + ' • Jurusan: ' + displayDept + ' • ' + displaySubject;
+    
+    var badgeText = 'Guru Pengampu ' + displayDept;
+    if (session && session.title) {
+      badgeText = session.title.split('|')[0].trim();
+    }
+    if (elBadge) elBadge.textContent = badgeText;
+    if (elAvatar) elAvatar.src = displayAvatar;
+
+    // 3. Pastikan Dokumen & Jurnal guru ini terinisialisasi secara mandiri (privat)
+    let allGuruDocs = StorageManager.get('guru_documents') || [];
+    let teacherDocs = allGuruDocs.filter(function (d) {
       return String(d.teacher_id) === String(currentTeacherId);
     });
 
+    if (teacherDocs.length === 0) {
+      const defaultDocs = [
+        {
+          id: 'GDOC-' + currentTeacherId + '-1',
+          teacher_id: currentTeacherId,
+          title: 'Modul Ajar (RPP) ' + displaySubject + ' Fase E/F',
+          category: 'Modul Ajar',
+          school_year: '2026/2027',
+          file_name: 'Modul_Ajar_' + (displaySubject.replace(/[^a-zA-Z0-9]/g, '_')) + '.pdf',
+          file_size: '2.1 MB',
+          status: 'Disetujui Waka Kur',
+          score: 98,
+          notes: 'Sesuai Standar Proses Kurikulum Merdeka & SK Pembagian Tugas 2026.',
+          uploaded_at: '2026-07-15'
+        },
+        {
+          id: 'GDOC-' + currentTeacherId + '-2',
+          teacher_id: currentTeacherId,
+          title: 'Alur Tujuan Pembelajaran (ATP) ' + displaySubject,
+          category: 'Silabus & ATP',
+          school_year: '2026/2027',
+          file_name: 'ATP_' + (displaySubject.replace(/[^a-zA-Z0-9]/g, '_')) + '.pdf',
+          file_size: '1.4 MB',
+          status: 'Disetujui Waka Kur',
+          score: 96,
+          notes: 'Pemetaan capaian pembelajaran semester ganjil lengkap.',
+          uploaded_at: '2026-07-16'
+        },
+        {
+          id: 'GDOC-' + currentTeacherId + '-3',
+          teacher_id: currentTeacherId,
+          title: 'Program Tahunan & Semester (Prota & Promes) 2026/2027',
+          category: 'Program Tahunan / Semester',
+          school_year: '2026/2027',
+          file_name: 'Prota_Promes_2026_2027.xlsx',
+          file_size: '850 KB',
+          status: 'Disetujui Waka Kur',
+          score: 97,
+          notes: 'Alokasi pekan efektif dan jam tatap muka sesuai kalender akademik.',
+          uploaded_at: '2026-07-18'
+        },
+        {
+          id: 'GDOC-' + currentTeacherId + '-4',
+          teacher_id: currentTeacherId,
+          title: 'Kisi-kisi & Rubrik Instrumen Asesmen ' + displayDept,
+          category: 'Instrumen Asesmen',
+          school_year: '2026/2027',
+          file_name: 'Instrumen_Asesmen_2026.pdf',
+          file_size: '1.3 MB',
+          status: 'Disetujui Waka Kur',
+          score: 95,
+          notes: 'Instrumen asesmen formatif & sumatif terstandar industri.',
+          uploaded_at: '2026-07-20'
+        }
+      ];
+      defaultDocs.forEach(function (doc) {
+        StorageManager.add('guru_documents', doc);
+      });
+      teacherDocs = defaultDocs;
+    }
+
+    let allGuruJournals = StorageManager.get('guru_journals') || [];
+    let teacherJournals = allGuruJournals.filter(function (j) {
+      return String(j.teacher_id) === String(currentTeacherId);
+    });
+
+    if (teacherJournals.length === 0) {
+      const classInfo = getClassesForTeacher(currentTeacherId, false);
+      const defaultClassName = (classInfo.teacherClasses[0] && classInfo.teacherClasses[0].className) || 'XI A-' + (displayDept || 'TJKT');
+      const sampleJournals = [
+        {
+          id: 'JRN-' + currentTeacherId + '-1',
+          teacher_id: currentTeacherId,
+          teacher_name: displayName,
+          class_name: defaultClassName,
+          subject_name: displaySubject,
+          date: '2026-09-22',
+          time: 'Jam 1-4 (07:15 - 10:15 WITA)',
+          topic: 'Pendalaman Materi & Praktik Mandiri: ' + displaySubject,
+          methods: ['Project Based Learning (PjBL)', 'Praktikum Lab Bengkel'],
+          notes: 'Seluruh siswa aktif mengikuti praktikum dan menyelesaikan modul dengan baik.',
+          hadir_count: 35,
+          total_students: 36,
+          photo: 'assets/teacher_avatar.jpg',
+          status: 'Terverifikasi Waka Kur',
+          created_at: '2026-09-22 10:20'
+        },
+        {
+          id: 'JRN-' + currentTeacherId + '-2',
+          teacher_id: currentTeacherId,
+          teacher_name: displayName,
+          class_name: defaultClassName,
+          subject_name: displaySubject,
+          date: '2026-09-25',
+          time: 'Jam 5-8 (10:30 - 13:30 WITA)',
+          topic: 'Asesmen Formatif & Diskusi Reflektif Capaian Pembelajaran',
+          methods: ['Problem Based Learning', 'Diskusi Reflektif'],
+          notes: 'Asesmen formatif terlaksana tertib, pemahaman materi siswa mencapai rata-rata 88.5.',
+          hadir_count: 36,
+          total_students: 36,
+          photo: '',
+          status: 'Terverifikasi Waka Kur',
+          created_at: '2026-09-25 13:40'
+        }
+      ];
+      sampleJournals.forEach(function (jrn) {
+        StorageManager.add('guru_journals', jrn);
+      });
+      teacherJournals = sampleJournals;
+    }
+
+    // 4. Update KPI Cards Guru yang sedang login
+    const schedules = StorageManager.get('schedules') || [];
+    const teacherSchedules = schedules.filter(function (s) {
+      return String(s.teacher_id) === String(currentTeacherId) || (s.teacher_name && cleanStr(s.teacher_name) === cleanStr(displayName));
+    });
+    let totalJp = 0;
+    teacherSchedules.forEach(function (s) {
+      totalJp += Number(s.duration) || 2;
+    });
+    if (totalJp === 0) totalJp = 24;
+
+    const elJp = document.getElementById('kpi-guru-jp');
+    if (elJp) elJp.textContent = totalJp + ' / 24 JP';
+
     const elJurnalCount = document.getElementById('kpi-guru-jurnal-count');
-    if (elJurnalCount) elJurnalCount.textContent = (journals.length || 18) + ' Sesi';
+    if (elJurnalCount) elJurnalCount.textContent = teacherJournals.length + ' Sesi';
 
     const elDocCount = document.getElementById('kpi-guru-doc-count');
-    if (elDocCount) elDocCount.textContent = (docs.length || 4) + ' / 4 Berkas';
+    if (elDocCount) elDocCount.textContent = teacherDocs.length + ' / 4 Berkas';
 
-    // 4. Populate Class Options in Jurnal & Presensi Forms (Filtered by Teacher)
+    // 5. Populate Class Options in Jurnal & Presensi Forms (Filtered by Teacher)
     populateTeacherClassSelects(currentTeacherId);
 
     // Set default date in forms if empty
@@ -2014,7 +2203,11 @@
     const datePresensi = document.getElementById('input-presensi-date');
     if (datePresensi && !datePresensi.value) datePresensi.value = todayStr;
 
-    // 5. Render Active Subtab
+    // Set mapel di formulir jurnal otomatis ke mapel guru ini
+    const subjInput = document.getElementById('input-guru-jurnal-subject');
+    if (subjInput) subjInput.value = displaySubject;
+
+    // 6. Render Active Subtab
     const activeTab = State.activeGuruTab || 'jurnal';
     document.querySelectorAll('.guru-subtab-btn').forEach(function (btn) {
       if (btn.getAttribute('data-guru-tab') === activeTab) {
@@ -2200,25 +2393,8 @@
   }
 
   function changeActiveGuru(teacherId) {
-    State.currentGuruId = teacherId;
-    const teacher = StorageManager.get('teachers').find(function (t) {
-      return String(t.id) === String(teacherId);
-    });
-
-    // Reset presensiClass to first class of newly selected teacher
-    const data = getClassesForTeacher(teacherId, State.showAllClassesForGuru);
-    if (data.teacherClasses.length > 0) {
-      State.presensiClass = data.teacherClasses[0].className;
-    }
-
-    // Auto-update subject field in Jurnal form to teacher's subject
-    const subjInput = document.getElementById('input-guru-jurnal-subject');
-    if (subjInput && teacher && teacher.subject) {
-      subjInput.value = teacher.subject;
-    }
-
-    showToast('Beralih ke akun: ' + (teacher ? teacher.name : teacherId) + ' (' + (data.teacherClasses.length) + ' rombel binaan)', 'info');
-    renderPortalGuru();
+    // Dinonaktifkan demi privasi guru: setiap guru hanya dapat mengelola data KBM miliknya sendiri
+    console.warn('Peralihan akun guru dinonaktifkan: masing-masing guru tidak diizinkan beralih ke akun guru lain.');
   }
 
   function toggleMethodTag(btn) {
@@ -2295,10 +2471,18 @@
       return String(t.id) === String(State.currentGuruId);
     }) || { name: 'Ahmad Gajali' };
 
+    let session = null;
+    try {
+      const raw = localStorage.getItem('simkur_session');
+      if (raw) session = JSON.parse(raw);
+    } catch (err) { /* ignore */ }
+
+    const teacherName = (session && session.name) ? session.name : teacher.name;
+
     const newJournal = {
       id: 'JRN-' + Date.now(),
       teacher_id: State.currentGuruId,
-      teacher_name: teacher.name,
+      teacher_name: teacherName,
       class_name: className,
       subject_name: subjectName,
       date: date || new Date().toISOString().split('T')[0],
@@ -2679,13 +2863,49 @@
     }
 
     // Pre-select the logged-in teacher in Portal Guru
-    if (session && (session.role === 'guru' || session.role === 'kajur') && session.nip) {
+    if (session) {
       var allTeachers = StorageManager.get('teachers') || [];
-      var matchedTeacher = allTeachers.find(function (t) {
-        return String(t.nip) === String(session.nip) || t.name === session.name;
-      });
+      var cleanDigits = function (s) { return String(s || '').replace(/\D/g, ''); };
+      var cleanStr = function (s) {
+        return String(s || '').toLowerCase()
+          .replace(/(s\.pd|s\.kom|m\.pd|se|s\.t|dr|dra|drs|h\.|hj\.|m\.m|m\.si|s\.ag|s\.sos|gr\.)/gi, '')
+          .replace(/[^a-z0-9]/g, '')
+          .trim();
+      };
+
+      var sessNipDigits = cleanDigits(session.nip);
+      var sessNameClean = cleanStr(session.name);
+
+      var matchedTeacher = null;
+      if (sessNipDigits && sessNipDigits.length >= 8) {
+        matchedTeacher = allTeachers.find(function (t) {
+          return cleanDigits(t.nip) === sessNipDigits;
+        });
+      }
+      if (!matchedTeacher && sessNameClean) {
+        matchedTeacher = allTeachers.find(function (t) {
+          return cleanStr(t.name) === sessNameClean || t.name === session.name;
+        });
+      }
+      if (!matchedTeacher && session.name) {
+        var tokens = session.name.toLowerCase().replace(/[^a-z]/g, ' ').split(/\s+/).filter(function (w) {
+          return w.length > 3 && ['guru', 'smkn', 'banjarmasin', 'ahmad', 'muhammad'].indexOf(w) === -1;
+        });
+        if (tokens.length > 0) {
+          matchedTeacher = allTeachers.find(function (t) {
+            var tNameLower = (t.name || '').toLowerCase();
+            return tokens.every(function (tok) { return tNameLower.indexOf(tok) !== -1; });
+          });
+        }
+      }
       if (matchedTeacher && matchedTeacher.id) {
         State.currentGuruId = matchedTeacher.id;
+      }
+
+      // Update Dashboard welcome heading if available
+      var welcomeHeading = document.querySelector('#screen-dashboard .welcome-banner h2');
+      if (welcomeHeading) {
+        welcomeHeading.textContent = 'Selamat Datang, ' + (session.name || 'Bapak/Ibu Guru') + ' 👋';
       }
     }
     // ── END ACCESS CONTROL ───────────────────────────────────────────────
@@ -2705,7 +2925,7 @@
       State.activeGuruTab = initialGuruTab;
     }
     const initialGuruId = params.get('guruId');
-    if (initialGuruId) {
+    if (initialGuruId && !session) {
       State.currentGuruId = initialGuruId;
     }
 
