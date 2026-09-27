@@ -245,8 +245,8 @@ window.SIMKUR_DATA = {
       "id": "T-027",
       "name": "Ihsan Muzakki, SE",
       "nip": "197807092014061003",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
+      "department": "TJKT",
+      "subject": "Administrasi Sistem Jaringan",
       "is_active": true
     },
     {

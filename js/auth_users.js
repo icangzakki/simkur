@@ -290,12 +290,12 @@ window.SIMKUR_AUTH_USERS = [
     "nip": "197807092014061003",
     "name": "Ihsan Muzakki, SE",
     "role": "guru",
-    "title": "Guru Pengampu Pemasaran | SMKN 1 Banjarmasin",
-    "department": "Pemasaran",
-    "subject": "Produktif Pemasaran & Binaan Rombel",
+    "title": "Guru Produktif TJKT | SMKN 1 Banjarmasin",
+    "department": "TJKT",
+    "subject": "Administrasi Sistem Jaringan",
     "targetScreen": "portal-guru",
     "avatar": "assets/teacher_avatar.jpg",
-    "category": "Dewan Guru Pemasaran"
+    "category": "Dewan Guru TJKT"
   },
   {
     "nip": "199202192025212021",
