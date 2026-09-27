@@ -1,8 +1,8 @@
 /**
- * SIMKUR - SISTEM INFORMASI MANAJEMEN KURIKULUM SMK
- * Master Academic & Operational Dataset (TA 2026/2027)
- * Selaras Permendikbudristek No. 12/2024 & Permendikdasmen No. 13/2025 (Deep Learning Aligned)
- * STATUS: CLEAN ZEROED STATE (Ready for Operational Input)
+ * SIMKUR - PORTAL WAKA KURIKULUM SMKN 1 BANJARMASIN
+ * Berdasarkan PRD Portal Waka Kur Sederhana (MVP)
+ * Memuat Master GTK (90), Master Rombel (45), Master Mapel (28), Master Ruang (15),
+ * Dokumen Kurikulum (11), Jadwal Pelajaran (20), Agenda Kurikulum (5), dan Roster Siswa (1.564).
  */
 
 window.SIMKUR_DATA = {
@@ -32,3775 +32,1806 @@ window.SIMKUR_DATA = {
     "email": "akuntansi.smkn1tjg@gmail.com",
     "phone": "0813-4800-4794"
   },
-  "roles": [
+  "masterTeachers": [
     {
-      "id": "waka",
-      "label": "Waka Kurikulum",
-      "user": "Rusnani",
-      "badge": "Command Center"
-    },
-    {
-      "id": "guru",
-      "label": "Guru Produktif TJKT",
-      "user": "Ahmad Gajali",
-      "badge": "Portal Mandiri"
-    },
-    {
-      "id": "kepsek",
-      "label": "Kepala Sekolah",
-      "user": "Agustin Purnomosari",
-      "badge": "Laporan Eksekutif"
-    },
-    {
-      "id": "kajur",
-      "label": "Kajur TJKT",
-      "user": "Muhammad Ihsan",
-      "badge": "Manajemen Jurusan"
-    }
-  ],
-  "departments": [
-    {
-      "code": "TJKT",
-      "name": "Teknik Jaringan Komputer & Telekomunikasi",
-      "head": "Muhammad Ihsan",
-      "teachersCount": 14,
-      "studentsCount": 275,
-      "classesCount": 8,
-      "completionRate": 0,
-      "reviewPending": 0,
-      "dudiPartners": [],
-      "ukkScheme": "Teknisi Utama Jaringan Komputer (KKNI Level II)",
-      "ukkTrack": "LSP-P1 BNSP",
-      "assessor": "Muhammad Ihsan (Asesor BNSP)"
-    },
-    {
-      "code": "DKV",
-      "name": "Desain Komunikasi Visual",
-      "head": "Hendra Surya Pratama",
-      "teachersCount": 10,
-      "studentsCount": 314,
-      "classesCount": 9,
-      "completionRate": 0,
-      "reviewPending": 0,
-      "dudiPartners": [],
-      "ukkScheme": "Desainer Grafis Muda (KKNI Level II)",
-      "ukkTrack": "LSP-P1 BNSP",
-      "assessor": "Hendra Surya Pratama (Asesor BNSP)"
-    },
-    {
-      "code": "MPLB",
-      "name": "Manajemen Perkantoran & Layanan Bisnis",
-      "head": "Akhmad Hanafi Maulana, SE",
-      "teachersCount": 19,
-      "studentsCount": 241,
-      "classesCount": 7,
-      "completionRate": 0,
-      "reviewPending": 0,
-      "dudiPartners": [],
-      "ukkScheme": "Pengelola Administrasi Perkantoran Modern",
-      "ukkTrack": "Mandiri Sekolah + DUDI",
-      "assessor": "Akhmad Hanafi Maulana, SE"
-    },
-    {
-      "code": "AKL",
-      "name": "Akuntansi & Keuangan Lembaga",
-      "head": "Oky Wulan Maulina",
-      "teachersCount": 19,
-      "studentsCount": 378,
-      "classesCount": 11,
-      "completionRate": 0,
-      "reviewPending": 0,
-      "dudiPartners": [],
-      "ukkScheme": "Teknisi Akuntansi Yunior (KKNI Level II)",
-      "ukkTrack": "LSP-P1 BNSP",
-      "assessor": "Oky Wulan Maulina (Asesor BNSP)"
-    },
-    {
-      "code": "Pemasaran",
-      "name": "Bisnis Digital & Pemasaran",
-      "head": "Futri Indri Septiani",
-      "teachersCount": 16,
-      "studentsCount": 356,
-      "classesCount": 10,
-      "completionRate": 0,
-      "reviewPending": 0,
-      "dudiPartners": [],
-      "ukkScheme": "Tenaga Pemasar Operasional & Digital",
-      "ukkTrack": "Mandiri Sekolah + DUDI",
-      "assessor": "Futri Indri Septiani"
-    }
-  ],
-  "documentsList": [
-    {
-      "id": "DOC-001",
-      "teacherId": "GUR-01",
-      "teacherName": "Ahmad Gajali",
-      "nip": "198906092025211023",
+      "id": "T-001",
+      "name": "Rusnani",
+      "nip": "197308022000122003",
       "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "XI A-AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "subject": "Praktikum Akuntansi Perusahaan & Perpajakan",
+      "is_active": true
     },
     {
-      "id": "DOC-002",
-      "teacherId": "GUR-02",
-      "teacherName": "Akbar Gazali",
-      "nip": "199504102023211007",
+      "id": "T-002",
+      "name": "Agustin Purnomosari",
+      "nip": "3153750649300003",
+      "department": "Manajemen",
+      "subject": "Kepala Sekolah & Supervisi Manajerial",
+      "is_active": true
+    },
+    {
+      "id": "T-003",
+      "name": "Andry Dharmawan",
+      "nip": "8554762663130202",
+      "department": "Tata Usaha",
+      "subject": "Sinkronisasi Dapodik & Layanan Akademik",
+      "is_active": true
+    },
+    {
+      "id": "T-004",
+      "name": "Ir. Hendri Gunawan",
+      "nip": "ASESOR-DUDI-882190",
       "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "XII B-TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "subject": "Asesor Penguji LSP-P1 BNSP & Mitra Industri",
+      "is_active": true
     },
     {
-      "id": "DOC-003",
-      "teacherId": "GUR-03",
-      "teacherName": "Akhmad Hanafi Maulana, SE",
-      "nip": "198912152024211025",
-      "department": "MPLB",
-      "subject": "Konsentrasi Keahlian MPLB & TeFa",
-      "classes": "X & XI MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-004",
-      "teacherId": "GUR-04",
-      "teacherName": "Amnah, M. PD",
-      "nip": "197102081998032003",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "XI C-AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-005",
-      "teacherId": "GUR-05",
-      "teacherName": "Dahliana, S. Pd",
-      "nip": "197306092006042008",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "Kelas TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-006",
-      "teacherId": "GUR-06",
-      "teacherName": "DENIS ADE PRIAGENG PRASETYO",
-      "nip": "5752767669300002",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "X C-TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-007",
-      "teacherId": "GUR-07",
-      "teacherName": "Deppy Afiaty Putri",
-      "nip": "199404272023212021",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "XII B-PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-008",
-      "teacherId": "GUR-08",
-      "teacherName": "Devvy Anggriani",
-      "nip": "199507022025212027",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "X A-PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-009",
-      "teacherId": "GUR-09",
-      "teacherName": "Dina Fitriyah",
-      "nip": "198609072025212029",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "classes": "XII A-MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-010",
-      "teacherId": "GUR-10",
-      "teacherName": "Eddy Noor Adha",
-      "nip": "199206082022211002",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "XI C-DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-011",
-      "teacherId": "GUR-11",
-      "teacherName": "Elvasari",
-      "nip": "199208272024212038",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "X B-TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-012",
-      "teacherId": "GUR-12",
-      "teacherName": "Futri Indri Septiani",
-      "nip": "198809172014022001",
-      "department": "Pemasaran",
-      "subject": "Konsentrasi Keahlian Pemasaran & TeFa",
-      "classes": "X & XI PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-013",
-      "teacherId": "GUR-13",
-      "teacherName": "GHINA AULIA",
-      "nip": "7043780681230003",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "Kelas AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-014",
-      "teacherId": "GUR-14",
-      "teacherName": "Ginem Sugiarti",
-      "nip": "196612311997022002",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "Kelas DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-015",
-      "teacherId": "GUR-15",
-      "teacherName": "Hamdiah",
-      "nip": "199302052022212006",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "XI C-PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-016",
-      "teacherId": "GUR-16",
-      "teacherName": "Hasynan Azmi",
-      "nip": "199607252025211097",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "Kelas Pemasaran",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-017",
-      "teacherId": "GUR-17",
-      "teacherName": "Hatipah",
-      "nip": "198207242022212001",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "XI A-PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-018",
-      "teacherId": "GUR-18",
-      "teacherName": "Hendra Surya Pratama",
-      "nip": "199305162022211001",
-      "department": "DKV",
-      "subject": "Konsentrasi Keahlian DKV & TeFa",
-      "classes": "X & XI DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-019",
-      "teacherId": "GUR-19",
-      "teacherName": "Herlina Sari",
-      "nip": "197312022022212001",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "XI A-DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-020",
-      "teacherId": "GUR-20",
-      "teacherName": "Ida Mardiyana",
-      "nip": "198402282010012016",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "XII B-DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-021",
-      "teacherId": "GUR-21",
-      "teacherName": "Ihsan Muzakki, SE",
-      "nip": "197807092014061003",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "X & XI PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-022",
-      "teacherId": "GUR-22",
-      "teacherName": "Irma Rutina",
-      "nip": "199202192025212021",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "classes": "XI B-MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-023",
-      "teacherId": "GUR-23",
-      "teacherName": "Isna Yuliawati",
-      "nip": "197202201999032003",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "Kelas TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-024",
-      "teacherId": "GUR-24",
-      "teacherName": "Jamaluddin",
-      "nip": "199604282025211020",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "X A-TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-025",
-      "teacherId": "GUR-25",
-      "teacherName": "Juhdi Amrullah",
-      "nip": "198007152022211005",
-      "department": "AKL",
-      "subject": "Dasar-Dasar Keahlian AKL",
-      "classes": "Kelas AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-026",
-      "teacherId": "GUR-26",
-      "teacherName": "Khumayroh",
-      "nip": "7548777678230083",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "Kelas DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-027",
-      "teacherId": "GUR-27",
-      "teacherName": "Laili Normas",
-      "nip": "197812012008012015",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "X C-AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-028",
-      "teacherId": "GUR-28",
-      "teacherName": "Lasmaria Verawati",
-      "nip": "198303042006042017",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "XII B-AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-029",
-      "teacherId": "GUR-29",
-      "teacherName": "LILIS ANGGRAINI, S.KOM. M.KOM",
-      "nip": "199305022025212185",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "XI A-TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-030",
-      "teacherId": "GUR-30",
-      "teacherName": "Mahfuddin",
-      "nip": "197705102007011020",
-      "department": "Umum",
-      "subject": "Mata Pelajaran Umum (Beban Waka 12 JP)",
-      "classes": "Kelas Umum",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-031",
-      "teacherId": "GUR-31",
-      "teacherName": "MAHMUDAH, S.PD, MM",
-      "nip": "196801031998032006",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "X D-AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-032",
-      "teacherId": "GUR-32",
-      "teacherName": "Masliana",
-      "nip": "196802271994122005",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "Kelas DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-033",
-      "teacherId": "GUR-33",
-      "teacherName": "Masnah",
-      "nip": "199209212022212003",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "XII A-DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-034",
-      "teacherId": "GUR-34",
-      "teacherName": "Maya Adelina Puspita",
-      "nip": "199105262023212019",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "XI B-TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-035",
-      "teacherId": "GUR-35",
-      "teacherName": "Megawati, S.kom",
-      "nip": "198106172022212008",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "XII A-TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-036",
-      "teacherId": "GUR-36",
-      "teacherName": "Misdawati",
-      "nip": "199211192025212025",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "classes": "X A-MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-037",
-      "teacherId": "GUR-37",
-      "teacherName": "Muhammad Fahrurazy",
-      "nip": "199001312022211001",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "X B-PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-038",
-      "teacherId": "GUR-38",
-      "teacherName": "Muhammad Ihsan",
+      "id": "T-005",
+      "name": "Muhammad Ihsan",
       "nip": "198801102022211001",
       "department": "TJKT",
       "subject": "Konsentrasi Keahlian TJKT & TeFa",
-      "classes": "X & XI TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-039",
-      "teacherId": "GUR-39",
-      "teacherName": "Muhammad Jayaguna",
-      "nip": "199307102019031007",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "classes": "Kelas MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-040",
-      "teacherId": "GUR-40",
-      "teacherName": "MUHAMMAD NAWIER SYAHROWARDI MAARIEF",
-      "nip": "1847778679130052",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "Kelas Pemasaran",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-041",
-      "teacherId": "GUR-41",
-      "teacherName": "Muhammad Yusri",
-      "nip": "198403212022211001",
-      "department": "TJKT",
-      "subject": "Dasar-Dasar Keahlian TJKT",
-      "classes": "Kelas TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-042",
-      "teacherId": "GUR-42",
-      "teacherName": "Muliyani Yohana",
-      "nip": "199008302023212023",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "X A-AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-043",
-      "teacherId": "GUR-43",
-      "teacherName": "Muthia Isma Annisa",
-      "nip": "200006202025212026",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "Kelas AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-044",
-      "teacherId": "GUR-44",
-      "teacherName": "Mutia Paramitha",
-      "nip": "199503222019032023",
+      "id": "T-006",
+      "name": "Hendra Surya Pratama",
+      "nip": "199305162022211001",
       "department": "DKV",
-      "subject": "Dasar-Dasar Keahlian DKV",
-      "classes": "Kelas DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "subject": "Konsentrasi Keahlian DKV & TeFa",
+      "is_active": true
     },
     {
-      "id": "DOC-045",
-      "teacherId": "GUR-45",
-      "teacherName": "Muttaqin",
-      "nip": "196812132005011004",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "classes": "Kelas MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-046",
-      "teacherId": "GUR-46",
-      "teacherName": "Nabil",
-      "nip": "199004222022211002",
-      "department": "Pemasaran",
-      "subject": "Mata Pelajaran Pemasaran (Beban Waka 12 JP)",
-      "classes": "Kelas Pemasaran",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-047",
-      "teacherId": "GUR-47",
-      "teacherName": "Naila Rahmah Maulidiyah",
-      "nip": "5960777678230102",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "XII A-AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-048",
-      "teacherId": "GUR-48",
-      "teacherName": "Nelly Amelia",
-      "nip": "198902042023212026",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "XII A-PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-049",
-      "teacherId": "GUR-49",
-      "teacherName": "Nia Resti Maulina",
-      "nip": "199012082025212026",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "Kelas AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-050",
-      "teacherId": "GUR-50",
-      "teacherName": "Nirmala Sari, S.Pd",
-      "nip": "197112272005012005",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "Kelas DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-051",
-      "teacherId": "GUR-51",
-      "teacherName": "Noor Kumala Dewi",
-      "nip": "197701192005012010",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "XI B-AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-052",
-      "teacherId": "GUR-52",
-      "teacherName": "Noor Latifah",
-      "nip": "199302282025212142",
-      "department": "Pemasaran",
-      "subject": "Dasar-Dasar Keahlian Pemasaran",
-      "classes": "Kelas Pemasaran",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-053",
-      "teacherId": "GUR-53",
-      "teacherName": "Noormin Chairat",
-      "nip": "196812281992032010",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "Kelas TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-054",
-      "teacherId": "GUR-54",
-      "teacherName": "Nurfitriana",
-      "nip": "198004232006042024",
-      "department": "Umum",
-      "subject": "Produktif Umum & Binaan Rombel",
-      "classes": "Kelas Umum",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-055",
-      "teacherId": "GUR-55",
-      "teacherName": "Nurlisa Hayani",
-      "nip": "198906052023212031",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "XI B-DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-056",
-      "teacherId": "GUR-56",
-      "teacherName": "Oky Wulan Maulina",
+      "id": "T-007",
+      "name": "Oky Wulan Maulina",
       "nip": "198910262015032002",
       "department": "AKL",
       "subject": "Konsentrasi Keahlian AKL & TeFa",
-      "classes": "X & XI AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-057",
-      "teacherId": "GUR-57",
-      "teacherName": "RACHMAH",
+      "id": "T-008",
+      "name": "Akhmad Hanafi Maulana, SE",
+      "nip": "198912152024211025",
+      "department": "MPLB",
+      "subject": "Konsentrasi Keahlian MPLB & TeFa",
+      "is_active": true
+    },
+    {
+      "id": "T-009",
+      "name": "Futri Indri Septiani",
+      "nip": "198809172014022001",
+      "department": "Pemasaran",
+      "subject": "Konsentrasi Keahlian Pemasaran & TeFa",
+      "is_active": true
+    },
+    {
+      "id": "T-010",
+      "name": "Ahmad Gajali",
+      "nip": "198906092025211023",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-011",
+      "name": "Akbar Gazali",
+      "nip": "199504102023211007",
+      "department": "TJKT",
+      "subject": "Produktif TJKT & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-012",
+      "name": "Amnah, M. PD",
+      "nip": "197102081998032003",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-013",
+      "name": "Dahliana, S. Pd",
+      "nip": "197306092006042008",
+      "department": "TJKT",
+      "subject": "Produktif TJKT & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-014",
+      "name": "DENIS ADE PRIAGENG PRASETYO",
+      "nip": "5752767669300002",
+      "department": "TJKT",
+      "subject": "Produktif TJKT & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-015",
+      "name": "Deppy Afiaty Putri",
+      "nip": "199404272023212021",
+      "department": "Pemasaran",
+      "subject": "Produktif Pemasaran & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-016",
+      "name": "Devvy Anggriani",
+      "nip": "199507022025212027",
+      "department": "Pemasaran",
+      "subject": "Produktif Pemasaran & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-017",
+      "name": "Dina Fitriyah",
+      "nip": "198609072025212029",
+      "department": "MPLB",
+      "subject": "Produktif MPLB & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-018",
+      "name": "Eddy Noor Adha",
+      "nip": "199206082022211002",
+      "department": "DKV",
+      "subject": "Produktif DKV & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-019",
+      "name": "Elvasari",
+      "nip": "199208272024212038",
+      "department": "TJKT",
+      "subject": "Produktif TJKT & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-020",
+      "name": "GHINA AULIA",
+      "nip": "7043780681230003",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-021",
+      "name": "Ginem Sugiarti",
+      "nip": "196612311997022002",
+      "department": "DKV",
+      "subject": "Produktif DKV & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-022",
+      "name": "Hamdiah",
+      "nip": "199302052022212006",
+      "department": "Pemasaran",
+      "subject": "Produktif Pemasaran & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-023",
+      "name": "Hasynan Azmi",
+      "nip": "199607252025211097",
+      "department": "Pemasaran",
+      "subject": "Produktif Pemasaran & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-024",
+      "name": "Hatipah",
+      "nip": "198207242022212001",
+      "department": "Pemasaran",
+      "subject": "Produktif Pemasaran & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-025",
+      "name": "Herlina Sari",
+      "nip": "197312022022212001",
+      "department": "DKV",
+      "subject": "Produktif DKV & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-026",
+      "name": "Ida Mardiyana",
+      "nip": "198402282010012016",
+      "department": "DKV",
+      "subject": "Produktif DKV & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-027",
+      "name": "Ihsan Muzakki, SE",
+      "nip": "197807092014061003",
+      "department": "Pemasaran",
+      "subject": "Produktif Pemasaran & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-028",
+      "name": "Irma Rutina",
+      "nip": "199202192025212021",
+      "department": "MPLB",
+      "subject": "Produktif MPLB & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-029",
+      "name": "Isna Yuliawati",
+      "nip": "197202201999032003",
+      "department": "TJKT",
+      "subject": "Produktif TJKT & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-030",
+      "name": "Jamaluddin",
+      "nip": "199604282025211020",
+      "department": "TJKT",
+      "subject": "Produktif TJKT & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-031",
+      "name": "Juhdi Amrullah",
+      "nip": "198007152022211005",
+      "department": "AKL",
+      "subject": "Dasar-Dasar Keahlian AKL",
+      "is_active": true
+    },
+    {
+      "id": "T-032",
+      "name": "Khumayroh",
+      "nip": "7548777678230083",
+      "department": "DKV",
+      "subject": "Produktif DKV & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-033",
+      "name": "Laili Normas",
+      "nip": "197812012008012015",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-034",
+      "name": "Lasmaria Verawati",
+      "nip": "198303042006042017",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-035",
+      "name": "LILIS ANGGRAINI, S.KOM. M.KOM",
+      "nip": "199305022025212185",
+      "department": "TJKT",
+      "subject": "Produktif TJKT & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-036",
+      "name": "Mahfuddin",
+      "nip": "197705102007011020",
+      "department": "Umum",
+      "subject": "Mata Pelajaran Umum (Beban Waka 12 JP)",
+      "is_active": true
+    },
+    {
+      "id": "T-037",
+      "name": "MAHMUDAH, S.PD, MM",
+      "nip": "196801031998032006",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-038",
+      "name": "Masliana",
+      "nip": "196802271994122005",
+      "department": "DKV",
+      "subject": "Produktif DKV & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-039",
+      "name": "Masnah",
+      "nip": "199209212022212003",
+      "department": "DKV",
+      "subject": "Produktif DKV & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-040",
+      "name": "Maya Adelina Puspita",
+      "nip": "199105262023212019",
+      "department": "TJKT",
+      "subject": "Produktif TJKT & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-041",
+      "name": "Megawati, S.kom",
+      "nip": "198106172022212008",
+      "department": "TJKT",
+      "subject": "Produktif TJKT & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-042",
+      "name": "Misdawati",
+      "nip": "199211192025212025",
+      "department": "MPLB",
+      "subject": "Produktif MPLB & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-043",
+      "name": "Muhammad Fahrurazy",
+      "nip": "199001312022211001",
+      "department": "Pemasaran",
+      "subject": "Produktif Pemasaran & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-044",
+      "name": "Muhammad Jayaguna",
+      "nip": "199307102019031007",
+      "department": "MPLB",
+      "subject": "Produktif MPLB & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-045",
+      "name": "MUHAMMAD NAWIER SYAHROWARDI MAARIEF",
+      "nip": "1847778679130052",
+      "department": "Pemasaran",
+      "subject": "Produktif Pemasaran & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-046",
+      "name": "Muhammad Yusri",
+      "nip": "198403212022211001",
+      "department": "TJKT",
+      "subject": "Dasar-Dasar Keahlian TJKT",
+      "is_active": true
+    },
+    {
+      "id": "T-047",
+      "name": "Muliyani Yohana",
+      "nip": "199008302023212023",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-048",
+      "name": "Muthia Isma Annisa",
+      "nip": "200006202025212026",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-049",
+      "name": "Mutia Paramitha",
+      "nip": "199503222019032023",
+      "department": "DKV",
+      "subject": "Dasar-Dasar Keahlian DKV",
+      "is_active": true
+    },
+    {
+      "id": "T-050",
+      "name": "Muttaqin",
+      "nip": "196812132005011004",
+      "department": "MPLB",
+      "subject": "Produktif MPLB & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-051",
+      "name": "Nabil",
+      "nip": "199004222022211002",
+      "department": "Pemasaran",
+      "subject": "Mata Pelajaran Pemasaran (Beban Waka 12 JP)",
+      "is_active": true
+    },
+    {
+      "id": "T-052",
+      "name": "Naila Rahmah Maulidiyah",
+      "nip": "5960777678230102",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-053",
+      "name": "Nelly Amelia",
+      "nip": "198902042023212026",
+      "department": "Pemasaran",
+      "subject": "Produktif Pemasaran & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-054",
+      "name": "Nia Resti Maulina",
+      "nip": "199012082025212026",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-055",
+      "name": "Nirmala Sari, S.Pd",
+      "nip": "197112272005012005",
+      "department": "DKV",
+      "subject": "Produktif DKV & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-056",
+      "name": "Noor Kumala Dewi",
+      "nip": "197701192005012010",
+      "department": "AKL",
+      "subject": "Produktif AKL & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-057",
+      "name": "Noor Latifah",
+      "nip": "199302282025212142",
+      "department": "Pemasaran",
+      "subject": "Dasar-Dasar Keahlian Pemasaran",
+      "is_active": true
+    },
+    {
+      "id": "T-058",
+      "name": "Noormin Chairat",
+      "nip": "196812281992032010",
+      "department": "TJKT",
+      "subject": "Produktif TJKT & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-059",
+      "name": "Nurfitriana",
+      "nip": "198004232006042024",
+      "department": "Umum",
+      "subject": "Produktif Umum & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-060",
+      "name": "Nurlisa Hayani",
+      "nip": "198906052023212031",
+      "department": "DKV",
+      "subject": "Produktif DKV & Binaan Rombel",
+      "is_active": true
+    },
+    {
+      "id": "T-061",
+      "name": "RACHMAH",
       "nip": "196903022014062003",
       "department": "DKV",
       "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "XII C-DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-058",
-      "teacherId": "GUR-58",
-      "teacherName": "Rahmiana",
+      "id": "T-062",
+      "name": "Rahmiana",
       "nip": "198003092007012012",
       "department": "MPLB",
       "subject": "Produktif MPLB & Binaan Rombel",
-      "classes": "XII C-MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-059",
-      "teacherId": "GUR-59",
-      "teacherName": "Rema Maulinda Lestari",
+      "id": "T-063",
+      "name": "Rema Maulinda Lestari",
       "nip": "199607302019032015",
       "department": "DKV",
       "subject": "Dasar-Dasar Keahlian DKV",
-      "classes": "X B-DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-060",
-      "teacherId": "GUR-60",
-      "teacherName": "Rentaida Hutagalung",
+      "id": "T-064",
+      "name": "Rentaida Hutagalung",
       "nip": "196808121999032007",
       "department": "Umum",
       "subject": "Produktif Umum & Binaan Rombel",
-      "classes": "Kelas Umum",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-061",
-      "teacherId": "GUR-61",
-      "teacherName": "Rini Suciati",
+      "id": "T-065",
+      "name": "Rini Suciati",
       "nip": "198401022009032009",
       "department": "Pemasaran",
       "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "XI B-PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-062",
-      "teacherId": "GUR-62",
-      "teacherName": "Risa Rusniarti",
+      "id": "T-066",
+      "name": "Risa Rusniarti",
       "nip": "198103162022212010",
       "department": "DKV",
       "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "X A-DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-063",
-      "teacherId": "GUR-63",
-      "teacherName": "Rusnani",
-      "nip": "197002142007012021",
-      "department": "AKL",
-      "subject": "Dasar-Dasar Keahlian AKL",
-      "classes": "X & XI AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-064",
-      "teacherId": "GUR-64",
-      "teacherName": "Rusnani",
-      "nip": "197308022000122003",
-      "department": "AKL",
-      "subject": "Mata Pelajaran AKL (Beban Waka 12 JP)",
-      "classes": "X & XI AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
-    },
-    {
-      "id": "DOC-065",
-      "teacherId": "GUR-65",
-      "teacherName": "Siti Aisyah",
+      "id": "T-067",
+      "name": "Siti Aisyah",
       "nip": "199809292025212031",
       "department": "DKV",
       "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "X C-DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-066",
-      "teacherId": "GUR-66",
-      "teacherName": "SITI ARBAYANI",
+      "id": "T-068",
+      "name": "SITI ARBAYANI",
       "nip": "198404042025212051",
       "department": "AKL",
       "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "X B-AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-067",
-      "teacherId": "GUR-67",
-      "teacherName": "Siti Khairiyah, S.pd",
+      "id": "T-069",
+      "name": "Siti Khairiyah, S.pd",
       "nip": "198811032022212003",
       "department": "AKL",
       "subject": "Produktif AKL & Binaan Rombel",
-      "classes": "XII C-AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-068",
-      "teacherId": "GUR-68",
-      "teacherName": "Siti Noor Hafizah",
+      "id": "T-070",
+      "name": "Siti Noor Hafizah",
       "nip": "196711061994122006",
       "department": "DKV",
       "subject": "Produktif DKV & Binaan Rombel",
-      "classes": "Kelas DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-069",
-      "teacherId": "GUR-69",
-      "teacherName": "Siti Rahmah",
+      "id": "T-071",
+      "name": "Siti Rahmah",
       "nip": "199408132025212029",
       "department": "MPLB",
       "subject": "Produktif MPLB & Binaan Rombel",
-      "classes": "X B-MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-070",
-      "teacherId": "GUR-70",
-      "teacherName": "Suaidi Rahman",
+      "id": "T-072",
+      "name": "Suaidi Rahman",
       "nip": "198307262022211003",
       "department": "Pemasaran",
       "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "Kelas Pemasaran",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-071",
-      "teacherId": "GUR-71",
-      "teacherName": "Susi Kartika Dewi",
+      "id": "T-073",
+      "name": "Susi Kartika Dewi",
       "nip": "197411252005012008",
       "department": "Pemasaran",
       "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "X C-PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-072",
-      "teacherId": "GUR-72",
-      "teacherName": "Syarifuddin",
+      "id": "T-074",
+      "name": "Syarifuddin",
       "nip": "196701211994031005",
       "department": "Umum",
       "subject": "Mata Pelajaran Umum (Beban Waka 12 JP)",
-      "classes": "Kelas Umum",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-073",
-      "teacherId": "GUR-73",
-      "teacherName": "Taibah, S. Pd",
+      "id": "T-075",
+      "name": "Taibah, S. Pd",
       "nip": "197207082006042006",
       "department": "TJKT",
       "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "XI C-TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-074",
-      "teacherId": "GUR-74",
-      "teacherName": "Topan Borneo Angkasa Negara",
+      "id": "T-076",
+      "name": "Topan Borneo Angkasa Negara",
       "nip": "198103192022211001",
       "department": "DKV",
       "subject": "Dasar-Dasar Keahlian DKV",
-      "classes": "Kelas DKV",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-075",
-      "teacherId": "GUR-75",
-      "teacherName": "Triana Novita",
+      "id": "T-077",
+      "name": "Triana Novita",
       "nip": "197811012025212023",
       "department": "MPLB",
       "subject": "Produktif MPLB & Binaan Rombel",
-      "classes": "XII B-MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-076",
-      "teacherId": "GUR-76",
-      "teacherName": "Tusamsi",
+      "id": "T-078",
+      "name": "Tusamsi",
       "nip": "197701262022211002",
       "department": "Pemasaran",
       "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "Kelas Pemasaran",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-077",
-      "teacherId": "GUR-77",
-      "teacherName": "Widi Sigit Nugroho",
+      "id": "T-079",
+      "name": "Widi Sigit Nugroho",
       "nip": "198110042022211004",
       "department": "TJKT",
       "subject": "Produktif TJKT & Binaan Rombel",
-      "classes": "XII C-TJKT",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-078",
-      "teacherId": "GUR-78",
-      "teacherName": "Widya Savitri",
+      "id": "T-080",
+      "name": "Widya Savitri",
       "nip": "199310122025212024",
       "department": "MPLB",
       "subject": "Dasar-Dasar Keahlian MPLB",
-      "classes": "XI A-MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-079",
-      "teacherId": "GUR-79",
-      "teacherName": "WIRDATUSSA'YAH",
+      "id": "T-081",
+      "name": "WIRDATUSSA'YAH",
       "nip": "198407132022212011",
       "department": "AKL",
       "subject": "Dasar-Dasar Keahlian AKL",
-      "classes": "Kelas AKL",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-080",
-      "teacherId": "GUR-80",
-      "teacherName": "Wiwiek Hastutie",
+      "id": "T-082",
+      "name": "Wiwiek Hastutie",
       "nip": "197005282024212004",
       "department": "Pemasaran",
       "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "XII D-PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-081",
-      "teacherId": "GUR-81",
-      "teacherName": "Yosievine Margareth Kolriry",
+      "id": "T-083",
+      "name": "Yosievine Margareth Kolriry",
       "nip": "9851761662230192",
       "department": "MPLB",
       "subject": "Produktif MPLB & Binaan Rombel",
-      "classes": "Kelas MPLB",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
     },
     {
-      "id": "DOC-082",
-      "teacherId": "GUR-82",
-      "teacherName": "Yunada Afriliani",
+      "id": "T-084",
+      "name": "Yunada Afriliani",
       "nip": "199704072022212003",
       "department": "Pemasaran",
       "subject": "Produktif Pemasaran & Binaan Rombel",
-      "classes": "XII C-PM",
-      "weeklyHours": 0,
-      "avatar": "assets/teacher_avatar.jpg",
-      "modulAjar": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "atp": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prota": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "prosem": {
-        "status": "missing",
-        "score": null,
-        "date": null,
-        "file": null
-      },
-      "lastUpdate": "-",
-      "notes": "Belum ada perangkat ajar diunggah."
+      "is_active": true
+    },
+    {
+      "id": "T-085",
+      "name": "Della Safitri",
+      "nip": "199403152024212015",
+      "department": "AKL",
+      "subject": "Spreadsheet & Akuntansi Keuangan",
+      "is_active": true
+    },
+    {
+      "id": "T-086",
+      "name": "Hairita Indriati, S.Pd",
+      "nip": "198705122022212008",
+      "department": "MPLB",
+      "subject": "Kearsipan & Komunikasi Tempat Kerja",
+      "is_active": true
+    },
+    {
+      "id": "T-087",
+      "name": "Hj. Asmiani",
+      "nip": "197209142005012006",
+      "department": "MPLB",
+      "subject": "Dasar Manajemen Perkantoran",
+      "is_active": true
+    },
+    {
+      "id": "T-088",
+      "name": "Leni Meldawati",
+      "nip": "198811202022212011",
+      "department": "MPLB",
+      "subject": "Ekonomi Bisnis & Administrasi Umum",
+      "is_active": true
+    },
+    {
+      "id": "T-089",
+      "name": "Thaibah, S.Pd",
+      "nip": "198207182010012014",
+      "department": "TJKT",
+      "subject": "Bahasa Inggris Kejuruan TJKT",
+      "is_active": true
+    },
+    {
+      "id": "T-090",
+      "name": "Wahidah, S.Pd.I",
+      "nip": "198506222014032003",
+      "department": "Pemasaran",
+      "subject": "Pendidikan Agama & Budi Pekerti",
+      "is_active": true
     }
   ],
-  "teachingJournals": [],
-  "scheduleMatrix": [],
-  "upcomingAgendas": [],
-  "systemAlerts": [],
-  "pklSummary": {
-    "totalStudents": 0,
-    "activeInDudi": 0,
-    "completed": 0,
-    "partnersCount": 0,
-    "byDepartment": [
-      {
-        "dept": "TJKT",
-        "students": 0,
-        "partners": 0,
-        "topDudi": "—"
-      },
-      {
-        "dept": "DKV",
-        "students": 0,
-        "partners": 0,
-        "topDudi": "—"
-      },
-      {
-        "dept": "MPLB",
-        "students": 0,
-        "partners": 0,
-        "topDudi": "—"
-      },
-      {
-        "dept": "AKL",
-        "students": 0,
-        "partners": 0,
-        "topDudi": "—"
-      },
-      {
-        "dept": "Pemasaran",
-        "students": 0,
-        "partners": 0,
-        "topDudi": "—"
-      }
-    ]
-  },
-  "ukkSummary": {
-    "period": "Tahun Ajaran 2026/2027",
-    "totalCandidates": 0,
-    "tracks": {
-      "lspP1": {
-        "title": "Jalur Lembaga Sertifikasi Profesi (LSP-P1 Lisensi BNSP)",
-        "status": "Lisensi Aktif s.d 2027",
-        "licenseNo": "KEP.0841/BNSP/IV/2024",
-        "certificateIssued": "Sertifikat Garuda Emas BNSP",
-        "departments": [
-          "TJKT",
-          "DKV",
-          "AKL"
-        ],
-        "candidates": 0,
-        "tukVerified": "3 Lab Terverifikasi BNSP"
-      },
-      "mandiriDudi": {
-        "title": "Jalur Mandiri Sekolah Terakreditasi + DUDI Mitra",
-        "status": "MoU Kerjasama DUDI Siap",
-        "certificateIssued": "Sertifikat Kompetensi Sekolah & DUDI",
-        "departments": [
-          "MPLB",
-          "Pemasaran"
-        ],
-        "candidates": 0,
-        "tukVerified": "Lab Perkantoran & Business Center"
-      }
+  "masterClasses": [
+    {
+      "id": "C-001",
+      "name": "X A-AKL",
+      "grade": "X",
+      "major": "AKL",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-002",
+      "name": "X A-DKV",
+      "grade": "X",
+      "major": "DKV",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-003",
+      "name": "X A-MPLB",
+      "grade": "X",
+      "major": "MPLB",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-004",
+      "name": "X A-PM",
+      "grade": "X",
+      "major": "PM",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-005",
+      "name": "X A-TJKT",
+      "grade": "X",
+      "major": "TJKT",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-006",
+      "name": "X B-AKL",
+      "grade": "X",
+      "major": "AKL",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-007",
+      "name": "X B-DKV",
+      "grade": "X",
+      "major": "DKV",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-008",
+      "name": "X B-MPLB",
+      "grade": "X",
+      "major": "MPLB",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-009",
+      "name": "X B-PM",
+      "grade": "X",
+      "major": "PM",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-010",
+      "name": "X B-TJKT",
+      "grade": "X",
+      "major": "TJKT",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-011",
+      "name": "X C-AKL",
+      "grade": "X",
+      "major": "AKL",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-012",
+      "name": "X C-DKV",
+      "grade": "X",
+      "major": "DKV",
+      "total_students": 34,
+      "is_active": true
+    },
+    {
+      "id": "C-013",
+      "name": "X C-PM",
+      "grade": "X",
+      "major": "PM",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-014",
+      "name": "X C-TJKT",
+      "grade": "X",
+      "major": "TJKT",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-015",
+      "name": "X D-AKL",
+      "grade": "X",
+      "major": "AKL",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-016",
+      "name": "XI A-AKL",
+      "grade": "XI",
+      "major": "AKL",
+      "total_students": 34,
+      "is_active": true
+    },
+    {
+      "id": "C-017",
+      "name": "XI A-DKV",
+      "grade": "XI",
+      "major": "DKV",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-018",
+      "name": "XI A-MPLB",
+      "grade": "XI",
+      "major": "MPLB",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-019",
+      "name": "XI A-PM",
+      "grade": "XI",
+      "major": "PM",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-020",
+      "name": "XI A-TJKT",
+      "grade": "XI",
+      "major": "TJKT",
+      "total_students": 33,
+      "is_active": true
+    },
+    {
+      "id": "C-021",
+      "name": "XI B-AKL",
+      "grade": "XI",
+      "major": "AKL",
+      "total_students": 34,
+      "is_active": true
+    },
+    {
+      "id": "C-022",
+      "name": "XI B-DKV",
+      "grade": "XI",
+      "major": "DKV",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-023",
+      "name": "XI B-MPLB",
+      "grade": "XI",
+      "major": "MPLB",
+      "total_students": 34,
+      "is_active": true
+    },
+    {
+      "id": "C-024",
+      "name": "XI B-PM",
+      "grade": "XI",
+      "major": "PM",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-025",
+      "name": "XI B-TJKT",
+      "grade": "XI",
+      "major": "TJKT",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-026",
+      "name": "XI C-AKL",
+      "grade": "XI",
+      "major": "AKL",
+      "total_students": 33,
+      "is_active": true
+    },
+    {
+      "id": "C-027",
+      "name": "XI C-DKV",
+      "grade": "XI",
+      "major": "DKV",
+      "total_students": 34,
+      "is_active": true
+    },
+    {
+      "id": "C-028",
+      "name": "XI C-PM",
+      "grade": "XI",
+      "major": "PM",
+      "total_students": 34,
+      "is_active": true
+    },
+    {
+      "id": "C-029",
+      "name": "XI C-TJKT",
+      "grade": "XI",
+      "major": "TJKT",
+      "total_students": 36,
+      "is_active": true
+    },
+    {
+      "id": "C-030",
+      "name": "XII A-AKL",
+      "grade": "XII",
+      "major": "AKL",
+      "total_students": 31,
+      "is_active": true
+    },
+    {
+      "id": "C-031",
+      "name": "XII A-DKV",
+      "grade": "XII",
+      "major": "DKV",
+      "total_students": 34,
+      "is_active": true
+    },
+    {
+      "id": "C-032",
+      "name": "XII A-MPLB",
+      "grade": "XII",
+      "major": "MPLB",
+      "total_students": 34,
+      "is_active": true
+    },
+    {
+      "id": "C-033",
+      "name": "XII A-PM",
+      "grade": "XII",
+      "major": "PM",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-034",
+      "name": "XII A-TJKT",
+      "grade": "XII",
+      "major": "TJKT",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-035",
+      "name": "XII B-AKL",
+      "grade": "XII",
+      "major": "AKL",
+      "total_students": 29,
+      "is_active": true
+    },
+    {
+      "id": "C-036",
+      "name": "XII B-DKV",
+      "grade": "XII",
+      "major": "DKV",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-037",
+      "name": "XII B-MPLB",
+      "grade": "XII",
+      "major": "MPLB",
+      "total_students": 32,
+      "is_active": true
+    },
+    {
+      "id": "C-038",
+      "name": "XII B-PM",
+      "grade": "XII",
+      "major": "PM",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-039",
+      "name": "XII B-TJKT",
+      "grade": "XII",
+      "major": "TJKT",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-040",
+      "name": "XII C-AKL",
+      "grade": "XII",
+      "major": "AKL",
+      "total_students": 34,
+      "is_active": true
+    },
+    {
+      "id": "C-041",
+      "name": "XII C-DKV",
+      "grade": "XII",
+      "major": "DKV",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-042",
+      "name": "XII C-MPLB",
+      "grade": "XII",
+      "major": "MPLB",
+      "total_students": 33,
+      "is_active": true
+    },
+    {
+      "id": "C-043",
+      "name": "XII C-PM",
+      "grade": "XII",
+      "major": "PM",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-044",
+      "name": "XII C-TJKT",
+      "grade": "XII",
+      "major": "TJKT",
+      "total_students": 35,
+      "is_active": true
+    },
+    {
+      "id": "C-045",
+      "name": "XII D-PM",
+      "grade": "XII",
+      "major": "PM",
+      "total_students": 35,
+      "is_active": true
     }
-  },
-  "supervisionSummary": {
-    "scheduled": 0,
-    "totalTeachers": 82,
-    "completed": 0,
-    "avgScore": 0,
-    "pendingFollowUp": 0,
-    "pdpStatus": "Siap Mulai Supervisi Akademik"
-  },
-  "supervisionData": [],
-  "cbtData": {
-    "serverStatus": "Siap Sinkron",
-    "lastSync": "Belum Ada Sinkronisasi",
-    "schoolAvgScore": 0,
-    "scoreTrendDelta": "+0.0",
-    "kktpCompletionRate": 0,
-    "studentsNeedingRemedial": 0,
-    "activeExamsCount": 0,
-    "departmentKktp": [
-      {
-        "dept": "TJKT",
-        "rate": 0,
-        "avg": 0,
-        "needRemedial": 0
-      },
-      {
-        "dept": "AKL",
-        "rate": 0,
-        "avg": 0,
-        "needRemedial": 0
-      },
-      {
-        "dept": "DKV",
-        "rate": 0,
-        "avg": 0,
-        "needRemedial": 0
-      },
-      {
-        "dept": "MPLB",
-        "rate": 0,
-        "avg": 0,
-        "needRemedial": 0
-      },
-      {
-        "dept": "Pemasaran",
-        "rate": 0,
-        "avg": 0,
-        "needRemedial": 0
-      }
-    ],
-    "classesSummary": [],
-    "remedialRecommendations": []
-  },
-  "executiveReports": {
-    "academicYear": "2026/2027",
-    "semester": "Ganjil",
-    "nationalCurriculumScore": 0,
-    "ptmFulfillmentRate": 0,
-    "learningMasteryRate": 0,
-    "tefaIndustryIndex": 0,
-    "totalTeachersFulfill24Jp": 0,
-    "kpiDetails": [],
-    "templates": [
-      {
-        "id": "RPT-01",
-        "code": "DOK-DINAS-01",
-        "title": "Laporan Keterlaksanaan Kalender Akademik & Program Kerja",
-        "type": "Format Standar Dinas Pendidikan",
-        "pages": "14 Halaman",
-        "signStatus": "Format Baku Siap Cetak",
-        "lastExport": "-"
-      },
-      {
-        "id": "RPT-02",
-        "code": "DOK-JJMS-02",
-        "title": "Matriks Rekap Beban Mengajar Guru & Jam Sertifikasi (JJMS)",
-        "type": "Format SIMPATIKA / InfoGTK",
-        "pages": "8 Halaman",
-        "signStatus": "Format Baku Siap Cetak",
-        "lastExport": "-"
-      },
-      {
-        "id": "RPT-03",
-        "code": "DOK-SUPERVISI-03",
-        "title": "Laporan Hasil Supervisi Akademik & Observasi Kelas Standar Proses",
-        "type": "Format Pengawas Pembina",
-        "pages": "22 Halaman",
-        "signStatus": "Format Baku Siap Cetak",
-        "lastExport": "-"
-      },
-      {
-        "id": "RPT-04",
-        "code": "DOK-CBT-04",
-        "title": "Rekap Nilai Asesmen Sumatif & Analisis Capaian Pembelajaran CBT",
-        "type": "Format E-Rapor & Kurikulum",
-        "pages": "18 Halaman",
-        "signStatus": "Format Baku Siap Cetak",
-        "lastExport": "-"
-      },
-      {
-        "id": "RPT-05",
-        "code": "DOK-UKK-PKL-05",
-        "title": "Laporan Kesiapan Menuju PKL & Uji Kompetensi Keahlian (UKK) Dual-Track",
-        "type": "Format BNSP & Industri Mitra",
-        "pages": "12 Halaman",
-        "signStatus": "Format Baku Siap Cetak",
-        "lastExport": "-"
-      }
-    ]
-  },
-  "pklModule": {
-    "summary": {
-      "totalActiveStudents": 0,
-      "verifiedDudiPartners": 0,
-      "teacherSupervisors": 0,
-      "journalSubmissionRate": 0
+  ],
+  "masterSubjects": [
+    {
+      "id": "S-001",
+      "code": "INF",
+      "name": "Informatika",
+      "category": "Umum",
+      "is_active": true
     },
-    "companies": [],
-    "students": []
-  },
-  "ukkModule": {
-    "summary": {
-      "totalCandidates": 0,
-      "totalCandidatesSub": "216 Siswa Jalur LSP-P1 • 144 Siswa Jalur Mandiri DUDI",
-      "tukCount": 5,
-      "tukCountSub": "3 TUK Terlisensi BNSP • 2 Workshop Industri DUDI",
-      "assessors": 22,
-      "assessorsSub": "12 Asesor Kompetensi BNSP • 10 Asesor Praktisi DUDI",
-      "readiness": "96.5%",
-      "readinessSub": "MUK, Rubrik Penilaian & Lembar Observasi Siap Uji"
+    {
+      "id": "S-002",
+      "code": "MTK",
+      "name": "Matematika",
+      "category": "Umum",
+      "is_active": true
     },
-    "licenses": {
-      "lspP1": {
-        "name": "LSP-P1 SMK Negeri 1 Banjarmasin",
-        "licenseNo": "BNSP-LSP-892-ID",
-        "skNo": "KEP.0421/BNSP/SMK1/2024",
-        "expiryDate": "18 November 2027",
-        "status": "Aktif / Terverifikasi BNSP",
-        "certifiedAssessors": 12,
-        "verifiedSchemes": 3,
-        "candidateStudents": 0
-      },
-      "mandiriDudi": {
-        "name": "Jalur Mandiri Terakreditasi Bersama DUDI",
-        "verificationNo": "VER-DUDI/DISDIKBUD-KALSEL/III/2026",
-        "expiryDate": "30 Juni 2027",
-        "status": "MoU Sah & Tervalidasi Cabang Dinas",
-        "practitionerAssessors": 10,
-        "verifiedSchemes": 2,
-        "candidateStudents": 0
-      }
+    {
+      "id": "S-003",
+      "code": "BIN",
+      "name": "Bahasa Indonesia",
+      "category": "Umum",
+      "is_active": true
     },
-    "schemes": [
-      {
-        "id": "SCH-01",
-        "code": "SKM-TJKT-01-2024",
-        "title": "KKNI Level II TJKT - Rekayasa Jaringan Komputer",
-        "major": "TJKT",
-        "track": "LSP-P1 BNSP",
-        "trackType": "lsp",
-        "certificate": "Sertifikat Garuda Emas BNSP",
-        "tukLocation": "TUK Lab Jaringan Cisco & Fiber Optic (Terlisensi BNSP)",
-        "assessors": "Muhammad Ihsan (MET.000.01292023) / Tim DUDI PT Telkom",
-        "candidatesCount": 0,
-        "sessionsInfo": "Belum Ada Jadwal Sesi",
-        "scheduleDate": "Belum Dijadwalkan",
-        "status": "Draft Skema",
-        "statusClass": "badge-review",
-        "leadAssessor": {
-          "name": "Muhammad Ihsan",
-          "noReg": "MET.000.01292023",
-          "institution": "LSP-P1 SMKN 1 Banjarmasin",
-          "role": "Asesor Kompetensi Bersertifikat BNSP"
-        },
-        "coAssessor": {
-          "name": "Ir. Hendri Gunawan",
-          "noReg": "REG-IND/TLKM-2025",
-          "company": "PT Telkom Indonesia (Senior Network Architect)",
-          "role": "Asesor Praktisi Eksternal DUDI"
-        },
-        "suratTugas": {
-          "noSurat": "800/412/SMKN1-DISDIKBUD-KALSEL/IV/2026",
-          "tglSurat": "08 April 2026",
-          "dasarHukum": "1. Undang-Undang No. 20 Tahun 2003 tentang Sistem Pendidikan Nasional\n2. Permendikbudristek No. 12 Tahun 2024 tentang Kurikulum Merdeka\n3. Pedoman Penyelenggaraan UKK SMK Direktorat SMK Kemendikbudristek TA 2025/2026\n4. Surat Lisensi BNSP No. KEP.0421/BNSP/SMK1/2024 tentang Lisensi LSP-P1",
-          "perihal": "Surat Tugas Penguji / Asesor Uji Kompetensi Keahlian (UKK) Jalur LSP-P1 BNSP"
-        },
-        "units": [
-          {
-            "code": "J.611000.005.02",
-            "title": "Menentukan Spesifikasi Perangkat Jaringan Komputer"
-          },
-          {
-            "code": "J.611000.009.02",
-            "title": "Memasang Kabel Jaringan Berbasis Fiber Optic & Drop Core"
-          },
-          {
-            "code": "J.611000.012.02",
-            "title": "Mengkonfigurasi Routing Dinamis (OSPF/BGP) pada Router Jaringan"
-          },
-          {
-            "code": "J.611000.013.02",
-            "title": "Mengkonfigurasi Virtual Local Area Network (VLAN) & Trunkiing"
-          },
-          {
-            "code": "J.611000.015.02",
-            "title": "Mengkonfigurasi Keamanan Jaringan Firewall & Access Control List (ACL)"
-          }
-        ],
-        "sessions": [
-          {
-            "wave": "Gelombang 1",
-            "date": "14 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Jaringan Cisco & Cloud (TUK-01)"
-          },
-          {
-            "wave": "Gelombang 2",
-            "date": "15 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Jaringan Cisco & Cloud (TUK-01)"
-          },
-          {
-            "wave": "Gelombang 3",
-            "date": "16 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Jaringan Cisco & Cloud (TUK-01)"
-          },
-          {
-            "wave": "Gelombang 4",
-            "date": "17 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Jaringan Cisco & Cloud (TUK-01)"
-          }
-        ],
-        "candidates": []
-      },
-      {
-        "id": "SCH-02",
-        "code": "SKM-AKL-02-2024",
-        "title": "Penyusun Laporan Keuangan Entitas Tanpa Akuntabilitas Publik (ETAP)",
-        "major": "AKL",
-        "track": "LSP-P1 BNSP",
-        "trackType": "lsp",
-        "certificate": "Sertifikat Garuda Emas BNSP",
-        "tukLocation": "TUK Lab Komputer Akuntansi MYOB & Accurate",
-        "assessors": "Oky Wulan Maulina (MET.000.018239) / Penguji Ikatan Akuntan Indonesia",
-        "candidatesCount": 0,
-        "sessionsInfo": "Belum Ada Jadwal Sesi",
-        "scheduleDate": "Belum Dijadwalkan",
-        "status": "Draft Skema",
-        "statusClass": "badge-review",
-        "leadAssessor": {
-          "name": "Oky Wulan Maulina",
-          "noReg": "MET.000.018239",
-          "institution": "LSP-P1 SMKN 1 Banjarmasin",
-          "role": "Asesor Kompetensi Bersertifikat BNSP"
-        },
-        "coAssessor": {
-          "name": "Bambang Sutrisno, S.E., Ak., CA",
-          "noReg": "IAI-REG-09412",
-          "company": "Ikatan Akuntan Indonesia (IAI) & Bank BUMN",
-          "role": "Asesor Praktisi Eksternal Asosiasi"
-        },
-        "suratTugas": {
-          "noSurat": "800/413/SMKN1-DISDIKBUD-KALSEL/IV/2026",
-          "tglSurat": "10 April 2026",
-          "dasarHukum": "1. Undang-Undang No. 20 Tahun 2003 tentang Sistem Pendidikan Nasional\n2. Permendikbudristek No. 12 Tahun 2024 tentang Kurikulum Merdeka\n3. Standar Kompetensi Kerja Nasional Indonesia (SKKNI) Bidang Akuntansi",
-          "perihal": "Surat Tugas Penguji / Asesor Uji Kompetensi Keahlian (UKK) Akuntansi LSP-P1"
-        },
-        "units": [
-          {
-            "code": "M.692000.001.02",
-            "title": "Menerapkan Prinsip Praktik Profesional dalam Bekerja"
-          },
-          {
-            "code": "M.692000.002.02",
-            "title": "Menerapkan Praktik-Praktik Kesehatan dan Keselamatan di Tempat Kerja"
-          },
-          {
-            "code": "M.692000.007.02",
-            "title": "Memproses Buku Besar dan Neraca Saldo Percobaan"
-          },
-          {
-            "code": "M.692000.013.02",
-            "title": "Menyusun Laporan Keuangan Berbasis SAK ETAP"
-          },
-          {
-            "code": "M.692000.022.02",
-            "title": "Mengoperasikan Aplikasi Komputer Akuntansi (MYOB/Accurate)"
-          }
-        ],
-        "sessions": [
-          {
-            "wave": "Gelombang 1",
-            "date": "18 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Komputer Akuntansi 1"
-          },
-          {
-            "wave": "Gelombang 2",
-            "date": "19 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Komputer Akuntansi 1"
-          },
-          {
-            "wave": "Gelombang 3",
-            "date": "20 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Komputer Akuntansi 1"
-          },
-          {
-            "wave": "Gelombang 4",
-            "date": "21 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Komputer Akuntansi 1"
-          }
-        ],
-        "candidates": []
-      },
-      {
-        "id": "SCH-03",
-        "code": "SKM-MPLB-03-2024",
-        "title": "Administrasi Perkantoran Modern & Manajemen Arsip Digital",
-        "major": "MPLB",
-        "track": "LSP-P1 BNSP",
-        "trackType": "lsp",
-        "certificate": "Sertifikat Garuda Emas BNSP",
-        "tukLocation": "TUK Lab Perkantoran & Business Simulation Center",
-        "assessors": "Akhmad Hanafi Maulana, SE (MET.000.014290) / Tim Asosiasi Arsiparis",
-        "candidatesCount": 0,
-        "sessionsInfo": "Belum Ada Jadwal Sesi",
-        "scheduleDate": "Belum Dijadwalkan",
-        "status": "Draft Skema",
-        "statusClass": "badge-review",
-        "leadAssessor": {
-          "name": "Akhmad Hanafi Maulana, SE",
-          "noReg": "MET.000.014290",
-          "institution": "LSP-P1 SMKN 1 Banjarmasin",
-          "role": "Master Asesor Kompetensi BNSP"
-        },
-        "coAssessor": {
-          "name": "Dra. Endang Wahyuni",
-          "noReg": "ANRI-REG-0318",
-          "company": "Asosiasi Arsiparis Indonesia & Kementerian ATR/BPN",
-          "role": "Asesor Praktisi Tata Kelola Kantor"
-        },
-        "suratTugas": {
-          "noSurat": "800/414/SMKN1-DISDIKBUD-KALSEL/IV/2026",
-          "tglSurat": "12 April 2026",
-          "dasarHukum": "1. Undang-Undang No. 20 Tahun 2003 tentang Sistem Pendidikan Nasional\n2. SKKNI Bidang Administrasi Profesional No. 183 Tahun 2016",
-          "perihal": "Surat Tugas Asesor UKK Manajemen Perkantoran & Layanan Bisnis"
-        },
-        "units": [
-          {
-            "code": "N.821100.001.01",
-            "title": "Menangani Penerimaan dan Pengiriman Surat / Dokumen"
-          },
-          {
-            "code": "N.821100.004.01",
-            "title": "Mengatur Penggandaan dan Pengumpulan Dokumen Kantor"
-          },
-          {
-            "code": "N.821100.028.01",
-            "title": "Mengelola Sistem Kearsipan Digital Berbasis Cloud E-Filing"
-          },
-          {
-            "code": "N.821100.057.01",
-            "title": "Membuat Dokumen Presentasi Profesional dan Laporan Rapat Bisnis"
-          }
-        ],
-        "sessions": [
-          {
-            "wave": "Gelombang 1",
-            "date": "21 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Simulasi Perkantoran Modern"
-          },
-          {
-            "wave": "Gelombang 2",
-            "date": "22 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Simulasi Perkantoran Modern"
-          },
-          {
-            "wave": "Gelombang 3",
-            "date": "23 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Simulasi Perkantoran Modern"
-          },
-          {
-            "wave": "Gelombang 4",
-            "date": "24 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 18,
-            "room": "Lab Simulasi Perkantoran Modern"
-          }
-        ],
-        "candidates": []
-      },
-      {
-        "id": "SCH-04",
-        "code": "MND-DKV-01-2026",
-        "title": "Junior Graphic Designer & Motion Content Artist",
-        "major": "DKV",
-        "track": "Mandiri Sekolah + DUDI Mitra",
-        "trackType": "mandiri",
-        "certificate": "Sertifikat Kompetensi Bersama DUDI & ADGI",
-        "tukLocation": "TUK Studio Desain Multimedia & Lab Kreatif",
-        "assessors": "Hendra Surya Pratama / Maya Sandrina (Infinite Studios & ADGI)",
-        "candidatesCount": 0,
-        "sessionsInfo": "Belum Ada Jadwal Sesi",
-        "scheduleDate": "Belum Dijadwalkan",
-        "status": "Draft Skema",
-        "statusClass": "badge-review",
-        "leadAssessor": {
-          "name": "Hendra Surya Pratama",
-          "noReg": "PEND-DKV-202201",
-          "institution": "SMKN 1 Banjarmasin",
-          "role": "Penguji Internal Sekolah Bidang Kreatif"
-        },
-        "coAssessor": {
-          "name": "Maya Sandrina",
-          "noReg": "ADGI-PROF-2023-088",
-          "company": "Infinite Studios & Asosiasi Desainer Grafis Indonesia (ADGI)",
-          "role": "Asesor Penguji Eksternal Industri"
-        },
-        "suratTugas": {
-          "noSurat": "800/415/SMKN1-DISDIKBUD-KALSEL/IV/2026",
-          "tglSurat": "09 April 2026",
-          "dasarHukum": "1. Permendikbudristek No. 12 Tahun 2024 tentang Kurikulum Merdeka SMK\n2. Perjanjian Kerja Sama (MoU) No. 421.5/MOU-INF/2024 dengan Infinite Studios & ADGI",
-          "perihal": "Surat Tugas Penguji UKK Jalur Mandiri Kemitraan Industri DUDI"
-        },
-        "units": [
-          {
-            "code": "M.74100.001.02",
-            "title": "Menerapkan Prinsip Dasar Desain dan Komunikasi Visual"
-          },
-          {
-            "code": "M.74100.005.02",
-            "title": "Menciptakan Karya Desain Vektor dan Tipografi Cetak/Digital"
-          },
-          {
-            "code": "M.74100.010.02",
-            "title": "Membuat Storyboard dan Animasi Motion Graphic 2D"
-          },
-          {
-            "code": "M.74100.014.02",
-            "title": "Menyiapkan Berkas Siap Cetak dan Aset Digital Multi-Platform"
-          }
-        ],
-        "sessions": [
-          {
-            "wave": "Gelombang 1",
-            "date": "15 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 24,
-            "room": "Studio Desain Kreatif & Render Lab"
-          },
-          {
-            "wave": "Gelombang 2",
-            "date": "16 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 24,
-            "room": "Studio Desain Kreatif & Render Lab"
-          },
-          {
-            "wave": "Gelombang 3",
-            "date": "17 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 24,
-            "room": "Studio Desain Kreatif & Render Lab"
-          }
-        ],
-        "candidates": []
-      },
-      {
-        "id": "SCH-05",
-        "code": "MND-PM-02-2026",
-        "title": "Spesialis Operasional Ritel Modern & Digital Commerce Management",
-        "major": "Pemasaran",
-        "track": "Mandiri Sekolah + DUDI Mitra",
-        "trackType": "mandiri",
-        "certificate": "Sertifikat Kompetensi Bersama DUDI & Asosiasi Ritel",
-        "tukLocation": "TUK Business Center Mini Market Mandiri & Studio Live Commerce",
-        "assessors": "Futri Indri Septiani / Firman Hidayat (PT Sumber Alfaria Trijaya & Tokopedia)",
-        "candidatesCount": 0,
-        "sessionsInfo": "Belum Ada Jadwal Sesi",
-        "scheduleDate": "Belum Dijadwalkan",
-        "status": "Draft Skema",
-        "statusClass": "badge-review",
-        "leadAssessor": {
-          "name": "Futri Indri Septiani",
-          "noReg": "PEND-PM-201402",
-          "institution": "SMKN 1 Banjarmasin",
-          "role": "Penguji Internal Sekolah Bidang Bisnis & Retail"
-        },
-        "coAssessor": {
-          "name": "Firman Hidayat",
-          "noReg": "DUDI-RTL-2024-05",
-          "company": "PT Sumber Alfaria Trijaya Tbk & E-Commerce Mitra",
-          "role": "Asesor Praktisi Eksternal Industri Ritel Modern"
-        },
-        "suratTugas": {
-          "noSurat": "800/416/SMKN1-DISDIKBUD-KALSEL/IV/2026",
-          "tglSurat": "14 April 2026",
-          "dasarHukum": "1. Permendikbudristek No. 12 Tahun 2024 tentang Kurikulum Merdeka\n2. MoU Kerja Sama SMK-Alfamart Class & Tokopedia Commerce Hub",
-          "perihal": "Surat Tugas Penguji UKK Jalur Mandiri Ritel & Bisnis Digital"
-        },
-        "units": [
-          {
-            "code": "G.46100.001.01",
-            "title": "Menata Produk Display Barang Sesuai Planogram Ritel Modern"
-          },
-          {
-            "code": "G.46100.004.01",
-            "title": "Melakukan Pelayanan Pelanggan dan Kasir Point of Sales (POS)"
-          },
-          {
-            "code": "G.46100.009.01",
-            "title": "Mengoperasikan Pemasaran Live Streaming E-Commerce & Omnichannel"
-          },
-          {
-            "code": "G.46100.012.01",
-            "title": "Melakukan Stock Opname dan Pengendalian Barang Dagangan"
-          }
-        ],
-        "sessions": [
-          {
-            "wave": "Gelombang 1",
-            "date": "22 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 24,
-            "room": "Business Center Mini Market & Live Studio"
-          },
-          {
-            "wave": "Gelombang 2",
-            "date": "23 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 24,
-            "room": "Business Center Mini Market & Live Studio"
-          },
-          {
-            "wave": "Gelombang 3",
-            "date": "24 April 2026",
-            "time": "08.00 - 15.00 WIB",
-            "count": 24,
-            "room": "Business Center Mini Market & Live Studio"
-          }
-        ],
-        "candidates": []
-      }
-    ]
-  },
+    {
+      "id": "S-004",
+      "code": "BIG",
+      "name": "Bahasa Inggris",
+      "category": "Umum",
+      "is_active": true
+    },
+    {
+      "id": "S-005",
+      "code": "PAI",
+      "name": "Pendidikan Agama Islam",
+      "category": "Umum",
+      "is_active": true
+    },
+    {
+      "id": "S-006",
+      "code": "PKN",
+      "name": "Pendidikan Pancasila",
+      "category": "Umum",
+      "is_active": true
+    },
+    {
+      "id": "S-007",
+      "code": "PJK",
+      "name": "PJOK",
+      "category": "Umum",
+      "is_active": true
+    },
+    {
+      "id": "S-008",
+      "code": "SEJ",
+      "name": "Sejarah",
+      "category": "Umum",
+      "is_active": true
+    },
+    {
+      "id": "S-009",
+      "code": "SBD",
+      "name": "Seni Budaya",
+      "category": "Umum",
+      "is_active": true
+    },
+    {
+      "id": "S-010",
+      "code": "IPS",
+      "name": "Projek IPAS",
+      "category": "Umum",
+      "is_active": true
+    },
+    {
+      "id": "S-011",
+      "code": "PKK",
+      "name": "Projek Kreatif & Kewirausahaan",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-012",
+      "code": "TJKT-DAS",
+      "name": "Dasar-Dasar Keahlian TJKT",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-013",
+      "code": "TJKT-ASJ",
+      "name": "Administrasi Sistem Jaringan",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-014",
+      "code": "TJKT-AIJ",
+      "name": "Administrasi Infrastruktur Jaringan",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-015",
+      "code": "TJKT-TLJ",
+      "name": "Teknologi Layanan Jaringan",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-016",
+      "code": "DKV-DAS",
+      "name": "Dasar-Dasar Keahlian DKV",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-017",
+      "code": "DKV-DGV",
+      "name": "Desain Grafis Percetakan",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-018",
+      "code": "DKV-FTV",
+      "name": "Fotografi & Videografi",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-019",
+      "code": "DKV-2DA",
+      "name": "Animasi 2D & 3D",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-020",
+      "code": "MPLB-DAS",
+      "name": "Dasar-Dasar Keahlian MPLB",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-021",
+      "code": "MPLB-PEG",
+      "name": "Otomatisasi Tata Kelola Kepegawaian",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-022",
+      "code": "MPLB-KEU",
+      "name": "Otomatisasi Tata Kelola Keuangan",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-023",
+      "code": "AKL-DAS",
+      "name": "Dasar-Dasar Keahlian AKL",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-024",
+      "code": "AKL-KOM",
+      "name": "Komputer Akuntansi (MYOB/Accurate)",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-025",
+      "code": "AKL-PAJ",
+      "name": "Administrasi Perpajakan",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-026",
+      "code": "PM-DAS",
+      "name": "Dasar-Dasar Pemasaran",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-027",
+      "code": "PM-BDR",
+      "name": "Bisnis Digital & E-Commerce",
+      "category": "Kejuruan",
+      "is_active": true
+    },
+    {
+      "id": "S-028",
+      "code": "PM-RTL",
+      "name": "Pengelolaan Bisnis Ritel",
+      "category": "Kejuruan",
+      "is_active": true
+    }
+  ],
+  "masterRooms": [
+    {
+      "id": "R-001",
+      "name": "Lab Komputer 1 (TJKT)",
+      "description": "Gedung B Lt 2 - 36 Unit PC",
+      "is_active": true
+    },
+    {
+      "id": "R-002",
+      "name": "Lab Komputer 2 (TJKT)",
+      "description": "Gedung B Lt 2 - 36 Unit PC",
+      "is_active": true
+    },
+    {
+      "id": "R-003",
+      "name": "Bengkel Hardware & Jaringan",
+      "description": "Gedung B Lt 1 - Rack Server & Crimping",
+      "is_active": true
+    },
+    {
+      "id": "R-004",
+      "name": "Lab Multimedia DKV",
+      "description": "Gedung C Lt 2 - High Spec Editing PC",
+      "is_active": true
+    },
+    {
+      "id": "R-005",
+      "name": "Studio Foto & Audio Visual",
+      "description": "Gedung C Lt 1 - Green Screen & Lighting",
+      "is_active": true
+    },
+    {
+      "id": "R-006",
+      "name": "Lab Simulasi Perkantoran (MPLB)",
+      "description": "Gedung D Lt 2 - Meja Front Office & Filling",
+      "is_active": true
+    },
+    {
+      "id": "R-007",
+      "name": "Lab Komputer Akuntansi (AKL)",
+      "description": "Gedung D Lt 1 - 36 PC Software Akuntansi",
+      "is_active": true
+    },
+    {
+      "id": "R-008",
+      "name": "Lab Bisnis Ritel & Kasir (PM)",
+      "description": "Gedung A Lt 1 - Mini Market & POS System",
+      "is_active": true
+    },
+    {
+      "id": "R-009",
+      "name": "Ruang Teori 01",
+      "description": "Gedung Utama Lantai 1",
+      "is_active": true
+    },
+    {
+      "id": "R-010",
+      "name": "Ruang Teori 02",
+      "description": "Gedung Utama Lantai 1",
+      "is_active": true
+    },
+    {
+      "id": "R-011",
+      "name": "Ruang Teori 03",
+      "description": "Gedung Utama Lantai 2",
+      "is_active": true
+    },
+    {
+      "id": "R-012",
+      "name": "Ruang Teori 04",
+      "description": "Gedung Utama Lantai 2",
+      "is_active": true
+    },
+    {
+      "id": "R-013",
+      "name": "Ruang Teori 05",
+      "description": "Gedung Utama Lantai 2",
+      "is_active": true
+    },
+    {
+      "id": "R-014",
+      "name": "Aula Sasana Krida",
+      "description": "Gedung Serbaguna Utama",
+      "is_active": true
+    },
+    {
+      "id": "R-015",
+      "name": "Perpustakaan Digital",
+      "description": "Gedung Literasi Lt 1",
+      "is_active": true
+    }
+  ],
+  "schedules": [
+    {
+      "id": "SCH-001",
+      "day": "Senin",
+      "start_time": "07.30",
+      "end_time": "09.00",
+      "class_id": "C-005",
+      "class_name": "X A-TJKT",
+      "subject_id": "S-001",
+      "subject_name": "Informatika",
+      "teacher_id": "T-002",
+      "teacher_name": "Ahmad Gajali",
+      "room_id": "R-001",
+      "room_name": "Lab Komputer 1 (TJKT)"
+    },
+    {
+      "id": "SCH-002",
+      "day": "Senin",
+      "start_time": "09.15",
+      "end_time": "10.45",
+      "class_id": "C-005",
+      "class_name": "X A-TJKT",
+      "subject_id": "S-002",
+      "subject_name": "Matematika",
+      "teacher_id": "T-015",
+      "teacher_name": "Nurul Hidayati",
+      "room_id": "R-009",
+      "room_name": "Ruang Teori 01"
+    },
+    {
+      "id": "SCH-003",
+      "day": "Senin",
+      "start_time": "11.00",
+      "end_time": "12.30",
+      "class_id": "C-002",
+      "class_name": "X A-DKV",
+      "subject_id": "S-016",
+      "subject_name": "Dasar-Dasar Keahlian DKV",
+      "teacher_id": "T-004",
+      "teacher_name": "Hendra Surya Pratama",
+      "room_id": "R-004",
+      "room_name": "Lab Multimedia DKV"
+    },
+    {
+      "id": "SCH-004",
+      "day": "Senin",
+      "start_time": "13.15",
+      "end_time": "14.45",
+      "class_id": "C-001",
+      "class_name": "X A-AKL",
+      "subject_id": "S-023",
+      "subject_name": "Dasar-Dasar Keahlian AKL",
+      "teacher_id": "T-001",
+      "teacher_name": "Rusnani",
+      "room_id": "R-007",
+      "room_name": "Lab Komputer Akuntansi (AKL)"
+    },
+    {
+      "id": "SCH-005",
+      "day": "Senin",
+      "start_time": "07.30",
+      "end_time": "09.00",
+      "class_id": "C-020",
+      "class_name": "XI A-TJKT",
+      "subject_id": "S-013",
+      "subject_name": "Administrasi Sistem Jaringan",
+      "teacher_id": "T-006",
+      "teacher_name": "Muhammad Ihsan",
+      "room_id": "R-002",
+      "room_name": "Lab Komputer 2 (TJKT)"
+    },
+    {
+      "id": "SCH-006",
+      "day": "Senin",
+      "start_time": "09.15",
+      "end_time": "10.45",
+      "class_id": "C-020",
+      "class_name": "XI A-TJKT",
+      "subject_id": "S-014",
+      "subject_name": "Administrasi Infrastruktur Jaringan",
+      "teacher_id": "T-006",
+      "teacher_name": "Muhammad Ihsan",
+      "room_id": "R-003",
+      "room_name": "Bengkel Hardware & Jaringan"
+    },
+    {
+      "id": "SCH-007",
+      "day": "Selasa",
+      "start_time": "07.30",
+      "end_time": "09.00",
+      "class_id": "C-003",
+      "class_name": "X A-MPLB",
+      "subject_id": "S-020",
+      "subject_name": "Dasar-Dasar Keahlian MPLB",
+      "teacher_id": "T-005",
+      "teacher_name": "Akhmad Hanafi Maulana, SE",
+      "room_id": "R-006",
+      "room_name": "Lab Simulasi Perkantoran (MPLB)"
+    },
+    {
+      "id": "SCH-008",
+      "day": "Selasa",
+      "start_time": "09.15",
+      "end_time": "10.45",
+      "class_id": "C-004",
+      "class_name": "X A-PM",
+      "subject_id": "S-026",
+      "subject_name": "Dasar-Dasar Pemasaran",
+      "teacher_id": "T-007",
+      "teacher_name": "Dewi Lestari, S.Pd",
+      "room_id": "R-008",
+      "room_name": "Lab Bisnis Ritel & Kasir (PM)"
+    },
+    {
+      "id": "SCH-009",
+      "day": "Selasa",
+      "start_time": "11.00",
+      "end_time": "12.30",
+      "class_id": "C-021",
+      "class_name": "XI A-DKV",
+      "subject_id": "S-017",
+      "subject_name": "Desain Grafis Percetakan",
+      "teacher_id": "T-004",
+      "teacher_name": "Hendra Surya Pratama",
+      "room_id": "R-004",
+      "room_name": "Lab Multimedia DKV"
+    },
+    {
+      "id": "SCH-010",
+      "day": "Selasa",
+      "start_time": "13.15",
+      "end_time": "14.45",
+      "class_id": "C-005",
+      "class_name": "X A-TJKT",
+      "subject_id": "S-003",
+      "subject_name": "Bahasa Indonesia",
+      "teacher_id": "T-018",
+      "teacher_name": "Dra. Hj. Rusdiana",
+      "room_id": "R-010",
+      "room_name": "Ruang Teori 02"
+    },
+    {
+      "id": "SCH-011",
+      "day": "Rabu",
+      "start_time": "07.30",
+      "end_time": "09.00",
+      "class_id": "C-005",
+      "class_name": "X A-TJKT",
+      "subject_id": "S-012",
+      "subject_name": "Dasar-Dasar Keahlian TJKT",
+      "teacher_id": "T-002",
+      "teacher_name": "Ahmad Gajali",
+      "room_id": "R-001",
+      "room_name": "Lab Komputer 1 (TJKT)"
+    },
+    {
+      "id": "SCH-012",
+      "day": "Rabu",
+      "start_time": "09.15",
+      "end_time": "10.45",
+      "class_id": "C-020",
+      "class_name": "XI A-TJKT",
+      "subject_id": "S-011",
+      "subject_name": "Projek Kreatif & Kewirausahaan",
+      "teacher_id": "T-009",
+      "teacher_name": "Sri Wahyuni, S.Pd",
+      "room_id": "R-011",
+      "room_name": "Ruang Teori 03"
+    },
+    {
+      "id": "SCH-013",
+      "day": "Rabu",
+      "start_time": "11.00",
+      "end_time": "12.30",
+      "class_id": "C-001",
+      "class_name": "X A-AKL",
+      "subject_id": "S-004",
+      "subject_name": "Bahasa Inggris",
+      "teacher_id": "T-012",
+      "teacher_name": "Muhammad Ramadhani",
+      "room_id": "R-012",
+      "room_name": "Ruang Teori 04"
+    },
+    {
+      "id": "SCH-014",
+      "day": "Kamis",
+      "start_time": "07.30",
+      "end_time": "09.00",
+      "class_id": "C-020",
+      "class_name": "XI A-TJKT",
+      "subject_id": "S-015",
+      "subject_name": "Teknologi Layanan Jaringan",
+      "teacher_id": "T-002",
+      "teacher_name": "Ahmad Gajali",
+      "room_id": "R-002",
+      "room_name": "Lab Komputer 2 (TJKT)"
+    },
+    {
+      "id": "SCH-015",
+      "day": "Kamis",
+      "start_time": "09.15",
+      "end_time": "10.45",
+      "class_id": "C-002",
+      "class_name": "X A-DKV",
+      "subject_id": "S-018",
+      "subject_name": "Fotografi & Videografi",
+      "teacher_id": "T-010",
+      "teacher_name": "Bambang Irawan",
+      "room_id": "R-005",
+      "room_name": "Studio Foto & Audio Visual"
+    },
+    {
+      "id": "SCH-016",
+      "day": "Kamis",
+      "start_time": "11.00",
+      "end_time": "12.30",
+      "class_id": "C-003",
+      "class_name": "X A-MPLB",
+      "subject_id": "S-021",
+      "subject_name": "Otomatisasi Tata Kelola Kepegawaian",
+      "teacher_id": "T-005",
+      "teacher_name": "Akhmad Hanafi Maulana, SE",
+      "room_id": "R-006",
+      "room_name": "Lab Simulasi Perkantoran (MPLB)"
+    },
+    {
+      "id": "SCH-017",
+      "day": "Jumat",
+      "start_time": "07.30",
+      "end_time": "09.00",
+      "class_id": "C-005",
+      "class_name": "X A-TJKT",
+      "subject_id": "S-005",
+      "subject_name": "Pendidikan Agama Islam",
+      "teacher_id": "T-022",
+      "teacher_name": "H. Abdul Muhaimin, S.Ag",
+      "room_id": "R-014",
+      "room_name": "Aula Sasana Krida"
+    },
+    {
+      "id": "SCH-018",
+      "day": "Jumat",
+      "start_time": "09.15",
+      "end_time": "10.45",
+      "class_id": "C-020",
+      "class_name": "XI A-TJKT",
+      "subject_id": "S-007",
+      "subject_name": "PJOK",
+      "teacher_id": "T-030",
+      "teacher_name": "Rahmat Hidayat, S.Pd",
+      "room_id": "R-014",
+      "room_name": "Aula Sasana Krida"
+    },
+    {
+      "id": "SCH-019",
+      "day": "Sabtu",
+      "start_time": "07.30",
+      "end_time": "09.00",
+      "class_id": "C-005",
+      "class_name": "X A-TJKT",
+      "subject_id": "S-010",
+      "subject_name": "Projek IPAS",
+      "teacher_id": "T-025",
+      "teacher_name": "Siti Fatimah, M.Pd",
+      "room_id": "R-013",
+      "room_name": "Ruang Teori 05"
+    },
+    {
+      "id": "SCH-020",
+      "day": "Sabtu",
+      "start_time": "09.15",
+      "end_time": "10.45",
+      "class_id": "C-001",
+      "class_name": "X A-AKL",
+      "subject_id": "S-024",
+      "subject_name": "Komputer Akuntansi (MYOB/Accurate)",
+      "teacher_id": "T-001",
+      "teacher_name": "Rusnani",
+      "room_id": "R-007",
+      "room_name": "Lab Komputer Akuntansi (AKL)"
+    }
+  ],
+  "documents": [
+    {
+      "id": "DOC-001",
+      "name": "Kurikulum Operasional Satuan Pendidikan (KSP) SMKN 1 Banjarmasin",
+      "category": "KSP",
+      "school_year": "2026/2027",
+      "description": "Dokumen induk pedoman kurikulum operasional sekolah tahun ajaran 2026/2027 sesuai Permendikdasmen No. 13/2025.",
+      "file_name": "KSP_SMKN1_BJM_2026_2027_FINAL.pdf",
+      "file_size": "4.2 MB",
+      "uploaded_at": "2026-07-15 09:30"
+    },
+    {
+      "id": "DOC-002",
+      "name": "Alur Tujuan Pembelajaran & Silabus Konsentrasi Keahlian TJKT",
+      "category": "Silabus",
+      "school_year": "2026/2027",
+      "description": "ATP dan silabus kejuruan Teknik Jaringan Komputer & Telekomunikasi Fase E dan Fase F.",
+      "file_name": "ATP_Silabus_TJKT_2026.pdf",
+      "file_size": "1.8 MB",
+      "uploaded_at": "2026-07-20 10:15"
+    },
+    {
+      "id": "DOC-003",
+      "name": "Alur Tujuan Pembelajaran & Silabus Konsentrasi Keahlian DKV",
+      "category": "Silabus",
+      "school_year": "2026/2027",
+      "description": "ATP dan silabus kejuruan Desain Komunikasi Visual Fase E dan Fase F.",
+      "file_name": "ATP_Silabus_DKV_2026.pdf",
+      "file_size": "2.1 MB",
+      "uploaded_at": "2026-07-20 11:00"
+    },
+    {
+      "id": "DOC-004",
+      "name": "Alur Tujuan Pembelajaran & Silabus Konsentrasi Keahlian MPLB",
+      "category": "Silabus",
+      "school_year": "2026/2027",
+      "description": "ATP dan silabus kejuruan Manajemen Perkantoran & Layanan Bisnis.",
+      "file_name": "ATP_Silabus_MPLB_2026.pdf",
+      "file_size": "1.6 MB",
+      "uploaded_at": "2026-07-20 13:30"
+    },
+    {
+      "id": "DOC-005",
+      "name": "Alur Tujuan Pembelajaran & Silabus Konsentrasi Keahlian AKL",
+      "category": "Silabus",
+      "school_year": "2026/2027",
+      "description": "ATP dan silabus kejuruan Akuntansi dan Keuangan Lembaga.",
+      "file_name": "ATP_Silabus_AKL_2026.pdf",
+      "file_size": "1.7 MB",
+      "uploaded_at": "2026-07-20 14:15"
+    },
+    {
+      "id": "DOC-006",
+      "name": "Alur Tujuan Pembelajaran & Silabus Konsentrasi Keahlian PM",
+      "category": "Silabus",
+      "school_year": "2026/2027",
+      "description": "ATP dan silabus kejuruan Pemasaran & Bisnis Ritel.",
+      "file_name": "ATP_Silabus_PM_2026.pdf",
+      "file_size": "1.5 MB",
+      "uploaded_at": "2026-07-20 15:00"
+    },
+    {
+      "id": "DOC-007",
+      "name": "Modul Ajar Deep Learning Fase E - Informatika & Berpikir Komputasional",
+      "category": "Modul Ajar",
+      "school_year": "2026/2027",
+      "description": "Modul ajar terintegrasi penalaran kritis, kolaborasi, dan studi kasus digital.",
+      "file_name": "Modul_Ajar_Informatika_KelasX.pdf",
+      "file_size": "3.2 MB",
+      "uploaded_at": "2026-08-01 08:45"
+    },
+    {
+      "id": "DOC-008",
+      "name": "Modul Ajar Matematika Kejuruan Fase F - Aljabar & Statistika Bisnis",
+      "category": "Modul Ajar",
+      "school_year": "2026/2027",
+      "description": "Modul ajar matematika terapan untuk rumpun bisnis dan manajemen.",
+      "file_name": "Modul_Ajar_Matematika_FaseF.pdf",
+      "file_size": "2.8 MB",
+      "uploaded_at": "2026-08-05 14:00"
+    },
+    {
+      "id": "DOC-009",
+      "name": "Format Administrasi Guru & Panduan Jurnal Mengajar Semester Ganjil",
+      "category": "Administrasi Guru",
+      "school_year": "2026/2027",
+      "description": "Template baku jurnal PTM, daftar hadir guru, dan lembar capaian pembelajaran mingguan.",
+      "file_name": "Format_Administrasi_Guru_2026.docx",
+      "file_size": "850 KB",
+      "uploaded_at": "2026-07-10 11:20"
+    },
+    {
+      "id": "DOC-010",
+      "name": "Panduan Asesmen Formatif & Sumatif Kurikulum Merdeka SMKN 1",
+      "category": "Asesmen",
+      "school_year": "2026/2027",
+      "description": "Pedoman perancangan instrumen asesmen, rubrik penilaian, dan pengolahan rapor.",
+      "file_name": "Panduan_Asesmen_Merdeka_2026.pdf",
+      "file_size": "2.4 MB",
+      "uploaded_at": "2026-08-15 10:00"
+    },
+    {
+      "id": "DOC-011",
+      "name": "Kalender Pendidikan & Matriks Pekan Efektif Semester Ganjil 2026/2027",
+      "category": "Lainnya",
+      "school_year": "2026/2027",
+      "description": "Rincian hari belajar efektif, libur nasional, dan agenda kegiatan sekolah.",
+      "file_name": "Kalender_Akademik_2026_2027.pdf",
+      "file_size": "620 KB",
+      "uploaded_at": "2026-07-08 09:00"
+    }
+  ],
+  "agendas": [
+    {
+      "id": "AG-001",
+      "date": "2026-09-30",
+      "title": "Rapat Koordinasi Kurikulum & Review Dokumen Ajar",
+      "description": "Evaluasi kelengkapan KSP, ATP, dan modul ajar per konsentrasi keahlian."
+    },
+    {
+      "id": "AG-002",
+      "date": "2026-10-05",
+      "title": "Supervisi Administrasi Guru Produktif",
+      "description": "Pemeriksaan portofolio ajar dan instrumen penilaian semester ganjil."
+    },
+    {
+      "id": "AG-003",
+      "date": "2026-10-19",
+      "title": "Asesmen Sumatif Tengah Semester (ASTS)",
+      "description": "Pelaksanaan asesmen bersama berbasis komputer & performa praktika."
+    },
+    {
+      "id": "AG-004",
+      "date": "2026-11-10",
+      "title": "Review Sinkronisasi Kurikulum Industri",
+      "description": "Pertemuan waka kur dan kaprog bersama praktisi DUDI mitra sekolah."
+    },
+    {
+      "id": "AG-005",
+      "date": "2026-12-08",
+      "title": "Asesmen Sumatif Akhir Semester (ASAS)",
+      "description": "Ujian komprehensif teori dan penilaian project akhir semester ganjil."
+    }
+  ],
   "studentRoster": {
     "X A-AKL": [
       {
