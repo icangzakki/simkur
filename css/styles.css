@@ -271,6 +271,9 @@ a:hover {
   flex-direction: column;
   min-height: 100vh;
   min-width: 0;
+  max-width: calc(100vw - var(--sidebar-width));
+  overflow-x: hidden;
+  box-sizing: border-box;
   background-color: var(--background);
 }
 
@@ -585,18 +588,46 @@ a:hover {
    MAIN CONTENT AREA (desain.md Section 3: Padding 24px)
    ========================================================================== */
 
-.content-canvas {
-  padding: 1.5rem;
+.app-main-canvas, .content-canvas {
+  width: 100% !important;
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+  padding: 1.75rem 2rem 3.5rem 2rem !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
   flex: 1;
 }
 
 .screen-view {
   display: none;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
   animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .screen-view.active {
   display: block;
+}
+
+.table-responsive {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  box-sizing: border-box !important;
+}
+
+.screen-header-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 1.75rem !important;
+  flex-wrap: wrap !important;
+  gap: 1.25rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 @keyframes fadeIn {
@@ -734,15 +765,20 @@ a:hover {
   grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
   margin-bottom: 1.75rem;
+  width: 100%;
+  box-sizing: border-box;
 }
-@media (max-width: 1100px) {
+@media (max-width: 1180px) {
   .kpi-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 }
 @media (max-width: 640px) {
   .kpi-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.625rem !important;
+    margin-bottom: 1rem !important;
   }
 }
 
