@@ -597,6 +597,8 @@
 
     const elArchiveCount = document.getElementById('doc-archive-count');
     if (elArchiveCount) elArchiveCount.textContent = String(docs.length);
+    const elArchiveCountMob = document.getElementById('doc-archive-count-mob');
+    if (elArchiveCountMob) elArchiveCountMob.textContent = String(docs.length);
 
     // 2. Render Subtab Aktif
     const currentTab = State.activeDocTab || 'teachers';
@@ -1228,6 +1230,15 @@
     if (cC) cC.textContent = String(classes.length);
     if (cS) cS.textContent = String(subjects.length);
     if (cR) cR.textContent = String(rooms.length);
+
+    const cTMob = document.getElementById('count-teachers-mob');
+    const cCMob = document.getElementById('count-classes-mob');
+    const cSMob = document.getElementById('count-subjects-mob');
+    const cRMob = document.getElementById('count-rooms-mob');
+    if (cTMob) cTMob.textContent = String(teachers.length);
+    if (cCMob) cCMob.textContent = String(classes.length);
+    if (cSMob) cSMob.textContent = String(subjects.length);
+    if (cRMob) cRMob.textContent = String(rooms.length);
 
     // Update Add Button Label dynamically
     const btnAdd = document.getElementById('btn-add-master-item');
@@ -2391,21 +2402,21 @@
       else if (s.status === 'I') izin++;
       else if (s.status === 'A') alpa++;
 
-      html += '<tr>' +
-        '<td style="text-align: center; color: #777777;">' + s.no + '</td>' +
-        '<td style="font-family: monospace; font-size: 0.8125rem;">' + s.nisn + '</td>' +
-        '<td style="font-weight: 600; color: #262626;">' + s.name + '</td>' +
-        '<td style="text-align: center;"><span class="badge badge-neutral">' + s.gender + '</span></td>' +
-        '<td style="text-align: center;">' +
-          '<div style="display: inline-flex; gap: 4px;">' +
-            '<button type="button" class="attendance-status-btn ' + (s.status === 'H' ? 'active-H' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'H\')" title="Hadir">H</button>' +
-            '<button type="button" class="attendance-status-btn ' + (s.status === 'S' ? 'active-S' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'S\')" title="Sakit">S</button>' +
-            '<button type="button" class="attendance-status-btn ' + (s.status === 'I' ? 'active-I' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'I\')" title="Izin">I</button>' +
-            '<button type="button" class="attendance-status-btn ' + (s.status === 'A' ? 'active-A' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'A\')" title="Alpa">A</button>' +
+      html += '<tr class="presensi-student-row">' +
+        '<td class="col-att-no" style="text-align: center; color: #777777;"><span class="att-no-badge">' + s.no + '</span></td>' +
+        '<td class="col-att-nisn" style="font-family: monospace; font-size: 0.8125rem;">' + s.nisn + '</td>' +
+        '<td class="col-att-name" style="font-weight: 600; color: #262626;"><span class="att-student-name">' + s.name + '</span></td>' +
+        '<td class="col-att-gender" style="text-align: center;"><span class="badge badge-neutral att-gender-badge">' + s.gender + '</span></td>' +
+        '<td class="col-att-status" style="text-align: center;">' +
+          '<div class="col-att-status-group">' +
+            '<button type="button" class="attendance-status-btn ' + (s.status === 'H' ? 'active-H' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'H\')" title="Hadir"><span class="btn-att-lbl">H</span><span class="btn-att-sub">Hadir</span></button>' +
+            '<button type="button" class="attendance-status-btn ' + (s.status === 'S' ? 'active-S' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'S\')" title="Sakit"><span class="btn-att-lbl">S</span><span class="btn-att-sub">Sakit</span></button>' +
+            '<button type="button" class="attendance-status-btn ' + (s.status === 'I' ? 'active-I' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'I\')" title="Izin"><span class="btn-att-lbl">I</span><span class="btn-att-sub">Izin</span></button>' +
+            '<button type="button" class="attendance-status-btn ' + (s.status === 'A' ? 'active-A' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'A\')" title="Alpa"><span class="btn-att-lbl">A</span><span class="btn-att-sub">Alpa</span></button>' +
           '</div>' +
         '</td>' +
-        '<td>' +
-          '<input type="text" class="form-input" style="padding: 0.25rem 0.5rem; font-size: 0.8125rem;" value="' + (s.notes || '') + '" placeholder="Keterangan..." onchange="window.PORTAL_APP.updatePresensiNote(' + idx + ', this.value)">' +
+        '<td class="col-att-notes">' +
+          '<input type="text" class="form-input att-note-input" style="padding: 0.25rem 0.5rem; font-size: 0.8125rem;" value="' + (s.notes || '') + '" placeholder="Catatan/keterangan siswa..." onchange="window.PORTAL_APP.updatePresensiNote(' + idx + ', this.value)">' +
         '</td>' +
       '</tr>';
     });
@@ -2427,6 +2438,15 @@
     if (elI) elI.textContent = String(izin);
     if (elA) elA.textContent = String(alpa);
     if (elPct) elPct.textContent = pct + '%';
+
+    const mobH = document.getElementById('mob-bar-h');
+    const mobS = document.getElementById('mob-bar-s');
+    const mobI = document.getElementById('mob-bar-i');
+    const mobA = document.getElementById('mob-bar-a');
+    if (mobH) mobH.textContent = String(hadir);
+    if (mobS) mobS.textContent = String(sakit);
+    if (mobI) mobI.textContent = String(izin);
+    if (mobA) mobA.textContent = String(alpa);
   }
 
   function setPresensiStatus(idx, status) {

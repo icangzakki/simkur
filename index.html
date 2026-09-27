@@ -271,7 +271,7 @@
         <button class="btn-toggle-mobile" id="btn-toggle-sidebar" aria-label="Buka Menu">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <h1 class="topbar-screen-title" id="topbar-active-screen" style="font-size: 1.125rem; font-weight: 700; color: #262626; margin: 0;">Overview Dashboard Waka Kurikulum</h1>
+        <h1 class="topbar-screen-title" id="topbar-active-screen">Overview Dashboard Waka Kurikulum</h1>
       </div>
 
       <div class="topbar-center">
@@ -370,7 +370,7 @@
         </div>
 
         <!-- 2-COLUMN LAYOUT (Jadwal Hari Ini & Agenda Kurikulum) -->
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem;">
+        <div class="dashboard-2col-layout" style="gap: 1.25rem;">
           
           <!-- LEFT: Jadwal Hari Ini -->
           <!-- LEFT: Jadwal Hari Ini (Sinkron Revisi 2 X-XI) -->
@@ -383,7 +383,7 @@
                 </div>
                 <span style="font-size: 0.775rem; color: #777777;" id="dash-current-day-label">Hari: Senin</span>
               </div>
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <div class="day-pills-bar" style="display: flex; gap: 6px; flex-wrap: wrap;">
                 <button type="button" class="day-pill-btn active" data-day="Senin" onclick="window.PORTAL_APP.selectDashboardDay('Senin', this)">Senin</button>
                 <button type="button" class="day-pill-btn" data-day="Selasa" onclick="window.PORTAL_APP.selectDashboardDay('Selasa', this)">Selasa</button>
                 <button type="button" class="day-pill-btn" data-day="Rabu" onclick="window.PORTAL_APP.selectDashboardDay('Rabu', this)">Rabu</button>
@@ -538,12 +538,14 @@
         </div>
 
         <!-- SUBTAB NAVIGATION -->
-        <div style="display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; background: var(--surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 0 1rem;">
+        <div class="subtabs-scroll-bar" style="display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; background: var(--surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 0.35rem 0.75rem;">
           <button class="doc-subtab-btn master-subtab-btn active" data-doc-tab="teachers" onclick="window.PORTAL_APP.switchDocTab('teachers')">
-            👨‍🏫 Monitoring Kelengkapan per Guru (90)
+            <span class="tab-label-full">👨‍🏫 Monitoring Kelengkapan per Guru (90)</span>
+            <span class="tab-label-mobile">👨‍🏫 Guru (90)</span>
           </button>
           <button class="doc-subtab-btn master-subtab-btn" data-doc-tab="archives" onclick="window.PORTAL_APP.switchDocTab('archives')">
-            📁 Arsip Dokumen Sekolah (<span id="doc-archive-count">11</span>)
+            <span class="tab-label-full">📁 Arsip Dokumen Sekolah (<span id="doc-archive-count">11</span>)</span>
+            <span class="tab-label-mobile">📁 Arsip (<span id="doc-archive-count-mob">11</span>)</span>
           </button>
         </div>
 
@@ -732,18 +734,22 @@
         </div>
 
         <!-- SUBTAB NAVIGATION -->
-        <div style="display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; background: var(--surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 0 1rem;">
+        <div class="subtabs-scroll-bar" style="display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; background: var(--surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 0.35rem 0.75rem;">
           <button class="master-subtab-btn active" data-master-tab="teachers">
-            👨‍🏫 Data Guru (<span id="count-teachers">90</span>)
+            <span class="tab-label-full">👨‍🏫 Data Guru (<span id="count-teachers">90</span>)</span>
+            <span class="tab-label-mobile">👨‍🏫 Guru (<span id="count-teachers-mob">90</span>)</span>
           </button>
           <button class="master-subtab-btn" data-master-tab="classes">
-            🏫 Data Kelas (<span id="count-classes">45</span>)
+            <span class="tab-label-full">🏫 Data Kelas (<span id="count-classes">45</span>)</span>
+            <span class="tab-label-mobile">🏫 Kelas (<span id="count-classes-mob">45</span>)</span>
           </button>
           <button class="master-subtab-btn" data-master-tab="subjects">
-            📚 Mata Pelajaran (<span id="count-subjects">28</span>)
+            <span class="tab-label-full">📚 Mata Pelajaran (<span id="count-subjects">28</span>)</span>
+            <span class="tab-label-mobile">📚 Mapel (<span id="count-subjects-mob">28</span>)</span>
           </button>
           <button class="master-subtab-btn" data-master-tab="rooms">
-            🚪 Ruang Belajar (<span id="count-rooms">15</span>)
+            <span class="tab-label-full">🚪 Ruang Belajar (<span id="count-rooms">15</span>)</span>
+            <span class="tab-label-mobile">🚪 Ruang (<span id="count-rooms-mob">15</span>)</span>
           </button>
         </div>
 
@@ -860,13 +866,13 @@
       <section id="screen-portal-guru" class="screen-view" style="display: none;">
         
         <!-- Teacher Profile & Context Card -->
-        <div class="welcome-banner" style="background: #ffffff; border: 1px solid #ECECF2; border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <div style="display: flex; align-items: center; gap: 1rem;">
+        <div class="welcome-banner portal-guru-header" style="background: #ffffff; border: 1px solid #ECECF2; border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div class="portal-guru-header-left" style="display: flex; align-items: center; gap: 1rem;">
             <div style="position: relative;">
               <img id="portal-guru-avatar" src="assets/teacher_avatar.jpg" alt="Guru" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 3px solid #EDE8F5;">
               <span style="position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; border-radius: 50%; background: #10B981; border: 2px solid #ffffff;"></span>
             </div>
-            <div>
+            <div class="portal-guru-header-info">
               <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                 <h2 id="portal-guru-name" style="font-size: 1.25rem; font-weight: 800; color: #262626; margin: 0;">Ahmad Gajali, S.Kom.</h2>
                 <span class="badge" style="background: rgba(75, 34, 184, 0.1); color: #4B22B8; font-weight: 700;" id="portal-guru-badge">Guru Pengampu TJKT</span>
@@ -875,8 +881,8 @@
             </div>
           </div>
           
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+          <div class="portal-guru-header-right" style="display: flex; align-items: center; gap: 10px;">
+            <div style="display: flex; flex-direction: column; align-items: flex-end; width: 100%;">
               <span style="font-size: 0.75rem; color: #777777; font-weight: 600; margin-bottom: 4px;">Pilih Akun Guru Pengampu:</span>
               <select id="select-active-guru" class="form-input" style="padding: 0.4rem 0.75rem; font-size: 0.8125rem; width: 230px;" onchange="window.PORTAL_APP.changeActiveGuru(this.value)">
                 <!-- Populated dynamically with 90 teachers -->
@@ -886,7 +892,7 @@
         </div>
 
         <!-- 4 KPI Cards Guru (Beban JP, Jurnal Terisi, Presensi Kelas, Berkas Ajar) -->
-        <div class="kpi-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+        <div class="kpi-grid portal-guru-kpi-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
           
           <!-- Card 1: Beban Mengajar PTM -->
           <div class="content-card kpi-card stat-purple" style="margin: 0; padding: 1.25rem; border-top: 3px solid #5135D8;">
@@ -931,15 +937,18 @@
         </div>
 
         <!-- 3 SUBTAB NAVIGATION -->
-        <div style="display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; background: var(--surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 0 1rem; overflow-x: auto;">
+        <div class="guru-subtabs-bar" style="display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; background: var(--surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 0 0.5rem; overflow-x: auto;">
           <button class="guru-subtab-btn master-subtab-btn active" data-guru-tab="jurnal" onclick="window.PORTAL_APP.switchGuruTab('jurnal')">
-            📝 Formulir Jurnal Mengajar & Riwayat
+            <span class="tab-label-full">📝 Formulir Jurnal Mengajar & Riwayat</span>
+            <span class="tab-label-mobile">📝 Jurnal</span>
           </button>
           <button class="guru-subtab-btn master-subtab-btn" data-guru-tab="presensi" onclick="window.PORTAL_APP.switchGuruTab('presensi')">
-            📋 Presensi Siswa per Sesi KBM
+            <span class="tab-label-full">📋 Presensi Siswa per Sesi KBM</span>
+            <span class="tab-label-mobile">📋 Presensi</span>
           </button>
           <button class="guru-subtab-btn master-subtab-btn" data-guru-tab="dokumen" onclick="window.PORTAL_APP.switchGuruTab('dokumen')">
-            📤 Upload Berkas Administrasi & Perangkat Ajar
+            <span class="tab-label-full">📤 Upload Berkas Administrasi & Perangkat Ajar</span>
+            <span class="tab-label-mobile">📤 Berkas</span>
           </button>
         </div>
 
@@ -958,7 +967,7 @@
             <div class="content-card-body" style="padding: 1.5rem;">
               <form id="form-guru-jurnal">
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="guru-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                   <div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                       <label class="form-label" style="font-size: 0.8125rem; font-weight: 600; margin: 0;">Kelas & Rombel (Sesuai SK PTM) <span style="color: #dc2626;">*</span></label>
@@ -976,7 +985,7 @@
                   </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="guru-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                   <div>
                     <label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 4px;">Tanggal Pelaksanaan KBM <span style="color: #dc2626;">*</span></label>
                     <input type="date" id="input-guru-jurnal-date" class="form-input" required>
@@ -1039,7 +1048,7 @@
                     <span style="font-size: 0.75rem; color: #10B981; font-weight: 600;">Mendukung Kamera HP Langsung</span>
                   </div>
                   
-                  <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <div class="guru-photo-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
                     <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('jurnal-camera-input').click()" style="display: flex; align-items: center; gap: 6px;">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                       Ambil Foto Kamera HP
@@ -1067,9 +1076,9 @@
                   </div>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #ECECF2; padding-top: 1.25rem;">
+                <div class="guru-form-submit-row" style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #ECECF2; padding-top: 1.25rem;">
                   <button type="reset" class="btn btn-ghost" onclick="window.PORTAL_APP.removeJournalPhoto()">Reset</button>
-                  <button type="submit" class="btn btn-primary" style="background: var(--jobie-primary, #4B22B8); border-color: var(--jobie-primary, #4B22B8); display: flex; align-items: center; gap: 6px;">
+                  <button type="submit" class="btn btn-primary btn-submit-journal" style="background: var(--jobie-primary, #4B22B8); border-color: var(--jobie-primary, #4B22B8); display: flex; align-items: center; gap: 6px;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                     ✓ Simpan & Terbitkan Jurnal Mengajar
                   </button>
@@ -1100,7 +1109,7 @@
         <div id="guru-pane-presensi" style="display: none;">
           
           <!-- Filter & Sesi Presensi -->
-          <div class="filter-card">
+          <div class="filter-card presensi-filter-card">
             <div class="filter-group">
               <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
@@ -1129,7 +1138,7 @@
               </div>
             </div>
 
-            <div style="display: flex; gap: 8px;">
+            <div class="presensi-top-actions" style="display: flex; gap: 8px;">
               <button type="button" class="btn btn-outline btn-sm" id="btn-set-all-presensi" onclick="window.PORTAL_APP.setAllPresensi('H')">
                 ✓ Set Semua Hadir (36)
               </button>
@@ -1140,8 +1149,8 @@
           </div>
 
           <!-- Live Attendance Summary Counters Bar -->
-          <div style="background: #ffffff; border: 1px solid #ECECF2; border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: var(--shadow-sm);">
-            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+          <div class="presensi-summary-box" style="background: #ffffff; border: 1px solid #ECECF2; border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: var(--shadow-sm);">
+            <div class="presensi-badges-wrap" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
               <span style="font-weight: 700; color: #262626; font-size: 0.9375rem;">Rekap Presensi Sesi:</span>
               <span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; font-size: 0.8125rem;">
                 🟢 Hadir: <span id="presensi-count-h">34</span>
@@ -1163,7 +1172,7 @@
           </div>
 
           <!-- Students Attendance Table -->
-          <div class="content-card" style="margin: 0;">
+          <div class="content-card presensi-table-card" style="margin: 0;">
             <div class="content-card-body table-responsive" style="padding: 0;">
               <table class="data-table" id="table-guru-presensi">
                 <thead>
@@ -1181,6 +1190,19 @@
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <!-- Floating Mobile Attendance Save Bar -->
+          <div class="mob-presensi-floating-bar" id="mob-presensi-floating-bar">
+            <div class="mob-bar-tally">
+              <span class="mob-pill mob-pill-h">🟢 <strong id="mob-bar-h">34</strong></span>
+              <span class="mob-pill mob-pill-s">🟡 <strong id="mob-bar-s">2</strong></span>
+              <span class="mob-pill mob-pill-i">🔵 <strong id="mob-bar-i">0</strong></span>
+              <span class="mob-pill mob-pill-a">🔴 <strong id="mob-bar-a">0</strong></span>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm mob-save-btn" onclick="window.PORTAL_APP.handleSavePresensi()">
+              💾 Simpan Presensi
+            </button>
           </div>
 
         </div>

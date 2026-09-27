@@ -2389,6 +2389,65 @@ a:hover {
   to { transform: translateX(0); opacity: 1; }
 }
 
+/* Attendance status group & buttons (Global Base) */
+.col-att-status-group {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.attendance-status-btn {
+  padding: 4px 8px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  color: #64748B;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.attendance-status-btn .btn-att-lbl {
+  font-weight: 800;
+}
+
+.attendance-status-btn .btn-att-sub {
+  font-size: 0.65rem;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+.attendance-status-btn.active-H {
+  background: #10B981 !important;
+  border-color: #059669 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25);
+}
+
+.attendance-status-btn.active-S {
+  background: #F59E0B !important;
+  border-color: #D97706 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.25);
+}
+
+.attendance-status-btn.active-I {
+  background: #3B82F6 !important;
+  border-color: #2563EB !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
+}
+
+.attendance-status-btn.active-A {
+  background: #EF4444 !important;
+  border-color: #DC2626 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.25);
+}
+
 /* Responsive Media Queries */
 @media (max-width: 1240px) {
   .dashboard-2col-layout {
@@ -2471,281 +2530,632 @@ a:hover {
     overflow-x: hidden;
   }
 
-  /* Compact Topbar on Mobile */
+  /* Modern Topbar on Mobile */
   .app-topbar {
-    padding: 0 0.875rem;
-    height: 56px;
-  }
-
-  .btn-mobile-sidebar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    color: #0f172a;
-    cursor: pointer;
-  }
-
-  .topbar-compliance-banner {
-    display: none !important;
-  }
-
-  .topbar-breadcrumbs {
-    font-size: 0.8125rem;
-    max-width: 160px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .topbar-breadcrumbs span:not(.crumb-active) {
-    display: none;
-  }
-
-  .role-switcher-container {
-    display: none !important;
-  }
-
-  .topbar-import-btn {
-    padding: 5px 8px !important;
-    font-size: 0.6875rem !important;
-  }
-  .topbar-import-btn span {
-    display: none;
-  }
-
-  /* Content Canvas Padding for Mobile */
-  .content-canvas {
-    padding: 0.875rem 0.75rem !important;
-    max-width: 100vw;
-    box-sizing: border-box;
-  }
-
-  /* PORTAL GURU: Mobile Optimized Header Card */
-  .guru-header-card {
-    padding: 1.125rem 1rem !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0.875rem !important;
-    margin-bottom: 1rem !important;
-    border-radius: var(--radius-md) !important;
-  }
-
-  .guru-profile-info {
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 0.875rem !important;
-  }
-
-  .guru-avatar-large {
-    width: 52px !important;
-    height: 52px !important;
-    flex-shrink: 0;
-  }
-
-  .guru-details h2 {
-    font-size: 1.0625rem !important;
-    line-height: 1.3;
-    margin-bottom: 2px;
-  }
-
-  .guru-details p {
-    font-size: 0.6875rem !important;
-    line-height: 1.4;
-  }
-
-  .guru-schedule-active-pill {
-    font-size: 0.6875rem !important;
-    padding: 0.3rem 0.6rem !important;
-    width: 100% !important;
-    box-sizing: border-box;
-    white-space: normal !important;
-  }
-
-  .guru-header-workload {
-    width: 100% !important;
+    height: 60px !important;
+    padding: 0 0.875rem !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    padding: 0.625rem 0.875rem !important;
+    gap: 0.5rem !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #ECECF2 !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
+    overflow: hidden !important;
+  }
+
+  .topbar-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.625rem !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+  .btn-toggle-mobile {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
     border-radius: 8px !important;
-    margin-top: 0.25rem !important;
-  }
-  .guru-header-workload .workload-left {
-    text-align: left;
-  }
-  .guru-header-workload .workload-right {
-    text-align: right;
+    background: #F1F3F9 !important;
+    border: 1px solid #E2E8F0 !important;
+    color: #262626 !important;
+    cursor: pointer !important;
+    padding: 0 !important;
   }
 
-  /* Subtabs Smooth Touch Scroll */
-  .schedule-subtabs {
-    overflow-x: auto !important;
+  .topbar-screen-title {
+    font-size: 0.9375rem !important;
+    font-weight: 700 !important;
+    color: #262626 !important;
     white-space: nowrap !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: none !important;
-    margin-bottom: 1rem !important;
-    padding-bottom: 2px !important;
-    gap: 0.35rem !important;
-  }
-  .schedule-subtabs::-webkit-scrollbar {
-    display: none !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+    max-width: calc(100vw - 130px) !important;
   }
 
-  .subtab-btn {
+  .topbar-center {
+    display: none !important; /* Hide wide search on phone header */
+  }
+
+  .topbar-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
     flex-shrink: 0 !important;
-    padding: 0.55rem 0.875rem !important;
+  }
+
+  .topbar-right .badge {
+    display: none !important; /* Hide compliance pill on phone header */
+  }
+
+  .topbar-user-chip {
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .topbar-user-chip .user-chip-text {
+    display: none !important; /* Hide text, keep avatar on phone */
+  }
+
+  .topbar-user-chip img {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+  }
+
+  .topbar-circle-btn {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+  }
+
+  /* Content Canvas Padding for Mobile */
+  .app-main-canvas {
+    padding: 0.875rem 0.75rem 5rem 0.75rem !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  .welcome-banner {
+    padding: 1rem !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  .welcome-banner > div:last-child {
+    display: flex !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .welcome-banner button {
+    flex: 1 !important;
+    justify-content: center !important;
+    min-height: 42px !important;
     font-size: 0.8125rem !important;
   }
 
-  /* Form Card & Fields */
-  .form-card {
-    padding: 1rem 0.875rem !important;
-    border-radius: var(--radius-md) !important;
+  /* Compact 2x2 KPI Stats on Mobile */
+  .kpi-grid, .portal-guru-kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.625rem !important;
+    margin-bottom: 1rem !important;
   }
 
-  .form-grid-2 {
-    grid-template-columns: 1fr !important;
+  .kpi-card {
+    padding: 0.875rem 0.75rem !important;
+    margin: 0 !important;
+  }
+
+  .kpi-card div[style*="font-size: 1.75rem"] {
+    font-size: 1.35rem !important;
+    margin: 4px 0 !important;
+  }
+
+  /* PORTAL GURU: Mobile Optimized Header */
+  .portal-guru-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 1rem !important;
     gap: 0.875rem !important;
-    margin-bottom: 0.875rem !important;
   }
 
-  .form-label {
+  .portal-guru-header-left {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+  }
+
+  .portal-guru-header-left img {
+    width: 50px !important;
+    height: 50px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .portal-guru-header-info h2 {
+    font-size: 1.0625rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .portal-guru-header-info p {
     font-size: 0.6875rem !important;
+    line-height: 1.3 !important;
   }
 
-  .form-input, .form-textarea, .form-select {
+  .portal-guru-header-right {
+    width: 100% !important;
+  }
+
+  .portal-guru-header-right > div {
+    width: 100% !important;
+    align-items: stretch !important;
+  }
+
+  .portal-guru-header-right select {
+    width: 100% !important;
+    min-height: 44px !important;
+  }
+
+  /* Portal Guru Subtabs - Sleek Segmented Pill Control */
+  .guru-subtabs-bar {
+    display: flex !important;
+    width: 100% !important;
+    background: #F1F3F9 !important;
+    padding: 4px !important;
+    border-radius: 12px !important;
+    border: none !important;
+    gap: 4px !important;
+    margin-bottom: 1rem !important;
+    overflow-x: hidden !important;
+  }
+
+  .guru-subtab-btn {
+    flex: 1 !important;
+    padding: 0.65rem 0.25rem !important;
+    font-size: 0.78125rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    border-radius: 9px !important;
+    border: none !important;
+    background: transparent !important;
+    color: #64748B !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+    transition: all 0.2s ease !important;
+    min-height: 42px !important;
+  }
+
+  .guru-subtab-btn.active {
+    background: #ffffff !important;
+    color: #4B22B8 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    border: none !important;
+  }
+
+  .guru-subtab-btn .tab-label-full {
+    display: none !important;
+  }
+
+  .guru-subtab-btn .tab-label-mobile {
+    display: inline !important;
+    font-weight: 700 !important;
+  }
+
+  /* Tab 1: Jurnal Form on Mobile */
+  .guru-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .form-input, .form-select, textarea.form-input {
     font-size: 16px !important; /* Prevents auto-zoom on iOS */
-    padding: 0.65rem 0.75rem !important;
     min-height: 44px !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
 
-  .form-textarea {
-    min-height: 80px !important;
-  }
-
-  /* Attendance Stepper & Presets on Mobile */
-  .attendance-stepper-box {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.25rem;
-  }
-  .btn-step {
-    width: 44px !important;
-    height: 44px !important;
-    font-size: 1.25rem !important;
-  }
-  .attendance-count-wrap {
-    height: 44px !important;
-  }
-  .hadir-input {
-    width: 65px !important;
-    font-size: 1.25rem !important;
-  }
-
-  .attendance-presets {
-    gap: 0.35rem;
-    margin-top: 0.5rem;
-  }
-  .preset-chip {
-    padding: 0.35rem 0.65rem !important;
-    font-size: 0.6875rem !important;
-  }
-
-  /* Camera Action Grid on Mobile */
-  .camera-action-grid {
-    grid-template-columns: 1fr !important;
-    gap: 0.625rem !important;
-  }
-
-  .btn-camera-trigger, .btn-gallery-trigger {
-    padding: 0.875rem 1rem !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Photo Preview Box on Mobile */
-  .photo-preview-inner {
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-  .preview-thumbnail {
-    width: 100% !important;
-    height: 180px !important;
-  }
-
-  .preview-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-  .btn-preview-retake, .btn-preview-delete {
-    flex: 1;
-    justify-content: center;
-    padding: 0.65rem !important;
-  }
-
-  /* Attendance Modal on Mobile */
-  .attendance-summary-bar {
-    padding: 0.5rem 0.75rem !important;
-  }
-  .att-stat {
-    padding: 0.25rem 0.5rem !important;
-    min-width: 48px !important;
-  }
-  .stat-num {
-    font-size: 0.9375rem !important;
-  }
-  .stat-lbl {
-    font-size: 0.5625rem !important;
-  }
-  .student-att-row {
-    padding: 0.625rem 0.75rem !important;
-  }
-  .student-name-text {
-    font-size: 0.8125rem !important;
-  }
-  .btn-att-status {
-    width: 34px !important;
-    height: 34px !important;
+  .method-tag-btn {
+    padding: 0.4rem 0.65rem !important;
     font-size: 0.75rem !important;
   }
 
-  /* Form Submit Row on Mobile */
-  .form-submit-row {
-    flex-direction: column-reverse !important;
-    gap: 0.625rem !important;
-    margin-top: 1rem !important;
+  .guru-photo-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
   }
-  .btn-submit-journal {
+
+  .guru-photo-actions button {
+    width: 100% !important;
+    min-height: 44px !important;
+    justify-content: center !important;
+    font-size: 0.875rem !important;
+  }
+
+  .guru-form-submit-row {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin-top: 1.25rem !important;
+  }
+
+  .guru-form-submit-row button {
     width: 100% !important;
     min-height: 48px !important;
+    justify-content: center !important;
     font-size: 0.9375rem !important;
     font-weight: 700 !important;
+  }
+
+  /* Tab 2: Presensi Siswa on Mobile (Thumb-Friendly Touch Cards) */
+  .presensi-filter-card {
+    padding: 0.875rem !important;
+  }
+
+  .presensi-filter-card .filter-group {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+
+  .presensi-filter-card .filter-group > div {
+    width: 100% !important;
+  }
+
+  .presensi-filter-card .filter-group select,
+  .presensi-filter-card .filter-group input {
+    width: 100% !important;
+    min-height: 44px !important;
+    box-sizing: border-box !important;
+  }
+
+  .presensi-top-actions {
     display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin-top: 0.75rem !important;
+  }
+
+  .presensi-top-actions button {
+    width: 100% !important;
+    min-height: 44px !important;
+    justify-content: center !important;
+  }
+
+  .presensi-summary-box {
+    padding: 0.75rem !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.625rem !important;
+  }
+
+  .presensi-badges-wrap {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .presensi-badges-wrap > span:first-child {
+    grid-column: span 2 !important;
+    font-size: 0.875rem !important;
+  }
+
+  .presensi-badges-wrap .badge {
+    justify-content: center !important;
+    padding: 6px 4px !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* Transform Presensi Table into Native Touch Cards */
+  .presensi-table-card .table-responsive {
+    overflow: visible !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  #table-guru-presensi {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    display: block !important;
+    border: none !important;
+  }
+
+  #table-guru-presensi thead {
+    display: none !important;
+  }
+
+  #table-guru-presensi tbody {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #table-guru-presensi tr.presensi-student-row {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    background: #ffffff !important;
+    border: 1px solid #ECECF2 !important;
+    border-radius: 12px !important;
+    margin-bottom: 0.75rem !important;
+    padding: 0.75rem !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03) !important;
+    position: relative !important;
+  }
+
+  .col-att-no {
+    display: inline-block !important;
+    width: auto !important;
+    padding: 0 6px 0 0 !important;
+    border: none !important;
+  }
+
+  .att-no-badge {
+    font-weight: 800 !important;
+    color: #4B22B8 !important;
+    background: #EDE7FF !important;
+    padding: 2px 7px !important;
+    border-radius: 6px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .col-att-nisn {
+    display: none !important;
+  }
+
+  .col-att-name {
+    display: inline !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .att-student-name {
+    font-size: 0.875rem !important;
+    font-weight: 700 !important;
+    color: #1E293B !important;
+    line-height: 1.3 !important;
+  }
+
+  .col-att-gender {
+    display: inline-block !important;
+    width: auto !important;
+    float: right !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .col-att-status {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 0.5rem 0 !important;
+    margin-top: 0.5rem !important;
+    border-top: 1px solid #F1F5F9 !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+    clear: both !important;
+  }
+
+  .col-att-status-group {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .col-att-status-group .attendance-status-btn {
+    height: 46px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.5rem !important;
+    gap: 1px !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    padding: 2px !important;
+  }
+
+  .col-att-status-group .attendance-status-btn .btn-att-lbl {
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+  }
+
+  .col-att-status-group .attendance-status-btn .btn-att-sub {
+    font-size: 0.6rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+  }
+
+  .col-att-notes {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0.5rem 0 0 0 !important;
+    border: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .att-note-input {
+    width: 100% !important;
+    min-height: 38px !important;
+    font-size: 0.8125rem !important;
+    border-radius: 8px !important;
+    background: #F8F9FA !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Floating Mobile Attendance Save Bar */
+  .mob-presensi-floating-bar {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: #ffffff !important;
+    border-top: 1px solid #E2E8F0 !important;
+    padding: 0.65rem 1rem !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1) !important;
+    z-index: 1000 !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .mob-bar-tally {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .mob-pill {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    padding: 3px 6px !important;
+    border-radius: 6px !important;
+    background: #F8F9FA !important;
+  }
+
+  .mob-save-btn {
+    min-height: 40px !important;
+    padding: 0.5rem 1.15rem !important;
+    font-weight: 700 !important;
+    font-size: 0.875rem !important;
     border-radius: 8px !important;
   }
 
-  .kpi-grid {
-    grid-template-columns: 1fr;
+  /* Scrollable Subtabs Bar for Dokumen and Data Master */
+  .subtabs-scroll-bar {
+    display: flex !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    scrollbar-width: none !important;
+    padding: 4px 6px !important;
   }
-  .dept-item-row {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
+  .subtabs-scroll-bar::-webkit-scrollbar {
+    display: none;
   }
-  .dept-actions {
-    justify-content: flex-start;
+  .subtabs-scroll-bar .master-subtab-btn,
+  .subtabs-scroll-bar .doc-subtab-btn {
+    flex-shrink: 0 !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.8125rem !important;
+    min-height: 38px !important;
+  }
+  .subtabs-scroll-bar .tab-label-full {
+    display: none !important;
+  }
+  .subtabs-scroll-bar .tab-label-mobile {
+    display: inline !important;
+  }
+
+  /* Responsive Filter Cards on Mobile */
+  .filter-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 0.875rem !important;
+    gap: 0.625rem !important;
+  }
+
+  .filter-card .filter-group {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 0.625rem !important;
+  }
+
+  .filter-card .filter-group select,
+  .filter-card .filter-group input,
+  .filter-card .filter-group > div {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #sched-total-badge {
+    align-self: flex-start !important;
+  }
+
+  /* Day Pills Bar in Dashboard */
+  .day-pills-bar {
+    display: flex !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 4px !important;
+    width: 100% !important;
+    padding: 2px 0 4px 0 !important;
+    scrollbar-width: none !important;
+  }
+  .day-pills-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .day-pill-btn {
+    flex-shrink: 0 !important;
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* Modal Dialogs on Mobile */
+  .modal-dialog {
+    width: 95% !important;
+    max-width: 95% !important;
+    max-height: 92vh !important;
+    margin: auto !important;
+  }
+  .modal-dialog .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Desktop Defaults for Supporting Classes */
+@media (min-width: 769px) {
+  .btn-toggle-mobile {
+    display: none !important;
+  }
+  .guru-subtab-btn .tab-label-mobile,
+  .subtabs-scroll-bar .tab-label-mobile {
+    display: none !important;
+  }
+  .guru-subtab-btn .tab-label-full,
+  .subtabs-scroll-bar .tab-label-full {
+    display: inline !important;
+  }
+  .btn-att-sub {
+    display: none !important;
+  }
+  .mob-presensi-floating-bar {
+    display: none !important;
   }
 }
 
