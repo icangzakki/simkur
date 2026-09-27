@@ -1,90 +1,93 @@
 /* ==========================================================================
    SIMKUR KEJURUAN PRECISION - DESIGN TOKENS & SYSTEM
-   Extracted & Refined from Stitch MCP Design System
-   Brand: SIMKUR Kejuruan Precision
-   Colors: Slate Navy (#0f172a), Teal (#0d9488), Amber (#f59e0b)
-   Typography: Plus Jakarta Sans, Inter, JetBrains Mono
+   Aligned to DESAIN.md (Jobie Admin Dashboard UI Reference)
    ========================================================================== */
 
 :root {
-  /* Surface & Canvas Colors */
-  --surface: #f8f9ff;
-  --surface-dim: #cbdbf5;
-  --surface-bright: #f8f9ff;
-  --surface-container-lowest: #ffffff;
-  --surface-container-low: #eff4ff;
-  --surface-container: #e5eeff;
-  --surface-container-high: #dce9ff;
-  --surface-container-highest: #d3e4fe;
-  
-  --on-surface: #0b1c30;
-  --on-surface-variant: #45464d;
-  --inverse-surface: #213145;
-  --inverse-on-surface: #eaf1ff;
-  
-  --outline: #76777d;
-  --outline-variant: #cbd5e1;
-  --outline-light: #e2e8f0;
-  --surface-tint: #565e74;
-  
-  /* Primary Slate Navy Series */
-  --primary: #0f172a;
-  --primary-hover: #1e293b;
-  --primary-active: #334155;
+  /* Brand / Primary Palette (desain.md Section 4 & 6) */
+  --primary: #4B22B8;
+  --primary-dark: #35158F;
+  --primary-light: #EDE7FF;
+  --primary-hover: #3d1b99;
+  --primary-active: #301380;
   --on-primary: #ffffff;
-  --primary-container: #131b2e;
-  --on-primary-container: #7c839b;
-  --primary-fixed: #dae2fd;
-  --primary-fixed-dim: #bec6e0;
-  --on-primary-fixed: #131b2e;
+
+  /* Statistic Colors (desain.md Section 4 & 8) */
+  --stat-purple: #5135D8;
+  --stat-purple-light: #EDE7FF;
+  --stat-purple-bg: rgba(81, 53, 216, 0.10);
   
-  /* Secondary Teal & Emerald Series (Kejuruan / Vokasi) */
-  --secondary: #0d9488;
-  --secondary-hover: #0f766e;
-  --secondary-light: #ccfbf1;
-  --secondary-surface: #f0fdfa;
+  --stat-blue: #45A9E8;
+  --stat-blue-light: #EBF6FD;
+  --stat-blue-bg: rgba(69, 169, 232, 0.12);
+  
+  --stat-green: #20C985;
+  --stat-green-light: #E8FAF3;
+  --stat-green-bg: rgba(32, 201, 133, 0.12);
+  
+  --stat-lime: #8BCB3D;
+  --stat-lime-light: #F3FAEA;
+  --stat-lime-bg: rgba(139, 203, 61, 0.15);
+
+  /* Neutral Palette (desain.md Section 4) */
+  --background: #F6F6F8;
+  --surface: #FFFFFF;
+  --surface-dim: #F0F0F3;
+  --surface-container-low: #F8F8FA;
+  --surface-container: #F1F1F4;
+  --surface-container-high: #EAEAEF;
+  --surface-container-highest: #E2E2E8;
+
+  --text-primary: #262626;
+  --text-secondary: #777777;
+  --on-surface: #262626;
+  --on-surface-variant: #666666;
+  --border: #EEEEEE;
+  --outline-light: #EEEEEE;
+  --outline-variant: #E2E2E8;
+  --outline: #D0D0D8;
+  --muted: #B8B8B8;
+
+  /* Secondary & Functional Accents */
+  --secondary: #5135D8;
+  --secondary-hover: #4125C4;
+  --secondary-light: #EDE7FF;
+  --secondary-surface: #F8F5FF;
   --on-secondary: #ffffff;
-  --secondary-container: #86f2e4;
-  --on-secondary-container: #006f66;
-  --secondary-fixed: #89f5e7;
-  --secondary-fixed-dim: #6bd8cb;
-  
-  /* Tertiary Amber / Warning (Review / Revisi / Perhatian) */
+
   --tertiary: #f59e0b;
   --tertiary-hover: #d97706;
   --tertiary-light: #fef3c7;
   --tertiary-surface: #fffbeb;
   --on-tertiary: #ffffff;
-  --tertiary-container: #fef3c7;
-  --on-tertiary-container: #92400e;
-  
-  /* Semantic Status Colors */
-  --color-success: #059669;
-  --color-success-bg: #ecfdf5;
-  --color-success-border: #a7f3d0;
-  --color-success-text: #065f46;
 
-  --color-warning: #d97706;
-  --color-warning-bg: #fffbeb;
-  --color-warning-border: #fde68a;
-  --color-warning-text: #92400e;
+  /* Semantic Status Colors (desain.md & Clean SaaS) */
+  --color-success: #20C985;
+  --color-success-bg: #E8FAF3;
+  --color-success-border: #A3ECCB;
+  --color-success-text: #0E7B50;
 
-  --color-danger: #e11d48;
-  --color-danger-bg: #fff1f2;
-  --color-danger-border: #fecdd3;
-  --color-danger-text: #9f1239;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #FFFBEB;
+  --color-warning-border: #FDE68A;
+  --color-warning-text: #92400E;
 
-  --color-info: #0284c7;
-  --color-info-bg: #f0f9ff;
-  --color-info-border: #bae6fd;
-  --color-info-text: #0369a1;
+  --color-danger: #EF4444;
+  --color-danger-bg: #FFF1F2;
+  --color-danger-border: #FECDD3;
+  --color-danger-text: #9F1239;
 
-  /* Typography Families */
-  --font-headline: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --color-info: #45A9E8;
+  --color-info-bg: #EBF6FD;
+  --color-info-border: #BAE6FD;
+  --color-info-text: #0369A1;
+
+  /* Typography Families (desain.md Section 5) */
+  --font-headline: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, Menlo, Monaco, monospace;
 
-  /* Typography Scales */
+  /* Typography Scales (desain.md Section 5) */
   --text-xs: 0.75rem;    /* 12px */
   --text-sm: 0.8125rem;  /* 13px */
   --text-base: 0.875rem; /* 14px */
@@ -94,21 +97,22 @@
   --text-2xl: 1.5rem;    /* 24px */
   --text-3xl: 1.875rem;  /* 30px */
 
-  /* Border Radii (Soft Precision: Roundness 1) */
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
+  /* Border Radii (desain.md Section 13) */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 22px;
+  --radius-pill: 999px;
   --radius-full: 9999px;
 
-  /* Shadows (Tonal Flatness with Structural Boundaries) */
-  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
-  --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
-  --shadow-flyout: 0 4px 16px -2px rgba(15, 23, 42, 0.08), 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  /* Soft Shadows (desain.md Section 14) */
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.10);
+  --shadow-flyout: 0 16px 40px -8px rgba(75, 34, 184, 0.20), 0 0 0 1px rgba(75, 34, 184, 0.06);
 
   /* Spacing Rhythm */
   --space-2xs: 0.125rem; /* 2px */
@@ -120,8 +124,8 @@
   --space-xl: 1.5rem;    /* 24px */
   --space-2xl: 2rem;     /* 32px */
 
-  /* Shell Layout Dimensions */
-  --sidebar-width: 264px;
+  /* Shell Layout Dimensions (desain.md Section 3 & 6) */
+  --sidebar-width: 250px;
   --sidebar-collapsed-width: 72px;
-  --topbar-height: 60px;
+  --topbar-height: 68px;
 }

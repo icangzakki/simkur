@@ -375,10 +375,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const nameEl = document.getElementById('current-user-name');
     if (nameEl) nameEl.textContent = name;
+    const topName = document.getElementById('topbar-user-name');
+    if (topName) topName.textContent = name;
+    const dashName = document.getElementById('dash-profile-name');
+    if (dashName) dashName.textContent = name;
+
     const roleEl = document.getElementById('current-user-role');
     if (roleEl && title) roleEl.textContent = title;
+    const topRole = document.getElementById('topbar-user-role');
+    if (topRole && title) topRole.textContent = title;
+    const dashRole = document.getElementById('dash-profile-role');
+    if (dashRole && title) dashRole.textContent = title;
+
     const avEl = document.getElementById('current-user-avatar');
     if (avEl && avatar) avEl.src = avatar;
+    const topAv = document.getElementById('topbar-user-avatar');
+    if (topAv && avatar) topAv.src = avatar;
+    const dashAv = document.getElementById('dash-profile-avatar');
+    if (dashAv && avatar) dashAv.src = avatar;
   }
 
 
@@ -395,9 +409,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cfg = rolePermissions[selected] || rolePermissions.waka;
         if (cfg) {
-          document.getElementById('current-user-name').textContent = cfg.name;
-          document.getElementById('current-user-role').textContent = cfg.title;
-          document.getElementById('current-user-avatar').src = cfg.avatar;
+          const elsToUpdate = [
+            ['current-user-name', cfg.name],
+            ['topbar-user-name', cfg.name],
+            ['dash-profile-name', cfg.name],
+            ['current-user-role', cfg.title],
+            ['topbar-user-role', cfg.title],
+            ['dash-profile-role', cfg.title]
+          ];
+          elsToUpdate.forEach(([id, val]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = val;
+          });
+          ['current-user-avatar', 'topbar-user-avatar', 'dash-profile-avatar'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.src = cfg.avatar;
+          });
           showToast(`Beralih peran: ${cfg.title} (${cfg.name})`);
         }
 
@@ -438,11 +465,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const nameEl = document.getElementById('current-user-name');
-    const roleEl = document.getElementById('current-user-role');
-    const avEl = document.getElementById('current-user-avatar');
     if (nameEl) nameEl.textContent = effectiveName;
+    const topName = document.getElementById('topbar-user-name');
+    if (topName) topName.textContent = effectiveName;
+    const dashName = document.getElementById('dash-profile-name');
+    if (dashName) dashName.textContent = effectiveName;
+
+    const roleEl = document.getElementById('current-user-role');
     if (roleEl) roleEl.textContent = effectiveTitle;
+    const topRole = document.getElementById('topbar-user-role');
+    if (topRole) topRole.textContent = effectiveTitle;
+    const dashRole = document.getElementById('dash-profile-role');
+    if (dashRole) dashRole.textContent = effectiveTitle;
+
+    const avEl = document.getElementById('current-user-avatar');
     if (avEl) avEl.src = effectiveAvatar;
+    const topAv = document.getElementById('topbar-user-avatar');
+    if (topAv) topAv.src = effectiveAvatar;
+    const dashAv = document.getElementById('dash-profile-avatar');
+    if (dashAv) dashAv.src = effectiveAvatar;
 
     // Update Welcome Headings across views
     const dashWelcome = document.getElementById('dashboard-welcome-heading');
