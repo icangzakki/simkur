@@ -6,8 +6,8 @@
   <title>SIMKUR — Sistem Informasi Manajemen Kurikulum SMKN 1 BANJARMASIN</title>
   <meta name="description" content="Single Command Center Digitalisasi Tupoksi Waka Kurikulum SMK selaras Permendikbudristek No. 12/2024 dan Permendikdasmen No. 13/2025.">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
-  <link rel="stylesheet" href="css/tokens.css?v=3.5.0">
-  <link rel="stylesheet" href="css/styles.css?v=3.5.0">
+  <link rel="stylesheet" href="css/tokens.css?v=4.0.0">
+  <link rel="stylesheet" href="css/styles.css?v=4.0.0">
   <script>
     (function() {
       try {
@@ -266,14 +266,14 @@
               </div>
             </div>
             <div class="kpi-value-row">
-              <span class="kpi-value" id="kpi-perangkat-pct">85.4%</span>
-              <span class="kpi-subtext" id="kpi-perangkat-sub">70 / 82 Guru Lengkap</span>
+              <span class="kpi-value" id="kpi-perangkat-pct">0%</span>
+              <span class="kpi-subtext" id="kpi-perangkat-sub">0 / 82 Guru Lengkap</span>
             </div>
             <div class="progress-bar-container">
-              <div class="progress-fill" id="kpi-perangkat-bar" style="width: 85.4%;"></div>
+              <div class="progress-fill" id="kpi-perangkat-bar" style="width: 0%;"></div>
             </div>
             <div class="kpi-footnote">
-              <span style="color: #d97706; font-weight: 600;" id="kpi-perangkat-pending">12 Guru Perlu Reminder</span>
+              <span style="color: #d97706; font-weight: 600;" id="kpi-perangkat-pending">82 Guru Perlu Upload</span>
               <span class="font-mono">Tenggat 28 Mar</span>
             </div>
           </div>
@@ -287,15 +287,15 @@
               </div>
             </div>
             <div class="kpi-value-row">
-              <span class="kpi-value">94.2%</span>
-              <span class="kpi-subtext">64 Guru Mengajar</span>
+              <span class="kpi-value" id="kpi-jurnal-pct">0%</span>
+              <span class="kpi-subtext" id="kpi-jurnal-sub">0 Guru Mengajar</span>
             </div>
             <div class="progress-bar-container">
-              <div class="progress-fill" style="width: 94.2%;"></div>
+              <div class="progress-fill" id="kpi-jurnal-bar" style="width: 0%;"></div>
             </div>
             <div class="kpi-footnote">
-              <span>4 Izin / Sakit • <strong>0 Alpha</strong></span>
-              <span class="font-mono" style="color: #059669;">Real-Time Feed</span>
+              <span id="kpi-jurnal-foot">0 Jurnal Terisi • Belum Ada KBM</span>
+              <span class="font-mono" style="color: #64748b;">Standby</span>
             </div>
           </div>
 
@@ -308,15 +308,15 @@
               </div>
             </div>
             <div class="kpi-value-row">
-              <span class="kpi-value">1,248</span>
-              <span class="kpi-subtext">Jam / Minggu (100%)</span>
+              <span class="kpi-value" id="kpi-ptm-hours">0</span>
+              <span class="kpi-subtext" id="kpi-ptm-sub">Jam / Minggu (0%)</span>
             </div>
             <div class="progress-bar-container">
-              <div class="progress-fill" style="width: 100%;"></div>
+              <div class="progress-fill" id="kpi-ptm-bar" style="width: 0%;"></div>
             </div>
             <div class="kpi-footnote">
-              <span class="badge-status badge-approved" style="padding: 0.1rem 0.4rem;">0 Bentrok Jadwal</span>
-              <span>45 Rombel Terjadwal</span>
+              <span class="badge-status badge-approved" id="kpi-ptm-conflict" style="padding: 0.1rem 0.4rem;">0 Bentrok Jadwal</span>
+              <span id="kpi-ptm-foot">0 Rombel Terjadwal</span>
             </div>
           </div>
 
@@ -329,15 +329,15 @@
               </div>
             </div>
             <div class="kpi-value-row">
-              <span class="kpi-value">5 / 5</span>
+              <span class="kpi-value" id="kpi-dudi-val">0 / 5</span>
               <span class="kpi-subtext">Jurusan Tersinkronisasi</span>
             </div>
             <div class="progress-bar-container">
-              <div class="progress-fill" style="width: 100%;"></div>
+              <div class="progress-fill" id="kpi-dudi-bar" style="width: 0%;"></div>
             </div>
             <div class="kpi-footnote">
-              <span>Telkom, Astra, BCA, Dll</span>
-              <span class="font-mono">MoU Tuntas</span>
+              <span id="kpi-dudi-foot">Belum Ada MoU DUDI</span>
+              <span class="font-mono">Siap Sinkron</span>
             </div>
           </div>
         </div>
@@ -448,41 +448,41 @@
           <div class="kpi-card">
             <div class="kpi-label">Modul Ajar / RPP</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" id="verif-kpi-modul-pct">85.4%</span>
-              <span class="kpi-subtext" id="verif-kpi-modul-sub">70/82 Disetujui</span>
+              <span class="kpi-value" id="verif-kpi-modul-pct">0%</span>
+              <span class="kpi-subtext" id="verif-kpi-modul-sub">0/82 Disetujui</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-modul-bar" style="width: 85.4%;"></div></div>
-            <div class="kpi-footnote"><span>Standar Deep Learning</span><span class="font-mono" id="verif-kpi-modul-foot">12 Pending</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-modul-bar" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span>Standar Deep Learning</span><span class="font-mono" id="verif-kpi-modul-foot">82 Belum Diunggah</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Alur Tujuan Pembelajaran (ATP)</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" id="verif-kpi-atp-pct">100%</span>
-              <span class="kpi-subtext" id="verif-kpi-atp-sub">82/82 Disetujui</span>
+              <span class="kpi-value" id="verif-kpi-atp-pct">0%</span>
+              <span class="kpi-subtext" id="verif-kpi-atp-sub">0/82 Disetujui</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-atp-bar" style="width: 100%;"></div></div>
-            <div class="kpi-footnote"><span>Fase E & Fase F</span><span class="font-mono" id="verif-kpi-atp-foot" style="color: #059669; font-weight: 700;">✓ Tuntas 100%</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-atp-bar" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span>Fase E & Fase F</span><span class="font-mono" id="verif-kpi-atp-foot">82 Belum Diunggah</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Program Tahunan (Prota)</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" id="verif-kpi-prota-pct">100%</span>
-              <span class="kpi-subtext" id="verif-kpi-prota-sub">82/82 Disetujui</span>
+              <span class="kpi-value" id="verif-kpi-prota-pct">0%</span>
+              <span class="kpi-subtext" id="verif-kpi-prota-sub">0/82 Disetujui</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-prota-bar" style="width: 100%;"></div></div>
-            <div class="kpi-footnote"><span>Alokasi Jam Efektif</span><span class="font-mono" id="verif-kpi-prota-foot" style="color: #059669; font-weight: 700;">✓ Tuntas 100%</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-prota-bar" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span>Alokasi Jam Efektif</span><span class="font-mono" id="verif-kpi-prota-foot">82 Belum Diunggah</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Program Semester (Prosem)</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" id="verif-kpi-prosem-pct" style="color: #0d9488;">92.7%</span>
-              <span class="kpi-subtext" id="verif-kpi-prosem-sub">76/82 Disetujui</span>
+              <span class="kpi-value" id="verif-kpi-prosem-pct" style="color: #64748b;">0%</span>
+              <span class="kpi-subtext" id="verif-kpi-prosem-sub">0/82 Disetujui</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-prosem-bar" style="width: 92.7%;"></div></div>
-            <div class="kpi-footnote"><span>Kalender Akademik</span><span class="font-mono" id="verif-kpi-prosem-foot">6 Pending</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" id="verif-kpi-prosem-bar" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span>Kalender Akademik</span><span class="font-mono" id="verif-kpi-prosem-foot">82 Belum Diunggah</span></div>
           </div>
         </div>
 
@@ -1082,11 +1082,11 @@
         <div class="schedule-header-summary">
           <div class="schedule-stat-item">
             <span class="schedule-stat-label">Total Jam Efektif</span>
-            <span class="schedule-stat-value">48 Jam / Minggu</span>
+            <span class="schedule-stat-value" id="sched-total-jam">0 Jam / Minggu</span>
           </div>
           <div class="schedule-stat-item">
             <span class="schedule-stat-label">Status Penjadwalan</span>
-            <span class="schedule-stat-value" style="color: #059669;">45 Rombel Terjadwal (100%)</span>
+            <span class="schedule-stat-value" id="sched-total-rombel" style="color: #64748b;">0 Rombel Terjadwal (0%)</span>
           </div>
           <div class="schedule-stat-item">
             <span class="schedule-stat-label">Deteksi Konflik</span>
@@ -1958,41 +1958,41 @@
           <div class="kpi-card">
             <div class="kpi-label">Kepatuhan Kurikulum Nasional</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" style="color: #059669;">96%</span>
+              <span class="kpi-value" style="color: #64748b;">0%</span>
               <span class="kpi-subtext">Sesuai Regulasi</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 96%;"></div></div>
-            <div class="kpi-footnote"><span>Permendikdasmen No. 13/2025</span><span class="font-mono">Audited</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span>Permendikdasmen No. 13/2025</span><span class="font-mono">Siap Audit</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Pemenuhan Jam Tatap Muka</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" style="color: #0d9488;">100%</span>
+              <span class="kpi-value" style="color: #64748b;">0%</span>
               <span class="kpi-subtext">Guru Tuntas PTM</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 100%;"></div></div>
-            <div class="kpi-footnote"><span>Memenuhi 24 JP Sertifikasi</span><span class="font-mono">82 Guru</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span>Memenuhi 24 JP Sertifikasi</span><span class="font-mono">0 / 82 Guru</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Rerata Ketuntasan Belajar</div>
             <div class="kpi-value-row">
-              <span class="kpi-value">86.8%</span>
+              <span class="kpi-value">0%</span>
               <span class="kpi-subtext">Basis Nilai CBT</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 86.8%;"></div></div>
-            <div class="kpi-footnote"><span>Target Mutu: 85.0%</span><span style="color: #059669; font-weight: 600;">+1.8% Unggul</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span>Target Mutu: 85.0%</span><span style="color: #64748b;">Menunggu Nilai</span></div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-label">Indeks TeFa & DUDI</div>
             <div class="kpi-value-row">
-              <span class="kpi-value" style="color: #0f172a;">92 / 100</span>
+              <span class="kpi-value" style="color: #64748b;">0 / 100</span>
               <span class="kpi-subtext">Akreditasi Industri</span>
             </div>
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 92%;"></div></div>
-            <div class="kpi-footnote"><span>5 Jurusan Terakreditasi</span><span>42 Mitra DUDI</span></div>
+            <div class="progress-bar-container"><div class="progress-fill" style="width: 0%;"></div></div>
+            <div class="kpi-footnote"><span>5 Jurusan Terakreditasi</span><span>0 Mitra DUDI</span></div>
           </div>
         </div>
 
@@ -2288,7 +2288,7 @@
                         <span>📋</span>
                         <span>Data Guru & Jam Mengajar</span>
                       </td>
-                      <td style="padding: 0.75rem; color: #475569;">90 GTK (82 Guru) / 503 JP Terjadwal</td>
+                      <td style="padding: 0.75rem; color: #475569;">90 GTK (82 Guru) / 0 JP Terjadwal</td>
                       <td style="padding: 0.75rem;">
                         <span style="font-size: 0.6875rem; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">
                           ● Valid (Klop Jadwal PTM)
@@ -4605,9 +4605,9 @@
 <div class="toast-container" id="toast-container"></div>
 
 <!-- SCRIPTS -->
-<script src="js/data.js?v=3.5.0"></script>
-<script src="js/auth_users.js?v=3.5.0"></script>
-<script src="js/app.js?v=3.5.0"></script>
+<script src="js/data.js?v=4.0.0"></script>
+<script src="js/auth_users.js?v=4.0.0"></script>
+<script src="js/app.js?v=4.0.0"></script>
 
 </body>
 </html>

@@ -491,7 +491,41 @@ document.addEventListener('DOMContentLoaded', () => {
     if (kpiPct) kpiPct.textContent = `${pct}%`;
     if (kpiSub) kpiSub.textContent = `${fullyComplete} / ${totalTeachers} Guru Lengkap`;
     if (kpiBar) kpiBar.style.width = `${pct}%`;
-    if (kpiPending) kpiPending.textContent = `${pendingReminder} Guru Perlu Reminder`;
+    if (kpiPending) kpiPending.textContent = `${pendingReminder} Guru Perlu Upload`;
+
+    // Update KPI 2: Jurnal
+    const journals = data.teachingJournals || [];
+    const elJurnalPct = document.getElementById('kpi-jurnal-pct');
+    const elJurnalSub = document.getElementById('kpi-jurnal-sub');
+    const elJurnalBar = document.getElementById('kpi-jurnal-bar');
+    const elJurnalFoot = document.getElementById('kpi-jurnal-foot');
+    if (elJurnalPct) elJurnalPct.textContent = `${journals.length > 0 ? Math.round((journals.length / totalTeachers) * 100) : 0}%`;
+    if (elJurnalSub) elJurnalSub.textContent = `${journals.length} Guru Mengajar`;
+    if (elJurnalBar) elJurnalBar.style.width = `${journals.length > 0 ? Math.round((journals.length / totalTeachers) * 100) : 0}%`;
+    if (elJurnalFoot) elJurnalFoot.textContent = journals.length > 0 ? `${journals.length} Jurnal Terisi Hari Ini` : '0 Jurnal Terisi • Belum Ada KBM';
+
+    // Update KPI 3: Beban PTM
+    let totalJp = 0;
+    (data.scheduleMatrix || []).forEach(s => totalJp += (s.duration || 1));
+    const elPtmHours = document.getElementById('kpi-ptm-hours');
+    const elPtmSub = document.getElementById('kpi-ptm-sub');
+    const elPtmBar = document.getElementById('kpi-ptm-bar');
+    const elPtmFoot = document.getElementById('kpi-ptm-foot');
+    const schedRombels = new Set((data.scheduleMatrix || []).map(s => s.classCode)).size;
+    if (elPtmHours) elPtmHours.textContent = totalJp.toLocaleString();
+    if (elPtmSub) elPtmSub.textContent = totalJp > 0 ? `Jam / Minggu (${Math.min(Math.round((totalJp / 1248) * 100), 100)}%)` : 'Jam / Minggu (0%)';
+    if (elPtmBar) elPtmBar.style.width = totalJp > 0 ? `${Math.min(Math.round((totalJp / 1248) * 100), 100)}%` : '0%';
+    if (elPtmFoot) elPtmFoot.textContent = schedRombels > 0 ? `${schedRombels} Rombel Terjadwal` : '0 Rombel Terjadwal';
+
+    // Update KPI 4: DUDI
+    let syncedDepts = 0;
+    (data.departments || []).forEach(d => { if (d.dudiPartners && d.dudiPartners.length > 0) syncedDepts++; });
+    const elDudiVal = document.getElementById('kpi-dudi-val');
+    const elDudiBar = document.getElementById('kpi-dudi-bar');
+    const elDudiFoot = document.getElementById('kpi-dudi-foot');
+    if (elDudiVal) elDudiVal.textContent = `${syncedDepts} / ${data.departments.length}`;
+    if (elDudiBar) elDudiBar.style.width = `${Math.round((syncedDepts / data.departments.length) * 100)}%`;
+    if (elDudiFoot) elDudiFoot.textContent = syncedDepts > 0 ? `${syncedDepts} Jurusan Terhubung DUDI` : 'Belum Ada MoU DUDI';
 
     // 1. Render Department breakdown list
     const deptListContainer = document.getElementById('dashboard-dept-list');
@@ -511,8 +545,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="progress-fill ${dept.completionRate < 70 ? 'amber' : ''}" style="width: ${dept.completionRate}%;"></div>
             </div>
           </div>
-          <div class="dept-dudi-tag" title="Mitra DUDI: ${dept.dudiPartners.join(', ')}">
-            🤝 ${dept.dudiPartners[0]}
+          <div class="dept-dudi-tag" title="Mitra DUDI: ${(dept.dudiPartners && dept.dudiPartners.length > 0) ? dept.dudiPartners.join(', ') : 'Belum Ada Mitra'}">
+            🤝 ${(dept.dudiPartners && dept.dudiPartners.length > 0) ? dept.dudiPartners[0] : 'Belum Ada Mitra'}
           </div>
           <div class="dept-actions">
             <button class="btn btn-outline btn-sm" onclick="window.SIMKUR_APP.openVerifikasiFilter('${dept.code}')">
@@ -2660,7 +2694,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div>
               <h4 style="font-size: var(--text-sm); margin-bottom: 0.5rem; color: var(--secondary);">Sinkronisasi Kurikulum Bersama DUDI Mitra:</h4>
               <div style="background-color: #ffffff; border: 1px solid var(--outline-light); border-radius: var(--radius-sm); padding: 0.75rem; font-size: var(--text-xs);">
-                <p><strong>Mitra Industri:</strong> ${dept.dudiPartners.join(', ')}</p>
+                <p><strong>Mitra Industri:</strong> ${(dept.dudiPartners && dept.dudiPartners.length > 0) ? dept.dudiPartners.join(', ') : 'Belum Ada Mitra Terdaftar (Tahap Penjajakan)'}</p>
                 <p style="margin-top: 0.25rem;"><strong>Catatan Revisi Terakhir:</strong> Penambahan Capaian Pembelajaran (CP) praktikum industri pada semester 4 & 5.</p>
                 <p style="margin-top: 0.25rem; color: #059669; font-weight: 600;">Status MoU: Aktif s.d 2028 (Dukungan Asesor UKK & Kuota Magang PKL).</p>
               </div>
@@ -3590,7 +3624,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render preset templates cards
     const templatesContainer = document.getElementById('laporan-preset-templates');
     if (templatesContainer) {
-      templatesContainer.innerHTML = data.executiveReports.templates.map(t => `
+      const templates = (data.executiveReports && Array.isArray(data.executiveReports.templates)) ? data.executiveReports.templates : [];
+      templatesContainer.innerHTML = templates.map(t => `
         <div class="content-card" style="padding: 1.125rem; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
