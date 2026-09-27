@@ -1,7 +1,7 @@
 /**
  * SIMKUR — PORTAL WAKA KURIKULUM SMKN 1 BANJARMASIN
- * Aplikasi Web Sederhana Sesuai PRD_Portal_Waka_Kur_Sederhana.md
- * Modul: Dashboard, Dokumen, Jadwal Pelajaran, Data Master (Guru, Kelas, Mapel, Ruang)
+ * Berdasarkan PRD_Portal_Waka_Kur_Sederhana.md
+ * Modul: Dashboard, Dokumen & Monitoring Administrasi Guru, Jadwal Pelajaran, Data Master
  * Desain: Jobie Admin Dashboard UI (#4B22B8)
  */
 
@@ -19,7 +19,8 @@
       ROOMS: 'portal_rooms_v1',
       SCHEDULES: 'portal_schedules_v1',
       DOCUMENTS: 'portal_documents_v1',
-      AGENDAS: 'portal_agendas_v1'
+      AGENDAS: 'portal_agendas_v1',
+      TEACHER_ADMIN: 'portal_teacher_admin_v1'
     },
 
     init: function () {
@@ -45,6 +46,33 @@
       }
       if (!localStorage.getItem(this.KEYS.AGENDAS)) {
         localStorage.setItem(this.KEYS.AGENDAS, JSON.stringify(data.agendas || []));
+      }
+
+      // Inisialisasi Monitoring Administrasi Guru (90 Guru)
+      if (!localStorage.getItem(this.KEYS.TEACHER_ADMIN)) {
+        const teachers = this.get('teachers');
+        const monitoring = teachers.map(function (t, idx) {
+          const isRppDone = idx < 78;
+          const isJurnalDone = idx < 82;
+          const isSilabusDone = idx < 85;
+          const isAsesmenDone = idx < 74;
+
+          return {
+            teacher_id: t.id,
+            name: t.name,
+            nip: t.nip || '-',
+            department: t.department || 'Umum',
+            subject: t.subject || 'Mata Pelajaran',
+            rpp_status: isRppDone ? 'Lengkap' : (idx < 84 ? 'Review' : 'Belum'),
+            jurnal_status: isJurnalDone ? 'Sudah' : 'Belum',
+            jurnal_count: isJurnalDone ? (10 + (idx % 12)) : 0,
+            silabus_status: isSilabusDone ? 'Lengkap' : 'Belum',
+            asesmen_status: isAsesmenDone ? 'Lengkap' : 'Belum',
+            notes: isRppDone && isJurnalDone ? 'Perangkat pembelajaran semester ganjil lengkap' : 'Perlu upload kelengkapan perangkat',
+            updated_at: '2026-09-26'
+          };
+        });
+        localStorage.setItem(this.KEYS.TEACHER_ADMIN, JSON.stringify(monitoring));
       }
     },
 
@@ -75,7 +103,9 @@
 
     update: function (key, id, updatedFields) {
       const items = this.get(key);
-      const index = items.findIndex(function (i) { return String(i.id) === String(id); });
+      const index = items.findIndex(function (i) {
+        return String(i.id || i.teacher_id) === String(id);
+      });
       if (index !== -1) {
         items[index] = Object.assign({}, items[index], updatedFields);
         this.set(key, items);
@@ -85,7 +115,9 @@
 
     delete: function (key, id) {
       let items = this.get(key);
-      items = items.filter(function (i) { return String(i.id) !== String(id); });
+      items = items.filter(function (i) {
+        return String(i.id || i.teacher_id) !== String(id);
+      });
       this.set(key, items);
       return items;
     }
@@ -97,10 +129,14 @@
   const State = {
     currentScreen: 'dashboard',
     activeMasterTab: 'teachers',
+    activeDocTab: 'teachers', // 'teachers' (monitoring) or 'archives' (dokumen sekolah)
     selectedDay: 'Senin',
     docSearchQuery: '',
     docCategoryFilter: 'all',
     docYearFilter: 'all',
+    docTeacherSearchQuery: '',
+    docTeacherDeptFilter: 'all',
+    docTeacherStatusFilter: 'all',
     scheduleDayFilter: 'all',
     scheduleClassFilter: 'all',
     scheduleTeacherFilter: 'all',
@@ -186,7 +222,7 @@
     if (titleEl) {
       const titles = {
         'dashboard': 'Overview Dashboard Waka Kurikulum',
-        'dokumen': 'Arsip Dokumen Kurikulum',
+        'dokumen': 'Monitoring Administrasi Guru & Dokumen Kurikulum',
         'jadwal': 'Jadwal Pelajaran',
         'data-master': 'Data Master Kurikulum'
       };
@@ -220,6 +256,7 @@
     const docs = StorageManager.get('documents');
     const schedules = StorageManager.get('schedules');
     const agendas = StorageManager.get('agendas');
+    const monitoring = StorageManager.get('teacher_admin');
 
     // 1. KPI Cards
     const elSiswa = document.getElementById('dash-stat-siswa');
@@ -230,7 +267,12 @@
     if (elSiswa) elSiswa.textContent = '1.564';
     if (elGuru) elGuru.textContent = String(teachers.filter(function (t) { return t.is_active; }).length);
     if (elKelas) elKelas.textContent = String(classes.filter(function (c) { return c.is_active; }).length);
-    if (elDokumen) elDokumen.textContent = String(docs.length);
+    
+    // Hitung persentase kelengkapan RPP/Modul Ajar Guru
+    const totalTeachers = monitoring.length || 90;
+    const rppDone = monitoring.filter(function (m) { return m.rpp_status === 'Lengkap'; }).length;
+    const rppPct = totalTeachers > 0 ? ((rppDone / totalTeachers) * 100).toFixed(0) : '0';
+    if (elDokumen) elDokumen.textContent = rppPct + '% (' + rppDone + '/' + totalTeachers + ')';
 
     // 2. Render Jadwal Hari Ini
     renderDashboardSchedule(schedules);
@@ -311,10 +353,279 @@
   }
 
   // =========================================================================
-  // 7. SCREEN 2: DOKUMEN KURIKULUM
+  // 7. SCREEN 2: DOKUMEN & MONITORING ADMINISTRASI GURU
   // =========================================================================
   function renderDocuments() {
+    const monitoring = StorageManager.get('teacher_admin');
     const docs = StorageManager.get('documents');
+    const totalTeachers = monitoring.length || 90;
+
+    // 1. Hitung Statistik Monitoring Administrasi Guru (Card Metrik)
+    const rppLengkap = monitoring.filter(function (m) { return m.rpp_status === 'Lengkap'; }).length;
+    const rppReview = monitoring.filter(function (m) { return m.rpp_status === 'Review'; }).length;
+    const rppBelum = monitoring.filter(function (m) { return m.rpp_status === 'Belum'; }).length;
+    const rppPct = ((rppLengkap / totalTeachers) * 100).toFixed(1);
+
+    const jurnalSudah = monitoring.filter(function (m) { return m.jurnal_status === 'Sudah'; }).length;
+    const jurnalBelum = totalTeachers - jurnalSudah;
+    const jurnalPct = ((jurnalSudah / totalTeachers) * 100).toFixed(1);
+
+    const silabusLengkap = monitoring.filter(function (m) { return m.silabus_status === 'Lengkap'; }).length;
+    const silabusBelum = totalTeachers - silabusLengkap;
+    const silabusPct = ((silabusLengkap / totalTeachers) * 100).toFixed(1);
+
+    const asesmenLengkap = monitoring.filter(function (m) { return m.asesmen_status === 'Lengkap'; }).length;
+    const asesmenBelum = totalTeachers - asesmenLengkap;
+    const asesmenPct = ((asesmenLengkap / totalTeachers) * 100).toFixed(1);
+
+    // Update 4 Card DOM Elements
+    // Card 1: RPP & Modul Ajar
+    const elRppCount = document.getElementById('stat-rpp-count');
+    const elRppPct = document.getElementById('stat-rpp-pct');
+    const elRppSub = document.getElementById('stat-rpp-sub');
+    const elRppBar = document.getElementById('stat-rpp-bar');
+    if (elRppCount) elRppCount.textContent = rppLengkap + ' / ' + totalTeachers + ' Guru';
+    if (elRppPct) elRppPct.textContent = rppPct + '%';
+    if (elRppSub) elRppSub.textContent = rppLengkap + ' Lengkap • ' + rppReview + ' Review • ' + rppBelum + ' Belum';
+    if (elRppBar) elRppBar.style.width = rppPct + '%';
+
+    // Card 2: Jurnal Mengajar Bulan Ini
+    const elJurnalCount = document.getElementById('stat-jurnal-count');
+    const elJurnalPct = document.getElementById('stat-jurnal-pct');
+    const elJurnalSub = document.getElementById('stat-jurnal-sub');
+    const elJurnalBar = document.getElementById('stat-jurnal-bar');
+    if (elJurnalCount) elJurnalCount.textContent = jurnalSudah + ' / ' + totalTeachers + ' Guru';
+    if (elJurnalPct) elJurnalPct.textContent = jurnalPct + '%';
+    if (elJurnalSub) elJurnalSub.textContent = jurnalSudah + ' Aktif Mengisi • ' + jurnalBelum + ' Belum Mengisi';
+    if (elJurnalBar) elJurnalBar.style.width = jurnalPct + '%';
+
+    // Card 3: Silabus & ATP
+    const elSilabusCount = document.getElementById('stat-silabus-count');
+    const elSilabusPct = document.getElementById('stat-silabus-pct');
+    const elSilabusSub = document.getElementById('stat-silabus-sub');
+    const elSilabusBar = document.getElementById('stat-silabus-bar');
+    if (elSilabusCount) elSilabusCount.textContent = silabusLengkap + ' / ' + totalTeachers + ' Guru';
+    if (elSilabusPct) elSilabusPct.textContent = silabusPct + '%';
+    if (elSilabusSub) elSilabusSub.textContent = silabusLengkap + ' Terverifikasi • ' + silabusBelum + ' Belum';
+    if (elSilabusBar) elSilabusBar.style.width = silabusPct + '%';
+
+    // Card 4: Perangkat Asesmen
+    const elAsesmenCount = document.getElementById('stat-asesmen-count');
+    const elAsesmenPct = document.getElementById('stat-asesmen-pct');
+    const elAsesmenSub = document.getElementById('stat-asesmen-sub');
+    const elAsesmenBar = document.getElementById('stat-asesmen-bar');
+    if (elAsesmenCount) elAsesmenCount.textContent = asesmenLengkap + ' / ' + totalTeachers + ' Guru';
+    if (elAsesmenPct) elAsesmenPct.textContent = asesmenPct + '%';
+    if (elAsesmenSub) elAsesmenSub.textContent = asesmenLengkap + ' Terkumpul • ' + asesmenBelum + ' Pending';
+    if (elAsesmenBar) elAsesmenBar.style.width = asesmenPct + '%';
+
+    const elArchiveCount = document.getElementById('doc-archive-count');
+    if (elArchiveCount) elArchiveCount.textContent = String(docs.length);
+
+    // 2. Render Subtab Aktif
+    const currentTab = State.activeDocTab || 'teachers';
+    document.querySelectorAll('.doc-subtab-btn').forEach(function (btn) {
+      if (btn.getAttribute('data-doc-tab') === currentTab) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    const paneTeachers = document.getElementById('doc-pane-teachers');
+    const paneArchives = document.getElementById('doc-pane-archives');
+
+    if (currentTab === 'teachers') {
+      if (paneTeachers) paneTeachers.style.display = 'block';
+      if (paneArchives) paneArchives.style.display = 'none';
+      renderTeacherAdminTable(monitoring);
+    } else {
+      if (paneTeachers) paneTeachers.style.display = 'none';
+      if (paneArchives) paneArchives.style.display = 'block';
+      renderArchiveDocsTable(docs);
+    }
+  }
+
+  function switchDocTab(tabName) {
+    State.activeDocTab = tabName;
+    renderDocuments();
+  }
+
+  // 7.1 TAB MONITORING KELENGKAPAN GURU (90 GURU)
+  function renderTeacherAdminTable(monitoring) {
+    const tbody = document.getElementById('teacher-admin-tbody');
+    const badgeTotal = document.getElementById('doc-teacher-total-badge');
+    if (!tbody) return;
+
+    const q = (State.docTeacherSearchQuery || '').toLowerCase();
+    const deptFilter = State.docTeacherDeptFilter || 'all';
+    const statusFilter = State.docTeacherStatusFilter || 'all';
+
+    const filtered = monitoring.filter(function (m) {
+      const matchesSearch = !q ||
+        (m.name && m.name.toLowerCase().includes(q)) ||
+        (m.nip && m.nip.includes(q)) ||
+        (m.subject && m.subject.toLowerCase().includes(q));
+
+      const matchesDept = deptFilter === 'all' || m.department === deptFilter;
+
+      let matchesStatus = true;
+      const isComplete = m.rpp_status === 'Lengkap' && m.jurnal_status === 'Sudah' && m.silabus_status === 'Lengkap';
+      if (statusFilter === 'complete') matchesStatus = isComplete;
+      else if (statusFilter === 'incomplete') matchesStatus = !isComplete;
+
+      return matchesSearch && matchesDept && matchesStatus;
+    });
+
+    if (badgeTotal) badgeTotal.textContent = filtered.length + ' / ' + monitoring.length + ' Guru Ditampilkan';
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: #888888;">' +
+        '<strong>Tidak ada data guru yang sesuai dengan filter pencarian</strong>' +
+        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau bersihkan kolom pencarian.</p>' +
+        '</td></tr>';
+      return;
+    }
+
+    let html = '';
+    filtered.forEach(function (m, idx) {
+      // Badge RPP
+      let rppBadge = '<span class="badge badge-success" style="font-size: 0.75rem;">✅ Lengkap</span>';
+      if (m.rpp_status === 'Review') {
+        rppBadge = '<span class="badge badge-warning" style="font-size: 0.75rem;">⏳ Review</span>';
+      } else if (m.rpp_status === 'Belum') {
+        rppBadge = '<span class="badge badge-danger" style="font-size: 0.75rem;">❌ Belum</span>';
+      }
+
+      // Badge Jurnal
+      let jurnalBadge = '<span class="badge badge-primary" style="font-size: 0.75rem;">✅ ' + (m.jurnal_count || 12) + ' Sesi</span>';
+      if (m.jurnal_status === 'Belum') {
+        jurnalBadge = '<span class="badge badge-danger" style="font-size: 0.75rem;">❌ 0 Sesi</span>';
+      }
+
+      // Badge Silabus
+      let silabusBadge = m.silabus_status === 'Lengkap'
+        ? '<span class="badge badge-success" style="font-size: 0.75rem;">✅ Ada</span>'
+        : '<span class="badge badge-neutral" style="font-size: 0.75rem;">❌ Belum</span>';
+
+      // Badge Asesmen
+      let asesmenBadge = m.asesmen_status === 'Lengkap'
+        ? '<span class="badge badge-success" style="font-size: 0.75rem;">✅ Ada</span>'
+        : '<span class="badge badge-neutral" style="font-size: 0.75rem;">❌ Belum</span>';
+
+      // Overall Status
+      const isAllDone = m.rpp_status === 'Lengkap' && m.jurnal_status === 'Sudah' && m.silabus_status === 'Lengkap';
+      const statusPill = isAllDone
+        ? '<span class="badge" style="background: #E8FAF3; color: #20C985; font-weight: 700; font-size: 0.75rem;">Lengkap</span>'
+        : '<span class="badge" style="background: #FEF3C7; color: #D97706; font-weight: 700; font-size: 0.75rem;">Ada Pending</span>';
+
+      html += '<tr>' +
+        '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (idx + 1) + '</td>' +
+        '<td>' +
+        '<div style="font-weight: 700; color: #262626;">' + m.name + '</div>' +
+        '<div style="font-size: 0.75rem; color: #777777; font-family: monospace;">NIP. ' + (m.nip || '-') + '</div>' +
+        '</td>' +
+        '<td>' +
+        '<div><span class="badge badge-neutral" style="font-size: 0.75rem;">' + (m.department || 'Umum') + '</span></div>' +
+        '<div style="font-size: 0.775rem; color: #555; margin-top: 2px;">' + (m.subject || '-') + '</div>' +
+        '</td>' +
+        '<td>' + rppBadge + '</td>' +
+        '<td>' + jurnalBadge + '</td>' +
+        '<td>' + silabusBadge + '</td>' +
+        '<td>' + asesmenBadge + '</td>' +
+        '<td>' + statusPill + '</td>' +
+        '<td>' +
+        '<button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.openTeacherAdminModal(\'' + m.teacher_id + '\')" title="Update Status Kelengkapan">' +
+        '✏️ Update' +
+        '</button>' +
+        '</td>' +
+        '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  function openTeacherAdminModal(teacherId) {
+    const monitoring = StorageManager.get('teacher_admin');
+    const teacher = monitoring.find(function (m) {
+      return String(m.teacher_id) === String(teacherId);
+    });
+
+    if (!teacher) return;
+
+    document.getElementById('input-admin-teacher-id').value = teacher.teacher_id;
+    document.getElementById('admin-modal-teacher-name').textContent = teacher.name;
+    document.getElementById('admin-modal-teacher-meta').textContent = 'NIP: ' + (teacher.nip || '-') + ' • Jurusan: ' + teacher.department + ' • Mapel: ' + teacher.subject;
+
+    document.getElementById('select-admin-rpp').value = teacher.rpp_status || 'Lengkap';
+    document.getElementById('select-admin-jurnal').value = teacher.jurnal_status || 'Sudah';
+    document.getElementById('input-admin-jurnal-count').value = teacher.jurnal_count || 12;
+    document.getElementById('select-admin-silabus').value = teacher.silabus_status || 'Lengkap';
+    document.getElementById('select-admin-asesmen').value = teacher.asesmen_status || 'Lengkap';
+    document.getElementById('input-admin-notes').value = teacher.notes || '';
+
+    openModal('modal-teacher-admin');
+  }
+
+  function handleSaveTeacherAdmin(e) {
+    e.preventDefault();
+    const teacherId = document.getElementById('input-admin-teacher-id').value;
+    const rpp = document.getElementById('select-admin-rpp').value;
+    const jurnal = document.getElementById('select-admin-jurnal').value;
+    const jurnalCount = parseInt(document.getElementById('input-admin-jurnal-count').value, 10) || 0;
+    const silabus = document.getElementById('select-admin-silabus').value;
+    const asesmen = document.getElementById('select-admin-asesmen').value;
+    const notes = document.getElementById('input-admin-notes').value.trim();
+
+    StorageManager.update('teacher_admin', teacherId, {
+      rpp_status: rpp,
+      jurnal_status: jurnal,
+      jurnal_count: jurnal === 'Sudah' ? Math.max(1, jurnalCount) : 0,
+      silabus_status: silabus,
+      asesmen_status: asesmen,
+      notes: notes,
+      updated_at: new Date().toISOString().split('T')[0]
+    });
+
+    closeModal('modal-teacher-admin');
+    showToast('Status administrasi guru berhasil diperbarui!');
+    renderDocuments();
+    renderDashboard();
+  }
+
+  function exportAdminRecap() {
+    const monitoring = StorageManager.get('teacher_admin');
+    let csv = 'No,Nama Guru,NIP,Departemen,Mapel,RPP / Modul Ajar,Jurnal Mengajar,Sesi KBM,Silabus & ATP,Asesmen,Status Akhir\n';
+
+    monitoring.forEach(function (m, idx) {
+      const isAllDone = m.rpp_status === 'Lengkap' && m.jurnal_status === 'Sudah' && m.silabus_status === 'Lengkap';
+      csv += (idx + 1) + ',"' +
+        m.name + '","' +
+        m.nip + '","' +
+        m.department + '","' +
+        m.subject + '","' +
+        m.rpp_status + '","' +
+        m.jurnal_status + '",' +
+        m.jurnal_count + ',"' +
+        m.silabus_status + '","' +
+        m.asesmen_status + '","' +
+        (isAllDone ? 'Lengkap' : 'Belum Lengkap') + '"\n';
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Rekap_Kelengkapan_Administrasi_Guru_SMKN1_BJM.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Rekapitulasi administrasi guru berhasil diunduh (CSV).');
+  }
+
+  // 7.2 TAB ARSIP DOKUMEN SEKOLAH
+  function renderArchiveDocsTable(docs) {
     const tbody = document.getElementById('doc-table-tbody');
     const badgeCount = document.getElementById('doc-total-badge');
     if (badgeCount) badgeCount.textContent = docs.length + ' Dokumen';
@@ -335,8 +646,8 @@
     if (filtered.length === 0) {
       tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 3rem; color: #888888;">' +
         '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📁</div>' +
-        '<strong>Tidak ada dokumen yang sesuai dengan pencarian / filter</strong>' +
-        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Coba ubah kata kunci atau unggah dokumen baru.</p>' +
+        '<strong>Tidak ada arsip dokumen yang sesuai</strong>' +
+        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau unggah dokumen baru.</p>' +
         '</td></tr>';
       return;
     }
@@ -390,7 +701,7 @@
       }
     } else {
       State.editingItem = null;
-      if (titleEl) titleEl.textContent = 'Upload Dokumen Kurikulum';
+      if (titleEl) titleEl.textContent = 'Upload Dokumen Kurikulum Sekolah';
       document.getElementById('input-doc-id').value = '';
     }
 
@@ -466,7 +777,6 @@
     const doc = docs.find(function (d) { return String(d.id) === String(id); });
     if (!doc) return;
 
-    // Trigger synthetic text file download representing the document
     const content = '=== ARSIP DOKUMEN KURIKULUM SMKN 1 BANJARMASIN ===\n\n' +
       'ID: ' + doc.id + '\n' +
       'Nama Dokumen: ' + doc.name + '\n' +
@@ -499,7 +809,6 @@
     const badgeCount = document.getElementById('sched-total-badge');
     if (badgeCount) badgeCount.textContent = schedules.length + ' Sesi';
 
-    // Populate filter dropdowns if not already populated
     populateScheduleFilters(classes, teachers);
 
     if (!tbody) return;
@@ -577,7 +886,6 @@
 
     const titleEl = document.getElementById('modal-schedule-title');
 
-    // Populate modal dropdowns with latest data master
     const classes = StorageManager.get('classes');
     const subjects = StorageManager.get('subjects');
     const teachers = StorageManager.get('teachers');
@@ -779,7 +1087,7 @@
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem; color: #888;">Tidak ada data guru yang cocok.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #888;">Tidak ada data guru yang cocok.</td></tr>';
       return;
     }
 
@@ -1281,8 +1589,13 @@
       topSearch.addEventListener('input', function () {
         const val = this.value.trim();
         if (State.currentScreen === 'dokumen') {
-          State.docSearchQuery = val;
-          renderDocuments();
+          if (State.activeDocTab === 'teachers') {
+            State.docTeacherSearchQuery = val;
+            renderTeacherAdminTable(StorageManager.get('teacher_admin'));
+          } else {
+            State.docSearchQuery = val;
+            renderArchiveDocsTable(StorageManager.get('documents'));
+          }
         } else if (State.currentScreen === 'jadwal') {
           State.scheduleSearchQuery = val;
           renderSchedules();
@@ -1293,7 +1606,31 @@
       });
     }
 
-    // 4. Dokumen Filters
+    // 4. Dokumen: Teacher Admin Monitoring Filters
+    const docTeacherSearch = document.getElementById('doc-teacher-search');
+    const docTeacherDept = document.getElementById('doc-teacher-dept');
+    const docTeacherStatus = document.getElementById('doc-teacher-status');
+
+    if (docTeacherSearch) {
+      docTeacherSearch.addEventListener('input', function () {
+        State.docTeacherSearchQuery = this.value.trim();
+        renderTeacherAdminTable(StorageManager.get('teacher_admin'));
+      });
+    }
+    if (docTeacherDept) {
+      docTeacherDept.addEventListener('change', function () {
+        State.docTeacherDeptFilter = this.value;
+        renderTeacherAdminTable(StorageManager.get('teacher_admin'));
+      });
+    }
+    if (docTeacherStatus) {
+      docTeacherStatus.addEventListener('change', function () {
+        State.docTeacherStatusFilter = this.value;
+        renderTeacherAdminTable(StorageManager.get('teacher_admin'));
+      });
+    }
+
+    // 5. Dokumen: Archive Filters
     const docSearch = document.getElementById('doc-search-input');
     const docCategory = document.getElementById('doc-category-filter');
     const docYear = document.getElementById('doc-year-filter');
@@ -1301,23 +1638,23 @@
     if (docSearch) {
       docSearch.addEventListener('input', function () {
         State.docSearchQuery = this.value.trim();
-        renderDocuments();
+        renderArchiveDocsTable(StorageManager.get('documents'));
       });
     }
     if (docCategory) {
       docCategory.addEventListener('change', function () {
         State.docCategoryFilter = this.value;
-        renderDocuments();
+        renderArchiveDocsTable(StorageManager.get('documents'));
       });
     }
     if (docYear) {
       docYear.addEventListener('change', function () {
         State.docYearFilter = this.value;
-        renderDocuments();
+        renderArchiveDocsTable(StorageManager.get('documents'));
       });
     }
 
-    // 5. Jadwal Filters
+    // 6. Jadwal Filters
     const schedSearch = document.getElementById('sched-search-input');
     const schedDay = document.getElementById('sched-day-filter');
     const schedClass = document.getElementById('sched-class-filter');
@@ -1348,7 +1685,7 @@
       });
     }
 
-    // 6. Data Master Subtab Buttons & Search
+    // 7. Data Master Subtab Buttons & Search
     document.querySelectorAll('.master-subtab-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         const tab = this.getAttribute('data-master-tab');
@@ -1364,9 +1701,12 @@
       });
     }
 
-    // 7. Form Submissions
+    // 8. Form Submissions
     const formDoc = document.getElementById('form-modal-doc');
     if (formDoc) formDoc.addEventListener('submit', handleSaveDocument);
+
+    const formTeacherAdmin = document.getElementById('form-modal-teacher-admin');
+    if (formTeacherAdmin) formTeacherAdmin.addEventListener('submit', handleSaveTeacherAdmin);
 
     const formSched = document.getElementById('form-modal-schedule');
     if (formSched) formSched.addEventListener('submit', handleSaveSchedule);
@@ -1394,11 +1734,13 @@
     StorageManager.init();
     initEventListeners();
 
-    // Determine initial screen from URL or default to dashboard
     const params = new URLSearchParams(window.location.search);
     const initialScreen = params.get('screen') || 'dashboard';
+    const initialDocTab = params.get('tab');
+    if (initialDocTab) {
+      State.activeDocTab = initialDocTab;
+    }
 
-    // Auto set day to today if weekday
     const daysMap = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
     const currentDay = daysMap[new Date().getDay()];
     if (currentDay !== 'Minggu') {
@@ -1407,7 +1749,6 @@
       State.selectedDay = 'Senin';
     }
 
-    // Select active day pill in dashboard
     document.querySelectorAll('.day-pill-btn').forEach(function (b) {
       if (b.getAttribute('data-day') === State.selectedDay) {
         b.classList.add('active');
@@ -1417,7 +1758,7 @@
     });
 
     switchScreen(initialScreen);
-    console.log('🚀 SIMKUR Portal Waka Kur (Versi Sederhana) siap digunakan.');
+    console.log('🚀 SIMKUR Portal Waka Kur (Monitoring Administrasi Guru & Dokumen) siap digunakan.');
   }
 
   // Expose global methods for inline HTML onclick handlers
@@ -1428,6 +1769,9 @@
     selectDashboardDay: selectDashboardDay,
     openAddAgendaModal: openAddAgendaModal,
     deleteAgenda: deleteAgenda,
+    switchDocTab: switchDocTab,
+    openTeacherAdminModal: openTeacherAdminModal,
+    exportAdminRecap: exportAdminRecap,
     openUploadDocModal: openUploadDocModal,
     editDocument: function (id) { openUploadDocModal(id); },
     deleteDocument: deleteDocument,
