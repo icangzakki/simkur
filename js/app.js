@@ -20,7 +20,10 @@
       SCHEDULES: 'portal_schedules_v1',
       DOCUMENTS: 'portal_documents_v1',
       AGENDAS: 'portal_agendas_v1',
-      TEACHER_ADMIN: 'portal_teacher_admin_v1'
+      TEACHER_ADMIN: 'portal_teacher_admin_v1',
+      GURU_JOURNALS: 'portal_guru_journals_v1',
+      GURU_DOCUMENTS: 'portal_guru_documents_v1',
+      GURU_ATTENDANCE: 'portal_guru_attendance_v1'
     },
 
     init: function () {
@@ -73,6 +76,123 @@
           };
         });
         localStorage.setItem(this.KEYS.TEACHER_ADMIN, JSON.stringify(monitoring));
+      }
+
+      // Inisialisasi Riwayat Jurnal Guru (Awal untuk T-010 / Ahmad Gajali)
+      if (!localStorage.getItem(this.KEYS.GURU_JOURNALS)) {
+        const sampleJournals = [
+          {
+            id: 'JRN-018',
+            teacher_id: 'T-010',
+            teacher_name: 'Ahmad Gajali',
+            class_name: 'XI A-TJKT',
+            subject_name: 'Administrasi Sistem Jaringan & Cloud Infrastructure',
+            date: '2026-09-25',
+            time: 'Jam 1-4 (07:15 - 10:15 WITA)',
+            topic: 'Konfigurasi MikroTik RouterOS: Implementasi VLAN Trunking, Inter-VLAN Routing, dan DHCP Server.',
+            methods: ['Project Based Learning (PjBL)', 'Praktikum Lab Bengkel'],
+            notes: 'Kelompok 3 perlu pendampingan crimping serat optik. Sisa modul konfigurasi firewall dilanjutkan Kamis blok praktek.',
+            hadir_count: 34,
+            total_students: 36,
+            photo: 'assets/teacher_avatar.jpg',
+            status: 'Terverifikasi Waka Kur',
+            created_at: '2026-09-25 10:20'
+          },
+          {
+            id: 'JRN-017',
+            teacher_id: 'T-010',
+            teacher_name: 'Ahmad Gajali',
+            class_name: 'XI B-TJKT',
+            subject_name: 'Administrasi Sistem Jaringan & Cloud Infrastructure',
+            date: '2026-09-22',
+            time: 'Jam 5-8 (10:30 - 13:30 WITA)',
+            topic: 'Instalasi & Manajemen Server Linux Debian 12: Konfigurasi DNS Server (BIND9) & Virtual Host Apache.',
+            methods: ['Praktikum Lab Bengkel', 'Problem Based Learning'],
+            notes: 'Seluruh kelompok berhasil memetakan domain lokal .smkn1bjm.sch.id di lab workstation.',
+            hadir_count: 36,
+            total_students: 36,
+            photo: '',
+            status: 'Terverifikasi Waka Kur',
+            created_at: '2026-09-22 13:40'
+          },
+          {
+            id: 'JRN-016',
+            teacher_id: 'T-010',
+            teacher_name: 'Ahmad Gajali',
+            class_name: 'XI A-TJKT',
+            subject_name: 'Administrasi Sistem Jaringan & Cloud Infrastructure',
+            date: '2026-09-18',
+            time: 'Jam 1-4 (07:15 - 10:15 WITA)',
+            topic: 'Subnetting IPv4 CIDR VLSM dan Alokasi IP Address Lab Komputer Jaringan Terpadu.',
+            methods: ['Problem Based Learning', 'Diskusi Reflektif'],
+            notes: 'Tugas mandiri perhitungan subnetting prefix /27 dan /28 terkumpul 100%.',
+            hadir_count: 35,
+            total_students: 36,
+            photo: '',
+            status: 'Terverifikasi Waka Kur',
+            created_at: '2026-09-18 10:15'
+          }
+        ];
+        localStorage.setItem(this.KEYS.GURU_JOURNALS, JSON.stringify(sampleJournals));
+      }
+
+      // Inisialisasi Dokumen Perangkat Ajar Guru (Awal untuk T-010 / Ahmad Gajali)
+      if (!localStorage.getItem(this.KEYS.GURU_DOCUMENTS)) {
+        const sampleGuruDocs = [
+          {
+            id: 'GDOC-001',
+            teacher_id: 'T-010',
+            title: 'Modul Ajar ASJ Fase F (MikroTik & Linux Server)',
+            category: 'Modul Ajar',
+            school_year: '2026/2027',
+            file_name: 'Modul_Ajar_ASJ_FaseF_2026.pdf',
+            file_size: '1.8 MB',
+            status: 'Disetujui Waka Kur',
+            score: 98,
+            notes: 'Sesuai dengan Alur Capaian Standar Proses Permendikdasmen 2026.',
+            uploaded_at: '2026-07-15 08:30'
+          },
+          {
+            id: 'GDOC-002',
+            teacher_id: 'T-010',
+            title: 'Alur Tujuan Pembelajaran (ATP) Konsentrasi Keahlian TJKT',
+            category: 'Silabus & ATP',
+            school_year: '2026/2027',
+            file_name: 'ATP_TJKT_FaseF_2026.pdf',
+            file_size: '920 KB',
+            status: 'Disetujui Waka Kur',
+            score: 95,
+            notes: 'Terintegrasi dengan materi sertifikasi kompetensi LSP-P1.',
+            uploaded_at: '2026-07-18 10:15'
+          },
+          {
+            id: 'GDOC-003',
+            teacher_id: 'T-010',
+            title: 'Program Tahunan (Prota) & Program Semester (Prosem) Ganjil',
+            category: 'Program Tahunan & Semester',
+            school_year: '2026/2027',
+            file_name: 'Prota_Prosem_ASJ_2026.xlsx',
+            file_size: '450 KB',
+            status: 'Disetujui Waka Kur',
+            score: 94,
+            notes: 'Alokasi pekan efektif 18 minggu telah diverifikasi.',
+            uploaded_at: '2026-07-20 09:00'
+          },
+          {
+            id: 'GDOC-004',
+            teacher_id: 'T-010',
+            title: 'Perangkat Asesmen & Rubrik Praktikum Konfigurasi Jaringan',
+            category: 'Instrumen Asesmen',
+            school_year: '2026/2027',
+            file_name: 'Rubrik_Asesmen_Praktik_ASJ.pdf',
+            file_size: '1.2 MB',
+            status: 'Disetujui Waka Kur',
+            score: 96,
+            notes: 'Dilengkapi pedoman penskoran dan asesmen performa kerja.',
+            uploaded_at: '2026-08-02 11:30'
+          }
+        ];
+        localStorage.setItem(this.KEYS.GURU_DOCUMENTS, JSON.stringify(sampleGuruDocs));
       }
     },
 
@@ -142,7 +262,13 @@
     scheduleTeacherFilter: 'all',
     scheduleSearchQuery: '',
     masterSearchQuery: '',
-    editingItem: null
+    editingItem: null,
+    // Portal Guru State
+    activeGuruTab: 'jurnal', // 'jurnal' | 'presensi' | 'dokumen'
+    currentGuruId: 'T-010', // Default Ahmad Gajali
+    presensiClass: 'XI A-TJKT',
+    presensiStudents: [],
+    tempJournalPhoto: null
   };
 
   // =========================================================================
@@ -192,7 +318,7 @@
   }
 
   // =========================================================================
-  // 5. NAVIGATION CONTROLLER (4 MENUS)
+  // 5. NAVIGATION CONTROLLER (5 MENUS)
   // =========================================================================
   function switchScreen(screenName) {
     State.currentScreen = screenName;
@@ -224,9 +350,10 @@
         'dashboard': 'Overview Dashboard Waka Kurikulum',
         'dokumen': 'Monitoring Administrasi Guru & Dokumen Kurikulum',
         'jadwal': 'Jadwal Pelajaran',
-        'data-master': 'Data Master Kurikulum'
+        'data-master': 'Data Master Kurikulum',
+        'portal-guru': 'Portal Guru — Jurnal Mengajar, Presensi & Berkas Ajar'
       };
-      titleEl.textContent = titles[screenName] || 'Portal Waka Kur';
+      titleEl.textContent = titles[screenName] || 'Portal Kurikulum';
     }
 
     // Close mobile sidebar if open
@@ -237,6 +364,7 @@
     else if (screenName === 'dokumen') renderDocuments();
     else if (screenName === 'jadwal') renderSchedules();
     else if (screenName === 'data-master') renderDataMaster();
+    else if (screenName === 'portal-guru') renderPortalGuru();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -1725,6 +1853,516 @@
 
     const formAgenda = document.getElementById('form-modal-agenda');
     if (formAgenda) formAgenda.addEventListener('submit', handleSaveAgenda);
+
+    const formGuruJurnal = document.getElementById('form-guru-jurnal');
+    if (formGuruJurnal) formGuruJurnal.addEventListener('submit', handleSaveGuruJournal);
+
+    const formGuruDoc = document.getElementById('form-modal-guru-doc');
+    if (formGuruDoc) formGuruDoc.addEventListener('submit', handleSaveGuruDoc);
+  }
+
+  // =========================================================================
+  // 10. PORTAL GURU CONTROLLER (JURNAL, PRESENSI, & UPLOAD DOKUMEN)
+  // =========================================================================
+  function renderPortalGuru() {
+    const teachers = StorageManager.get('teachers');
+    const currentTeacherId = State.currentGuruId || 'T-010';
+    const teacher = teachers.find(function (t) {
+      return String(t.id) === String(currentTeacherId);
+    }) || teachers[0] || {
+      id: 'T-010',
+      name: 'Ahmad Gajali',
+      nip: '19890609 202521 1 023',
+      department: 'TJKT',
+      subject: 'Administrasi Sistem Jaringan & Cloud Infrastructure'
+    };
+
+    // 1. Populate teacher switch dropdown if needed
+    const selectGuru = document.getElementById('select-active-guru');
+    if (selectGuru && selectGuru.options.length <= 1) {
+      selectGuru.innerHTML = teachers.map(function (t) {
+        return '<option value="' + t.id + '"' + (String(t.id) === String(currentTeacherId) ? ' selected' : '') + '>' +
+          t.name + ' (' + (t.department || 'Umum') + ')' +
+        '</option>';
+      }).join('');
+    } else if (selectGuru) {
+      selectGuru.value = currentTeacherId;
+    }
+
+    // 2. Update Teacher Header Info
+    const elName = document.getElementById('portal-guru-name');
+    const elMeta = document.getElementById('portal-guru-meta');
+    const elBadge = document.getElementById('portal-guru-badge');
+    if (elName) elName.textContent = teacher.name;
+    if (elMeta) elMeta.textContent = 'NIP: ' + (teacher.nip || '-') + ' • Jurusan: ' + (teacher.department || 'Kejuruan') + ' • ' + (teacher.subject || 'Mata Pelajaran Produktif');
+    if (elBadge) elBadge.textContent = 'Guru Pengampu ' + (teacher.department || 'Kejuruan');
+
+    // 3. Update KPI Cards
+    const journals = StorageManager.get('guru_journals').filter(function (j) {
+      return String(j.teacher_id) === String(currentTeacherId);
+    });
+    const docs = StorageManager.get('guru_documents').filter(function (d) {
+      return String(d.teacher_id) === String(currentTeacherId);
+    });
+
+    const elJurnalCount = document.getElementById('kpi-guru-jurnal-count');
+    if (elJurnalCount) elJurnalCount.textContent = (journals.length || 18) + ' Sesi';
+
+    const elDocCount = document.getElementById('kpi-guru-doc-count');
+    if (elDocCount) elDocCount.textContent = (docs.length || 4) + ' / 4 Berkas';
+
+    // 4. Populate Class Options in Jurnal & Presensi Forms
+    const classes = StorageManager.get('classes');
+    const classSelectJurnal = document.getElementById('input-guru-jurnal-class');
+    if (classSelectJurnal && classSelectJurnal.options.length <= 1) {
+      classSelectJurnal.innerHTML = classes.map(function (c) {
+        const majorLabel = c.major || c.department || '';
+        return '<option value="' + c.name + '"' + (c.name === 'XI A-TJKT' ? ' selected' : '') + '>' + c.name + (majorLabel ? ' (' + majorLabel + ')' : '') + '</option>';
+      }).join('');
+    }
+
+    const classSelectPresensi = document.getElementById('select-presensi-class');
+    if (classSelectPresensi && classSelectPresensi.options.length <= 1) {
+      classSelectPresensi.innerHTML = classes.map(function (c) {
+        const majorLabel = c.major || c.department || '';
+        return '<option value="' + c.name + '"' + (c.name === 'XI A-TJKT' ? ' selected' : '') + '>' + c.name + (majorLabel ? ' (' + majorLabel + ')' : '') + '</option>';
+      }).join('');
+    }
+
+    // Set default date in forms if empty
+    const todayStr = new Date().toISOString().split('T')[0];
+    const dateJurnal = document.getElementById('input-guru-jurnal-date');
+    if (dateJurnal && !dateJurnal.value) dateJurnal.value = todayStr;
+    const datePresensi = document.getElementById('input-presensi-date');
+    if (datePresensi && !datePresensi.value) datePresensi.value = todayStr;
+
+    // 5. Render Active Subtab
+    const activeTab = State.activeGuruTab || 'jurnal';
+    document.querySelectorAll('.guru-subtab-btn').forEach(function (btn) {
+      if (btn.getAttribute('data-guru-tab') === activeTab) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    const paneJurnal = document.getElementById('guru-pane-jurnal');
+    const panePresensi = document.getElementById('guru-pane-presensi');
+    const paneDokumen = document.getElementById('guru-pane-dokumen');
+
+    if (activeTab === 'jurnal') {
+      if (paneJurnal) paneJurnal.style.display = 'block';
+      if (panePresensi) panePresensi.style.display = 'none';
+      if (paneDokumen) paneDokumen.style.display = 'none';
+      renderGuruJournalHistory();
+    } else if (activeTab === 'presensi') {
+      if (paneJurnal) paneJurnal.style.display = 'none';
+      if (panePresensi) panePresensi.style.display = 'block';
+      if (paneDokumen) paneDokumen.style.display = 'none';
+      loadPresensiStudents();
+    } else if (activeTab === 'dokumen') {
+      if (paneJurnal) paneJurnal.style.display = 'none';
+      if (panePresensi) panePresensi.style.display = 'none';
+      if (paneDokumen) paneDokumen.style.display = 'block';
+      renderGuruDocuments();
+    }
+  }
+
+  function switchGuruTab(tabName) {
+    State.activeGuruTab = tabName;
+    renderPortalGuru();
+  }
+
+  function changeActiveGuru(teacherId) {
+    State.currentGuruId = teacherId;
+    const teacher = StorageManager.get('teachers').find(function (t) {
+      return String(t.id) === String(teacherId);
+    });
+    showToast('Beralih ke akun: ' + (teacher ? teacher.name : teacherId), 'info');
+    renderPortalGuru();
+  }
+
+  function toggleMethodTag(btn) {
+    btn.classList.toggle('active');
+  }
+
+  function renderGuruJournalHistory() {
+    const listEl = document.getElementById('guru-journal-history-list');
+    if (!listEl) return;
+
+    const allJournals = StorageManager.get('guru_journals');
+    const teacherJournals = allJournals.filter(function (j) {
+      return String(j.teacher_id) === String(State.currentGuruId);
+    });
+
+    if (teacherJournals.length === 0) {
+      listEl.innerHTML = '<div style="text-align: center; padding: 2rem; color: #777777;">Belum ada riwayat jurnal yang diisi. Silakan isi formulir di atas.</div>';
+      return;
+    }
+
+    let html = '';
+    teacherJournals.forEach(function (j) {
+      const methodsHtml = (j.methods || []).map(function (m) {
+        return '<span class="badge" style="background: rgba(75, 34, 184, 0.08); color: #4B22B8; font-size: 0.72rem; padding: 2px 8px; border-radius: 999px;">' + m + '</span>';
+      }).join(' ');
+
+      html += '<div style="background: #ffffff; border: 1px solid #ECECF2; border-radius: 12px; padding: 1.125rem; margin-bottom: 0.875rem; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">' +
+        '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 6px;">' +
+          '<div style="display: flex; align-items: center; gap: 8px;">' +
+            '<span class="badge" style="background: #EDE8F5; color: #4B22B8; font-weight: 700; font-size: 0.75rem;">' + (j.date || 'Hari Ini') + '</span>' +
+            '<span style="font-weight: 700; color: #262626; font-size: 0.9375rem;">' + j.class_name + '</span>' +
+            '<span style="color: #777777; font-size: 0.8125rem;">• ' + (j.time || 'Jam 1-4') + '</span>' +
+          '</div>' +
+          '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; font-size: 0.75rem;">✓ ' + (j.status || 'Terverifikasi Waka Kur') + '</span>' +
+        '</div>' +
+        '<div style="font-size: 0.875rem; color: #374151; font-weight: 600; margin-bottom: 6px;">' + j.topic + '</div>' +
+        (j.notes ? '<div style="font-size: 0.8125rem; color: #6B7280; margin-bottom: 8px; font-style: italic;">Catatan: ' + j.notes + '</div>' : '') +
+        '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-top: 1px solid #F3F4F6; padding-top: 8px; margin-top: 8px;">' +
+          '<div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">' +
+            methodsHtml +
+          '</div>' +
+          '<div style="display: flex; align-items: center; gap: 10px; font-size: 0.8125rem; color: #4B5563;">' +
+            '<span>👥 Presensi: <strong>' + (j.hadir_count || 34) + ' / ' + (j.total_students || 36) + ' Hadir</strong></span>' +
+            (j.photo ? '<span class="badge" style="background: #E0F2FE; color: #0369A1; font-size: 0.72rem;">📸 Foto KBM Ada</span>' : '') +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    });
+
+    listEl.innerHTML = html;
+  }
+
+  function handleSaveGuruJournal(e) {
+    e.preventDefault();
+    const className = document.getElementById('input-guru-jurnal-class').value;
+    const subjectName = document.getElementById('input-guru-jurnal-subject').value.trim();
+    const date = document.getElementById('input-guru-jurnal-date').value;
+    const time = document.getElementById('input-guru-jurnal-time').value;
+    const topic = document.getElementById('input-guru-jurnal-topic').value.trim();
+    const notes = document.getElementById('input-guru-jurnal-notes').value.trim();
+    const hadirCount = parseInt(document.getElementById('input-guru-jurnal-hadir-count').value, 10) || 34;
+
+    // Get active methods
+    const activeMethods = [];
+    document.querySelectorAll('#guru-methods-group .method-tag-btn.active').forEach(function (btn) {
+      activeMethods.push(btn.textContent.trim());
+    });
+    if (activeMethods.length === 0) {
+      activeMethods.push('Praktikum Lab Bengkel');
+    }
+
+    const teachers = StorageManager.get('teachers');
+    const teacher = teachers.find(function (t) {
+      return String(t.id) === String(State.currentGuruId);
+    }) || { name: 'Ahmad Gajali' };
+
+    const newJournal = {
+      id: 'JRN-' + Date.now(),
+      teacher_id: State.currentGuruId,
+      teacher_name: teacher.name,
+      class_name: className,
+      subject_name: subjectName,
+      date: date || new Date().toISOString().split('T')[0],
+      time: time,
+      topic: topic,
+      methods: activeMethods,
+      notes: notes,
+      hadir_count: hadirCount,
+      total_students: 36,
+      photo: State.tempJournalPhoto || '',
+      status: 'Terverifikasi Waka Kur',
+      created_at: new Date().toISOString().replace('T', ' ').substring(0, 16)
+    };
+
+    StorageManager.add('guru_journals', newJournal);
+
+    // Sync with Waka Kur Monitoring (portal_teacher_admin_v1)
+    const adminList = StorageManager.get('teacher_admin');
+    const adminTeacher = adminList.find(function (a) {
+      return String(a.teacher_id) === String(State.currentGuruId);
+    });
+    if (adminTeacher) {
+      const newCount = (parseInt(adminTeacher.jurnal_count, 10) || 0) + 1;
+      StorageManager.update('teacher_admin', State.currentGuruId, {
+        jurnal_status: 'Sudah',
+        jurnal_count: newCount,
+        updated_at: new Date().toISOString().split('T')[0]
+      });
+    }
+
+    // Reset input fields
+    document.getElementById('input-guru-jurnal-topic').value = '';
+    document.getElementById('input-guru-jurnal-notes').value = '';
+    removeJournalPhoto();
+
+    showToast('✓ Jurnal Mengajar berhasil disimpan dan tersinkron ke Waka Kurikulum!');
+    renderGuruJournalHistory();
+    renderPortalGuru();
+    renderDocuments(); // Update Waka Kur Monitoring automatically!
+  }
+
+  function handleJournalPhotoUpload(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      State.tempJournalPhoto = e.target.result;
+      const previewBox = document.getElementById('jurnal-photo-preview-box');
+      const previewImg = document.getElementById('jurnal-preview-img');
+      const filenameEl = document.getElementById('jurnal-photo-filename');
+      const detailsEl = document.getElementById('jurnal-photo-details');
+
+      if (previewImg) previewImg.src = e.target.result;
+      if (filenameEl) filenameEl.textContent = file.name;
+      if (detailsEl) detailsEl.textContent = 'Ukuran: ' + (file.size / 1024 / 1024).toFixed(1) + ' MB • ' + new Date().toLocaleTimeString('id-ID');
+      if (previewBox) previewBox.style.display = 'block';
+      showToast('Foto dokumentasi KBM berhasil diunggah!');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeJournalPhoto() {
+    State.tempJournalPhoto = null;
+    const previewBox = document.getElementById('jurnal-photo-preview-box');
+    const cameraInput = document.getElementById('jurnal-camera-input');
+    const galleryInput = document.getElementById('jurnal-gallery-input');
+    if (previewBox) previewBox.style.display = 'none';
+    if (cameraInput) cameraInput.value = '';
+    if (galleryInput) galleryInput.value = '';
+  }
+
+  function loadPresensiStudents() {
+    const classSelect = document.getElementById('select-presensi-class');
+    const className = classSelect ? classSelect.value : 'XI A-TJKT';
+    State.presensiClass = className;
+
+    const roster = window.SIMKUR_DATA && window.SIMKUR_DATA.studentRoster;
+    let students = (roster && roster[className]) || [];
+
+    // Fallback if class not in roster
+    if (students.length === 0) {
+      students = [];
+      for (let i = 1; i <= 36; i++) {
+        students.push({
+          no: i,
+          nisn: '010' + (1000000 + i),
+          name: 'Siswa ' + i + ' (' + className + ')',
+          gender: i % 2 === 0 ? 'P' : 'L',
+          status: i === 3 ? 'S' : (i === 12 ? 'S' : 'H'),
+          notes: i === 3 ? 'Demam' : ''
+        });
+      }
+    }
+
+    State.presensiStudents = students.map(function (s, idx) {
+      return {
+        no: s.no || (idx + 1),
+        nisn: s.nisn || ('010' + (idx + 100)),
+        name: s.name,
+        gender: s.gender || 'L',
+        status: s.status || 'H',
+        notes: s.notes || ''
+      };
+    });
+
+    renderPresensiTable();
+  }
+
+  function renderPresensiTable() {
+    const tbody = document.getElementById('table-guru-presensi-tbody');
+    if (!tbody) return;
+
+    let hadir = 0, sakit = 0, izin = 0, alpa = 0;
+    let html = '';
+
+    State.presensiStudents.forEach(function (s, idx) {
+      if (s.status === 'H') hadir++;
+      else if (s.status === 'S') sakit++;
+      else if (s.status === 'I') izin++;
+      else if (s.status === 'A') alpa++;
+
+      html += '<tr>' +
+        '<td style="text-align: center; color: #777777;">' + s.no + '</td>' +
+        '<td style="font-family: monospace; font-size: 0.8125rem;">' + s.nisn + '</td>' +
+        '<td style="font-weight: 600; color: #262626;">' + s.name + '</td>' +
+        '<td style="text-align: center;"><span class="badge badge-neutral">' + s.gender + '</span></td>' +
+        '<td style="text-align: center;">' +
+          '<div style="display: inline-flex; gap: 4px;">' +
+            '<button type="button" class="attendance-status-btn ' + (s.status === 'H' ? 'active-H' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'H\')" title="Hadir">H</button>' +
+            '<button type="button" class="attendance-status-btn ' + (s.status === 'S' ? 'active-S' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'S\')" title="Sakit">S</button>' +
+            '<button type="button" class="attendance-status-btn ' + (s.status === 'I' ? 'active-I' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'I\')" title="Izin">I</button>' +
+            '<button type="button" class="attendance-status-btn ' + (s.status === 'A' ? 'active-A' : '') + '" onclick="window.PORTAL_APP.setPresensiStatus(' + idx + ', \'A\')" title="Alpa">A</button>' +
+          '</div>' +
+        '</td>' +
+        '<td>' +
+          '<input type="text" class="form-input" style="padding: 0.25rem 0.5rem; font-size: 0.8125rem;" value="' + (s.notes || '') + '" placeholder="Keterangan..." onchange="window.PORTAL_APP.updatePresensiNote(' + idx + ', this.value)">' +
+        '</td>' +
+      '</tr>';
+    });
+
+    tbody.innerHTML = html;
+
+    // Update summary counts
+    const total = State.presensiStudents.length;
+    const pct = total > 0 ? ((hadir / total) * 100).toFixed(1) : 0;
+
+    const elH = document.getElementById('presensi-count-h');
+    const elS = document.getElementById('presensi-count-s');
+    const elI = document.getElementById('presensi-count-i');
+    const elA = document.getElementById('presensi-count-a');
+    const elPct = document.getElementById('presensi-pct');
+
+    if (elH) elH.textContent = String(hadir);
+    if (elS) elS.textContent = String(sakit);
+    if (elI) elI.textContent = String(izin);
+    if (elA) elA.textContent = String(alpa);
+    if (elPct) elPct.textContent = pct + '%';
+  }
+
+  function setPresensiStatus(idx, status) {
+    if (State.presensiStudents[idx]) {
+      State.presensiStudents[idx].status = status;
+      renderPresensiTable();
+    }
+  }
+
+  function updatePresensiNote(idx, note) {
+    if (State.presensiStudents[idx]) {
+      State.presensiStudents[idx].notes = note;
+    }
+  }
+
+  function setAllPresensi(status) {
+    State.presensiStudents.forEach(function (s) {
+      s.status = status;
+    });
+    renderPresensiTable();
+    showToast('Seluruh siswa diset: ' + (status === 'H' ? 'Hadir (100%)' : status));
+  }
+
+  function handleSavePresensi() {
+    const hadir = State.presensiStudents.filter(function (s) { return s.status === 'H'; }).length;
+    const sakit = State.presensiStudents.filter(function (s) { return s.status === 'S'; }).length;
+    const total = State.presensiStudents.length;
+    const pct = total > 0 ? ((hadir / total) * 100).toFixed(1) : 0;
+
+    // Save session attendance
+    StorageManager.add('guru_attendance', {
+      id: 'ATT-' + Date.now(),
+      class_name: State.presensiClass,
+      teacher_id: State.currentGuruId,
+      date: document.getElementById('input-presensi-date') ? document.getElementById('input-presensi-date').value : new Date().toISOString().split('T')[0],
+      hadir: hadir,
+      sakit: sakit,
+      total: total,
+      students: State.presensiStudents
+    });
+
+    // Update Jurnal Form's summary
+    const badgeSummary = document.getElementById('jurnal-attendance-badge');
+    const inputHadirCount = document.getElementById('input-guru-jurnal-hadir-count');
+    if (badgeSummary) {
+      badgeSummary.textContent = hadir + ' Hadir, ' + sakit + ' Sakit dari ' + total + ' Siswa (' + pct + '%)';
+    }
+    if (inputHadirCount) {
+      inputHadirCount.value = hadir;
+    }
+
+    showToast('✓ Presensi sesi ' + State.presensiClass + ' berhasil disimpan & disinkronkan ke Formulir Jurnal!');
+  }
+
+  function renderGuruDocuments() {
+    const tbody = document.getElementById('guru-docs-tbody');
+    if (!tbody) return;
+
+    const allDocs = StorageManager.get('guru_documents');
+    const teacherDocs = allDocs.filter(function (d) {
+      return String(d.teacher_id) === String(State.currentGuruId);
+    });
+
+    if (teacherDocs.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #777777;">Belum ada dokumen yang diunggah. Silakan klik tombol Unggah Dokumen.</td></tr>';
+      return;
+    }
+
+    let html = '';
+    teacherDocs.forEach(function (d, idx) {
+      html += '<tr>' +
+        '<td style="text-align: center; color: #777777;">' + (idx + 1) + '</td>' +
+        '<td>' +
+          '<div style="font-weight: 700; color: #262626;">' + d.title + '</div>' +
+          '<div style="font-size: 0.75rem; color: #777777;">📁 ' + d.file_name + ' (' + (d.file_size || '1.2 MB') + ')</div>' +
+        '</td>' +
+        '<td><span class="badge" style="background: rgba(75, 34, 184, 0.1); color: #4B22B8; font-weight: 600;">' + d.category + '</span></td>' +
+        '<td style="font-size: 0.8125rem; color: #666666;">' + (d.uploaded_at || '2026-07-15') + '</td>' +
+        '<td style="text-align: center;"><span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700;">✓ ' + (d.status || 'Disetujui Waka Kur') + '</span></td>' +
+        '<td style="font-size: 0.8125rem; color: #666666;">' + (d.notes || 'Lengkap & Terverifikasi') + '</td>' +
+        '<td>' +
+          '<div style="display: flex; gap: 4px;">' +
+            '<button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.downloadDocument(\'' + d.id + '\')" title="Unduh File">⬇️</button>' +
+            '<button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.deleteGuruDoc(\'' + d.id + '\')" style="color: #dc2626;" title="Hapus">🗑️</button>' +
+          '</div>' +
+        '</td>' +
+      '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  function openUploadGuruDocModal() {
+    openModal('modal-guru-upload-doc');
+  }
+
+  function handleSaveGuruDoc(e) {
+    e.preventDefault();
+    const category = document.getElementById('select-guru-doc-cat').value;
+    const title = document.getElementById('input-guru-doc-title').value.trim();
+    const fileInput = document.getElementById('input-guru-doc-file');
+    const notes = document.getElementById('input-guru-doc-notes').value.trim();
+
+    const fileName = fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0].name : (title.replace(/\s+/g, '_') + '.pdf');
+    const fileSize = fileInput && fileInput.files && fileInput.files[0] ? (fileInput.files[0].size / 1024 / 1024).toFixed(1) + ' MB' : '1.5 MB';
+
+    const newDoc = {
+      id: 'GDOC-' + Date.now(),
+      teacher_id: State.currentGuruId,
+      title: title,
+      category: category,
+      school_year: '2026/2027',
+      file_name: fileName,
+      file_size: fileSize,
+      status: 'Disetujui Waka Kur',
+      score: 96,
+      notes: notes || 'Perangkat ajar mandiri diunggah melalui Portal Guru.',
+      uploaded_at: new Date().toISOString().split('T')[0]
+    };
+
+    StorageManager.add('guru_documents', newDoc);
+
+    // Sync with Waka Kur Monitoring
+    if (category === 'Modul Ajar') {
+      StorageManager.update('teacher_admin', State.currentGuruId, { rpp_status: 'Lengkap' });
+    } else if (category === 'Silabus & ATP') {
+      StorageManager.update('teacher_admin', State.currentGuruId, { silabus_status: 'Lengkap' });
+    } else if (category === 'Instrumen Asesmen') {
+      StorageManager.update('teacher_admin', State.currentGuruId, { asesmen_status: 'Lengkap' });
+    }
+
+    closeModal('modal-guru-upload-doc');
+    showToast('✓ Berkas perangkat ajar berhasil diunggah dan terverifikasi!');
+    renderGuruDocuments();
+    renderPortalGuru();
+    renderDocuments(); // Sync with Waka Kur
+  }
+
+  function deleteGuruDoc(id) {
+    if (confirm('Yakin ingin menghapus dokumen ini?')) {
+      StorageManager.delete('guru_documents', id);
+      showToast('Dokumen berhasil dihapus.');
+      renderGuruDocuments();
+      renderPortalGuru();
+    }
   }
 
   // =========================================================================
@@ -1739,6 +2377,14 @@
     const initialDocTab = params.get('tab');
     if (initialDocTab) {
       State.activeDocTab = initialDocTab;
+    }
+    const initialGuruTab = params.get('guruTab');
+    if (initialGuruTab) {
+      State.activeGuruTab = initialGuruTab;
+    }
+    const initialGuruId = params.get('guruId');
+    if (initialGuruId) {
+      State.currentGuruId = initialGuruId;
     }
 
     const daysMap = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -1798,7 +2444,25 @@
     openRoomModal: openRoomModal,
     editRoom: function (id) { openRoomModal(id); },
     deleteRoom: deleteRoom,
-    showToast: showToast
+    showToast: showToast,
+    // Portal Guru Methods
+    renderPortalGuru: renderPortalGuru,
+    switchGuruTab: switchGuruTab,
+    changeActiveGuru: changeActiveGuru,
+    toggleMethodTag: toggleMethodTag,
+    handleSaveGuruJournal: handleSaveGuruJournal,
+    handleJournalPhotoUpload: handleJournalPhotoUpload,
+    removeJournalPhoto: removeJournalPhoto,
+    loadPresensiStudents: loadPresensiStudents,
+    renderPresensiTable: renderPresensiTable,
+    setPresensiStatus: setPresensiStatus,
+    updatePresensiNote: updatePresensiNote,
+    setAllPresensi: setAllPresensi,
+    handleSavePresensi: handleSavePresensi,
+    renderGuruDocuments: renderGuruDocuments,
+    openUploadGuruDocModal: openUploadGuruDocModal,
+    handleSaveGuruDoc: handleSaveGuruDoc,
+    deleteGuruDoc: deleteGuruDoc
   };
 
   // Backwards compatibility alias
