@@ -2631,12 +2631,6 @@
       if (chipName) chipName.textContent = session.name;
       if (chipRole) chipRole.textContent = session.title || (session.role === 'waka' ? 'Waka Kurikulum' : 'Guru Pengampu');
       if (chipAvatar && session.avatar) chipAvatar.src = session.avatar;
-
-      // Update sidebar footer user card
-      var footerName = document.querySelector('.sidebar-user-footer div[style*="font-weight: 700"]');
-      var footerRole = document.querySelector('.sidebar-user-footer div[style*="0.6875rem"]');
-      if (footerName) footerName.textContent = session.name;
-      if (footerRole) footerRole.textContent = session.title || (session.role === 'waka' ? 'Waka Kurikulum' : 'Guru');
     }
 
     // If guru-only: hide Dashboard, Dokumen, Jadwal, Data Master nav items
@@ -2714,8 +2708,108 @@
     console.log('🚀 SIMKUR Portal siap. Akses:', isGuruOnly ? 'Guru Only → Portal Guru' : 'Full Access');
   }
 
+  // ── CHANGE PASSWORD METHODS ──────────────────────────────────────────
+  function openChangePasswordModal() {
+    var session = null;
+    try {
+      var raw = localStorage.getItem('simkur_session');
+      if (raw) session = JSON.parse(raw);
+    } catch (e) {}
+
+    var activeTeacher = null;
+    if (session) {
+      activeTeacher = {
+        name: session.name,
+        nip: session.nip,
+        title: session.title || (session.role === 'waka' ? 'Waka Kurikulum' : 'Guru'),
+        avatar: session.avatar || 'assets/teacher_avatar.jpg'
+      };
+    } else if (window.SIMKUR_DATA && window.SIMKUR_DATA.currentUser) {
+      activeTeacher = window.SIMKUR_DATA.currentUser;
+    }
+
+    var nameEl = document.getElementById('pwd-modal-name');
+    var metaEl = document.getElementById('pwd-modal-meta');
+    var avatarEl = document.getElementById('pwd-modal-avatar');
+
+    if (nameEl && activeTeacher) nameEl.textContent = activeTeacher.name;
+    if (metaEl && activeTeacher) {
+      metaEl.textContent = 'NIP. ' + (activeTeacher.nip || '-') + ' • ' + (activeTeacher.title || 'Guru Pengampu');
+    }
+    if (avatarEl && activeTeacher && activeTeacher.avatar) {
+      avatarEl.src = activeTeacher.avatar;
+    }
+
+    var curInput = document.getElementById('input-pwd-current');
+    var newInput = document.getElementById('input-pwd-new');
+    var confInput = document.getElementById('input-pwd-confirm');
+    if (curInput) curInput.value = '';
+    if (newInput) newInput.value = '';
+    if (confInput) confInput.value = '';
+
+    openModal('modal-change-password');
+  }
+
+  function saveChangePassword(event) {
+    if (event) event.preventDefault();
+
+    var curInput = document.getElementById('input-pwd-current');
+    var newInput = document.getElementById('input-pwd-new');
+    var confInput = document.getElementById('input-pwd-confirm');
+
+    var curVal = curInput ? curInput.value.trim() : '';
+    var newVal = newInput ? newInput.value.trim() : '';
+    var confVal = confInput ? confInput.value.trim() : '';
+
+    if (!newVal || newVal.length < 6) {
+      showToast('⚠️ Kata sandi baru minimal 6 karakter!');
+      if (newInput) newInput.focus();
+      return;
+    }
+
+    if (newVal !== confVal) {
+      showToast('⚠️ Konfirmasi kata sandi baru tidak cocok!');
+      if (confInput) confInput.focus();
+      return;
+    }
+
+    var session = null;
+    try {
+      var raw = localStorage.getItem('simkur_session');
+      if (raw) session = JSON.parse(raw);
+    } catch (e) {}
+
+    var nip = session ? session.nip : (window.SIMKUR_DATA && window.SIMKUR_DATA.currentUser ? window.SIMKUR_DATA.currentUser.nip : 'default');
+
+    // Save to localStorage
+    var passwords = {};
+    try {
+      passwords = JSON.parse(localStorage.getItem('simkur_passwords') || '{}');
+    } catch (e) {}
+    passwords[nip] = newVal;
+    localStorage.setItem('simkur_passwords', JSON.stringify(passwords));
+
+    closeModal('modal-change-password');
+    showToast('✅ Kata sandi berhasil diperbarui!');
+  }
+
+  function togglePwdVisibility(inputId, btnEl) {
+    var input = document.getElementById(inputId);
+    if (!input) return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      if (btnEl) btnEl.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    } else {
+      input.type = 'password';
+      if (btnEl) btnEl.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    }
+  }
+
   // Expose global methods for inline HTML onclick handlers
   window.PORTAL_APP = {
+    openChangePasswordModal: openChangePasswordModal,
+    saveChangePassword: saveChangePassword,
+    togglePwdVisibility: togglePwdVisibility,
     switchScreen: switchScreen,
     openModal: openModal,
     closeModal: closeModal,

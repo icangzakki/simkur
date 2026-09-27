@@ -1279,6 +1279,18 @@
         return false;
       }
 
+      // Validate password (supports updated custom password or default)
+      let customPasswords = {};
+      try {
+        customPasswords = JSON.parse(localStorage.getItem('simkur_passwords') || '{}');
+      } catch (e) {}
+
+      const userCustomPwd = currentUser.nip ? customPasswords[currentUser.nip] : null;
+      if (userCustomPwd && pwd !== userCustomPwd) {
+        showToast('⚠️ Kata sandi salah! Masukkan kata sandi yang telah Anda ubah.');
+        return false;
+      }
+
       const submitBtn = document.getElementById('btn-submit');
       const submitText = document.getElementById('btn-submit-text');
       submitBtn.disabled = true;
