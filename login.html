@@ -445,6 +445,7 @@
     .opt-dept-akl  { background: linear-gradient(135deg, #0284C7, #38BDF8); }
     .opt-dept-mplb { background: linear-gradient(135deg, #059669, #34D399); }
     .opt-dept-pemasaran { background: linear-gradient(135deg, #D97706, #FCD34D); }
+    .opt-dept-bk   { background: linear-gradient(135deg, #7E22CE, #A855F7); }
     .opt-dept-umum { background: linear-gradient(135deg, #475569, #94A3B8); }
 
     .option-details { flex: 1; min-width: 0; }
@@ -465,6 +466,7 @@
     .dept-badge.akl  { background: #E0F2FE; color: #0284C7; }
     .dept-badge.mplb { background: #D1FAE5; color: #059669; }
     .dept-badge.pemasaran { background: #FEF3C7; color: #92400E; }
+    .dept-badge.bk   { background: #F3E8FF; color: #7E22CE; }
     .dept-badge.umum { background: #F1F5F9; color: #475569; }
 
     .option-check {
@@ -876,6 +878,7 @@
                     <button type="button" class="combobox-chip" data-filter="AKL" onclick="filterByDeptChip('AKL')">AKL</button>
                     <button type="button" class="combobox-chip" data-filter="MPLB" onclick="filterByDeptChip('MPLB')">MPLB</button>
                     <button type="button" class="combobox-chip" data-filter="Pemasaran" onclick="filterByDeptChip('Pemasaran')">Pemasaran</button>
+                    <button type="button" class="combobox-chip" data-filter="BK" onclick="filterByDeptChip('BK')">BK</button>
                     <button type="button" class="combobox-chip" data-filter="Umum" onclick="filterByDeptChip('Umum')">Umum</button>
                   </div>
                   <div class="combobox-items-list" id="combobox-items-list"></div>
@@ -1035,6 +1038,7 @@
       if (d.includes('akl')) return 'akl';
       if (d.includes('mplb')) return 'mplb';
       if (d.includes('pemasaran')) return 'pemasaran';
+      if (d.includes('bk')) return 'bk';
       return 'umum';
     }
 

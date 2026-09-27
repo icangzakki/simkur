@@ -656,7 +656,9 @@
         (m.nip && m.nip.includes(q)) ||
         (m.subject && m.subject.toLowerCase().includes(q));
 
-      const matchesDept = deptFilter === 'all' || m.department === deptFilter;
+      const matchesDept = deptFilter === 'all' || m.department === deptFilter ||
+        (deptFilter === 'PM' && m.department === 'Pemasaran') ||
+        (deptFilter === 'Pemasaran' && m.department === 'PM');
 
       let matchesStatus = true;
       const isComplete = m.rpp_status === 'Lengkap' && m.jurnal_status === 'Sudah' && m.silabus_status === 'Lengkap';

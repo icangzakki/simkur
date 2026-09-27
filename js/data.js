@@ -34,726 +34,726 @@ window.SIMKUR_DATA = {
   },
   "masterTeachers": [
     {
-      "id": "T-001",
-      "name": "Rusnani",
-      "nip": "197308022000122003",
-      "department": "AKL",
-      "subject": "Praktikum Akuntansi Perusahaan & Perpajakan",
-      "is_active": true
-    },
-    {
-      "id": "T-002",
-      "name": "Agustin Purnomosari",
-      "nip": "3153750649300003",
-      "department": "Manajemen",
-      "subject": "Kepala Sekolah & Supervisi Manajerial",
-      "is_active": true
-    },
-    {
-      "id": "T-003",
-      "name": "Andry Dharmawan",
-      "nip": "8554762663130202",
-      "department": "Tata Usaha",
-      "subject": "Sinkronisasi Dapodik & Layanan Akademik",
-      "is_active": true
-    },
-    {
-      "id": "T-004",
-      "name": "Ir. Hendri Gunawan",
-      "nip": "ASESOR-DUDI-882190",
-      "department": "TJKT",
-      "subject": "Asesor Penguji LSP-P1 BNSP & Mitra Industri",
-      "is_active": true
-    },
-    {
-      "id": "T-005",
-      "name": "Muhammad Ihsan",
-      "nip": "198801102022211001",
-      "department": "TJKT",
-      "subject": "Konsentrasi Keahlian TJKT & TeFa",
-      "is_active": true
-    },
-    {
-      "id": "T-006",
-      "name": "Hendra Surya Pratama",
-      "nip": "199305162022211001",
-      "department": "DKV",
-      "subject": "Konsentrasi Keahlian DKV & TeFa",
-      "is_active": true
-    },
-    {
-      "id": "T-007",
-      "name": "Oky Wulan Maulina",
-      "nip": "198910262015032002",
-      "department": "AKL",
-      "subject": "Konsentrasi Keahlian AKL & TeFa",
-      "is_active": true
-    },
-    {
-      "id": "T-008",
-      "name": "Akhmad Hanafi Maulana, SE",
-      "nip": "198912152024211025",
-      "department": "MPLB",
-      "subject": "Konsentrasi Keahlian MPLB & TeFa",
-      "is_active": true
-    },
-    {
-      "id": "T-009",
-      "name": "Futri Indri Septiani",
-      "nip": "198809172014022001",
-      "department": "Pemasaran",
-      "subject": "Konsentrasi Keahlian Pemasaran & TeFa",
-      "is_active": true
-    },
-    {
-      "id": "T-010",
-      "name": "Ahmad Gajali",
-      "nip": "198906092025211023",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
-    },
-    {
-      "id": "T-011",
-      "name": "Akbar Gazali",
-      "nip": "199504102023211007",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
-    },
-    {
-      "id": "T-012",
-      "name": "Amnah, M. PD",
-      "nip": "197102081998032003",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
-    },
-    {
-      "id": "T-013",
-      "name": "Dahliana, S. Pd",
-      "nip": "197306092006042008",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
+        "id": "T-001",
+        "name": "Rusnani, S.Pd., M.T",
+        "nip": "197308022000122003",
+        "department": "AKL",
+        "subject": "Komputer Akuntansi",
+        "is_active": true
+    },
+    {
+        "id": "T-002",
+        "name": "Agustin Purnomosari, S.Pd., M.Pd",
+        "nip": "3153750649300003",
+        "department": "Manajemen",
+        "subject": "Kepala Sekolah",
+        "is_active": true
+    },
+    {
+        "id": "T-003",
+        "name": "Andry Dharmawan",
+        "nip": "8554762663130202",
+        "department": "Tata Usaha",
+        "subject": "Sinkronisasi Dapodik & Layanan Akademik",
+        "is_active": true
+    },
+    {
+        "id": "T-004",
+        "name": "Ir. Hendri Gunawan",
+        "nip": "ASESOR-DUDI-882190",
+        "department": "TJKT",
+        "subject": "Asesor Penguji LSP-P1 BNSP & Mitra Industri",
+        "is_active": true
+    },
+    {
+        "id": "T-005",
+        "name": "Muhammad Ihsan, S.Kom",
+        "nip": "198801102022211001",
+        "department": "TJKT",
+        "subject": "Konsentrasi Keahlian TJKT (TJKN), Dasar-dasar TJKT 3",
+        "is_active": true
+    },
+    {
+        "id": "T-006",
+        "name": "Hendra Surya Pratama, S.Kom",
+        "nip": "199305162022211001",
+        "department": "DKV",
+        "subject": "Fotografi, Mapel Pilihan (Desain Grafis)",
+        "is_active": true
+    },
+    {
+        "id": "T-007",
+        "name": "Oky Wulan Maulina, S.Pd",
+        "nip": "198910262015032002",
+        "department": "AKL",
+        "subject": "Praktikum Ak. Pers Jasa, Dagang & Manufaktur, Dasar Akuntansi (Akuntansi Dasar), Administrasi Pajak",
+        "is_active": true
+    },
+    {
+        "id": "T-008",
+        "name": "Akhmad Hanafi Maulana, S.E",
+        "nip": "198912152024211025",
+        "department": "MPLB",
+        "subject": "Pengelolaan SDM, Pengelolaan Sarpras, Teknologi Perkantoran, IPAS",
+        "is_active": true
+    },
+    {
+        "id": "T-009",
+        "name": "Futri Indri Septiani, S.Pd",
+        "nip": "198809172014022001",
+        "department": "Pemasaran",
+        "subject": "Konsentrasi Keahlian Pemasaran, Digital Branding",
+        "is_active": true
+    },
+    {
+        "id": "T-010",
+        "name": "Ahmad Gajali, M.Pd",
+        "nip": "198906092025211023",
+        "department": "Umum",
+        "subject": "Pendidikan Agama dan Budi Pekerti, Mulok (Pend. Alquran)",
+        "is_active": true
+    },
+    {
+        "id": "T-011",
+        "name": "Akbar Gazali, S.Pd",
+        "nip": "199504102023211007",
+        "department": "TJKT",
+        "subject": "Konsentrasi Keahlian TKJ 4 (Firewall / Jaringan)",
+        "is_active": true
+    },
+    {
+        "id": "T-012",
+        "name": "Amnah, M.Pd",
+        "nip": "197102081998032003",
+        "department": "Umum",
+        "subject": "Pendidikan Jasmani, Olahraga dan Kesehatan (PJOK)",
+        "is_active": true
+    },
+    {
+        "id": "T-013",
+        "name": "Dahliana, S.Pd",
+        "nip": "197306092006042008",
+        "department": "Umum",
+        "subject": "Bahasa Inggris & Bahasa Asing Lainnya",
+        "is_active": true
     },
     {
-      "id": "T-014",
-      "name": "DENIS ADE PRIAGENG PRASETYO",
-      "nip": "5752767669300002",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
+        "id": "T-014",
+        "name": "Denis Ade Priageng Prasetyo, S.Pd., M.Pd",
+        "nip": "5752767669300002",
+        "department": "Umum",
+        "subject": "Pendidikan Agama dan Budi Pekerti, Mulok (Pend. Alquran)",
+        "is_active": true
     },
     {
-      "id": "T-015",
-      "name": "Deppy Afiaty Putri",
-      "nip": "199404272023212021",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-015",
+        "name": "Deppy Afiaty Putri, S.Pd",
+        "nip": "199404272023212021",
+        "department": "Pemasaran",
+        "subject": "Konsentrasi Keahlian Pemasaran, Digital on Boarding (MAPIL), Dasar-Dasar Pemasaran",
+        "is_active": true
     },
     {
-      "id": "T-016",
-      "name": "Devvy Anggriani",
-      "nip": "199507022025212027",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-016",
+        "name": "Devvy Anggriani, S.Pd",
+        "nip": "199507022025212027",
+        "department": "Umum",
+        "subject": "IPAS",
+        "is_active": true
     },
     {
-      "id": "T-017",
-      "name": "Dina Fitriyah",
-      "nip": "198609072025212029",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "is_active": true
+        "id": "T-017",
+        "name": "Dina Fitriyah, S.Pd.I., M.Pd",
+        "nip": "198609072025212029",
+        "department": "Umum",
+        "subject": "Pendidikan Agama dan Budi Pekerti, Mulok (Pend. Alquran)",
+        "is_active": true
     },
     {
-      "id": "T-018",
-      "name": "Eddy Noor Adha",
-      "nip": "199206082022211002",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-018",
+        "name": "Eddy Noor Adha, S.Kom",
+        "nip": "199206082022211002",
+        "department": "DKV",
+        "subject": "Komputer Grafis (Dasar), Fotografi Dasar, Desain Grafis, Informatika",
+        "is_active": true
     },
     {
-      "id": "T-019",
-      "name": "Elvasari",
-      "nip": "199208272024212038",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
+        "id": "T-019",
+        "name": "Elvasari, S.Pd",
+        "nip": "199208272024212038",
+        "department": "Umum",
+        "subject": "Sejarah Indonesia",
+        "is_active": true
     },
     {
-      "id": "T-020",
-      "name": "GHINA AULIA",
-      "nip": "7043780681230003",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-020",
+        "name": "Ghina Aulia, S.Pd",
+        "nip": "7043780681230003",
+        "department": "BK",
+        "subject": "Bimbingan Konseling (BK)",
+        "is_active": true
     },
     {
-      "id": "T-021",
-      "name": "Ginem Sugiarti",
-      "nip": "196612311997022002",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-021",
+        "name": "Ginem Sugiarti, S.Pd",
+        "nip": "196612311997022002",
+        "department": "Umum",
+        "subject": "Bahasa Indonesia",
+        "is_active": true
     },
     {
-      "id": "T-022",
-      "name": "Hamdiah",
-      "nip": "199302052022212006",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-022",
+        "name": "Hamdiah, S.Pd",
+        "nip": "199302052022212006",
+        "department": "Pemasaran",
+        "subject": "Konsentrasi Keahlian Pemasaran, KIK Pemasaran, Mapel Pilihan (Digital Branding)",
+        "is_active": true
     },
     {
-      "id": "T-023",
-      "name": "Hasynan Azmi",
-      "nip": "199607252025211097",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-023",
+        "name": "Ihsnan Azmi, S.Pd",
+        "nip": "199607252025211097",
+        "department": "Umum",
+        "subject": "Matematika",
+        "is_active": true
     },
     {
-      "id": "T-024",
-      "name": "Hatipah",
-      "nip": "198207242022212001",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-024",
+        "name": "Hatipah, S.Pd",
+        "nip": "198207242022212001",
+        "department": "Umum",
+        "subject": "Bahasa Indonesia",
+        "is_active": true
     },
     {
-      "id": "T-025",
-      "name": "Herlina Sari",
-      "nip": "197312022022212001",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-025",
+        "name": "Perlina Sari, S.Hut, S.Kom",
+        "nip": "197312022022212001",
+        "department": "DKV",
+        "subject": "Desain Grafis, Fotografi, Mapel Pilihan (Fotografi Lanjutan), Informatika",
+        "is_active": true
     },
     {
-      "id": "T-026",
-      "name": "Ida Mardiyana",
-      "nip": "198402282010012016",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-026",
+        "name": "Ida Mardiyana, S.Kom",
+        "nip": "198402282010012016",
+        "department": "DKV",
+        "subject": "Videografi, Desain Grafis",
+        "is_active": true
     },
     {
-      "id": "T-027",
-      "name": "Ihsan Muzakki, SE",
-      "nip": "197807092014061003",
-      "department": "TJKT",
-      "subject": "Administrasi Sistem Jaringan",
-      "is_active": true
+        "id": "T-027",
+        "name": "H. Akhmad Ihsan Muzakki, SE",
+        "nip": "197807092014061003",
+        "department": "TJKT",
+        "subject": "Konsentrasi Keahlian TJKT (Administrasi Sistem Jaringan / ASJ)",
+        "is_active": true
     },
     {
-      "id": "T-028",
-      "name": "Irma Rutina",
-      "nip": "199202192025212021",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "is_active": true
+        "id": "T-028",
+        "name": "Irma Rufina, S.Pd.I",
+        "nip": "199202192025212021",
+        "department": "Umum",
+        "subject": "Pendidikan Agama dan Budi Pekerti, Mulok (Pend. Alquran)",
+        "is_active": true
     },
     {
-      "id": "T-029",
-      "name": "Isna Yuliawati",
-      "nip": "197202201999032003",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
+        "id": "T-029",
+        "name": "Hj. Isna Yuliawati, S.Pd",
+        "nip": "197202201999032003",
+        "department": "MPLB",
+        "subject": "Pengelolaan Humas & Keprotokolan, Pilihan (Event Organizer), Pengelolaan Adm. Umum",
+        "is_active": true
     },
     {
-      "id": "T-030",
-      "name": "Jamaluddin",
-      "nip": "199604282025211020",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
+        "id": "T-030",
+        "name": "Jamaluddin, S.Pd",
+        "nip": "199604282025211020",
+        "department": "Umum",
+        "subject": "Bahasa Indonesia",
+        "is_active": true
     },
     {
-      "id": "T-031",
-      "name": "Juhdi Amrullah",
-      "nip": "198007152022211005",
-      "department": "AKL",
-      "subject": "Dasar-Dasar Keahlian AKL",
-      "is_active": true
+        "id": "T-031",
+        "name": "Juhdi Amrullah, S.Pd",
+        "nip": "198007152022211005",
+        "department": "BK",
+        "subject": "Bimbingan Konseling (BK)",
+        "is_active": true
     },
     {
-      "id": "T-032",
-      "name": "Khumayroh",
-      "nip": "7548777678230083",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-032",
+        "name": "Khumayroh, S.Psi",
+        "nip": "7548777678230083",
+        "department": "BK",
+        "subject": "Bimbingan Konseling (BK)",
+        "is_active": true
     },
     {
-      "id": "T-033",
-      "name": "Laili Normas",
-      "nip": "197812012008012015",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-033",
+        "name": "Laili Normas, S.Pd",
+        "nip": "197812012008012015",
+        "department": "Umum",
+        "subject": "Pendidikan Jasmani, Olahraga dan Kesehatan (PJOK)",
+        "is_active": true
     },
     {
-      "id": "T-034",
-      "name": "Lasmaria Verawati",
-      "nip": "198303042006042017",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-034",
+        "name": "Lasmaria Verawati, S.Pd",
+        "nip": "198303042006042017",
+        "department": "AKL",
+        "subject": "Komputer Akuntansi, Praktikum Ak. Pers Jasa, Dagang & Manufaktur, Akuntansi Keuangan",
+        "is_active": true
     },
     {
-      "id": "T-035",
-      "name": "LILIS ANGGRAINI, S.KOM. M.KOM",
-      "nip": "199305022025212185",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
+        "id": "T-035",
+        "name": "Lilis Anggraini, M.Kom",
+        "nip": "199305022025212185",
+        "department": "TJKT",
+        "subject": "Dasar TJKT 3, Konsentrasi Keahlian TKJ 3 (TLJ/Firewall), Informatika",
+        "is_active": true
     },
     {
-      "id": "T-036",
-      "name": "Mahfuddin",
-      "nip": "197705102007011020",
-      "department": "Umum",
-      "subject": "Mata Pelajaran Umum (Beban Waka 12 JP)",
-      "is_active": true
+        "id": "T-036",
+        "name": "Mahfuddin, S.Pd., M.A",
+        "nip": "197705102007011020",
+        "department": "BK",
+        "subject": "Bimbingan Konseling (BK)",
+        "is_active": true
     },
     {
-      "id": "T-037",
-      "name": "MAHMUDAH, S.PD, MM",
-      "nip": "196801031998032006",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-037",
+        "name": "Hj. Mahmudah, S.Pd",
+        "nip": "196801031998032006",
+        "department": "AKL",
+        "subject": "Akuntansi Keuangan, Praktikum Akuntansi Lembaga/Instansi Pemerintah, Administrasi Pajak",
+        "is_active": true
     },
     {
-      "id": "T-038",
-      "name": "Masliana",
-      "nip": "196802271994122005",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-038",
+        "name": "Masliana, S.Pd",
+        "nip": "196802271994122005",
+        "department": "AKL",
+        "subject": "Akuntansi Keuangan, Kreativitas Inovasi dan Kewirausahaan (KIK), Dasar-dasar AKL",
+        "is_active": true
     },
     {
-      "id": "T-039",
-      "name": "Masnah",
-      "nip": "199209212022212003",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-039",
+        "name": "Wasnah, S.Tr.Kom",
+        "nip": "199209212022212003",
+        "department": "DKV",
+        "subject": "Desain Multimedia (Dasar), Web & App Design",
+        "is_active": true
     },
     {
-      "id": "T-040",
-      "name": "Maya Adelina Puspita",
-      "nip": "199105262023212019",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
+        "id": "T-040",
+        "name": "Maya Adelina Puspita, S.Pd",
+        "nip": "199105262023212019",
+        "department": "Umum",
+        "subject": "Matematika",
+        "is_active": true
     },
     {
-      "id": "T-041",
-      "name": "Megawati, S.kom",
-      "nip": "198106172022212008",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
+        "id": "T-041",
+        "name": "Megawati, S.Kom",
+        "nip": "198106172022212008",
+        "department": "TJKT",
+        "subject": "Dasar TJKT 1, KIK TJKT",
+        "is_active": true
     },
     {
-      "id": "T-042",
-      "name": "Misdawati",
-      "nip": "199211192025212025",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "is_active": true
+        "id": "T-042",
+        "name": "Misdawati, S.Pd",
+        "nip": "199211192025212025",
+        "department": "Umum",
+        "subject": "Matematika",
+        "is_active": true
     },
     {
-      "id": "T-043",
-      "name": "Muhammad Fahrurazy",
-      "nip": "199001312022211001",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-043",
+        "name": "Muhammad Fahrurazy, S.Pd",
+        "nip": "199001312022211001",
+        "department": "Umum",
+        "subject": "PPKn",
+        "is_active": true
     },
     {
-      "id": "T-044",
-      "name": "Muhammad Jayaguna",
-      "nip": "199307102019031007",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "is_active": true
+        "id": "T-044",
+        "name": "Muhammad Jayaguna, S.Pd",
+        "nip": "199307102019031007",
+        "department": "TJKT",
+        "subject": "Pemrograman (Mapel Pilihan TJKT), Dasar TJKT 1, Informatika",
+        "is_active": true
     },
     {
-      "id": "T-045",
-      "name": "MUHAMMAD NAWIER SYAHROWARDI MAARIEF",
-      "nip": "1847778679130052",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-045",
+        "name": "Muhammad Nawier Syahrowardi Maarif, S.Pd",
+        "nip": "1847778679130052",
+        "department": "BK",
+        "subject": "Bimbingan Konseling (BK)",
+        "is_active": true
     },
     {
-      "id": "T-046",
-      "name": "Muhammad Yusri",
-      "nip": "198403212022211001",
-      "department": "TJKT",
-      "subject": "Dasar-Dasar Keahlian TJKT",
-      "is_active": true
+        "id": "T-046",
+        "name": "Muhammad Yusri, S.Pd",
+        "nip": "198403212022211001",
+        "department": "BK",
+        "subject": "Bimbingan Konseling (BK)",
+        "is_active": true
     },
     {
-      "id": "T-047",
-      "name": "Muliyani Yohana",
-      "nip": "199008302023212023",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-047",
+        "name": "Muliyani Yohana, S.Pd",
+        "nip": "199008302023212023",
+        "department": "AKL",
+        "subject": "Dasar Akuntansi (Akuntansi Dasar), Prak Ak Pers Jasa, Dagang & Manufaktur, KIK Pemasaran",
+        "is_active": true
     },
     {
-      "id": "T-048",
-      "name": "Muthia Isma Annisa",
-      "nip": "200006202025212026",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-048",
+        "name": "Muthia Isma Annisa, S.Pd",
+        "nip": "200006202025212026",
+        "department": "BK",
+        "subject": "Bimbingan dan Konseling (BK)",
+        "is_active": true
     },
     {
-      "id": "T-049",
-      "name": "Mutia Paramitha",
-      "nip": "199503222019032023",
-      "department": "DKV",
-      "subject": "Dasar-Dasar Keahlian DKV",
-      "is_active": true
+        "id": "T-049",
+        "name": "Mutia Paramitha, S.Kom",
+        "nip": "199503222019032023",
+        "department": "TJKT",
+        "subject": "Pemrograman (Mapel Pilihan TJKT), KIK TJKT, Dasar-dasar TJKT 2",
+        "is_active": true
     },
     {
-      "id": "T-050",
-      "name": "Muttaqin",
-      "nip": "196812132005011004",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "is_active": true
+        "id": "T-050",
+        "name": "Muttaqin, S.Pd",
+        "nip": "196812132005011004",
+        "department": "Umum",
+        "subject": "Bahasa Inggris dan Bahasa Asing Lainnya",
+        "is_active": true
     },
     {
-      "id": "T-051",
-      "name": "Nabil",
-      "nip": "199004222022211002",
-      "department": "Pemasaran",
-      "subject": "Mata Pelajaran Pemasaran (Beban Waka 12 JP)",
-      "is_active": true
+        "id": "T-051",
+        "name": "Nabil, S.Kom",
+        "nip": "199004222022211002",
+        "department": "DKV",
+        "subject": "Komputer Grafis DKV",
+        "is_active": true
     },
     {
-      "id": "T-052",
-      "name": "Naila Rahmah Maulidiyah",
-      "nip": "5960777678230102",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-052",
+        "name": "Naila Rahmah Maulidiyah, S.Ag",
+        "nip": "5960777678230102",
+        "department": "Umum",
+        "subject": "Pendidikan Agama dan Budi Pekerti, Mulok (Pend. Alquran)",
+        "is_active": true
     },
     {
-      "id": "T-053",
-      "name": "Nelly Amelia",
-      "nip": "198902042023212026",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-053",
+        "name": "Neti Amelia, S.Pd",
+        "nip": "198902042023212026",
+        "department": "Pemasaran",
+        "subject": "Konsentrasi Keahlian Pemasaran, Digital on Boarding (MAPIL), Dasar-Dasar Pemasaran",
+        "is_active": true
     },
     {
-      "id": "T-054",
-      "name": "Nia Resti Maulina",
-      "nip": "199012082025212026",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-054",
+        "name": "Nia Resti Maulida, S.Pd",
+        "nip": "199012082025212026",
+        "department": "Umum",
+        "subject": "IPAS",
+        "is_active": true
     },
     {
-      "id": "T-055",
-      "name": "Nirmala Sari, S.Pd",
-      "nip": "197112272005012005",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-055",
+        "name": "Nirmala Sari, S.Pd",
+        "nip": "197112272005012005",
+        "department": "Pemasaran",
+        "subject": "Dasar-Dasar Pemasaran",
+        "is_active": true
     },
     {
-      "id": "T-056",
-      "name": "Noor Kumala Dewi",
-      "nip": "197701192005012010",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-056",
+        "name": "Noor Kumala Dewi, S.Pd",
+        "nip": "197701192005012010",
+        "department": "Umum",
+        "subject": "Matematika",
+        "is_active": true
     },
     {
-      "id": "T-057",
-      "name": "Noor Latifah",
-      "nip": "199302282025212142",
-      "department": "Pemasaran",
-      "subject": "Dasar-Dasar Keahlian Pemasaran",
-      "is_active": true
+        "id": "T-057",
+        "name": "Noor Latifah, S.Pd",
+        "nip": "199302282025212142",
+        "department": "Umum",
+        "subject": "Bahasa Inggris dan Bahasa Asing Lainnya",
+        "is_active": true
     },
     {
-      "id": "T-058",
-      "name": "Noormin Chairat",
-      "nip": "196812281992032010",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
+        "id": "T-058",
+        "name": "Noormin Chairat, S.Pd",
+        "nip": "196812281992032010",
+        "department": "Umum",
+        "subject": "Sejarah Indonesia",
+        "is_active": true
     },
     {
-      "id": "T-059",
-      "name": "Nurfitriana",
-      "nip": "198004232006042024",
-      "department": "Umum",
-      "subject": "Produktif Umum & Binaan Rombel",
-      "is_active": true
+        "id": "T-059",
+        "name": "Nurfitriana, S.Pd",
+        "nip": "198004232006042024",
+        "department": "BK",
+        "subject": "Bimbingan Konseling (BK)",
+        "is_active": true
     },
     {
-      "id": "T-060",
-      "name": "Nurlisa Hayani",
-      "nip": "198906052023212031",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-060",
+        "name": "Nurisa Hayani, S.Pd",
+        "nip": "198906052023212031",
+        "department": "Umum",
+        "subject": "Pendidikan Pancasila",
+        "is_active": true
     },
     {
-      "id": "T-061",
-      "name": "RACHMAH",
-      "nip": "196903022014062003",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-061",
+        "name": "Hj. Rachmah, S.Kom",
+        "nip": "196903022014062003",
+        "department": "DKV",
+        "subject": "Mapel Pilihan (Konten Kreator), Mapel Pilihan (Animasi), Videografi, KIK DKV",
+        "is_active": true
     },
     {
-      "id": "T-062",
-      "name": "Rahmiana",
-      "nip": "198003092007012012",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "is_active": true
+        "id": "T-062",
+        "name": "Rahmiana, S.Pd",
+        "nip": "198003092007012012",
+        "department": "Umum",
+        "subject": "Matematika",
+        "is_active": true
     },
     {
-      "id": "T-063",
-      "name": "Rema Maulinda Lestari",
-      "nip": "199607302019032015",
-      "department": "DKV",
-      "subject": "Dasar-Dasar Keahlian DKV",
-      "is_active": true
+        "id": "T-063",
+        "name": "Rema Maulinda Lestari, S.Pd",
+        "nip": "199607302019032015",
+        "department": "Umum",
+        "subject": "Seni Budaya, KIK MPLB & DKV",
+        "is_active": true
     },
     {
-      "id": "T-064",
-      "name": "Rentaida Hutagalung",
-      "nip": "196808121999032007",
-      "department": "Umum",
-      "subject": "Produktif Umum & Binaan Rombel",
-      "is_active": true
+        "id": "T-064",
+        "name": "Dra. Rentaida Hutagalung",
+        "nip": "196808121999032007",
+        "department": "AKL",
+        "subject": "Kreativitas Inovasi dan Kewirausahaan (KIK), Dasar-Dasar AKL",
+        "is_active": true
     },
     {
-      "id": "T-065",
-      "name": "Rini Suciati",
-      "nip": "198401022009032009",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-065",
+        "name": "Rini Suciati, S.Pd",
+        "nip": "198401022009032009",
+        "department": "Pemasaran",
+        "subject": "Konsentrasi Keahlian Pemasaran, Mapel Pilihan (Digital Branding)",
+        "is_active": true
     },
     {
-      "id": "T-066",
-      "name": "Risa Rusniarti",
-      "nip": "198103162022212010",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-066",
+        "name": "Risa Rusniarti, S.Pd",
+        "nip": "198103162022212010",
+        "department": "Umum",
+        "subject": "Bahasa Indonesia",
+        "is_active": true
     },
     {
-      "id": "T-067",
-      "name": "Siti Aisyah",
-      "nip": "199809292025212031",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-067",
+        "name": "Siti Aisyah, S.Pd",
+        "nip": "199809292025212031",
+        "department": "DKV",
+        "subject": "Desain Multimedia (Dasar), Informatika",
+        "is_active": true
     },
     {
-      "id": "T-068",
-      "name": "SITI ARBAYANI",
-      "nip": "198404042025212051",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-068",
+        "name": "Siti Arbayani, S.Pd.I",
+        "nip": "198404042025212051",
+        "department": "Umum",
+        "subject": "Pendidikan Agama dan Budi Pekerti, Mulok (Pend. Alquran)",
+        "is_active": true
     },
     {
-      "id": "T-069",
-      "name": "Siti Khairiyah, S.pd",
-      "nip": "198811032022212003",
-      "department": "AKL",
-      "subject": "Produktif AKL & Binaan Rombel",
-      "is_active": true
+        "id": "T-069",
+        "name": "Siti Khairiyah, S.Pd",
+        "nip": "198811032022212003",
+        "department": "AKL",
+        "subject": "Komputer Akuntansi, Praktik Ak. Pers Jasa, Dagang & Manufaktur, Dasar Akuntansi (Akuntansi Dasar), KIK AKL",
+        "is_active": true
     },
     {
-      "id": "T-070",
-      "name": "Siti Noor Hafizah",
-      "nip": "196711061994122006",
-      "department": "DKV",
-      "subject": "Produktif DKV & Binaan Rombel",
-      "is_active": true
+        "id": "T-070",
+        "name": "Dra. Hj. Siti Noor Hafizah",
+        "nip": "196711061994122006",
+        "department": "Umum",
+        "subject": "Bahasa Indonesia",
+        "is_active": true
     },
     {
-      "id": "T-071",
-      "name": "Siti Rahmah",
-      "nip": "199408132025212029",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "is_active": true
+        "id": "T-071",
+        "name": "Siti Rahmah, S.Pd",
+        "nip": "199408132025212029",
+        "department": "Umum",
+        "subject": "IPAS",
+        "is_active": true
     },
     {
-      "id": "T-072",
-      "name": "Suaidi Rahman",
-      "nip": "198307262022211003",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-072",
+        "name": "Suaidi Rahman, S.Pd",
+        "nip": "198307262022211003",
+        "department": "BK",
+        "subject": "Bimbingan Konseling (BK)",
+        "is_active": true
     },
     {
-      "id": "T-073",
-      "name": "Susi Kartika Dewi",
-      "nip": "197411252005012008",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
+        "id": "T-073",
+        "name": "Susi Kartika Dewi, S.Pd",
+        "nip": "197411252005012008",
+        "department": "Umum",
+        "subject": "Bahasa Inggris dan Bahasa Asing Lainnya",
+        "is_active": true
     },
     {
-      "id": "T-074",
-      "name": "Syarifuddin",
-      "nip": "196701211994031005",
-      "department": "Umum",
-      "subject": "Mata Pelajaran Umum (Beban Waka 12 JP)",
-      "is_active": true
+        "id": "T-074",
+        "name": "Syarifuddin, S.Pd",
+        "nip": "196701211994031005",
+        "department": "Umum",
+        "subject": "PPKn",
+        "is_active": true
     },
     {
-      "id": "T-075",
-      "name": "Taibah, S. Pd",
-      "nip": "197207082006042006",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
+        "id": "T-075",
+        "name": "Taibah, S.Pd",
+        "nip": "197207082006042006",
+        "department": "Umum",
+        "subject": "Bahasa Inggris dan Bahasa Asing Lainnya",
+        "is_active": true
     },
     {
-      "id": "T-076",
-      "name": "Topan Borneo Angkasa Negara",
-      "nip": "198103192022211001",
-      "department": "DKV",
-      "subject": "Dasar-Dasar Keahlian DKV",
-      "is_active": true
+        "id": "T-076",
+        "name": "Topan Borneo Angkasa Negara, S.Pd",
+        "nip": "198103192022211001",
+        "department": "BK",
+        "subject": "Bimbingan Konseling (BK)",
+        "is_active": true
     },
     {
-      "id": "T-077",
-      "name": "Triana Novita",
-      "nip": "197811012025212023",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "is_active": true
+        "id": "T-077",
+        "name": "Triana Novita, S.Sos",
+        "nip": "197811012025212023",
+        "department": "MPLB",
+        "subject": "Ekonomi Bisnis, Komunikasi di Tempat Kerja, Grooming (Mapel Pilihan), Pendidikan Pancasila",
+        "is_active": true
     },
     {
-      "id": "T-078",
-      "name": "Tusamsi",
-      "nip": "197701262022211002",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
-    },
-    {
-      "id": "T-079",
-      "name": "Widi Sigit Nugroho",
-      "nip": "198110042022211004",
-      "department": "TJKT",
-      "subject": "Produktif TJKT & Binaan Rombel",
-      "is_active": true
-    },
-    {
-      "id": "T-080",
-      "name": "Widya Savitri",
-      "nip": "199310122025212024",
-      "department": "MPLB",
-      "subject": "Dasar-Dasar Keahlian MPLB",
-      "is_active": true
-    },
-    {
-      "id": "T-081",
-      "name": "WIRDATUSSA'YAH",
-      "nip": "198407132022212011",
-      "department": "AKL",
-      "subject": "Dasar-Dasar Keahlian AKL",
-      "is_active": true
-    },
-    {
-      "id": "T-082",
-      "name": "Wiwiek Hastutie",
-      "nip": "197005282024212004",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
-    },
-    {
-      "id": "T-083",
-      "name": "Yosievine Margareth Kolriry",
-      "nip": "9851761662230192",
-      "department": "MPLB",
-      "subject": "Produktif MPLB & Binaan Rombel",
-      "is_active": true
-    },
-    {
-      "id": "T-084",
-      "name": "Yunada Afriliani",
-      "nip": "199704072022212003",
-      "department": "Pemasaran",
-      "subject": "Produktif Pemasaran & Binaan Rombel",
-      "is_active": true
-    },
-    {
-      "id": "T-085",
-      "name": "Della Safitri",
-      "nip": "199403152024212015",
-      "department": "AKL",
-      "subject": "Spreadsheet & Akuntansi Keuangan",
-      "is_active": true
-    },
-    {
-      "id": "T-086",
-      "name": "Hairita Indriati, S.Pd",
-      "nip": "198705122022212008",
-      "department": "MPLB",
-      "subject": "Kearsipan & Komunikasi Tempat Kerja",
-      "is_active": true
-    },
-    {
-      "id": "T-087",
-      "name": "Hj. Asmiani",
-      "nip": "197209142005012006",
-      "department": "MPLB",
-      "subject": "Dasar Manajemen Perkantoran",
-      "is_active": true
-    },
-    {
-      "id": "T-088",
-      "name": "Leni Meldawati",
-      "nip": "198811202022212011",
-      "department": "MPLB",
-      "subject": "Ekonomi Bisnis & Administrasi Umum",
-      "is_active": true
-    },
-    {
-      "id": "T-089",
-      "name": "Thaibah, S.Pd",
-      "nip": "198207182010012014",
-      "department": "TJKT",
-      "subject": "Bahasa Inggris Kejuruan TJKT",
-      "is_active": true
-    },
-    {
-      "id": "T-090",
-      "name": "Wahidah, S.Pd.I",
-      "nip": "198506222014032003",
-      "department": "Pemasaran",
-      "subject": "Pendidikan Agama & Budi Pekerti",
-      "is_active": true
+        "id": "T-078",
+        "name": "Tuhamsi, S.Pd",
+        "nip": "197701262022211002",
+        "department": "MPLB",
+        "subject": "Teknologi Perkantoran, Pengelolaan Rapat, Pengelolaan Keuangan Sederhana, Dasar MPLB, KIK MPLB",
+        "is_active": true
+    },
+    {
+        "id": "T-079",
+        "name": "Widi Sigit Nugroho, S.Pd",
+        "nip": "198110042022211004",
+        "department": "TJKT",
+        "subject": "Konsentrasi Keahlian TKJ 2 (Administrasi Infrastruktur Jaringan / AIJ)",
+        "is_active": true
+    },
+    {
+        "id": "T-080",
+        "name": "Wijaya Savitri, S.Pd",
+        "nip": "199310122025212024",
+        "department": "Umum",
+        "subject": "Seni Budaya, KIK MPLB & DKV",
+        "is_active": true
+    },
+    {
+        "id": "T-081",
+        "name": "Wirdatus Sa'yah, S.Pd",
+        "nip": "198407132022212011",
+        "department": "BK",
+        "subject": "Bimbingan Konseling (BK)",
+        "is_active": true
+    },
+    {
+        "id": "T-082",
+        "name": "Wiwiek Hastutie, S.Pd",
+        "nip": "197005282024212004",
+        "department": "Pemasaran",
+        "subject": "Konsentrasi Keahlian Pemasaran, Digital on Boarding (MAPIL)",
+        "is_active": true
+    },
+    {
+        "id": "T-083",
+        "name": "Yosievine Margareth Kolriry",
+        "nip": "9851761662230192",
+        "department": "Umum",
+        "subject": "Pendidikan Agama Kristen, Baca Tulis Alkitab (Mulok)",
+        "is_active": true
+    },
+    {
+        "id": "T-084",
+        "name": "Yunada Arfitiani, S.Pd",
+        "nip": "199704072022212003",
+        "department": "Pemasaran",
+        "subject": "Konsentrasi Keahlian Pemasaran, Mapel Pilihan Pemasaran, Informatika",
+        "is_active": true
+    },
+    {
+        "id": "T-085",
+        "name": "Della Safitri",
+        "nip": "199403152024212015",
+        "department": "AKL",
+        "subject": "Spreadsheet & Akuntansi Keuangan",
+        "is_active": true
+    },
+    {
+        "id": "T-086",
+        "name": "Hairita Indriati, S.Pd",
+        "nip": "198705122022212008",
+        "department": "MPLB",
+        "subject": "Kearsipan & Komunikasi Tempat Kerja",
+        "is_active": true
+    },
+    {
+        "id": "T-087",
+        "name": "Hj. Asmiani",
+        "nip": "197209142005012006",
+        "department": "MPLB",
+        "subject": "Dasar Manajemen Perkantoran",
+        "is_active": true
+    },
+    {
+        "id": "T-088",
+        "name": "Leni Meldawati",
+        "nip": "198811202022212011",
+        "department": "MPLB",
+        "subject": "Ekonomi Bisnis & Administrasi Umum",
+        "is_active": true
+    },
+    {
+        "id": "T-089",
+        "name": "Thaibah, S.Pd",
+        "nip": "198207182010012014",
+        "department": "TJKT",
+        "subject": "Bahasa Inggris Kejuruan TJKT",
+        "is_active": true
+    },
+    {
+        "id": "T-090",
+        "name": "Wahidah, S.Pd.I",
+        "nip": "198506222014032003",
+        "department": "Umum",
+        "subject": "Pendidikan Agama dan Budi Pekerti, Mulok (Pend. Alquran)",
+        "is_active": true
     }
-  ],
+],
   "masterClasses": [
     {
       "id": "C-001",
