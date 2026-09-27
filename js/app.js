@@ -2204,8 +2204,7 @@
     if (datePresensi && !datePresensi.value) datePresensi.value = todayStr;
 
     // Set mapel di formulir jurnal otomatis ke mapel guru ini
-    const subjInput = document.getElementById('input-guru-jurnal-subject');
-    if (subjInput) subjInput.value = displaySubject;
+    populateTeacherSubjectSelect(currentTeacherId, teacher, session, State.presensiClass);
 
     // 6. Render Active Subtab
     const activeTab = State.activeGuruTab || 'jurnal';
@@ -2350,6 +2349,163 @@
     updateJurnalAttendanceSummary(State.presensiClass);
   }
 
+  function parseTeacherSubjects(subjStr) {
+    if (!subjStr) return [];
+    var str = String(subjStr);
+    str = str.replace(/Pendidikan Jasmani,\s*Olahraga dan Kesehatan/gi, 'Pendidikan Jasmani Olahraga dan Kesehatan');
+    str = str.replace(/Praktikum Ak\.\s*Pers Jasa,\s*Dagang/gi, 'Praktikum Ak. Pers Jasa Dagang');
+    str = str.replace(/Praktik Ak\.\s*Pers Jasa,\s*Dagang/gi, 'Praktik Ak. Pers Jasa Dagang');
+    str = str.replace(/Prak Ak\s*Pers Jasa,\s*Dagang/gi, 'Prak Ak Pers Jasa Dagang');
+
+    var results = [];
+    var current = '';
+    var inParen = 0;
+    for (var i = 0; i < str.length; i++) {
+      var ch = str[i];
+      if (ch === '(') inParen++;
+      else if (ch === ')') inParen = Math.max(0, inParen - 1);
+
+      if ((ch === ',' || ch === ';') && inParen === 0) {
+        if (current.trim()) results.push(current.trim());
+        current = '';
+      } else {
+        current += ch;
+      }
+    }
+    if (current.trim()) results.push(current.trim());
+
+    return results.map(function (s) {
+      return s.replace('Pendidikan Jasmani Olahraga dan Kesehatan', 'Pendidikan Jasmani, Olahraga dan Kesehatan')
+              .replace('Praktikum Ak. Pers Jasa Dagang', 'Praktikum Ak. Pers Jasa, Dagang')
+              .replace('Praktik Ak. Pers Jasa Dagang', 'Praktik Ak. Pers Jasa, Dagang')
+              .replace('Prak Ak Pers Jasa Dagang', 'Prak Ak Pers Jasa, Dagang');
+    });
+  }
+
+  function populateTeacherSubjectSelect(teacherId, teacher, session, targetClassName) {
+    var subjectSelect = document.getElementById('input-guru-jurnal-subject');
+    if (!subjectSelect) return;
+
+    var previousVal = subjectSelect.value;
+
+    // 1. Kumpulkan daftar mapel resmi yang diampu guru ini (SK PTM & Jadwal)
+    var assignedSet = [];
+    function addSubject(s) {
+      if (!s) return;
+      var clean = s.trim();
+      if (clean && assignedSet.indexOf(clean) === -1) {
+        assignedSet.push(clean);
+      }
+    }
+
+    if (session && session.subject) {
+      parseTeacherSubjects(session.subject).forEach(addSubject);
+    }
+    if (teacher && teacher.subject) {
+      parseTeacherSubjects(teacher.subject).forEach(addSubject);
+    }
+
+    var schedules = StorageManager.get('schedules') || [];
+    var teacherSchedules = schedules.filter(function (s) {
+      return String(s.teacher_id) === String(teacherId) ||
+        (s.teacher_name && teacher && teacher.name && s.teacher_name.toLowerCase().includes(teacher.name.toLowerCase().split(' ')[0]));
+    });
+
+    teacherSchedules.forEach(function (s) {
+      if (s.subject_name) addSubject(s.subject_name);
+    });
+
+    // Fallback jika tidak ada data mapel
+    if (assignedSet.length === 0) {
+      var dept = (session && session.department) || (teacher && teacher.department) || 'Produktif';
+      addSubject('Konsentrasi Keahlian ' + dept);
+    }
+
+    // 2. Ambil master mapel sekolah untuk pilihan alternatif
+    var allMasterSubjects = StorageManager.get('subjects') || [];
+    var otherSubjects = allMasterSubjects.filter(function (s) {
+      return !assignedSet.some(function (a) {
+        return a.toLowerCase() === s.name.toLowerCase();
+      });
+    });
+
+    // 3. Tentukan mapel terpilih (Smart auto-select berdasarkan jadwal rombel)
+    var currentClass = targetClassName || State.presensiClass || (document.getElementById('input-guru-jurnal-class') ? document.getElementById('input-guru-jurnal-class').value : '');
+    var scheduledSubjectForClass = '';
+    if (currentClass && teacherSchedules.length > 0) {
+      var matchSched = teacherSchedules.find(function (s) {
+        return s.class_name === currentClass;
+      });
+      if (matchSched && matchSched.subject_name) {
+        scheduledSubjectForClass = matchSched.subject_name;
+      }
+    }
+
+    var selectedSubject = '';
+    if (scheduledSubjectForClass) {
+      var foundExact = assignedSet.find(function (a) {
+        return a.toLowerCase() === scheduledSubjectForClass.toLowerCase();
+      });
+      if (foundExact) {
+        selectedSubject = foundExact;
+      } else {
+        var foundPartial = assignedSet.find(function (a) {
+          var aL = a.toLowerCase();
+          var sL = scheduledSubjectForClass.toLowerCase();
+          return aL.includes(sL) || sL.includes(aL);
+        });
+        selectedSubject = foundPartial || scheduledSubjectForClass;
+      }
+    } else if (previousVal && (assignedSet.indexOf(previousVal) !== -1 || otherSubjects.some(function (o) { return o.name === previousVal; }))) {
+      selectedSubject = previousVal;
+    } else {
+      selectedSubject = assignedSet[0] || '';
+    }
+
+    // 4. Update badge sumber data
+    var badgeSource = document.getElementById('badge-mapel-source');
+    if (badgeSource) {
+      if (scheduledSubjectForClass) {
+        badgeSource.textContent = '✓ Terjadwal di ' + currentClass;
+        badgeSource.style.background = '#EDE8F5';
+        badgeSource.style.color = '#4B22B8';
+        badgeSource.style.borderColor = '#DDD6FE';
+      } else {
+        badgeSource.textContent = '✓ ' + assignedSet.length + ' Mapel Diampu';
+        badgeSource.style.background = '#E0F2FE';
+        badgeSource.style.color = '#0284C7';
+        badgeSource.style.borderColor = '#BAE6FD';
+      }
+    }
+
+    // 5. Render options dengan group
+    var html = '';
+    html += '<optgroup label="⭐ Mapel Diampu Guru (SK PTM 2026 & Jadwal)">';
+    assignedSet.forEach(function (subj) {
+      var isSel = (subj === selectedSubject);
+      html += '<option value="' + subj.replace(/"/g, '&quot;') + '"' + (isSel ? ' selected' : '') + '>' +
+        '✓ ' + subj +
+      '</option>';
+    });
+    html += '</optgroup>';
+
+    if (otherSubjects.length > 0) {
+      html += '<optgroup label="── 📚 Mapel Lainnya di Sekolah ──">';
+      otherSubjects.forEach(function (subj) {
+        var isSel = (subj.name === selectedSubject);
+        html += '<option value="' + subj.name.replace(/"/g, '&quot;') + '"' + (isSel ? ' selected' : '') + '>' +
+          subj.name + (subj.category ? ' (' + subj.category + ')' : '') +
+        '</option>';
+      });
+      html += '</optgroup>';
+    }
+
+    subjectSelect.innerHTML = html;
+    if (selectedSubject) {
+      subjectSelect.value = selectedSubject;
+    }
+  }
+
   function updateJurnalAttendanceSummary(className) {
     const roster = window.SIMKUR_DATA && window.SIMKUR_DATA.studentRoster;
     const students = (roster && roster[className]) || [];
@@ -2413,6 +2569,19 @@
     const selectPresensi = document.getElementById('select-presensi-class');
     if (selectPresensi) selectPresensi.value = className;
     updateJurnalAttendanceSummary(className);
+
+    // Auto-update Mata Pelajaran yang Diampu sesuai kelas/jadwal yang dipilih
+    const teachers = StorageManager.get('teachers');
+    const teacher = teachers.find(function (t) {
+      return String(t.id) === String(State.currentGuruId);
+    });
+    let session = null;
+    try {
+      const raw = localStorage.getItem('simkur_session');
+      if (raw) session = JSON.parse(raw);
+    } catch (e) {}
+    populateTeacherSubjectSelect(State.currentGuruId, teacher, session, className);
+
     if (State.activeGuruTab === 'presensi') {
       loadPresensiStudents();
     }
@@ -2457,6 +2626,7 @@
           '<div style="display: flex; align-items: center; gap: 8px;">' +
             '<span class="badge" style="background: #EDE8F5; color: #4B22B8; font-weight: 700; font-size: 0.75rem;">' + (j.date || 'Hari Ini') + '</span>' +
             '<span style="font-weight: 700; color: #262626; font-size: 0.9375rem;">' + j.class_name + '</span>' +
+            (j.subject_name ? '<span class="badge" style="background: rgba(14, 165, 233, 0.12); color: #0369A1; font-weight: 700; font-size: 0.75rem; border: 1px solid rgba(14, 165, 233, 0.2);">' + j.subject_name + '</span>' : '') +
             '<span style="color: #777777; font-size: 0.8125rem;">• ' + (j.time || 'Jam 1-4') + '</span>' +
           '</div>' +
           '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; font-size: 0.75rem;">✓ ' + (j.status || 'Terverifikasi Waka Kur') + '</span>' +
@@ -2482,6 +2652,10 @@
     e.preventDefault();
     const className = document.getElementById('input-guru-jurnal-class').value;
     const subjectName = document.getElementById('input-guru-jurnal-subject').value.trim();
+    if (!subjectName) {
+      showToast('Silakan pilih mata pelajaran yang diampu terlebih dahulu.', 'error');
+      return;
+    }
     const date = document.getElementById('input-guru-jurnal-date').value;
     const time = document.getElementById('input-guru-jurnal-time').value;
     const topic = document.getElementById('input-guru-jurnal-topic').value.trim();
@@ -3139,6 +3313,7 @@
     deleteGuruDoc: deleteGuruDoc,
     toggleShowAllClasses: toggleShowAllClasses,
     handleJurnalClassChange: handleJurnalClassChange,
+    populateTeacherSubjectSelect: populateTeacherSubjectSelect,
     getClassesForTeacher: getClassesForTeacher,
     stepHadirCount: stepHadirCount,
     syncJurnalAttendanceBadge: syncJurnalAttendanceBadge,
