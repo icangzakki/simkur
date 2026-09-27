@@ -325,6 +325,17 @@
   // 5. NAVIGATION CONTROLLER (5 MENUS)
   // =========================================================================
   function switchScreen(screenName) {
+    // Access guard: guru-only sessions cannot visit restricted screens
+    try {
+      var _sess = JSON.parse(localStorage.getItem('simkur_session') || 'null');
+      if (_sess && _sess.accessLevel === 'guru-only') {
+        var _restricted = ['dashboard', 'dokumen', 'jadwal', 'data-master'];
+        if (_restricted.indexOf(screenName) !== -1) {
+          screenName = 'portal-guru';
+        }
+      }
+    } catch (e) { /* ignore */ }
+
     State.currentScreen = screenName;
 
     // Update sidebar navigation links
@@ -2601,8 +2612,73 @@
     StorageManager.init();
     initEventListeners();
 
+    // ── READ SESSION & APPLY ACCESS CONTROL ──────────────────────────────
+    var session = null;
+    try {
+      var rawSession = localStorage.getItem('simkur_session');
+      if (rawSession) session = JSON.parse(rawSession);
+    } catch (err) { /* ignore corrupt session */ }
+
+    var isGuruOnly = session && session.accessLevel === 'guru-only';
+
+    // Update topbar user chip from session
+    if (session) {
+      var chipName = document.querySelector('.topbar-user-chip [style*="font-weight: 700"]');
+      var chipRole = document.querySelector('.topbar-user-chip [style*="0.6875rem"]');
+      var chipAvatar = document.querySelector('.topbar-user-chip img');
+      if (chipName) chipName.textContent = session.name;
+      if (chipRole) chipRole.textContent = session.title || (session.role === 'waka' ? 'Waka Kurikulum' : 'Guru Pengampu');
+      if (chipAvatar && session.avatar) chipAvatar.src = session.avatar;
+
+      // Update sidebar footer user card
+      var footerName = document.querySelector('.sidebar-user-footer div[style*="font-weight: 700"]');
+      var footerRole = document.querySelector('.sidebar-user-footer div[style*="0.6875rem"]');
+      if (footerName) footerName.textContent = session.name;
+      if (footerRole) footerRole.textContent = session.title || (session.role === 'waka' ? 'Waka Kurikulum' : 'Guru');
+    }
+
+    // If guru-only: hide Dashboard, Dokumen, Jadwal, Data Master nav items
+    if (isGuruOnly) {
+      var restrictedScreens = ['dashboard', 'dokumen', 'jadwal', 'data-master'];
+      restrictedScreens.forEach(function (screen) {
+        var navLink = document.querySelector('.nav-item-link[data-screen="' + screen + '"]');
+        if (navLink) {
+          var li = navLink.closest('li');
+          if (li) li.style.display = 'none';
+        }
+      });
+
+      // Update sidebar nav section label
+      var navGroupTitle = document.querySelector('.nav-group-title');
+      if (navGroupTitle) navGroupTitle.textContent = 'Menu Guru';
+
+      // Hide topbar search bar (not useful for guru-only)
+      var searchPill = document.querySelector('.topbar-search-pill');
+      if (searchPill) searchPill.style.display = 'none';
+
+      // Hide compliance badge to free up topbar space
+      var complianceBadge = document.querySelector('.topbar-right .badge');
+      if (complianceBadge) complianceBadge.style.display = 'none';
+    }
+
+    // Pre-select the logged-in teacher in Portal Guru
+    if (session && (session.role === 'guru' || session.role === 'kajur') && session.nip) {
+      var allTeachers = StorageManager.get('teachers') || [];
+      var matchedTeacher = allTeachers.find(function (t) {
+        return String(t.nip) === String(session.nip) || t.name === session.name;
+      });
+      if (matchedTeacher && matchedTeacher.id) {
+        State.currentGuruId = matchedTeacher.id;
+      }
+    }
+    // ── END ACCESS CONTROL ───────────────────────────────────────────────
+
     const params = new URLSearchParams(window.location.search);
-    const initialScreen = params.get('screen') || 'dashboard';
+    var initialScreen = params.get('screen') || (isGuruOnly ? 'portal-guru' : 'dashboard');
+
+    // Force guru-only users to portal-guru regardless of URL param
+    if (isGuruOnly) initialScreen = 'portal-guru';
+
     const initialDocTab = params.get('tab');
     if (initialDocTab) {
       State.activeDocTab = initialDocTab;
@@ -2633,7 +2709,7 @@
     });
 
     switchScreen(initialScreen);
-    console.log('🚀 SIMKUR Portal Waka Kur (Monitoring Administrasi Guru & Dokumen) siap digunakan.');
+    console.log('🚀 SIMKUR Portal siap. Akses:', isGuruOnly ? 'Guru Only → Portal Guru' : 'Full Access');
   }
 
   // Expose global methods for inline HTML onclick handlers
