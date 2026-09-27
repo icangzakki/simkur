@@ -351,11 +351,11 @@
     const titleEl = document.getElementById('topbar-active-screen');
     if (titleEl) {
       const titles = {
-        'dashboard': 'Overview Dashboard Waka Kurikulum',
-        'dokumen': 'Monitoring Administrasi Guru & Dokumen Kurikulum',
+        'dashboard': 'Dashboard Kurikulum',
+        'dokumen': 'Dokumen & Administrasi',
         'jadwal': 'Jadwal Pelajaran',
         'data-master': 'Data Master Kurikulum',
-        'portal-guru': 'Portal Guru — Jurnal Mengajar, Presensi & Berkas Ajar'
+        'portal-guru': 'Portal Guru — KBM'
       };
       titleEl.textContent = titles[screenName] || 'Portal Kurikulum';
     }
