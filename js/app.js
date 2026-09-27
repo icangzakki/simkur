@@ -41,7 +41,8 @@
       if (!localStorage.getItem(this.KEYS.ROOMS)) {
         localStorage.setItem(this.KEYS.ROOMS, JSON.stringify(data.masterRooms || []));
       }
-      if (!localStorage.getItem(this.KEYS.SCHEDULES)) {
+      const storedScheds = localStorage.getItem(this.KEYS.SCHEDULES);
+      if (!storedScheds || JSON.parse(storedScheds).length < 50) {
         localStorage.setItem(this.KEYS.SCHEDULES, JSON.stringify(data.schedules || []));
       }
       if (!localStorage.getItem(this.KEYS.DOCUMENTS)) {
@@ -261,6 +262,8 @@
     scheduleClassFilter: 'all',
     scheduleTeacherFilter: 'all',
     scheduleSearchQuery: '',
+    dashScheduleQuery: '',
+    dashScheduleClassFilter: 'all',
     masterSearchQuery: '',
     editingItem: null,
     // Portal Guru State
@@ -412,22 +415,57 @@
 
   function renderDashboardSchedule(schedules) {
     const day = State.selectedDay || 'Senin';
-    const dayFiltered = schedules.filter(function (s) {
+    const daySchedules = schedules.filter(function (s) {
       return s.day && s.day.toLowerCase() === day.toLowerCase();
+    });
+
+    // Populate class filter dropdown on dashboard for this day
+    const classSelect = document.getElementById('dash-sched-class');
+    if (classSelect) {
+      const currentSelected = State.dashScheduleClassFilter || 'all';
+      const uniqueClasses = Array.from(new Set(daySchedules.map(function (s) { return s.class_name; }))).sort();
+      let optHtml = '<option value="all">Semua Rombel (' + uniqueClasses.length + ' Kelas)</option>';
+      uniqueClasses.forEach(function (c) {
+        optHtml += '<option value="' + c + '"' + (c === currentSelected ? ' selected' : '') + '>' + c + '</option>';
+      });
+      classSelect.innerHTML = optHtml;
+    }
+
+    const searchQuery = (State.dashScheduleQuery || '').toLowerCase();
+    const classFilter = State.dashScheduleClassFilter || 'all';
+
+    let dayFiltered = daySchedules.filter(function (s) {
+      const matchClass = classFilter === 'all' || s.class_name === classFilter;
+      const matchSearch = !searchQuery ||
+        (s.subject_name && s.subject_name.toLowerCase().includes(searchQuery)) ||
+        (s.teacher_name && s.teacher_name.toLowerCase().includes(searchQuery)) ||
+        (s.class_name && s.class_name.toLowerCase().includes(searchQuery)) ||
+        (s.room_name && s.room_name.toLowerCase().includes(searchQuery));
+      return matchClass && matchSearch;
+    });
+
+    // Sort chronologically by start_time, then class_name
+    dayFiltered.sort(function (a, b) {
+      const timeCompare = (a.start_time || '').localeCompare(b.start_time || '');
+      if (timeCompare !== 0) return timeCompare;
+      return (a.class_name || '').localeCompare(b.class_name || '');
     });
 
     const tbody = document.getElementById('dash-schedule-tbody');
     const labelDay = document.getElementById('dash-current-day-label');
-    if (labelDay) labelDay.textContent = 'Hari: ' + day;
+    if (labelDay) {
+      labelDay.textContent = 'Hari: ' + day + ' • ' + dayFiltered.length + ' Sesi KBM' + (classFilter !== 'all' || searchQuery ? ' (Tersaring)' : ' (Revisi 2 X-XI)');
+    }
 
     if (!tbody) return;
 
     if (dayFiltered.length === 0) {
       tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2.5rem; color: #888888;">' +
         '<div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>' +
-        '<strong>Belum ada jadwal untuk hari ' + day + '</strong>' +
-        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Gunakan menu Jadwal Pelajaran untuk menyusun jadwal.</p>' +
-        '<button class="btn btn-outline btn-sm" style="margin-top: 10px;" onclick="window.PORTAL_APP.switchScreen(\'jadwal\')">+ Tambah Jadwal</button>' +
+        '<strong>Tidak ada jadwal yang cocok untuk hari ' + day + '</strong>' +
+        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">' +
+        (searchQuery || classFilter !== 'all' ? 'Coba reset filter atau pencarian Anda.' : 'Gunakan menu Jadwal Pelajaran untuk menyusun jadwal.') +
+        '</p>' +
         '</td></tr>';
       return;
     }
@@ -436,7 +474,7 @@
     dayFiltered.forEach(function (s) {
       html += '<tr>' +
         '<td style="font-weight: 600; color: #262626;"><span class="badge badge-neutral" style="font-family: monospace;">' + s.start_time + ' - ' + s.end_time + '</span></td>' +
-        '<td><span class="badge badge-primary">' + s.class_name + '</span></td>' +
+        '<td><span class="badge badge-primary" style="font-weight: 700;">' + s.class_name + '</span></td>' +
         '<td style="font-weight: 600; color: #262626;">' + s.subject_name + '</td>' +
         '<td>' + s.teacher_name + '</td>' +
         '<td><span class="badge badge-outline">' + s.room_name + '</span></td>' +
@@ -446,8 +484,17 @@
     tbody.innerHTML = html;
   }
 
+  function filterDashboardSchedule() {
+    const searchInput = document.getElementById('dash-sched-search');
+    const classSelect = document.getElementById('dash-sched-class');
+    State.dashScheduleQuery = searchInput ? searchInput.value.trim() : '';
+    State.dashScheduleClassFilter = classSelect ? classSelect.value : 'all';
+    renderDashboardSchedule(StorageManager.get('schedules'));
+  }
+
   function selectDashboardDay(dayName, btnEl) {
     State.selectedDay = dayName;
+    State.dashScheduleClassFilter = 'all';
     document.querySelectorAll('.day-pill-btn').forEach(function (b) {
       b.classList.remove('active');
     });
@@ -2575,6 +2622,7 @@
     openModal: openModal,
     closeModal: closeModal,
     selectDashboardDay: selectDashboardDay,
+    filterDashboardSchedule: filterDashboardSchedule,
     openAddAgendaModal: openAddAgendaModal,
     deleteAgenda: deleteAgenda,
     switchDocTab: switchDocTab,

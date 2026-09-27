@@ -6,8 +6,8 @@
   <title>Portal Waka Kur — SMKN 1 BANJARMASIN</title>
   <meta name="description" content="Portal Waka Kurikulum SMKN 1 Banjarmasin — Pengelolaan Dokumen Kurikulum, Jadwal Pelajaran, dan Data Master Sekolah.">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
-  <link rel="stylesheet" href="css/tokens.css?v=8.1.0">
-  <link rel="stylesheet" href="css/styles.css?v=8.1.0">
+  <link rel="stylesheet" href="css/tokens.css?v=8.2.0">
+  <link rel="stylesheet" href="css/styles.css?v=8.2.0">
   <style>
     /* Styling Tambahan Spesifik Portal Sederhana */
     .day-pill-btn {
@@ -377,10 +377,14 @@
         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem;">
           
           <!-- LEFT: Jadwal Hari Ini -->
+          <!-- LEFT: Jadwal Hari Ini (Sinkron Revisi 2 X-XI) -->
           <div class="content-card" style="margin: 0;">
             <div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
               <div>
-                <h3 style="font-size: 1rem; font-weight: 700; color: #262626; margin: 0;">Jadwal Pelajaran Hari Ini</h3>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <h3 style="font-size: 1rem; font-weight: 700; color: #262626; margin: 0;">Jadwal Pelajaran Hari Ini</h3>
+                  <span class="badge" style="background: rgba(75, 34, 184, 0.08); color: #4B22B8; font-weight: 700; font-size: 0.72rem;">Revisi 2 X-XI</span>
+                </div>
                 <span style="font-size: 0.775rem; color: #777777;" id="dash-current-day-label">Hari: Senin</span>
               </div>
               <div style="display: flex; gap: 6px; flex-wrap: wrap;">
@@ -393,10 +397,21 @@
               </div>
             </div>
 
-            <div class="content-card-body table-responsive" style="padding: 0;">
+            <!-- Quick Filter Bar -->
+            <div style="padding: 0.5rem 1.25rem; background: #FAFAFD; border-bottom: 1px solid #ECECF2; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 6px; flex: 1; min-width: 220px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="dash-sched-search" placeholder="Cari guru, kelas, atau mata pelajaran..." class="form-input" style="padding: 0.35rem 0.65rem; font-size: 0.8125rem; height: auto;" oninput="window.PORTAL_APP.filterDashboardSchedule()">
+              </div>
+              <select id="dash-sched-class" class="form-input" style="width: auto; min-width: 140px; padding: 0.35rem 0.65rem; font-size: 0.8125rem; height: auto;" onchange="window.PORTAL_APP.filterDashboardSchedule()">
+                <option value="all">Semua Rombel</option>
+              </select>
+            </div>
+
+            <div class="content-card-body table-responsive" style="padding: 0; max-height: 480px; overflow-y: auto;">
               <table class="data-table">
                 <thead>
-                  <tr>
+                  <tr style="position: sticky; top: 0; background: #FAFAFD; z-index: 2;">
                     <th>Jam</th>
                     <th>Kelas</th>
                     <th>Mata Pelajaran</th>
@@ -411,8 +426,8 @@
             </div>
 
             <div style="padding: 0.875rem 1.25rem; border-top: 1px solid #EEEEEE; display: flex; justify-content: space-between; align-items: center; background: #FAF9FD;">
-              <span style="font-size: 0.775rem; color: #777777;">Waka Kur mengelola jadwal mingguan secara langsung.</span>
-              <button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.switchScreen('jadwal')">Lihat Seluruh Jadwal →</button>
+              <span style="font-size: 0.775rem; color: #777777;" id="dash-schedule-footer-info">Jadwal resmi tersinkron dari dokumen kurikulum Revisi 2 X-XI.</span>
+              <button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.switchScreen('jadwal')">Lihat Seluruh 503 Jadwal →</button>
             </div>
           </div>
 
@@ -1757,9 +1772,9 @@
 <div class="toast-container" id="toast-container" style="position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 99999; display: flex; flex-direction: column; gap: 8px;"></div>
 
 <!-- SCRIPTS -->
-<script src="js/data.js?v=8.1.0"></script>
-<script src="js/auth_users.js?v=8.1.0"></script>
-<script src="js/app.js?v=8.1.0"></script>
+<script src="js/data.js?v=8.2.0"></script>
+<script src="js/auth_users.js?v=8.2.0"></script>
+<script src="js/app.js?v=8.2.0"></script>
 
 </body>
 </html>
