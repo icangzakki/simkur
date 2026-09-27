@@ -21,3 +21,4 @@ stitch_*metadata.json
 .DS_Store
 .vercel
 
+.env*

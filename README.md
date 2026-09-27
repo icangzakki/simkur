@@ -2,10 +2,15 @@
 
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)](https://github.com/icangzakki/simkur)
 [![Version](https://img.shields.io/badge/Version-3.3.0-blue)](https://github.com/icangzakki/simkur)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)](https://simkur-nine.vercel.app)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![SMK Bisa](https://img.shields.io/badge/SMK-Bisa%20Hebat-orange)](https://smkn1bjm.sch.id)
 
 > **SIMKUR** adalah Portal Digitalisasi Terpadu Manajemen Kurikulum SMK yang dirancang khusus untuk memenuhi kebutuhan tata kelola kurikulum modern, selaras dengan **Permendikbudristek No. 12/2024** dan **Permendikdasmen No. 13/2025**.
+
+### 🌐 Akses Live Production (Vercel)
+* **Aplikasi Utama (Dashboard)**: [https://simkur-nine.vercel.app](https://simkur-nine.vercel.app)
+* **Halaman Login & Switcher Akun**: [https://simkur-nine.vercel.app/login](https://simkur-nine.vercel.app/login)
 
 ---
 

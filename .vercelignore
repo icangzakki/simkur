@@ -2,6 +2,7 @@
 *.xlsx
 *.xls
 *.csv
+*.pdf
 
 # SQL & Database dumps
 database/
@@ -10,14 +11,17 @@ database/
 # Archives & Temp files
 *.zip
 *.tar.gz
+*.bak
 test.jpg
 
-# Python scripts
+# Python & Virtual Env
 *.py
 scripts/
 __pycache__/
+.venv/
 
 # Scratch & Metadata
+scratch/
 stitch_raw/
 stitch_*metadata.json
 .DS_Store
