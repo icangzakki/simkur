@@ -271,9 +271,11 @@
     docTeacherSearchQuery: '',
     docTeacherDeptFilter: 'all',
     docTeacherStatusFilter: 'all',
+    scheduleViewMode: 'table', // 'table' | 'timeline' | 'agenda'
     scheduleDayFilter: 'all',
     scheduleClassFilter: 'all',
     scheduleTeacherFilter: 'all',
+    scheduleRoomFilter: 'all',
     scheduleSearchQuery: '',
     dashScheduleQuery: '',
     dashScheduleClassFilter: 'all',
@@ -357,6 +359,15 @@
         link.classList.add('active');
       } else {
         link.classList.remove('active');
+      }
+    });
+
+    // Update mobile bottom navigation
+    document.querySelectorAll('.mobile-bottom-nav .bottom-nav-item').forEach(function (btn) {
+      if (btn.getAttribute('data-screen') === screenName) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
       }
     });
 
@@ -1009,26 +1020,37 @@
     const schedules = StorageManager.get('schedules');
     const teachers = StorageManager.get('teachers');
     const classes = StorageManager.get('classes');
+    const rooms = StorageManager.get('rooms');
     const tbody = document.getElementById('sched-table-tbody');
     const badgeCount = document.getElementById('sched-total-badge');
-    if (badgeCount) badgeCount.textContent = schedules.length + ' Sesi';
 
-    populateScheduleFilters(classes, teachers);
-
-    if (!tbody) return;
+    populateScheduleFilters(classes, teachers, rooms);
 
     const filtered = schedules.filter(function (s) {
       const matchesDay = State.scheduleDayFilter === 'all' || s.day === State.scheduleDayFilter;
       const matchesClass = State.scheduleClassFilter === 'all' || String(s.class_id) === String(State.scheduleClassFilter) || s.class_name === State.scheduleClassFilter;
       const matchesTeacher = State.scheduleTeacherFilter === 'all' || String(s.teacher_id) === String(State.scheduleTeacherFilter) || s.teacher_name === State.scheduleTeacherFilter;
+      const matchesRoom = State.scheduleRoomFilter === 'all' || String(s.room_id) === String(State.scheduleRoomFilter) || s.room_name === State.scheduleRoomFilter;
       const matchesSearch = !State.scheduleSearchQuery ||
         (s.subject_name && s.subject_name.toLowerCase().includes(State.scheduleSearchQuery.toLowerCase())) ||
         (s.teacher_name && s.teacher_name.toLowerCase().includes(State.scheduleSearchQuery.toLowerCase())) ||
         (s.class_name && s.class_name.toLowerCase().includes(State.scheduleSearchQuery.toLowerCase())) ||
         (s.room_name && s.room_name.toLowerCase().includes(State.scheduleSearchQuery.toLowerCase()));
 
-      return matchesDay && matchesClass && matchesTeacher && matchesSearch;
+      return matchesDay && matchesClass && matchesTeacher && matchesRoom && matchesSearch;
     });
+
+    if (badgeCount) badgeCount.textContent = filtered.length + ' Sesi';
+
+    if (State.scheduleViewMode === 'timeline') {
+      renderTimelineSchedule(filtered);
+      return;
+    } else if (State.scheduleViewMode === 'agenda') {
+      renderAgendaSchedule(filtered);
+      return;
+    }
+
+    if (!tbody) return;
 
     if (filtered.length === 0) {
       tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 3rem; color: #888888;">' +
@@ -1060,9 +1082,139 @@
     tbody.innerHTML = html;
   }
 
-  function populateScheduleFilters(classes, teachers) {
+  function renderTimelineSchedule(filtered) {
+    const container = document.getElementById('sched-timeline-content');
+    if (!container) return;
+    if (filtered.length === 0) {
+      container.innerHTML = '<div style="text-align: center; padding: 3rem; color: #888888;">' +
+        '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">⏱️</div>' +
+        '<strong>Tidak ada jadwal pelajaran yang cocok dengan filter</strong>' +
+        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau klik tombol Tambah Jadwal untuk membuat jadwal baru.</p>' +
+        '</div>';
+      return;
+    }
+
+    const dayOrder = { 'Senin': 1, 'Selasa': 2, 'Rabu': 3, 'Kamis': 4, 'Jumat': 5, 'Sabtu': 6 };
+    const sorted = [].concat(filtered).sort(function (a, b) {
+      var dDiff = (dayOrder[a.day] || 9) - (dayOrder[b.day] || 9);
+      if (dDiff !== 0) return dDiff;
+      return (a.start_time || '').localeCompare(b.start_time || '');
+    });
+
+    let html = '';
+    sorted.forEach(function (s) {
+      html += '<div class="timeline-item-card">' +
+        '<div>' +
+          '<span class="badge badge-primary" style="font-weight: 700; margin-bottom: 4px; display: inline-block;">' + s.day + '</span>' +
+          '<div style="font-family: monospace; font-size: 0.8125rem; font-weight: 700; color: var(--text-primary);">' + s.start_time + ' - ' + s.end_time + '</div>' +
+        '</div>' +
+        '<div>' +
+          '<div style="font-weight: 700; font-size: 0.9375rem; color: var(--simkur-navy); margin-bottom: 2px;">' + s.subject_name + '</div>' +
+          '<div style="font-size: 0.8125rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">' +
+            '<span>👨‍🏫 ' + s.teacher_name + '</span>' +
+            '<span>•</span>' +
+            '<span class="badge badge-neutral" style="font-weight: 600;">' + s.class_name + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">' +
+          '<span class="badge badge-outline" style="font-weight: 600;">📍 ' + s.room_name + '</span>' +
+          '<div style="display: flex; gap: 4px;">' +
+            '<button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.editSchedule(\'' + s.id + '\')" title="Edit Jadwal">✏️ Edit</button>' +
+            '<button class="btn btn-ghost btn-sm" style="color: #dc2626;" onclick="window.PORTAL_APP.deleteSchedule(\'' + s.id + '\')" title="Hapus">🗑️</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  function renderAgendaSchedule(filtered) {
+    const container = document.getElementById('sched-agenda-content');
+    if (!container) return;
+    if (filtered.length === 0) {
+      container.innerHTML = '<div style="text-align: center; padding: 3rem; color: #888888;">' +
+        '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📅</div>' +
+        '<strong>Tidak ada jadwal pelajaran yang cocok dengan filter</strong>' +
+        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau klik tombol Tambah Jadwal untuk membuat jadwal baru.</p>' +
+        '</div>';
+      return;
+    }
+
+    const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const grouped = {};
+    days.forEach(function (d) { grouped[d] = []; });
+    filtered.forEach(function (s) {
+      if (!grouped[s.day]) grouped[s.day] = [];
+      grouped[s.day].push(s);
+    });
+
+    let html = '';
+    days.forEach(function (d) {
+      const list = grouped[d];
+      if (!list || list.length === 0) return;
+      list.sort(function (a, b) { return (a.start_time || '').localeCompare(b.start_time || ''); });
+
+      html += '<div class="agenda-day-block">' +
+        '<div class="agenda-day-header">' +
+          '<span>📅 ' + d + '</span>' +
+          '<span class="badge badge-primary" style="font-size: 0.75rem;">' + list.length + ' Sesi KBM</span>' +
+        '</div>' +
+        '<div>';
+
+      list.forEach(function (s) {
+        html += '<div class="agenda-session-row">' +
+          '<div style="display: flex; align-items: center; gap: 12px; min-width: 220px;">' +
+            '<div style="font-family: monospace; font-size: 0.8125rem; font-weight: 700; color: var(--simkur-blue); background: var(--soft-blue); padding: 4px 8px; border-radius: var(--radius-sm);">' +
+              s.start_time + ' - ' + s.end_time +
+            '</div>' +
+            '<div>' +
+              '<div style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary);">' + s.subject_name + '</div>' +
+              '<div style="font-size: 0.75rem; color: var(--text-secondary);">' + s.teacher_name + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display: flex; align-items: center; gap: 10px;">' +
+            '<span class="badge badge-neutral" style="font-weight: 600;">' + s.class_name + '</span>' +
+            '<span class="badge badge-outline">📍 ' + s.room_name + '</span>' +
+            '<div style="display: flex; gap: 4px;">' +
+              '<button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.editSchedule(\'' + s.id + '\')" title="Edit">✏️</button>' +
+              '<button class="btn btn-ghost btn-sm" style="color: #dc2626;" onclick="window.PORTAL_APP.deleteSchedule(\'' + s.id + '\')" title="Hapus">🗑️</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      });
+
+      html += '</div></div>';
+    });
+    container.innerHTML = html;
+  }
+
+  function setScheduleViewMode(mode, btn) {
+    State.scheduleViewMode = mode;
+    document.querySelectorAll('#schedule-mode-tabs .schedule-mode-btn').forEach(function (b) {
+      b.classList.remove('active');
+    });
+    if (btn) {
+      btn.classList.add('active');
+    } else {
+      const target = document.querySelector('#schedule-mode-tabs .schedule-mode-btn[data-mode="' + mode + '"]');
+      if (target) target.classList.add('active');
+    }
+
+    const tbl = document.getElementById('sched-container-table');
+    const tml = document.getElementById('sched-container-timeline');
+    const agd = document.getElementById('sched-container-agenda');
+
+    if (tbl) tbl.style.display = mode === 'table' ? 'block' : 'none';
+    if (tml) tml.style.display = mode === 'timeline' ? 'block' : 'none';
+    if (agd) agd.style.display = mode === 'agenda' ? 'block' : 'none';
+
+    renderSchedules();
+  }
+
+  function populateScheduleFilters(classes, teachers, rooms) {
     const selClass = document.getElementById('sched-class-filter');
     const selTeacher = document.getElementById('sched-teacher-filter');
+    const selRoom = document.getElementById('sched-room-filter');
 
     if (selClass && selClass.options.length <= 1) {
       classes.forEach(function (c) {
@@ -1079,6 +1231,16 @@
         opt.value = t.name;
         opt.textContent = t.name;
         selTeacher.appendChild(opt);
+      });
+    }
+
+    if (selRoom && selRoom.options.length <= 1) {
+      const roomList = rooms || StorageManager.get('rooms') || [];
+      roomList.forEach(function (r) {
+        const opt = document.createElement('option');
+        opt.value = r.name;
+        opt.textContent = r.name;
+        selRoom.appendChild(opt);
       });
     }
   }
@@ -1872,6 +2034,7 @@
     const schedDay = document.getElementById('sched-day-filter');
     const schedClass = document.getElementById('sched-class-filter');
     const schedTeacher = document.getElementById('sched-teacher-filter');
+    const schedRoom = document.getElementById('sched-room-filter');
 
     if (schedSearch) {
       schedSearch.addEventListener('input', function () {
@@ -1894,6 +2057,12 @@
     if (schedTeacher) {
       schedTeacher.addEventListener('change', function () {
         State.scheduleTeacherFilter = this.value;
+        renderSchedules();
+      });
+    }
+    if (schedRoom) {
+      schedRoom.addEventListener('change', function () {
+        State.scheduleRoomFilter = this.value;
         renderSchedules();
       });
     }
@@ -3151,7 +3320,47 @@
     });
 
     switchScreen(initialScreen);
+    initOnlineOfflineStatus();
     console.log('🚀 SIMKUR Portal siap. Akses:', isGuruOnly ? 'Guru Only → Portal Guru' : 'Full Access');
+  }
+
+  function initOnlineOfflineStatus() {
+    var banner = document.getElementById('offline-banner');
+    if (!banner) return;
+    function updateStatus() {
+      if (!navigator.onLine) {
+        banner.style.display = 'block';
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+    window.addEventListener('online', updateStatus);
+    window.addEventListener('offline', updateStatus);
+    updateStatus();
+  }
+
+  function openKbmBridgeModal() {
+    var userNameEl = document.getElementById('kbm-bridge-user-name');
+    var session = null;
+    try {
+      var raw = localStorage.getItem('simkur_session');
+      if (raw) session = JSON.parse(raw);
+    } catch (e) {}
+
+    if (userNameEl) {
+      userNameEl.textContent = (session && session.name) || (window.SIMKUR_DATA && window.SIMKUR_DATA.currentUser ? window.SIMKUR_DATA.currentUser.name : 'Rusnani');
+    }
+    openModal('modal-kbm-bridge');
+  }
+
+  function confirmOpenKbm() {
+    closeModal('modal-kbm-bridge');
+    switchScreen('portal-guru');
+    showToast('🚀 Mengalihkan ke Portal Guru KBM...', 'success');
+  }
+
+  function showNotifications() {
+    showToast('ℹ️ Status sinkronisasi: Sistem SIMKUR tersinkron 100% dengan Dapodik.');
   }
 
   // ── CHANGE PASSWORD METHODS ──────────────────────────────────────────
@@ -3273,6 +3482,10 @@
     openScheduleModal: openScheduleModal,
     editSchedule: function (id) { openScheduleModal(id); },
     deleteSchedule: deleteSchedule,
+    setScheduleViewMode: setScheduleViewMode,
+    openKbmBridgeModal: openKbmBridgeModal,
+    confirmOpenKbm: confirmOpenKbm,
+    showNotifications: showNotifications,
     switchMasterTab: switchMasterTab,
     openAddMasterModal: function () {
       if (State.activeMasterTab === 'teachers') openTeacherModal();

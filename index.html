@@ -263,23 +263,23 @@
   <!-- MOBILE SIDEBAR BACKDROP -->
   <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
-  <!-- SIDEBAR NAVIGATION (JOBIE ADMIN PURPLE GRADIENT) -->
+  <!-- SIDEBAR NAVIGATION (Design Specification Section 6) -->
   <aside class="app-sidebar">
     <div class="sidebar-brand">
       <a href="#dashboard" style="display: flex; align-items: center; text-decoration: none;">
-        <img src="assets/logo-white.svg" alt="SIMKUR" class="sidebar-logo" style="height: 56px;">
+        <img src="assets/logo-white.svg" alt="SIMKUR" class="sidebar-logo" style="height: 52px;">
       </a>
       <button class="btn-close-mobile-sidebar" id="btn-close-sidebar" aria-label="Tutup Menu">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
 
-    <div class="sidebar-menu-wrapper" style="padding-top: 1.5rem;">
-      <div class="nav-group-title" style="color: rgba(255,255,255,0.6); font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 0 1.25rem 0.75rem;">Menu Utama Waka Kur</div>
-      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0;">
-        
-        <!-- 1. Dashboard -->
-        <li style="margin-bottom: 6px;">
+    <div class="sidebar-menu-wrapper" style="padding-top: 1rem;">
+      
+      <!-- Group 1: Ringkasan -->
+      <div class="nav-group-title">1. Ringkasan</div>
+      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
+        <li style="margin-bottom: 4px;">
           <a class="nav-item-link active" data-screen="dashboard" href="#dashboard">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
@@ -287,19 +287,25 @@
             <span class="nav-label">Dashboard</span>
           </a>
         </li>
+      </ul>
 
-        <!-- 2. Dokumen & Administrasi -->
-        <li style="margin-bottom: 6px;">
+      <!-- Group 2: Administrasi Kurikulum -->
+      <div class="nav-group-title">2. Administrasi Kurikulum</div>
+      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
+        <li style="margin-bottom: 4px;">
           <a class="nav-item-link" data-screen="dokumen" href="#dokumen">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
             </svg>
             <span class="nav-label">Dokumen & Administrasi</span>
           </a>
         </li>
+      </ul>
 
-        <!-- 3. Jadwal Pelajaran -->
-        <li style="margin-bottom: 6px;">
+      <!-- Group 3: Operasional Sekolah -->
+      <div class="nav-group-title">3. Operasional Sekolah</div>
+      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
+        <li style="margin-bottom: 4px;">
           <a class="nav-item-link" data-screen="jadwal" href="#jadwal">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
@@ -307,9 +313,7 @@
             <span class="nav-label">Jadwal Pelajaran</span>
           </a>
         </li>
-
-        <!-- 4. Data Master -->
-        <li style="margin-bottom: 6px;">
+        <li style="margin-bottom: 4px;">
           <a class="nav-item-link" data-screen="data-master" href="#data-master">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
@@ -317,66 +321,100 @@
             <span class="nav-label">Data Master</span>
           </a>
         </li>
+      </ul>
 
-        <!-- 5. Portal Guru -->
-        <li style="margin-bottom: 6px;" id="nav-item-portal-guru">
+      <!-- Group 4: Pembelajaran -->
+      <div class="nav-group-title">4. Pembelajaran</div>
+      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
+        <li style="margin-bottom: 4px;" id="nav-item-portal-guru">
           <a class="nav-item-link" data-screen="portal-guru" href="#portal-guru">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
               <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
               <path d="M12 6v6m-3-3h6"/>
             </svg>
-            <span class="nav-label">Portal Guru</span>
+            <span class="nav-label">Portal Guru KBM</span>
             <span class="badge" style="background: rgba(255,255,255,0.2); color: #ffffff; font-size: 0.65rem; padding: 2px 6px; margin-left: auto; border-radius: 999px; font-weight: 700;">KBM</span>
           </a>
         </li>
-
       </ul>
+
+      <!-- Group 5: Pengaturan -->
+      <div class="nav-group-title">5. Pengaturan</div>
+      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0;">
+        <li style="margin-bottom: 4px;">
+          <a class="nav-item-link" href="javascript:void(0)" onclick="window.PORTAL_APP.openChangePasswordModal()">
+            <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span class="nav-label">Pengaturan Akun</span>
+          </a>
+        </li>
+      </ul>
+
     </div>
   </aside>
 
   <!-- MAIN WRAPPER -->
   <main class="app-main-wrapper">
 
-    <!-- TOPBAR / HEADER (JOBIE CLEAN WHITE) -->
+    <!-- TOPBAR / HEADER (Design Specification Section 5) -->
     <header class="app-topbar">
-      <div class="topbar-left">
+      <div class="topbar-left" style="display: flex; align-items: center; gap: 12px;">
         <button class="btn-toggle-mobile" id="btn-toggle-sidebar" aria-label="Buka Menu">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <h1 class="topbar-screen-title" id="topbar-active-screen">Dashboard Kurikulum</h1>
+        <div style="display: flex; flex-direction: column;">
+          <h1 class="topbar-screen-title" id="topbar-active-screen" style="margin: 0; line-height: 1.2;">Dashboard Kurikulum</h1>
+          <div class="header-school-context" style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
+            <span class="header-school-name" style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">SMKN 1 Banjarmasin</span>
+            <span style="color: #CBD5E1;">•</span>
+            <span style="font-size: 0.7rem; color: var(--simkur-blue); font-weight: 700;">Waka Kurikulum</span>
+          </div>
+        </div>
       </div>
 
       <div class="topbar-center">
         <div class="topbar-search-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777777" stroke-width="2" style="margin-right: 8px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="topbar-search-input" placeholder="Cari dokumen, jadwal, guru..." style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.8125rem; color: #262626;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7A90" stroke-width="2" style="margin-right: 8px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="topbar-search-input" placeholder="Cari dokumen kurikulum, jadwal, atau guru..." style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.8125rem; color: var(--text-primary);">
         </div>
       </div>
 
-      <div class="topbar-right" style="display: flex; align-items: center; gap: 12px;">
-        <!-- Compliance Badge -->
-        <span class="badge" style="background: #EDE7FF; color: #4B22B8; font-weight: 600; padding: 0.45rem 0.875rem; border-radius: 999px; font-size: 0.75rem; display: flex; align-items: center; gap: 6px;">
-          <span style="width: 7px; height: 7px; border-radius: 50%; background: #20C985; display: inline-block;"></span>
-          Kurikulum Merdeka 2026
-        </span>
+      <div class="topbar-right" style="display: flex; align-items: center; gap: 10px;">
+        
+        <!-- Active Academic Year Selector (Section 5) -->
+        <div class="header-academic-selector" title="Tahun Ajaran Aktif">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>TA 2026/2027</span>
+        </div>
 
-        <!-- User Profile Chip (Klik untuk Profil & Ganti Kata Sandi) -->
-        <div class="topbar-user-chip" id="topbar-user-chip" onclick="window.PORTAL_APP.openChangePasswordModal()" role="button" tabindex="0" title="Klik untuk Profil & Ganti Kata Sandi" style="display: flex; align-items: center; gap: 9px; background: #F6F6F8; padding: 4px 12px 4px 6px; border-radius: 999px; cursor: pointer; border: 1px solid #ECECF2; transition: all 0.15s ease;" onmouseover="this.style.background='#EEEDF5'; this.style.borderColor='#C4B5FD';" onmouseout="this.style.background='#F6F6F8'; this.style.borderColor='#ECECF2';">
+        <!-- Sync Status Badge (Section 5) -->
+        <div class="sync-status-badge" title="Status Sinkronisasi Sistem">
+          <span class="pulse-dot"></span>
+          <span>Tersinkron</span>
+        </div>
+
+        <!-- Notification Bell (Section 5) -->
+        <button class="topbar-circle-btn" id="btn-notifications" title="Pemberitahuan Sistem" onclick="window.PORTAL_APP.showNotifications()" style="width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); background: #ffffff; cursor: pointer; position: relative;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span style="position: absolute; top: 7px; right: 7px; width: 7px; height: 7px; background: var(--color-danger); border-radius: 50%;"></span>
+        </button>
+
+        <!-- User Profile Chip (Section 5) -->
+        <div class="topbar-user-chip" id="topbar-user-chip" onclick="window.PORTAL_APP.openChangePasswordModal()" role="button" tabindex="0" title="Profil & Ganti Kata Sandi" style="display: flex; align-items: center; gap: 9px; background: #F8FAFC; padding: 4px 12px 4px 6px; border-radius: var(--radius-pill); cursor: pointer; border: 1px solid var(--border); transition: all 0.15s ease;">
           <img src="assets/teacher_avatar.jpg" alt="Rusnani" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
-          <div class="user-chip-text" style="line-height: 1.1;">
-            <div style="font-weight: 700; font-size: 0.8125rem; color: #262626;">Rusnani</div>
-            <div style="font-size: 0.6875rem; color: #777777;">Waka Kurikulum</div>
+          <div class="user-chip-text" style="line-height: 1.15;">
+            <div style="font-weight: 700; font-size: 0.8125rem; color: var(--text-primary);">Rusnani</div>
+            <div style="font-size: 0.6875rem; color: var(--text-secondary);">Waka Kurikulum</div>
           </div>
-          <!-- Lock/Key icon indicating password action -->
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.2" style="margin-left: 2px;" title="Ganti Password">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--simkur-blue)" stroke-width="2.2" style="margin-left: 2px;">
+            <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </div>
 
         <!-- Logout -->
-        <a href="login.html" class="topbar-circle-btn" title="Keluar" style="width: 36px; height: 36px; border-radius: 50%; border: 1px solid #EEEEEE; display: flex; align-items: center; justify-content: center; color: #777777; background: #ffffff;">
+        <a href="login.html?logout=true" class="topbar-circle-btn" title="Keluar" style="width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); background: #ffffff;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         </a>
       </div>
@@ -386,80 +424,124 @@
     <div class="app-main-canvas">
 
       <!-- =================================================================== -->
-      <!-- SCREEN 1: DASHBOARD -->
+      <!-- SCREEN 1: DASHBOARD (Design Specification Section 5) -->
       <!-- =================================================================== -->
       <section id="screen-dashboard" class="screen-view active">
         
-        <!-- Welcome Banner -->
-        <div class="welcome-banner" style="background: #ffffff; border: 1px solid #EEEEEE; border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.75rem; box-shadow: var(--shadow-sm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <!-- Welcome Banner with Academic Context -->
+        <div class="welcome-banner" style="background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
           <div>
-            <h2 style="font-size: 1.375rem; font-weight: 800; color: #262626; margin: 0 0 4px 0;">Selamat Datang, Rusnani 👋</h2>
-            <p style="font-size: 0.875rem; color: #777777; margin: 0;">SIMKUR SMKN 1 Banjarmasin — Kelola dokumen kurikulum, jadwal pelajaran, dan data master sekolah secara sederhana.</p>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <h2 style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); margin: 0;">Selamat Datang, Rusnani 👋</h2>
+              <span class="badge" style="background: var(--soft-blue); color: var(--simkur-blue); font-weight: 700; font-size: 0.725rem;">Waka Kurikulum</span>
+            </div>
+            <p style="font-size: 0.875rem; color: var(--text-secondary); margin: 0;">
+              SIMKUR SMKN 1 Banjarmasin — Pengelolaan dokumen kurikulum, jadwal pelajaran, data master, dan monitoring administrasi guru.
+            </p>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.openUploadDocModal()">+ Upload Dokumen</button>
-            <button class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.openScheduleModal()">+ Tambah Jadwal</button>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="header-academic-selector">
+              <span>📅 Semester Ganjil • TA 2026/2027</span>
+            </div>
           </div>
         </div>
 
-        <!-- 4 STATISTIC CARDS (Section 5 in PRD) -->
+        <!-- QUICK ACTIONS (Design Specification Section 5) -->
+        <div class="quick-actions-bar">
+          <div class="quick-action-item" onclick="window.PORTAL_APP.openUploadDocModal()" role="button" tabindex="0">
+            <div class="quick-action-icon">📤</div>
+            <div>
+              <div class="quick-action-title">Upload Dokumen</div>
+              <div class="quick-action-sub">KSP, Modul, Silabus</div>
+            </div>
+          </div>
+          <div class="quick-action-item" onclick="window.PORTAL_APP.openScheduleModal()" role="button" tabindex="0">
+            <div class="quick-action-icon">🗓️</div>
+            <div>
+              <div class="quick-action-title">Tambah Jadwal</div>
+              <div class="quick-action-sub">Alokasi jam & rombel</div>
+            </div>
+          </div>
+          <div class="quick-action-item" onclick="window.PORTAL_APP.openTeacherModal()" role="button" tabindex="0">
+            <div class="quick-action-icon">👨‍🏫</div>
+            <div>
+              <div class="quick-action-title">Tambah Guru</div>
+              <div class="quick-action-sub">Pendidik & tendik baru</div>
+            </div>
+          </div>
+          <div class="quick-action-item" onclick="window.PORTAL_APP.openClassModal()" role="button" tabindex="0">
+            <div class="quick-action-icon">🏫</div>
+            <div>
+              <div class="quick-action-title">Tambah Kelas</div>
+              <div class="quick-action-sub">Rombel & program keahlian</div>
+            </div>
+          </div>
+          <div class="quick-action-item" onclick="window.PORTAL_APP.openKbmBridgeModal()" role="button" tabindex="0" style="background: var(--soft-blue); border-color: var(--soft-blue-border);">
+            <div class="quick-action-icon" style="background: var(--simkur-blue); color: #ffffff;">🚀</div>
+            <div>
+              <div class="quick-action-title" style="color: var(--simkur-navy);">Portal Guru KBM</div>
+              <div class="quick-action-sub">Jurnal, presensi & asesmen</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 KPI CARDS (Design Specification Section 5) -->
         <div class="kpi-grid">
           
-          <!-- Card 1: Siswa (Blue) -->
-          <div class="content-card kpi-card stat-blue" style="margin: 0; padding: 1.25rem; border-top: 3px solid #45A9E8;">
+          <!-- Card 1: Jumlah Siswa (Total aktif & jumlah rombel) -->
+          <div class="content-card kpi-card stat-blue" style="margin: 0; padding: 1.25rem; border-top: 3px solid var(--simkur-blue); border-radius: var(--radius-xl);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <span style="font-size: 0.8125rem; font-weight: 700; color: #777777; text-transform: uppercase;">Jumlah Siswa</span>
-              <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(69, 169, 232, 0.12); color: #45A9E8; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🎓</span>
+              <span style="font-size: 0.8125rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">Jumlah Siswa</span>
+              <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(37, 99, 166, 0.12); color: var(--simkur-blue); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🎓</span>
             </div>
-            <div style="font-size: 2rem; font-weight: 800; color: #262626; line-height: 1.1;" id="dash-stat-siswa">1.564</div>
-            <div style="font-size: 0.775rem; color: #777777; margin-top: 6px;">Siswa aktif terdaftar di 45 rombel</div>
+            <div style="font-size: 2rem; font-weight: 900; color: var(--text-primary); line-height: 1.1;" id="dash-stat-siswa">1.564</div>
+            <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 6px;">Total aktif terdaftar di <strong>45 rombel</strong></div>
           </div>
 
-          <!-- Card 2: Guru (Purple) -->
-          <div class="content-card kpi-card stat-purple" style="margin: 0; padding: 1.25rem; border-top: 3px solid #5135D8;">
+          <!-- Card 2: Jumlah Guru (Guru dan tenaga kependidikan aktif) -->
+          <div class="content-card kpi-card stat-navy" style="margin: 0; padding: 1.25rem; border-top: 3px solid var(--simkur-navy); border-radius: var(--radius-xl);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <span style="font-size: 0.8125rem; font-weight: 700; color: #777777; text-transform: uppercase;">Jumlah Guru</span>
-              <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(81, 53, 216, 0.1); color: #5135D8; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">👨‍🏫</span>
+              <span style="font-size: 0.8125rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">Jumlah Guru</span>
+              <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(18, 59, 102, 0.1); color: var(--simkur-navy); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">👨‍🏫</span>
             </div>
-            <div style="font-size: 2rem; font-weight: 800; color: #262626; line-height: 1.1;" id="dash-stat-guru">90</div>
-            <div style="font-size: 0.775rem; color: #777777; margin-top: 6px;">Guru & Tenaga Kependidikan aktif</div>
+            <div style="font-size: 2rem; font-weight: 900; color: var(--text-primary); line-height: 1.1;" id="dash-stat-guru">90</div>
+            <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 6px;">Guru & Tenaga Kependidikan aktif</div>
           </div>
 
-          <!-- Card 3: Kelas (Green) -->
-          <div class="content-card kpi-card stat-green" style="margin: 0; padding: 1.25rem; border-top: 3px solid #20C985;">
+          <!-- Card 3: Jumlah Kelas (Distribusi tingkat X, XI, XII) -->
+          <div class="content-card kpi-card stat-green" style="margin: 0; padding: 1.25rem; border-top: 3px solid var(--color-success); border-radius: var(--radius-xl);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <span style="font-size: 0.8125rem; font-weight: 700; color: #777777; text-transform: uppercase;">Jumlah Kelas</span>
-              <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(32, 201, 133, 0.12); color: #20C985; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🏫</span>
+              <span style="font-size: 0.8125rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">Jumlah Kelas</span>
+              <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(31, 157, 104, 0.12); color: var(--color-success); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🏫</span>
             </div>
-            <div style="font-size: 2rem; font-weight: 800; color: #262626; line-height: 1.1;" id="dash-stat-kelas">45</div>
-            <div style="font-size: 0.775rem; color: #777777; margin-top: 6px;">Rombel Tingkat X, XI, dan XII</div>
+            <div style="font-size: 2rem; font-weight: 900; color: var(--text-primary); line-height: 1.1;" id="dash-stat-kelas">45</div>
+            <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 6px;">Tingkat X: 15 • XI: 15 • XII: 15</div>
           </div>
 
-          <!-- Card 4: Dokumen (Lime) -->
-          <div class="content-card kpi-card stat-lime" style="margin: 0; padding: 1.25rem; border-top: 3px solid #8BCB3D;">
+          <!-- Card 4: Dokumen Kurikulum (Jumlah dokumen & item perlu review) -->
+          <div class="content-card kpi-card stat-amber" style="margin: 0; padding: 1.25rem; border-top: 3px solid var(--color-warning); border-radius: var(--radius-xl);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <span style="font-size: 0.8125rem; font-weight: 700; color: #777777; text-transform: uppercase;">Jumlah Dokumen</span>
-              <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(139, 203, 61, 0.15); color: #8BCB3D; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">📁</span>
+              <span style="font-size: 0.8125rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">Dokumen Kurikulum</span>
+              <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(232, 155, 44, 0.15); color: var(--color-warning); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">📁</span>
             </div>
-            <div style="font-size: 2rem; font-weight: 800; color: #262626; line-height: 1.1;" id="dash-stat-dokumen">11</div>
-            <div style="font-size: 0.775rem; color: #777777; margin-top: 6px;">KSP, Modul Ajar, Silabus, Asesmen</div>
+            <div style="font-size: 2rem; font-weight: 900; color: var(--text-primary); line-height: 1.1;" id="dash-stat-dokumen">11</div>
+            <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 6px;">KSP, Modul, Silabus • <strong style="color: var(--color-warning);">2 Perlu Review</strong></div>
           </div>
 
         </div>
 
-        <!-- 2-COLUMN LAYOUT (Jadwal Hari Ini & Agenda Kurikulum) -->
+        <!-- 2-COLUMN LAYOUT: OPERASIONAL HARI INI (Section 5) -->
         <div class="dashboard-2col-layout" style="gap: 1.25rem;">
           
-          <!-- LEFT: Jadwal Hari Ini -->
-          <!-- LEFT: Jadwal Hari Ini (Sinkron Revisi 2 X-XI) -->
-          <div class="content-card" style="margin: 0;">
+          <!-- LEFT: Jadwal Pelajaran Hari Ini -->
+          <div class="content-card" style="margin: 0; border-radius: var(--radius-xl);">
             <div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
               <div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                  <h3 style="font-size: 1rem; font-weight: 700; color: #262626; margin: 0;">Jadwal Pelajaran Hari Ini</h3>
-                  <span class="badge" style="background: rgba(75, 34, 184, 0.08); color: #4B22B8; font-weight: 700; font-size: 0.72rem;">Revisi 2 X-XI</span>
+                  <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0;">Jadwal Pelajaran Hari Ini</h3>
+                  <span class="badge" style="background: var(--soft-blue); color: var(--simkur-blue); font-weight: 700; font-size: 0.72rem;">Revisi 2 X-XI</span>
                 </div>
-                <span style="font-size: 0.775rem; color: #777777;" id="dash-current-day-label">Hari: Senin</span>
+                <span style="font-size: 0.775rem; color: var(--text-secondary);" id="dash-current-day-label">Hari: Senin</span>
               </div>
               <div class="day-pills-bar" style="display: flex; gap: 6px; flex-wrap: wrap;">
                 <button type="button" class="day-pill-btn active" data-day="Senin" onclick="window.PORTAL_APP.selectDashboardDay('Senin', this)">Senin</button>
@@ -472,9 +554,9 @@
             </div>
 
             <!-- Quick Filter Bar -->
-            <div style="padding: 0.5rem 1.25rem; background: #FAFAFD; border-bottom: 1px solid #ECECF2; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+            <div style="padding: 0.5rem 1.25rem; background: #F8FAFC; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
               <div style="display: flex; align-items: center; gap: 6px; flex: 1; min-width: 220px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7A90" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 <input type="text" id="dash-sched-search" placeholder="Cari guru, kelas, atau mata pelajaran..." class="form-input" style="padding: 0.35rem 0.65rem; font-size: 0.8125rem; height: auto;" oninput="window.PORTAL_APP.filterDashboardSchedule()">
               </div>
               <select id="dash-sched-class" class="form-input" style="width: auto; min-width: 140px; padding: 0.35rem 0.65rem; font-size: 0.8125rem; height: auto;" onchange="window.PORTAL_APP.filterDashboardSchedule()">
@@ -485,7 +567,7 @@
             <div class="content-card-body table-responsive" style="padding: 0; max-height: 480px; overflow-y: auto;">
               <table class="data-table">
                 <thead>
-                  <tr style="position: sticky; top: 0; background: #FAFAFD; z-index: 2;">
+                  <tr style="position: sticky; top: 0; background: #F8FAFC; z-index: 2;">
                     <th>Jam</th>
                     <th>Kelas</th>
                     <th>Mata Pelajaran</th>
@@ -499,18 +581,22 @@
               </table>
             </div>
 
-            <div style="padding: 0.875rem 1.25rem; border-top: 1px solid #EEEEEE; display: flex; justify-content: space-between; align-items: center; background: #FAF9FD;">
-              <span style="font-size: 0.775rem; color: #777777;" id="dash-schedule-footer-info">Jadwal resmi tersinkron dari dokumen kurikulum Revisi 2 X-XI.</span>
-              <button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.switchScreen('jadwal')">Lihat Seluruh 503 Jadwal →</button>
+            <div style="padding: 0.875rem 1.25rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #F8FAFC;">
+              <span style="font-size: 0.775rem; color: var(--text-secondary);" id="dash-schedule-footer-info">Jadwal resmi tersinkron dari dokumen kurikulum Revisi 2 X-XI.</span>
+              <button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.switchScreen('jadwal')">Lihat Seluruh Jadwal →</button>
             </div>
           </div>
 
-          <!-- RIGHT: Agenda Sederhana Kurikulum -->
+          <!-- RIGHT: Agenda Kurikulum & Card Penghubung Portal Guru KBM (Section 5 & 11) -->
           <div style="display: flex; flex-direction: column; gap: 1.25rem;">
             
-            <div class="content-card" style="margin: 0;">
+            <!-- Panel Agenda Kurikulum -->
+            <div class="content-card" style="margin: 0; border-radius: var(--radius-xl);">
               <div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="font-size: 1rem; font-weight: 700; color: #262626; margin: 0;">Agenda Kurikulum</h3>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0;">Agenda Kurikulum</h3>
+                  <span class="badge badge-neutral" style="font-size: 0.7rem;">Rapat & Supervisi</span>
+                </div>
                 <button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.openAddAgendaModal()">+ Tambah</button>
               </div>
               <div class="content-card-body" style="padding: 0.5rem 1.25rem;" id="dash-agenda-list">
@@ -518,13 +604,24 @@
               </div>
             </div>
 
-            <!-- Quick Info Card -->
-            <div class="content-card" style="margin: 0; background: linear-gradient(135deg, #4B22B8 0%, #35158F 100%); color: #ffffff;">
-              <div class="content-card-body" style="padding: 1.25rem;">
-                <div style="font-size: 0.75rem; font-weight: 700; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px;">Portal Waka Kur MVP</div>
-                <div style="font-size: 1.125rem; font-weight: 800; margin: 4px 0 8px 0;">Administrasi Sederhana & Tepat Sasaran</div>
-                <p style="font-size: 0.8125rem; opacity: 0.85; margin: 0 0 12px 0; line-height: 1.4;">Fokus mengelola dokumen digital, jadwal pelajaran, dan data master sekolah tanpa modul rumit.</p>
-                <button class="btn btn-sm" style="background: #ffffff; color: #4B22B8; font-weight: 700;" onclick="window.PORTAL_APP.switchScreen('dokumen')">Buka Arsip Dokumen →</button>
+            <!-- Card Penghubung Portal Guru KBM (Design Specification Section 11) -->
+            <div class="kbm-bridge-card">
+              <div class="kbm-bridge-header">
+                <span class="kbm-bridge-badge">Integrasi Pembelajaran</span>
+              </div>
+              <div class="kbm-bridge-quote">
+                Kelola jurnal mengajar, bahan ajar, presensi, tugas, dan ujian melalui Portal Guru KBM.
+              </div>
+              <p class="kbm-bridge-desc">
+                Portal Guru KBM adalah modul pendamping khusus operasional kelas bagi bapak/ibu guru pengampu SMKN 1 Banjarmasin.
+              </p>
+              <div class="kbm-bridge-actions">
+                <button class="btn btn-sm" style="background: #ffffff; color: var(--simkur-navy); font-weight: 700;" onclick="window.PORTAL_APP.openKbmBridgeModal()">
+                  Buka Portal Guru →
+                </button>
+                <button class="btn btn-ghost btn-sm" style="color: #ffffff; border: 1px solid rgba(255,255,255,0.3);" onclick="window.PORTAL_APP.switchScreen('portal-guru')">
+                  Lihat Aktivitas Terakhir
+                </button>
               </div>
             </div>
 
@@ -736,23 +833,43 @@
       <!-- =================================================================== -->
       <!-- SCREEN 3: JADWAL PELAJARAN -->
       <!-- =================================================================== -->
+      <!-- =================================================================== -->
+      <!-- SCREEN 3: JADWAL PELAJARAN (Design Specification Section 8) -->
+      <!-- =================================================================== -->
       <section id="screen-jadwal" class="screen-view" style="display: none;">
         
-        <div class="screen-header-row">
+        <div class="screen-header-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
           <div>
-            <h2 style="font-size: 1.35rem; font-weight: 800; color: #262626; margin: 0 0 6px 0;">Jadwal Pelajaran Sekolah</h2>
-            <p style="font-size: 0.875rem; color: #777777; margin: 0; line-height: 1.5;">Susun dan kelola alokasi jadwal pelajaran per hari, kelas, mata pelajaran, guru pengampu, dan ruang.</p>
+            <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0 0 4px 0;">Jadwal Pelajaran Sekolah</h2>
+            <p style="font-size: 0.875rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+              Susun dan pantau jadwal pelajaran per hari, kelas, mata pelajaran, guru pengampu, dan ruang belajar.
+            </p>
           </div>
-          <button class="btn btn-primary" onclick="window.PORTAL_APP.openScheduleModal()" style="display: flex; align-items: center; gap: 6px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            + Tambah Jadwal
-          </button>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <!-- Mode Switcher: Timeline, Agenda, Table (Section 8) -->
+            <div class="schedule-mode-tabs" id="schedule-mode-tabs">
+              <button type="button" class="schedule-mode-btn active" data-mode="table" onclick="window.PORTAL_APP.setScheduleViewMode('table', this)">
+                📋 Tabel
+              </button>
+              <button type="button" class="schedule-mode-btn" data-mode="timeline" onclick="window.PORTAL_APP.setScheduleViewMode('timeline', this)">
+                ⏱️ Timeline
+              </button>
+              <button type="button" class="schedule-mode-btn" data-mode="agenda" onclick="window.PORTAL_APP.setScheduleViewMode('agenda', this)">
+                📅 Agenda
+              </button>
+            </div>
+
+            <button class="btn btn-primary" onclick="window.PORTAL_APP.openScheduleModal()" style="display: flex; align-items: center; gap: 6px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              + Tambah Jadwal
+            </button>
+          </div>
         </div>
 
-        <!-- Filter Toolbar -->
+        <!-- Filter Toolbar (Section 8: rombel, guru, mapel, ruang, hari, TA) -->
         <div class="filter-card">
           <div class="filter-group">
-            <select id="sched-day-filter" class="form-input" style="width: auto; min-width: 140px;">
+            <select id="sched-day-filter" class="form-input" style="width: auto; min-width: 130px;">
               <option value="all">Semua Hari</option>
               <option value="Senin">Senin</option>
               <option value="Selasa">Selasa</option>
@@ -762,24 +879,29 @@
               <option value="Sabtu">Sabtu</option>
             </select>
 
-            <select id="sched-class-filter" class="form-input" style="width: auto; min-width: 170px;">
+            <select id="sched-class-filter" class="form-input" style="width: auto; min-width: 160px;">
               <option value="all">Semua Kelas (45 Rombel)</option>
             </select>
 
-            <select id="sched-teacher-filter" class="form-input" style="width: auto; min-width: 200px;">
+            <select id="sched-teacher-filter" class="form-input" style="width: auto; min-width: 180px;">
               <option value="all">Semua Guru (90 GTK)</option>
             </select>
 
-            <div style="display: flex; align-items: center; background: #EEEEF1; border-radius: 8px; padding: 0.5rem 0.875rem; flex: 1; min-width: 200px;">
-              <input type="text" id="sched-search-input" placeholder="Cari mapel, guru, kelas..." style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.875rem; color: #262626;">
+            <select id="sched-room-filter" class="form-input" style="width: auto; min-width: 140px;">
+              <option value="all">Semua Ruang</option>
+            </select>
+
+            <div style="display: flex; align-items: center; background: #F1F5F9; border-radius: 8px; padding: 0.5rem 0.875rem; flex: 1; min-width: 200px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7A90" stroke-width="2" style="margin-right: 8px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="sched-search-input" placeholder="Cari mapel, guru, kelas..." style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.875rem; color: var(--text-primary);">
             </div>
           </div>
 
           <span class="badge badge-neutral" id="sched-total-badge" style="font-weight: 700;">20 Sesi</span>
         </div>
 
-        <!-- Schedule Table -->
-        <div class="content-card" style="margin: 0;">
+        <!-- 1. MODE: TABLE VIEW -->
+        <div id="sched-container-table" class="content-card" style="margin: 0; border-radius: var(--radius-xl);">
           <div class="content-card-body table-responsive" style="padding: 0;">
             <table class="data-table">
               <thead>
@@ -797,6 +919,20 @@
                 <!-- Rendered via app.js -->
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- 2. MODE: TIMELINE VIEW -->
+        <div id="sched-container-timeline" class="content-card" style="margin: 0; display: none; border-radius: var(--radius-xl);">
+          <div id="sched-timeline-content" class="timeline-grid">
+            <!-- Rendered via app.js -->
+          </div>
+        </div>
+
+        <!-- 3. MODE: AGENDA VIEW -->
+        <div id="sched-container-agenda" class="content-card" style="margin: 0; display: none; border-radius: var(--radius-xl);">
+          <div id="sched-agenda-content" class="agenda-cards-container">
+            <!-- Rendered via app.js -->
           </div>
         </div>
 
@@ -2055,13 +2191,125 @@
   </div>
 </div>
 
+<!-- =================================================================== -->
+<!-- MODAL: INTERSTITIAL PERPINDAHAN APLIKASI PORTAL GURU KBM (Section 11) -->
+<!-- =================================================================== -->
+<div class="modal-overlay" id="modal-kbm-bridge">
+  <div class="modal-dialog" style="max-width: 480px; border-radius: var(--radius-xl);">
+    <div style="padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--soft-blue); color: var(--simkur-blue); display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+          🚀
+        </div>
+        <div>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-primary); margin: 0;">Portal Guru KBM</h3>
+          <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 2px 0 0 0;">Integrasi Operasional Pembelajaran</p>
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.closeModal('modal-kbm-bridge')">✕</button>
+    </div>
+
+    <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+      <div style="background: var(--soft-blue); border: 1px solid var(--soft-blue-border); border-radius: var(--radius-md); padding: 12px 14px; font-size: 0.8125rem; color: var(--simkur-navy); line-height: 1.5;">
+        <strong>Perhatian:</strong> Portal Guru KBM adalah modul integrasi pembelajaran terpisah dari sistem kurikulum SIMKUR.
+      </div>
+
+      <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+        Anda akan diarahkan ke modul <strong>Portal Guru KBM</strong> untuk mengelola jurnal mengajar harian, presensi siswa per sesi KBM, bahan ajar, serta perangkat mandiri guru.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 6px; background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 14px; font-size: 0.75rem; color: var(--text-secondary);">
+        <div>✓ Sesi aktif: <strong id="kbm-bridge-user-name">Rusnani</strong></div>
+        <div>✓ Hak akses: <strong>Waka Kurikulum / Pendidik</strong></div>
+        <div>✓ Status sinkronisasi: <strong>Terhubung</strong></div>
+      </div>
+    </div>
+
+    <div style="padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; background: #F8FAFC;">
+      <button type="button" class="btn btn-ghost" onclick="window.PORTAL_APP.closeModal('modal-kbm-bridge')">Batal</button>
+      <button type="button" class="btn btn-primary" onclick="window.PORTAL_APP.confirmOpenKbm()">
+        Lanjutkan ke Portal KBM →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =================================================================== -->
+<!-- MODAL: MOBILE MENU SHEET (Section 6: Secondary menu on mobile) -->
+<!-- =================================================================== -->
+<div class="modal-overlay" id="modal-mobile-menu">
+  <div class="modal-dialog" style="max-width: 380px; border-radius: var(--radius-xl); margin-top: auto; margin-bottom: 70px;">
+    <div style="padding: 1.15rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+      <h3 style="font-size: 1rem; font-weight: 800; color: var(--text-primary); margin: 0;">Menu Lainnya</h3>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.closeModal('modal-mobile-menu')">✕</button>
+    </div>
+    <div style="padding: 0.75rem; display: flex; flex-direction: column; gap: 6px;">
+      <a href="#data-master" class="quick-action-item" onclick="window.PORTAL_APP.switchScreen('data-master'); window.PORTAL_APP.closeModal('modal-mobile-menu');">
+        <div class="quick-action-icon">🏛️</div>
+        <div>
+          <div class="quick-action-title">Data Master</div>
+          <div class="quick-action-sub">Guru, Kelas, Mapel, Ruang</div>
+        </div>
+      </a>
+      <a href="#portal-guru" class="quick-action-item" onclick="window.PORTAL_APP.switchScreen('portal-guru'); window.PORTAL_APP.closeModal('modal-mobile-menu');">
+        <div class="quick-action-icon">🎓</div>
+        <div>
+          <div class="quick-action-title">Portal Guru KBM</div>
+          <div class="quick-action-sub">Jurnal, Presensi & Berkas</div>
+        </div>
+      </a>
+      <a href="javascript:void(0)" class="quick-action-item" onclick="window.PORTAL_APP.openChangePasswordModal(); window.PORTAL_APP.closeModal('modal-mobile-menu');">
+        <div class="quick-action-icon">⚙️</div>
+        <div>
+          <div class="quick-action-title">Pengaturan Akun</div>
+          <div class="quick-action-sub">Ganti kata sandi & profil</div>
+        </div>
+      </a>
+      <a href="login.html?logout=true" class="quick-action-item" style="color: var(--color-danger);">
+        <div class="quick-action-icon" style="background: var(--color-danger-bg); color: var(--color-danger);">🚪</div>
+        <div>
+          <div class="quick-action-title" style="color: var(--color-danger);">Keluar / Logout</div>
+          <div class="quick-action-sub">Akhiri sesi SIMKUR</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- =================================================================== -->
+<!-- MOBILE BOTTOM NAVIGATION (Design Specification Section 6) -->
+<!-- =================================================================== -->
+<nav class="mobile-bottom-nav" aria-label="Navigasi Utama Mobile">
+  <button type="button" class="bottom-nav-item active" data-screen="dashboard" onclick="window.PORTAL_APP.switchScreen('dashboard')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    <span>Dashboard</span>
+  </button>
+  <button type="button" class="bottom-nav-item" data-screen="dokumen" onclick="window.PORTAL_APP.switchScreen('dokumen')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <span>Dokumen</span>
+  </button>
+  <button type="button" class="bottom-nav-item" data-screen="jadwal" onclick="window.PORTAL_APP.switchScreen('jadwal')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>Jadwal</span>
+  </button>
+  <button type="button" class="bottom-nav-item" id="btn-bottom-nav-menu" onclick="window.PORTAL_APP.openModal('modal-mobile-menu')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+    <span>Menu</span>
+  </button>
+</nav>
+
+<!-- OFFLINE INDICATOR BANNER (Section 12) -->
+<div class="offline-banner" id="offline-banner">
+  ⚠️ Koneksi terputus. Mode offline aktif — data tersimpan pada cache peramban lokal.
+</div>
+
 <!-- TOAST CONTAINER -->
 <div class="toast-container" id="toast-container" style="position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 99999; display: flex; flex-direction: column; gap: 8px;"></div>
 
 <!-- SCRIPTS -->
-<script src="js/data.js?v=8.2.0"></script>
-<script src="js/auth_users.js?v=8.2.0"></script>
-<script src="js/app.js?v=8.2.0"></script>
+<script src="js/data.js?v=8.4.0"></script>
+<script src="js/auth_users.js?v=8.4.0"></script>
+<script src="js/app.js?v=8.4.0"></script>
 
 </body>
 </html>
