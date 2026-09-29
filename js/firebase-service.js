@@ -245,6 +245,45 @@ class FirebaseService {
   }
 
   /**
+   * Reset teacher administration status in Firestore and clear teacher journals/docs
+   */
+  async resetAdministrationInFirestore() {
+    if (!this.db || this.status !== 'CONNECTED') return;
+
+    try {
+      const sm = window.PORTAL_STORAGE;
+      if (!sm) return;
+
+      // 1. Overwrite teacher_admin with clean zero state
+      const adminCol = this.getCollectionName('teacher_admin');
+      const items = sm.get('teacher_admin') || [];
+      const batch = writeBatch(this.db);
+      items.forEach(item => {
+        const docRef = doc(this.db, adminCol, String(item.teacher_id || item.id));
+        batch.set(docRef, Object.assign({}, item, {
+          _syncedAt: new Date().toISOString()
+        }), { merge: true });
+      });
+      await batch.commit();
+
+      // 2. Clear previous uploaded guru_journals, guru_documents, guru_attendance
+      const clearCollections = ['guru_journals', 'guru_documents', 'guru_attendance'];
+      for (const colKey of clearCollections) {
+        const colRef = collection(this.db, this.getCollectionName(colKey));
+        const snap = await getDocs(colRef);
+        if (!snap.empty) {
+          const deleteBatch = writeBatch(this.db);
+          snap.forEach(d => deleteBatch.delete(d.ref));
+          await deleteBatch.commit();
+        }
+      }
+      console.log('✅ [Firebase Cloud] Teacher administration reset to 0 in Cloud Firestore.');
+    } catch(err) {
+      console.warn('⚠️ [Firebase Cloud] Reset administration warning:', err.message);
+    }
+  }
+
+  /**
    * Download and sync cloud data into local StorageManager
    */
   async syncFromFirestore(onProgress) {

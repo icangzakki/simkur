@@ -20,10 +20,10 @@
       SCHEDULES: 'portal_schedules_v1',
       DOCUMENTS: 'portal_documents_v1',
       AGENDAS: 'portal_agendas_v1',
-      TEACHER_ADMIN: 'portal_teacher_admin_v2',
-      GURU_JOURNALS: 'portal_guru_journals_v2',
-      GURU_DOCUMENTS: 'portal_guru_documents_v2',
-      GURU_ATTENDANCE: 'portal_guru_attendance_v1'
+      TEACHER_ADMIN: 'portal_teacher_admin_v3',
+      GURU_JOURNALS: 'portal_guru_journals_v3',
+      GURU_DOCUMENTS: 'portal_guru_documents_v3',
+      GURU_ATTENDANCE: 'portal_guru_attendance_v2'
     },
 
     init: function () {
@@ -65,148 +65,41 @@
         localStorage.setItem(this.KEYS.AGENDAS, JSON.stringify(data.agendas || []));
       }
 
-      // Inisialisasi Monitoring Administrasi Guru (86 Guru)
+      // Inisialisasi Monitoring Administrasi Guru: MULAI DARI NOL (Belum ada yang mengumpulkan)
       if (!localStorage.getItem(this.KEYS.TEACHER_ADMIN)) {
         const teachers = this.get('teachers');
-        const monitoring = teachers.map(function (t, idx) {
-          const isRppDone = idx < 78;
-          const isJurnalDone = idx < 82;
-          const isSilabusDone = idx < 85;
-          const isAsesmenDone = idx < 74;
-
+        const monitoring = teachers.map(function (t) {
           return {
             teacher_id: t.id,
             name: t.name,
             nip: t.nip || '-',
             department: t.department || 'Umum',
             subject: t.subject || 'Mata Pelajaran',
-            rpp_status: isRppDone ? 'Lengkap' : (idx < 84 ? 'Review' : 'Belum'),
-            jurnal_status: isJurnalDone ? 'Sudah' : 'Belum',
-            jurnal_count: isJurnalDone ? (10 + (idx % 12)) : 0,
-            silabus_status: isSilabusDone ? 'Lengkap' : 'Belum',
-            asesmen_status: isAsesmenDone ? 'Lengkap' : 'Belum',
-            notes: isRppDone && isJurnalDone ? 'Perangkat pembelajaran semester ganjil lengkap' : 'Perlu upload kelengkapan perangkat',
-            updated_at: '2026-09-26'
+            rpp_status: 'Belum',
+            jurnal_status: 'Belum',
+            jurnal_count: 0,
+            silabus_status: 'Belum',
+            asesmen_status: 'Belum',
+            notes: 'Belum mengumpulkan perangkat administrasi',
+            updated_at: '-'
           };
         });
         localStorage.setItem(this.KEYS.TEACHER_ADMIN, JSON.stringify(monitoring));
       }
 
-      // Inisialisasi Riwayat Jurnal Guru (Awal untuk T-010 / Ahmad Gajali)
+      // Inisialisasi Riwayat Jurnal Guru: KOSONG (0 Jurnal)
       if (!localStorage.getItem(this.KEYS.GURU_JOURNALS)) {
-        const sampleJournals = [
-          {
-            id: 'JRN-018',
-            teacher_id: 'T-010',
-            teacher_name: 'Ahmad Gajali',
-            class_name: 'XI A-TJKT',
-            subject_name: 'Administrasi Sistem Jaringan & Cloud Infrastructure',
-            date: '2026-09-25',
-            time: 'Jam 1-4 (07:15 - 10:15 WITA)',
-            topic: 'Konfigurasi MikroTik RouterOS: Implementasi VLAN Trunking, Inter-VLAN Routing, dan DHCP Server.',
-            methods: ['Project Based Learning (PjBL)', 'Praktikum Lab Bengkel'],
-            notes: 'Kelompok 3 perlu pendampingan crimping serat optik. Sisa modul konfigurasi firewall dilanjutkan Kamis blok praktek.',
-            hadir_count: 34,
-            total_students: 36,
-            photo: 'assets/teacher_avatar.jpg',
-            status: 'Terverifikasi Waka Kur',
-            created_at: '2026-09-25 10:20'
-          },
-          {
-            id: 'JRN-017',
-            teacher_id: 'T-010',
-            teacher_name: 'Ahmad Gajali',
-            class_name: 'XI B-TJKT',
-            subject_name: 'Administrasi Sistem Jaringan & Cloud Infrastructure',
-            date: '2026-09-22',
-            time: 'Jam 5-8 (10:30 - 13:30 WITA)',
-            topic: 'Instalasi & Manajemen Server Linux Debian 12: Konfigurasi DNS Server (BIND9) & Virtual Host Apache.',
-            methods: ['Praktikum Lab Bengkel', 'Problem Based Learning'],
-            notes: 'Seluruh kelompok berhasil memetakan domain lokal .smkn1bjm.sch.id di lab workstation.',
-            hadir_count: 36,
-            total_students: 36,
-            photo: '',
-            status: 'Terverifikasi Waka Kur',
-            created_at: '2026-09-22 13:40'
-          },
-          {
-            id: 'JRN-016',
-            teacher_id: 'T-010',
-            teacher_name: 'Ahmad Gajali',
-            class_name: 'XI A-TJKT',
-            subject_name: 'Administrasi Sistem Jaringan & Cloud Infrastructure',
-            date: '2026-09-18',
-            time: 'Jam 1-4 (07:15 - 10:15 WITA)',
-            topic: 'Subnetting IPv4 CIDR VLSM dan Alokasi IP Address Lab Komputer Jaringan Terpadu.',
-            methods: ['Problem Based Learning', 'Diskusi Reflektif'],
-            notes: 'Tugas mandiri perhitungan subnetting prefix /27 dan /28 terkumpul 100%.',
-            hadir_count: 35,
-            total_students: 36,
-            photo: '',
-            status: 'Terverifikasi Waka Kur',
-            created_at: '2026-09-18 10:15'
-          }
-        ];
-        localStorage.setItem(this.KEYS.GURU_JOURNALS, JSON.stringify(sampleJournals));
+        localStorage.setItem(this.KEYS.GURU_JOURNALS, JSON.stringify([]));
       }
 
-      // Inisialisasi Dokumen Perangkat Ajar Guru (Awal untuk T-010 / Ahmad Gajali)
+      // Inisialisasi Dokumen Perangkat Ajar Guru: KOSONG (0 Dokumen)
       if (!localStorage.getItem(this.KEYS.GURU_DOCUMENTS)) {
-        const sampleGuruDocs = [
-          {
-            id: 'GDOC-001',
-            teacher_id: 'T-010',
-            title: 'Modul Ajar ASJ Fase F (MikroTik & Linux Server)',
-            category: 'Modul Ajar',
-            school_year: '2026/2027',
-            file_name: 'Modul_Ajar_ASJ_FaseF_2026.pdf',
-            file_size: '1.8 MB',
-            status: 'Disetujui Waka Kur',
-            score: 98,
-            notes: 'Sesuai dengan Alur Capaian Standar Proses Permendikdasmen 2026.',
-            uploaded_at: '2026-07-15 08:30'
-          },
-          {
-            id: 'GDOC-002',
-            teacher_id: 'T-010',
-            title: 'Alur Tujuan Pembelajaran (ATP) Konsentrasi Keahlian TJKT',
-            category: 'Silabus & ATP',
-            school_year: '2026/2027',
-            file_name: 'ATP_TJKT_FaseF_2026.pdf',
-            file_size: '920 KB',
-            status: 'Disetujui Waka Kur',
-            score: 95,
-            notes: 'Terintegrasi dengan materi sertifikasi kompetensi LSP-P1.',
-            uploaded_at: '2026-07-18 10:15'
-          },
-          {
-            id: 'GDOC-003',
-            teacher_id: 'T-010',
-            title: 'Program Tahunan (Prota) & Program Semester (Prosem) Ganjil',
-            category: 'Program Tahunan & Semester',
-            school_year: '2026/2027',
-            file_name: 'Prota_Prosem_ASJ_2026.xlsx',
-            file_size: '450 KB',
-            status: 'Disetujui Waka Kur',
-            score: 94,
-            notes: 'Alokasi pekan efektif 18 minggu telah diverifikasi.',
-            uploaded_at: '2026-07-20 09:00'
-          },
-          {
-            id: 'GDOC-004',
-            teacher_id: 'T-010',
-            title: 'Perangkat Asesmen & Rubrik Praktikum Konfigurasi Jaringan',
-            category: 'Instrumen Asesmen',
-            school_year: '2026/2027',
-            file_name: 'Rubrik_Asesmen_Praktik_ASJ.pdf',
-            file_size: '1.2 MB',
-            status: 'Disetujui Waka Kur',
-            score: 96,
-            notes: 'Dilengkapi pedoman penskoran dan asesmen performa kerja.',
-            uploaded_at: '2026-08-02 11:30'
-          }
-        ];
-        localStorage.setItem(this.KEYS.GURU_DOCUMENTS, JSON.stringify(sampleGuruDocs));
+        localStorage.setItem(this.KEYS.GURU_DOCUMENTS, JSON.stringify([]));
+      }
+
+      // Inisialisasi Presensi Siswa Guru: KOSONG
+      if (!localStorage.getItem(this.KEYS.GURU_ATTENDANCE)) {
+        localStorage.setItem(this.KEYS.GURU_ATTENDANCE, JSON.stringify([]));
       }
     },
 
@@ -452,6 +345,14 @@
     const rppDone = monitoring.filter(function (m) { return m.rpp_status === 'Lengkap'; }).length;
     const rppPct = totalTeachers > 0 ? ((rppDone / totalTeachers) * 100).toFixed(0) : '0';
     if (elDokumen) elDokumen.textContent = rppPct + '% (' + rppDone + '/' + totalTeachers + ')';
+    const elDokumenSub = document.getElementById('dash-stat-dokumen-sub');
+    if (elDokumenSub) {
+      if (rppDone === 0) {
+        elDokumenSub.innerHTML = 'RPP & Modul Ajar • <strong style="color: var(--text-secondary);">Belum ada yang mengumpulkan</strong>';
+      } else {
+        elDokumenSub.innerHTML = 'RPP & Modul Ajar • <strong style="color: var(--color-success);">' + rppDone + ' Lengkap</strong> (' + (totalTeachers - rppDone) + ' Belum)';
+      }
+    }
 
     // 2. Render Jadwal Hari Ini
     renderDashboardSchedule(schedules);
@@ -756,9 +657,13 @@
 
       // Overall Status
       const isAllDone = m.rpp_status === 'Lengkap' && m.jurnal_status === 'Sudah' && m.silabus_status === 'Lengkap';
-      const statusPill = isAllDone
-        ? '<span class="badge" style="background: #E8FAF3; color: #20C985; font-weight: 700; font-size: 0.75rem;">Lengkap</span>'
-        : '<span class="badge" style="background: #FEF3C7; color: #D97706; font-weight: 700; font-size: 0.75rem;">Ada Pending</span>';
+      const isNoneDone = (!m.rpp_status || m.rpp_status === 'Belum') && (!m.jurnal_status || m.jurnal_status === 'Belum') && (!m.silabus_status || m.silabus_status === 'Belum');
+      let statusPill = '<span class="badge" style="background: #F1F5F9; color: #64748B; font-weight: 700; font-size: 0.75rem;">Belum Ada</span>';
+      if (isAllDone) {
+        statusPill = '<span class="badge" style="background: #E8FAF3; color: #20C985; font-weight: 700; font-size: 0.75rem;">Lengkap</span>';
+      } else if (!isNoneDone) {
+        statusPill = '<span class="badge" style="background: #FEF3C7; color: #D97706; font-weight: 700; font-size: 0.75rem;">Ada Pending</span>';
+      }
 
       html += '<tr>' +
         '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (idx + 1) + '</td>' +
@@ -3637,6 +3542,39 @@
         }
         showToast('Gagal sinkronisasi: ' + err.message, 'error');
       }
+    },
+    resetTeacherAdminToZero: function () {
+      if (!confirm('Apakah Anda yakin ingin mereset seluruh status administrasi guru ke status awal (0% / belum ada yang mengumpulkan)? Data jurnal dan dokumen guru juga akan dikosongkan.')) {
+        return;
+      }
+      const teachers = StorageManager.get('teachers');
+      const zeroMonitoring = teachers.map(function (t) {
+        return {
+          teacher_id: t.id,
+          name: t.name,
+          nip: t.nip || '-',
+          department: t.department || 'Umum',
+          subject: t.subject || 'Mata Pelajaran',
+          rpp_status: 'Belum',
+          jurnal_status: 'Belum',
+          jurnal_count: 0,
+          silabus_status: 'Belum',
+          asesmen_status: 'Belum',
+          notes: 'Belum mengumpulkan perangkat administrasi',
+          updated_at: '-'
+        };
+      });
+      StorageManager.set('teacher_admin', zeroMonitoring);
+      StorageManager.set('guru_journals', []);
+      StorageManager.set('guru_documents', []);
+      StorageManager.set('guru_attendance', []);
+
+      if (window.FirebaseService && typeof window.FirebaseService.resetAdministrationInFirestore === 'function') {
+        window.FirebaseService.resetAdministrationInFirestore();
+      }
+
+      refreshActiveScreen();
+      showToast('🎉 Seluruh administrasi guru telah direset ke 0 (Belum ada yang mengumpulkan).', 'success');
     },
     refreshActiveScreen: refreshActiveScreen
   };
