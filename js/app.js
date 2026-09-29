@@ -23,7 +23,12 @@
       TEACHER_ADMIN: 'portal_teacher_admin_v3',
       GURU_JOURNALS: 'portal_guru_journals_v3',
       GURU_DOCUMENTS: 'portal_guru_documents_v3',
-      GURU_ATTENDANCE: 'portal_guru_attendance_v2'
+      GURU_ATTENDANCE: 'portal_guru_attendance_v2',
+      SUPERVISI_PROGRAM: 'portal_supervisi_program_v1',
+      SUPERVISI_SESI: 'portal_supervisi_sesi_v1',
+      SUPERVISI_HASIL: 'portal_supervisi_hasil_v1',
+      SUPERVISI_RTL: 'portal_supervisi_rtl_v1',
+      SUPERVISI_MANAJERIAL: 'portal_supervisi_manajerial_v1'
     },
 
     init: function () {
@@ -100,6 +105,273 @@
       // Inisialisasi Presensi Siswa Guru: KOSONG
       if (!localStorage.getItem(this.KEYS.GURU_ATTENDANCE)) {
         localStorage.setItem(this.KEYS.GURU_ATTENDANCE, JSON.stringify([]));
+      }
+
+      // Inisialisasi Program Supervisi Semester (PRD Bagian 8 & Lampiran)
+      if (!localStorage.getItem(this.KEYS.SUPERVISI_PROGRAM)) {
+        var defaultProg = {
+          id: 'PROG-2026-GANJIL',
+          tahunAjaran: '2026/2027',
+          semester: 'Semester Ganjil',
+          periode: '15 Juli s.d. 30 November 2026',
+          skNumber: 'SK Kepala SMKN 1 BJM No. 421.5/118/2026',
+          targetKetercapaian: '100% (90 Guru)',
+          fokus: 'Pembelajaran Berdiferensiasi, TeFa & Penerapan K3 di Bengkel/Lab',
+          status: 'Aktif'
+        };
+        localStorage.setItem(this.KEYS.SUPERVISI_PROGRAM, JSON.stringify(defaultProg));
+      }
+
+      // Inisialisasi Sesi Supervisi Akademik (90 Guru) Terpetakan ke Kajur Terkait
+      if (!localStorage.getItem(this.KEYS.SUPERVISI_SESI)) {
+        var teachersList = this.get('teachers');
+        var sessions = [];
+        var statusOptions = ['Selesai', 'Pasca-observasi', 'Observasi', 'Pra-observasi', 'Dijadwalkan'];
+        
+        teachersList.forEach(function (t, idx) {
+          var dept = (t.department || 'Umum').toUpperCase();
+          var supervisor = { id: 'T-001', name: 'Rusnani, S.Pd., M.T', role: 'Waka Kurikulum' };
+          
+          if (dept.includes('TJKT') || dept.includes('TKJ')) {
+            supervisor = { id: 'K-TJKT', name: 'Muhammad Ihsan, S.Kom', role: 'Kajur TJKT' };
+          } else if (dept.includes('DKV') || dept.includes('MM')) {
+            supervisor = { id: 'K-DKV', name: 'Hendra Surya Pratama, S.Kom', role: 'Kajur DKV' };
+          } else if (dept.includes('AKL') || dept.includes('AKUNTANSI')) {
+            supervisor = { id: 'K-AKL', name: 'Oky Wulan Maulina, S.Pd', role: 'Kajur AKL' };
+          } else if (dept.includes('MPLB') || dept.includes('OTKP') || dept.includes('PERKANTORAN')) {
+            supervisor = { id: 'K-MPLB', name: 'Akhmad Hanafi Maulana, S.E', role: 'Kajur MPLB' };
+          } else if (dept.includes('PM') || dept.includes('PEMASARAN') || dept.includes('BD')) {
+            supervisor = { id: 'K-PM', name: 'Futri Indri Septiani, S.Pd', role: 'Kajur Pemasaran' };
+          }
+
+          // Seeding realistik: 24 Selesai (26.7%), 10 Pasca-obs, 15 Observasi, 15 Pra-obs, 26 Dijadwalkan
+          var status = 'Dijadwalkan';
+          var skor_b = 0;
+          var skor_c = 0;
+          var nilai_b = 0;
+          var nilai_c = 0;
+          var nilai_akhir = 0;
+          var predikat = '-';
+          var tgl_observasi = '2026-10-' + String(10 + (idx % 20)).padStart(2, '0');
+          var wkt_observasi = '08.00 - 09.30 WITA';
+          var room = 'R. TeFa / Lab Komputer';
+
+          if (idx < 24) {
+            status = 'Selesai';
+            // Variasi nilai 82 - 96
+            var rawB = 46 + (idx % 9); // max 56
+            var rawC = 60 + (idx % 11); // max 72
+            skor_b = rawB;
+            skor_c = rawC;
+            nilai_b = Math.round((rawB / 56) * 100 * 10) / 10;
+            nilai_c = Math.round((rawC / 72) * 100 * 10) / 10;
+            nilai_akhir = Math.round(((nilai_b * 0.40) + (nilai_c * 0.60)) * 10) / 10;
+            predikat = nilai_akhir >= 91 ? 'Amat Baik' : 'Baik';
+            tgl_observasi = '2026-08-' + String(10 + (idx % 18)).padStart(2, '0');
+          } else if (idx < 34) {
+            status = 'Pasca-observasi';
+            var rawB2 = 45 + (idx % 7);
+            var rawC2 = 58 + (idx % 8);
+            skor_b = rawB2;
+            skor_c = rawC2;
+            nilai_b = Math.round((rawB2 / 56) * 100 * 10) / 10;
+            nilai_c = Math.round((rawC2 / 72) * 100 * 10) / 10;
+            nilai_akhir = Math.round(((nilai_b * 0.40) + (nilai_c * 0.60)) * 10) / 10;
+            predikat = nilai_akhir >= 91 ? 'Amat Baik' : 'Baik';
+            tgl_observasi = '2026-09-15';
+          } else if (idx < 49) {
+            status = 'Observasi';
+            var rawB3 = 44 + (idx % 8);
+            skor_b = rawB3;
+            nilai_b = Math.round((rawB3 / 56) * 100 * 10) / 10;
+            tgl_observasi = '2026-09-29';
+          } else if (idx < 64) {
+            status = 'Pra-observasi';
+            tgl_observasi = '2026-10-05';
+          }
+
+          sessions.push({
+            id: 'SESI-' + String(idx + 1).padStart(3, '0'),
+            program_id: 'PROG-2026-GANJIL',
+            teacher_id: t.id,
+            teacher_name: t.name,
+            nip: t.nip || '-',
+            department: t.department || 'Umum',
+            subject: t.subject || 'Mata Pelajaran',
+            class_name: 'XI ' + (t.department || 'TJKT') + ' 1',
+            supervisor_id: supervisor.id,
+            supervisor_name: supervisor.name,
+            supervisor_role: supervisor.role,
+            status: status,
+            tgl_observasi: tgl_observasi,
+            wkt_observasi: wkt_observasi,
+            room: room,
+            fokus: 'Pembelajaran Berdiferensiasi & Penerapan K3 Lab',
+            skor_b: skor_b,
+            nilai_b: nilai_b,
+            skor_c: skor_c,
+            nilai_c: nilai_c,
+            nilai_akhir: nilai_akhir,
+            predikat: predikat,
+            wawancara_a: {
+              1: 'Mapel: ' + (t.subject || 'Produktif') + ', materi: Penerapan SOP Industri.',
+              2: 'Model Pembelajaran Project Based Learning (PjBL) terpadu Teaching Factory.',
+              3: 'Peserta didik memiliki gaya belajar kinestetik dan visual praktikum.',
+              4: 'Asesmen unjuk kerja proses dan rubrik jobsheet portofolio.',
+              5: 'Tool set, jobsheet digital, APD, dan safety checklist K3 lab.',
+              6: 'Beberapa siswa perlu penguatan literasi teknis dan kedisiplinan 5R.',
+              7: 'Fokus pengamatan: penerapan diferensiasi bimbingan praktikum.',
+              8: 'Disepakati observasi sesuai jadwal dan refleksi H+1.'
+            },
+            refleksi_d: {
+              refleksi_1: 'Pembelajaran interaktif dan jobsheet berhasil diselesaikan oleh sebagian besar kelompok.',
+              refleksi_2: 'Akan meningkatkan variasi scaffolding untuk kelompok yang lebih lambat.',
+              kekuatan: 'Penguasaan materi sangat baik, komunikasi interaktif, kepatuhan K3 lab tinggi.',
+              area_pengembangan: 'Perlu penguatan diferensiasi konten bagi siswa dengan ritme belajar berbeda.',
+              guru_confirmed: status === 'Selesai'
+            }
+          });
+        });
+
+        localStorage.setItem(this.KEYS.SUPERVISI_SESI, JSON.stringify(sessions));
+      }
+
+      // Inisialisasi Supervisi Manajerial (Waka & 5 Kajur oleh Kepala Sekolah)
+      if (!localStorage.getItem(this.KEYS.SUPERVISI_MANAJERIAL)) {
+        var manajerialData = [
+          {
+            id: 'M-001',
+            pimpinan_name: 'Rusnani, S.Pd., M.T',
+            nip: '197308022000122003',
+            jabatan: 'Waka Kurikulum',
+            fokus: 'Kurikulum Merdeka, Jadwal KBM, Verifikasi Perangkat Guru, SIMKUR',
+            status_dokumen: 'Lengkap (KSP, Kalender, SK PBM)',
+            skor_total: 56, // out of 60
+            nilai: 93.3,
+            predikat: 'Amat Baik',
+            catatan_kepsek: 'Pengelolaan kurikulum dan digitalisasi SIMKUR berjalan sangat tertib dan presisi.'
+          },
+          {
+            id: 'M-002',
+            pimpinan_name: 'Muhammad Ihsan, S.Kom',
+            nip: '198801102022211001',
+            jabatan: 'Ketua Jurusan TJKT',
+            fokus: 'Program Kerja TJKT, Teaching Factory Mikrotik/Cisco, Laboratorium Jaringan',
+            status_dokumen: 'Lengkap (Program Kerja & MoU DUDI)',
+            skor_total: 54,
+            nilai: 90.0,
+            predikat: 'Baik',
+            catatan_kepsek: 'Kemitraan DUDI dan pengelolaan lab jaringan sangat aktif. Terus tingkatkan penyerapan lulusan.'
+          },
+          {
+            id: 'M-003',
+            pimpinan_name: 'Hendra Surya Pratama, S.Kom',
+            nip: '199305162022211001',
+            jabatan: 'Ketua Jurusan DKV',
+            fokus: 'Studio Kreatif DKV, Produksi Konten TeFa, Portofolio Siswa',
+            status_dokumen: 'Lengkap (SOP Studio & Portofolio)',
+            skor_total: 52,
+            nilai: 86.7,
+            predikat: 'Baik',
+            catatan_kepsek: 'Hasil karya studio kreatif sangat membanggakan. Perlu penguatan standarisasi K3 studio.'
+          },
+          {
+            id: 'M-004',
+            pimpinan_name: 'Oky Wulan Maulina, S.Pd',
+            nip: '198910262015032002',
+            jabatan: 'Ketua Jurusan AKL',
+            fokus: 'Lab Komputer Akuntansi, Bank Mini Sekolah, Sertifikasi LSP-P1',
+            status_dokumen: 'Lengkap (SOP Bank Mini & LSP)',
+            skor_total: 55,
+            nilai: 91.7,
+            predikat: 'Amat Baik',
+            catatan_kepsek: 'Operasional Bank Mini dan sertifikasi kompetensi akuntansi tertata sangat rapi dan akuntabel.'
+          },
+          {
+            id: 'M-005',
+            pimpinan_name: 'Akhmad Hanafi Maulana, S.E',
+            nip: '198912152024211025',
+            jabatan: 'Ketua Jurusan MPLB',
+            fokus: 'Laboratorium Perkantoran Modern, Kearsipan Digital, Simulasi Bisnis',
+            status_dokumen: 'Lengkap (Modul Praktik & SOP Lab)',
+            skor_total: 51,
+            nilai: 85.0,
+            predikat: 'Baik',
+            catatan_kepsek: 'Simulasi bisnis perkantoran berjalan aktif. Maksimalkan integrasi arsip digital berbasis cloud.'
+          },
+          {
+            id: 'M-006',
+            pimpinan_name: 'Futri Indri Septiani, S.Pd',
+            nip: '198809172014022001',
+            jabatan: 'Ketua Jurusan Pemasaran',
+            fokus: 'Business Center / Retail Mart Sekolah, Digital Marketing, E-Commerce',
+            status_dokumen: 'Lengkap (SOP Retail & Laporan Keuangan TeFa)',
+            skor_total: 53,
+            nilai: 88.3,
+            predikat: 'Baik',
+            catatan_kepsek: 'Retail Mart sekolah memberikan omzet yang konsisten. Pertahankan disiplin kasir dan stok barang.'
+          }
+        ];
+        localStorage.setItem(this.KEYS.SUPERVISI_MANAJERIAL, JSON.stringify(manajerialData));
+      }
+
+      // Inisialisasi Pelacak RTL (4 Butir Tindak Lanjut Aktif)
+      if (!localStorage.getItem(this.KEYS.SUPERVISI_RTL)) {
+        var rtlInitial = [
+          {
+            id: 'RTL-001',
+            sesi_id: 'SESI-025',
+            guru_name: 'Wahyu Ramadhan, S.Pd',
+            department: 'TJKT',
+            subject: 'Dasar Jaringan Komputer',
+            tindakan: 'Penyesuaian diferensiasi proses pada jobsheet konfigurasi routing dinamis.',
+            pendampingan: 'Diskusi Teman Sejawat (Komunitas Belajar TJKT)',
+            tenggat: '2026-10-15',
+            bukti: 'Modul Ajar Revisi & Rubrik Penilaian',
+            status: 'Terbuka',
+            verified_by: null
+          },
+          {
+            id: 'RTL-002',
+            sesi_id: 'SESI-026',
+            guru_name: 'Aulia Rahmah, S.Sn',
+            department: 'DKV',
+            subject: 'Desain Grafis Percetakan',
+            tindakan: 'Penyempurnaan rubrik asesmen formatif unjuk kerja pre-press dan packaging.',
+            pendampingan: 'Pelatihan Mandiri Platform Merdeka Mengajar (PMM)',
+            tenggat: '2026-10-20',
+            bukti: 'Aksi Nyata PMM & Format Rubrik Baru',
+            status: 'Terbuka',
+            verified_by: null
+          },
+          {
+            id: 'RTL-003',
+            sesi_id: 'SESI-027',
+            guru_name: 'Riza Anshari, S.E',
+            department: 'AKL',
+            subject: 'Praktikum Akuntansi Lembaga',
+            tindakan: 'Penerapan checklist SOP K3 dan pembiasaan budaya kerja 5R di lab komputer.',
+            pendampingan: 'Observasi Ulang oleh Ketua Jurusan AKL',
+            tenggat: '2026-10-25',
+            bukti: 'Lembar Checklist 5R Harian',
+            status: 'Terbuka',
+            verified_by: null
+          },
+          {
+            id: 'RTL-004',
+            sesi_id: 'SESI-028',
+            guru_name: 'Siti Nurhaliza, S.Pd',
+            department: 'Pemasaran',
+            subject: 'Penataan Produk / Merchandising',
+            tindakan: 'Penyusunan modul ajar proyek kolaboratif berbasis Teaching Factory Retail Mart.',
+            pendampingan: 'Pendampingan Guru Penggerak / Kajur PM',
+            tenggat: '2026-10-30',
+            bukti: 'Modul TeFa & Lembar Evaluasi DUDI',
+            status: 'Terbuka',
+            verified_by: null
+          }
+        ];
+        localStorage.setItem(this.KEYS.SUPERVISI_RTL, JSON.stringify(rtlInitial));
       }
     },
 
@@ -196,7 +468,17 @@
     presensiClass: 'XI A-AKL',
     showAllClassesForGuru: false,
     presensiStudents: [],
-    tempJournalPhoto: null
+    tempJournalPhoto: null,
+    // Supervisi State
+    activeSupervisiTab: 'dash', // 'dash' | 'sesi' | 'manajerial' | 'rtl' | 'program' | 'laporan'
+    activeSupervisiStep: 1,
+    activeSupervisiSesiId: null,
+    activeSupervisiGuruId: null,
+    supervisiSearchQuery: '',
+    supervisiDeptFilter: 'all',
+    supervisiStatusFilter: 'all',
+    currentSupervisiScores: { b: {}, c: {}, e: {} },
+    activeManajerialId: 'M-001'
   };
 
   // =========================================================================
@@ -299,7 +581,8 @@
         'dokumen': 'Dokumen & Administrasi',
         'jadwal': 'Jadwal Pelajaran',
         'data-master': 'Data Master Kurikulum',
-        'portal-guru': 'Portal Guru — KBM'
+        'portal-guru': 'Portal Guru — KBM',
+        'supervisi': 'Supervisi Akademik & Manajerial'
       };
       titleEl.textContent = titles[screenName] || 'Portal Kurikulum';
     }
@@ -313,6 +596,7 @@
     else if (screenName === 'jadwal') renderSchedules();
     else if (screenName === 'data-master') renderDataMaster();
     else if (screenName === 'portal-guru') renderPortalGuru();
+    else if (screenName === 'supervisi') renderSupervisi();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -635,6 +919,7 @@
 
     const allGuruDocs = StorageManager.get('guru_documents');
     const allGuruJournals = StorageManager.get('guru_journals');
+    const allSupervisiSesi = StorageManager.get('supervisi_sesi');
 
     let html = '';
     filtered.forEach(function (m, idx) {
@@ -713,6 +998,39 @@
         statusPill = '<span class="badge" style="background: #FEF3C7; color: #D97706; font-weight: 700; font-size: 0.75rem;">Ada Berkas (' + teacherDocs.length + ')</span>';
       }
 
+      // Supervisi Column (PRD FR-18)
+      var supSesi = allSupervisiSesi.find(function (s) {
+        return String(s.teacher_id) === String(m.teacher_id);
+      });
+      var supervisiBadge = '';
+      if (supSesi) {
+        if (supSesi.status === 'Selesai') {
+          supervisiBadge = '<button type="button" class="btn-table-doc-pill doc-pill-success" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + supSesi.id + '\')" title="Supervisi Selesai • Skor: ' + supSesi.nilai_akhir + ' (' + supSesi.predikat + '). Klik untuk lihat">' +
+            '⭐ ' + Math.round(supSesi.nilai_akhir) + ' (' + supSesi.predikat + ')' +
+            '</button>';
+        } else if (supSesi.status === 'Pasca-observasi') {
+          supervisiBadge = '<button type="button" class="btn-table-doc-pill doc-pill-warning" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + supSesi.id + '\')" title="Tahap Pasca-observasi & RTL">' +
+            '💡 Pasca-Obs' +
+            '</button>';
+        } else if (supSesi.status === 'Observasi') {
+          supervisiBadge = '<button type="button" class="btn-table-doc-pill doc-pill-warning" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + supSesi.id + '\')" title="Tahap Observasi KBM">' +
+            '🔍 Observasi' +
+            '</button>';
+        } else if (supSesi.status === 'Pra-observasi') {
+          supervisiBadge = '<button type="button" class="btn-table-doc-pill doc-pill-primary" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + supSesi.id + '\')" title="Tahap Pra-observasi Dokumen">' +
+            '📝 Pra-Obs' +
+            '</button>';
+        } else {
+          supervisiBadge = '<button type="button" class="btn-table-doc-pill doc-pill-empty" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + supSesi.id + '\')" title="Terjadwal: ' + (supSesi.tgl_observasi || '-') + '">' +
+            '📅 Terjadwal' +
+            '</button>';
+        }
+      } else {
+        supervisiBadge = '<button type="button" class="btn-table-doc-pill doc-pill-empty" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + m.teacher_id + '\')" title="Belum Terjadwal. Klik untuk mulai supervisi">' +
+          '➕ Mulai' +
+          '</button>';
+      }
+
       html += '<tr>' +
         '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (idx + 1) + '</td>' +
         '<td>' +
@@ -728,6 +1046,7 @@
         '<td>' + silabusBadge + '</td>' +
         '<td>' + asesmenBadge + '</td>' +
         '<td>' + statusPill + '</td>' +
+        '<td>' + supervisiBadge + '</td>' +
         '<td>' +
         '<div style="display: flex; gap: 4px; align-items: center;">' +
         '<button class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\')" title="Lihat Berkas Administrasi & Jurnal Guru Ini" style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 700; padding: 0.28rem 0.6rem;">' +
@@ -2543,7 +2862,34 @@
         } else if (State.currentScreen === 'data-master') {
           State.masterSearchQuery = val;
           renderDataMaster();
+        } else if (State.currentScreen === 'supervisi') {
+          State.supervisiSearchQuery = val;
+          renderSupervisiSesi();
         }
+      });
+    }
+
+    // 3.1 Supervisi Filters
+    const supSearch = document.getElementById('sup-search-guru');
+    const supDept = document.getElementById('sup-filter-dept');
+    const supStatus = document.getElementById('sup-filter-status');
+
+    if (supSearch) {
+      supSearch.addEventListener('input', function () {
+        State.supervisiSearchQuery = this.value.trim();
+        renderSupervisiSesi();
+      });
+    }
+    if (supDept) {
+      supDept.addEventListener('change', function () {
+        State.supervisiDeptFilter = this.value;
+        renderSupervisiSesi();
+      });
+    }
+    if (supStatus) {
+      supStatus.addEventListener('change', function () {
+        State.supervisiStatusFilter = this.value;
+        renderSupervisiSesi();
       });
     }
 
@@ -2954,22 +3300,32 @@
     const paneJurnal = document.getElementById('guru-pane-jurnal');
     const panePresensi = document.getElementById('guru-pane-presensi');
     const paneDokumen = document.getElementById('guru-pane-dokumen');
+    const paneSupervisi = document.getElementById('guru-pane-supervisi');
 
     if (activeTab === 'jurnal') {
       if (paneJurnal) paneJurnal.style.display = 'block';
       if (panePresensi) panePresensi.style.display = 'none';
       if (paneDokumen) paneDokumen.style.display = 'none';
+      if (paneSupervisi) paneSupervisi.style.display = 'none';
       renderGuruJournalHistory();
     } else if (activeTab === 'presensi') {
       if (paneJurnal) paneJurnal.style.display = 'none';
       if (panePresensi) panePresensi.style.display = 'block';
       if (paneDokumen) paneDokumen.style.display = 'none';
+      if (paneSupervisi) paneSupervisi.style.display = 'none';
       loadPresensiStudents();
     } else if (activeTab === 'dokumen') {
       if (paneJurnal) paneJurnal.style.display = 'none';
       if (panePresensi) panePresensi.style.display = 'none';
       if (paneDokumen) paneDokumen.style.display = 'block';
+      if (paneSupervisi) paneSupervisi.style.display = 'none';
       renderGuruDocuments();
+    } else if (activeTab === 'supervisi') {
+      if (paneJurnal) paneJurnal.style.display = 'none';
+      if (panePresensi) panePresensi.style.display = 'none';
+      if (paneDokumen) paneDokumen.style.display = 'none';
+      if (paneSupervisi) paneSupervisi.style.display = 'block';
+      renderGuruSupervisiPane(currentTeacherId, teacher, session);
     }
   }
 
@@ -3787,6 +4143,1813 @@
   }
 
   // =========================================================================
+  // 10.5.4 SUBTAB SUPERVISI KLINIS & RTL GURU (PORTAL GURU MANDIRI - PRD FR-11 & FR-21)
+  // =========================================================================
+
+  function renderGuruSupervisiPane(teacherId, teacher, session) {
+    const container = document.getElementById('guru-supervisi-content');
+    if (!container) return;
+
+    const allSessions = StorageManager.get('supervisi_sesi') || [];
+    const cleanDigits = function (s) { return String(s || '').replace(/\D/g, ''); };
+    const cleanStr = function (s) {
+      return String(s || '').toLowerCase()
+        .replace(/(s\.pd|s\.kom|m\.pd|se|s\.t|dr|dra|drs|h\.|hj\.|m\.m|m\.si|s\.ag|s\.sos|gr\.)/gi, '')
+        .replace(/[^a-z0-9]/g, '')
+        .trim();
+    };
+
+    const targetNip = (session && session.nip) ? session.nip : (teacher && teacher.nip ? teacher.nip : '');
+    const targetName = (session && session.name) ? session.name : (teacher && teacher.name ? teacher.name : '');
+
+    let sData = allSessions.find(function (s) {
+      if (teacherId && String(s.teacher_id) === String(teacherId)) return true;
+      if (targetNip && cleanDigits(s.nip) && cleanDigits(s.nip) === cleanDigits(targetNip)) return true;
+      if (targetName && s.teacher_name && cleanStr(s.teacher_name) === cleanStr(targetName)) return true;
+      return false;
+    });
+
+    if (!sData) {
+      sData = allSessions[0] || {
+        id: 'SESI-DEMO',
+        teacher_id: teacherId,
+        teacher_name: targetName || 'Guru Pengampu',
+        nip: targetNip || '-',
+        department: (teacher && teacher.department) || 'TJKT',
+        subject: (teacher && teacher.subject) || 'Mata Pelajaran Produktif',
+        supervisor_name: 'Muhammad Ihsan, S.Kom (Kajur TJKT)',
+        status: 'Selesai',
+        tgl_observasi: '2026-08-20',
+        wkt_observasi: '08.00 - 09.30 WITA',
+        class_name: 'XI A-TJKT',
+        room: 'Lab Jaringan & Komputer',
+        skor_b: 50,
+        nilai_b: 89.3,
+        skor_c: 64,
+        nilai_c: 88.9,
+        nilai_akhir: 89.1,
+        predikat: 'Baik',
+        guru_konfirmasi: false
+      };
+    }
+
+    // Ambil RTL untuk guru / sesi ini
+    const allRtl = StorageManager.get('supervisi_rtl') || [];
+    const myRtl = allRtl.filter(function (r) {
+      return String(r.sesi_id) === String(sData.id) ||
+             (r.teacher_name && cleanStr(r.teacher_name) === cleanStr(sData.teacher_name));
+    });
+
+    // Kalkulasi Predikat dan Badge
+    var predikatBadgeClass = 'predikat-baik';
+    var predikatLabel = sData.predikat || 'Baik';
+    if (sData.nilai_akhir >= 91) {
+      predikatBadgeClass = 'predikat-amat-baik';
+      predikatLabel = 'Amat Baik';
+    } else if (sData.nilai_akhir >= 76) {
+      predikatBadgeClass = 'predikat-baik';
+      predikatLabel = 'Baik';
+    } else if (sData.nilai_akhir >= 61) {
+      predikatBadgeClass = 'predikat-cukup';
+      predikatLabel = 'Cukup';
+    } else if (sData.nilai_akhir > 0) {
+      predikatBadgeClass = 'predikat-kurang';
+      predikatLabel = 'Kurang';
+    }
+
+    var statusBadgeStyle = 'background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE;';
+    if (sData.status === 'Selesai') {
+      statusBadgeStyle = 'background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0;';
+    } else if (sData.status === 'Pasca-observasi') {
+      statusBadgeStyle = 'background: #FFFBEB; color: #B45309; border: 1px solid #FDE68A;';
+    } else if (sData.status === 'Observasi') {
+      statusBadgeStyle = 'background: #F3E8FF; color: #7E22CE; border: 1px solid #E9D5FF;';
+    }
+
+    var isConfirmed = sData.guru_konfirmasi === true;
+
+    // Timeline Siklus Klinis
+    var step1Done = ['Pra-observasi', 'Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+    var step2Done = ['Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+    var step3Done = ['Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+
+    // Tabel RTL HTML
+    var rtlRowsHtml = '';
+    if (myRtl.length === 0) {
+      rtlRowsHtml = '<tr><td colspan="6" style="text-align: center; padding: 1.5rem; color: #9CA3AF;">Belum ada tindakan RTL terbuka untuk sesi supervisi Anda.</td></tr>';
+    } else {
+      myRtl.forEach(function (r, idx) {
+        var isDone = r.status === 'Selesai';
+        var statusBadge = isDone 
+          ? '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700;">✓ Selesai</span>'
+          : '<span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 700;">⏳ Terbuka</span>';
+        
+        var aksiBtn = isDone
+          ? '<button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.toggleGuruRTLStatus(\'' + r.id + '\')" style="color: #6B7280; font-size: 0.75rem;">↩ Buka Kembali</button>'
+          : '<div style="display: flex; gap: 4px; justify-content: center;">' +
+              '<button type="button" class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.toggleGuruRTLStatus(\'' + r.id + '\')" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">✓ Tandai Selesai</button>' +
+              '<button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.uploadGuruRTLBukti(\'' + r.id + '\')" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">📎 Bukti</button>' +
+            '</div>';
+
+        rtlRowsHtml += '<tr>' +
+          '<td style="text-align: center; color: #6B7280;">' + (idx + 1) + '</td>' +
+          '<td style="font-weight: 600; color: #1F2937;">' + r.tindakan + '</td>' +
+          '<td style="color: #4B5563; font-size: 0.8125rem;">' + (r.bentuk || 'Pendampingan Mandiri / MGMP') + '</td>' +
+          '<td style="color: #6B7280; font-size: 0.8125rem;">' + (r.tenggat || '30 Oktober 2026') + '</td>' +
+          '<td style="text-align: center;">' + statusBadge + '</td>' +
+          '<td style="text-align: center;">' + aksiBtn + '</td>' +
+          '</tr>';
+      });
+    }
+
+    container.innerHTML = '' +
+      '<!-- 1. HEADER KARTU STATUS SUPERVISI GURU -->' +
+      '<div class="content-card" style="margin-bottom: 1.25rem; border-left: 4px solid var(--simkur-purple);">' +
+        '<div class="content-card-body" style="padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">' +
+          '<div>' +
+            '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">' +
+              '<h3 style="font-size: 1.25rem; font-weight: 800; color: #1F2937; margin: 0;">Siklus Supervisi Akademik Klinis Guru</h3>' +
+              '<span class="badge" style="' + statusBadgeStyle + ' font-weight: 700; font-size: 0.78125rem;">' + sData.status + '</span>' +
+            '</div>' +
+            '<p style="font-size: 0.8125rem; color: #6B7280; margin: 0;">' +
+              'Supervisor: <strong>' + (sData.supervisor_name || 'Ketua Jurusan') + '</strong> • Jadwal: <strong>' + (sData.tgl_observasi || 'Terjadwal') + ' (' + (sData.wkt_observasi || '08.00 - 09.30 WITA') + ')</strong> • Kelas: <strong>' + (sData.class_name || 'XI KBM') + '</strong>' +
+            '</p>' +
+          '</div>' +
+          '<div style="display: flex; gap: 8px; flex-wrap: wrap;">' +
+            '<button type="button" class="btn btn-outline" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + sData.id + '\')" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">' +
+              '<span>👁️ Detail Rubrik A, B, C</span>' +
+            '</button>' +
+            '<button type="button" class="btn btn-primary" onclick="window.PORTAL_APP.printSupervisiReport(\'' + sData.id + '\')" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700;">' +
+              '<span>🖨️ Cetak Lembar Hasil PDF (3 Tanda Tangan)</span>' +
+            '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<!-- 2. 4 KPI CARDS: NILAI & PREDIKAT -->' +
+      '<div class="kpi-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">' +
+        
+        '<div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #6366F1;">' +
+          '<span style="font-size: 0.75rem; font-weight: 700; color: #6B7280; text-transform: uppercase;">1. Telaah Perangkat (40%)</span>' +
+          '<div style="font-size: 1.5rem; font-weight: 800; color: #1F2937; margin: 4px 0;">' + (sData.nilai_b > 0 ? sData.nilai_b.toFixed(1) : '-') + ' <span style="font-size: 0.875rem; color: #9CA3AF; font-weight: 600;">/ 100</span></div>' +
+          '<div style="font-size: 0.75rem; color: #6B7280;">Skor: ' + (sData.skor_b || 0) + ' / 56 (14 Butir Instrumen B)</div>' +
+        '</div>' +
+
+        '<div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #0EA5E9;">' +
+          '<span style="font-size: 0.75rem; font-weight: 700; color: #6B7280; text-transform: uppercase;">2. Observasi KBM (60%)</span>' +
+          '<div style="font-size: 1.5rem; font-weight: 800; color: #1F2937; margin: 4px 0;">' + (sData.nilai_c > 0 ? sData.nilai_c.toFixed(1) : '-') + ' <span style="font-size: 0.875rem; color: #9CA3AF; font-weight: 600;">/ 100</span></div>' +
+          '<div style="font-size: 0.75rem; color: #6B7280;">Skor: ' + (sData.skor_c || 0) + ' / 72 (18 Butir Instrumen C)</div>' +
+        '</div>' +
+
+        '<div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #10B981;">' +
+          '<span style="font-size: 0.75rem; font-weight: 700; color: #6B7280; text-transform: uppercase;">Nilai Akhir Supervisi</span>' +
+          '<div style="font-size: 1.5rem; font-weight: 800; color: #047857; margin: 4px 0;">' + (sData.nilai_akhir > 0 ? sData.nilai_akhir.toFixed(1) : '-') + ' <span style="font-size: 0.875rem; color: #9CA3AF; font-weight: 600;">/ 100</span></div>' +
+          '<div style="font-size: 0.75rem; color: #059669; font-weight: 600;">Formula SK: 40% B + 60% C</div>' +
+        '</div>' +
+
+        '<div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #F59E0B;">' +
+          '<span style="font-size: 0.75rem; font-weight: 700; color: #6B7280; text-transform: uppercase;">Predikat Mutu</span>' +
+          '<div style="margin: 6px 0;">' +
+            '<span class="badge ' + predikatBadgeClass + '" style="font-size: 1rem; padding: 6px 14px; font-weight: 800;">⭐ ' + predikatLabel.toUpperCase() + '</span>' +
+          '</div>' +
+          '<div style="font-size: 0.75rem; color: #6B7280;">Standar SMKN 1 Banjarmasin</div>' +
+        '</div>' +
+
+      '</div>' +
+
+      '<!-- 3. TIMELINE 3 TAHAP SIKLUS KLINIS -->' +
+      '<div class="content-card" style="margin-bottom: 1.25rem;">' +
+        '<div class="content-card-header">' +
+          '<h3 style="font-size: 0.9375rem; font-weight: 700; color: #1F2937; margin: 0;">Siklus 3 Tahap Supervisi Klinis Berkelanjutan</h3>' +
+        '</div>' +
+        '<div class="content-card-body" style="padding: 1.25rem;">' +
+          '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">' +
+            
+            '<div style="background: ' + (step1Done ? '#F0FDF4' : '#F9FAFB') + '; border: 1.5px solid ' + (step1Done ? '#BBF7D0' : '#E5E7EB') + '; border-radius: 12px; padding: 1rem;">' +
+              '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">' +
+                '<span style="font-size: 0.75rem; font-weight: 700; color: #4B22B8;">TAHAP 1: PRA-OBSERVASI</span>' +
+                '<span class="badge" style="' + (step1Done ? 'background: #DCFCE7; color: #15803D;' : 'background: #E5E7EB; color: #6B7280;') + ' font-weight: 700; font-size: 0.7rem;">' + (step1Done ? '✓ Terlaksana' : 'Menunggu') + '</span>' +
+              '</div>' +
+              '<div style="font-size: 0.875rem; font-weight: 700; color: #1F2937; margin-bottom: 4px;">Wawancara & Telaah Berkas SIMKUR</div>' +
+              '<p style="font-size: 0.8125rem; color: #6B7280; margin: 0;">Pemeriksaan Modul Ajar, Silabus/ATP, Prota/Promes, dan Asesmen yang diunggah guru di SIMKUR.</p>' +
+            '</div>' +
+
+            '<div style="background: ' + (step2Done ? '#F0FDF4' : '#F9FAFB') + '; border: 1.5px solid ' + (step2Done ? '#BBF7D0' : '#E5E7EB') + '; border-radius: 12px; padding: 1rem;">' +
+              '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">' +
+                '<span style="font-size: 0.75rem; font-weight: 700; color: #4B22B8;">TAHAP 2: OBSERVASI KBM</span>' +
+                '<span class="badge" style="' + (step2Done ? 'background: #DCFCE7; color: #15803D;' : 'background: #E5E7EB; color: #6B7280;') + ' font-weight: 700; font-size: 0.7rem;">' + (step2Done ? '✓ Terlaksana' : 'Menunggu') + '</span>' +
+              '</div>' +
+              '<div style="font-size: 0.875rem; font-weight: 700; color: #1F2937; margin-bottom: 4px;">Pengamatan di Ruang / Bengkel / Lab</div>' +
+              '<p style="font-size: 0.8125rem; color: #6B7280; margin: 0;">Observasi pembelajaran berdiferensiasi, keterlibatan aktif siswa, integrasi PjBL/TeFa, dan kepatuhan K3.</p>' +
+            '</div>' +
+
+            '<div style="background: ' + (step3Done ? '#F0FDF4' : '#F9FAFB') + '; border: 1.5px solid ' + (step3Done ? '#BBF7D0' : '#E5E7EB') + '; border-radius: 12px; padding: 1rem;">' +
+              '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">' +
+                '<span style="font-size: 0.75rem; font-weight: 700; color: #4B22B8;">TAHAP 3: PASCA & RTL</span>' +
+                '<span class="badge" style="' + (step3Done ? 'background: #DCFCE7; color: #15803D;' : 'background: #E5E7EB; color: #6B7280;') + ' font-weight: 700; font-size: 0.7rem;">' + (step3Done ? '✓ Terlaksana' : 'Menunggu') + '</span>' +
+              '</div>' +
+              '<div style="font-size: 0.875rem; font-weight: 700; color: #1F2937; margin-bottom: 4px;">Refleksi, Umpan Balik & RTL</div>' +
+              '<p style="font-size: 0.8125rem; color: #6B7280; margin: 0;">Diskusi hangat hasil observasi, apresiasi keunggulan guru, kesepakatan butir RTL dan bukti tindak lanjut.</p>' +
+            '</div>' +
+
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<!-- 4. UMPAN BALIK SUPERVISOR & KONFIRMASI GURU (PRD FR-11) -->' +
+      '<div class="content-card" style="margin-bottom: 1.25rem;">' +
+        '<div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center;">' +
+          '<h3 style="font-size: 0.9375rem; font-weight: 700; color: #1F2937; margin: 0;">Refleksi Guru & Konfirmasi Umpan Balik (PRD FR-11)</h3>' +
+          (isConfirmed 
+            ? '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700;">✓ Sudah Dikonfirmasi Guru</span>'
+            : '<span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 700;">⏳ Menunggu Konfirmasi Guru</span>') +
+        '</div>' +
+        '<div class="content-card-body" style="padding: 1.25rem;">' +
+          (isConfirmed 
+            ? '<div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">' +
+                '<div style="font-weight: 700; color: #166534; font-size: 0.875rem; margin-bottom: 4px;">✓ Anda telah membaca dan mengonfirmasi hasil umpan balik supervisi ini.</div>' +
+                '<div style="font-size: 0.8125rem; color: #15803D;">Waktu Konfirmasi: ' + (sData.guru_konfirmasi_at || 'Terverifikasi') + '</div>' +
+                (sData.guru_refleksi ? '<div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #86EFAC; font-size: 0.8125rem; color: #14532D;"><strong>Refleksi Mandiri Anda:</strong> ' + sData.guru_refleksi + '</div>' : '') +
+              '</div>'
+            : '<div style="margin-bottom: 1.25rem;">' +
+                '<label class="form-label" style="font-weight: 700; color: #374151; font-size: 0.8125rem; margin-bottom: 6px;">' +
+                  'Catatan Refleksi Mandiri Guru (Opsional):' +
+                '</label>' +
+                '<textarea id="input-guru-refleksi-text" class="form-input" rows="3" placeholder="Tuliskan refleksi mandiri Anda mengenai proses pembelajaran yang telah disupervisi dan komitmen tindak lanjut..." style="width: 100%; border-radius: 8px; padding: 8px; font-size: 0.875rem;"></textarea>' +
+                '<div style="margin-top: 10px; display: flex; justify-content: flex-end;">' +
+                  '<button type="button" class="btn btn-primary" onclick="window.PORTAL_APP.confirmGuruSupervisi(\'' + sData.id + '\')" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700;">' +
+                    '<span>✓ Konfirmasi Sudah Membaca Umpan Balik (PRD FR-11)</span>' +
+                  '</button>' +
+                '</div>' +
+              '</div>') +
+        '</div>' +
+      '</div>' +
+
+      '<!-- 5. TABEL PELACAK RENCANA TINDAK LANJUT (RTL) GURU (PRD FR-21) -->' +
+      '<div class="content-card" style="margin: 0;">' +
+        '<div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center;">' +
+          '<h3 style="font-size: 0.9375rem; font-weight: 700; color: #1F2937; margin: 0;">Daftar Rencana Tindak Lanjut (RTL) & Pelacak Bukti Fisik</h3>' +
+          '<span class="badge" style="background: rgba(75, 34, 184, 0.1); color: #4B22B8; font-weight: 700;">' + myRtl.length + ' Tindakan Terdaftar</span>' +
+        '</div>' +
+        '<div class="content-card-body table-responsive" style="padding: 0;">' +
+          '<table class="data-table">' +
+            '<thead>' +
+              '<tr>' +
+                '<th style="width: 45px; text-align: center;">No</th>' +
+                '<th>Rencana Tindakan Peningkatan Mutu</th>' +
+                '<th>Bentuk Pendampingan</th>' +
+                '<th>Tenggat Waktu</th>' +
+                '<th style="width: 110px; text-align: center;">Status</th>' +
+                '<th style="width: 150px; text-align: center;">Aksi Guru</th>' +
+              '</tr>' +
+            '</thead>' +
+            '<tbody>' + rtlRowsHtml + '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function confirmGuruSupervisi(sesiId) {
+    const inputEl = document.getElementById('input-guru-refleksi-text');
+    const refleksi = inputEl ? inputEl.value.trim() : '';
+
+    const sessions = StorageManager.get('supervisi_sesi') || [];
+    const sesi = sessions.find(function (s) { return String(s.id) === String(sesiId); });
+    if (!sesi) {
+      showToast('Sesi supervisi tidak ditemukan.', 'danger');
+      return;
+    }
+
+    const updated = {
+      guru_konfirmasi: true,
+      guru_konfirmasi_at: new Date().toLocaleString('id-ID'),
+      guru_refleksi: refleksi || 'Guru telah membaca dan menyepakati hasil umpan balik supervisi.'
+    };
+
+    StorageManager.update('supervisi_sesi', sesiId, updated);
+    showToast('✓ Terima kasih! Hasil supervisi dan umpan balik berhasil dikonfirmasi.');
+    renderPortalGuru();
+  }
+
+  function toggleGuruRTLStatus(rtlId) {
+    const rtlItems = StorageManager.get('supervisi_rtl') || [];
+    const item = rtlItems.find(function (r) { return String(r.id) === String(rtlId); });
+    if (!item) {
+      showToast('Item RTL tidak ditemukan.', 'danger');
+      return;
+    }
+
+    const newStatus = item.status === 'Selesai' ? 'Terbuka' : 'Selesai';
+    StorageManager.update('supervisi_rtl', rtlId, {
+      status: newStatus,
+      completed_at: newStatus === 'Selesai' ? new Date().toLocaleDateString('id-ID') : null
+    });
+
+    showToast(newStatus === 'Selesai' ? '✓ Butir RTL ditandai Selesai!' : 'Butir RTL dibuka kembali.');
+    renderPortalGuru();
+    if (State.currentScreen === 'supervisi') renderSupervisi();
+  }
+
+  function uploadGuruRTLBukti(rtlId) {
+    const docName = prompt('Masukkan nama file / tautan Google Drive bukti pelaksanaan RTL Anda:', 'Laporan_Penyelarasan_Rubrik_Asesmen.pdf');
+    if (!docName || !docName.trim()) return;
+
+    StorageManager.update('supervisi_rtl', rtlId, {
+      status: 'Selesai',
+      bukti_url: docName.trim(),
+      completed_at: new Date().toLocaleDateString('id-ID')
+    });
+
+    showToast('✓ Bukti RTL berhasil disimpan dan status diperbarui menjadi Selesai!');
+    renderPortalGuru();
+    if (State.currentScreen === 'supervisi') renderSupervisi();
+  }
+
+  // =========================================================================
+  // 10.6 SCREEN: SUPERVISI AKADEMIK & MANAJERIAL (PRD SMKN 1 BANJARMASIN)
+  // =========================================================================
+
+  const SUPERVISI_INSTRUMEN = {
+    // Instrumen A: Wawancara Pra-observasi (8 Butir PRD)
+    A: [
+      { no: 1, q: "Mata pelajaran, kelas/rombel, dan tujuan pembelajaran yang akan diamati?" },
+      { no: 2, q: "Bagaimana langkah pembelajaran dan model yang direncanakan (PjBL, PBL, TeFa, praktikum)?" },
+      { no: 3, q: "Bagaimana kondisi dan kebutuhan belajar peserta didik di kelas ini (hasil asesmen diagnostik)?" },
+      { no: 4, q: "Bagaimana rencana asesmen dan bukti ketercapaian tujuan pembelajaran?" },
+      { no: 5, q: "Media, alat, bahan, dan langkah keselamatan kerja (K3) yang disiapkan di ruang belajar/lab?" },
+      { no: 6, q: "Kendala atau tantangan yang dihadapi pada materi atau karakteristik kelas ini?" },
+      { no: 7, q: "Aspek khusus apa yang Bapak/Ibu harapkan untuk saya amati dan beri masukan?" },
+      { no: 8, q: "Kesepakatan waktu pelaksanaan observasi dan pertemuan refleksi pasca-observasi." }
+    ],
+    // Instrumen B: Telaah Perangkat Ajar (14 Butir PRD, Bobot 40%)
+    B: [
+      { no: 1, section: "Capaian dan Tujuan Pembelajaran", text: "CP dan tujuan pembelajaran (TP) sesuai fase dan elemen mata pelajaran" },
+      { no: 2, section: "Capaian dan Tujuan Pembelajaran", text: "TP dirumuskan operasional, terukur, dan tersusun runtut dalam Alur Tujuan Pembelajaran (ATP)" },
+      { no: 3, section: "Capaian dan Tujuan Pembelajaran", text: "Alokasi waktu (JP) sesuai struktur kurikulum SMK dan kalender akademik" },
+      { no: 4, section: "Modul Ajar / Perencanaan", text: "Identitas modul, kompetensi awal, dan dimensi profil lulusan (P3) sesuai" },
+      { no: 5, section: "Modul Ajar / Perencanaan", text: "Model dan metode pembelajaran sesuai karakteristik materi (PjBL, PBL, TeFa, praktikum)" },
+      { no: 6, section: "Modul Ajar / Perencanaan", text: "Langkah pembelajaran (pendahuluan, inti, penutup) runtut, jelas, dan berpusat pada siswa" },
+      { no: 7, section: "Modul Ajar / Perencanaan", text: "Pembelajaran berdiferensiasi (materi, proses, produk) dipertimbangkan secara nyata" },
+      { no: 8, section: "Modul Ajar / Perencanaan", text: "Media, bahan ajar, jobsheet, dan sumber belajar digital/cetak sesuai dan tersedia" },
+      { no: 9, section: "Modul Ajar / Perencanaan", text: "Kegiatan praktik memuat prosedur keselamatan kerja (K3) dan budaya kerja 5R bagi mapel kejuruan" },
+      { no: 10, section: "Asesmen Pembelajaran", text: "Asesmen diagnostik, formatif, dan sumatif direncanakan secara terstruktur" },
+      { no: 11, section: "Asesmen Pembelajaran", text: "Instrumen dan rubrik penilaian tersedia lengkap serta mengukur ketercapaian TP" },
+      { no: 12, section: "Asesmen Pembelajaran", text: "Rencana program remedial dan pengayaan tersedia sesuai kebutuhan siswa" },
+      { no: 13, section: "Program dan Administrasi", text: "Program tahunan (Prota) dan semester (Prosem) tersedia dan konsisten dengan kalender sekolah" },
+      { no: 14, section: "Program dan Administrasi", text: "Perangkat lengkap dan dikumpulkan tepat waktu pada SIMKUR" }
+    ],
+    // Instrumen C: Observasi Pelaksanaan Pembelajaran (18 Butir PRD, Bobot 60%)
+    C: [
+      { no: 1, section: "Kegiatan Pendahuluan", text: "Mengondisikan kelas dengan tertib (salam, doa, presensi, kesiapan fisik dan alat belajar)" },
+      { no: 2, section: "Kegiatan Pendahuluan", text: "Apersepsi dan motivasi, mengaitkan materi dengan pengalaman nyata atau dunia kerja (DUDI)" },
+      { no: 3, section: "Kegiatan Pendahuluan", text: "Menyampaikan tujuan pembelajaran, skenario kegiatan, dan teknik asesmen yang digunakan" },
+      { no: 4, section: "Kegiatan Inti", text: "Menguasai materi pelajaran dan menyampaikan konsep secara tepat tanpa miskonsepsi" },
+      { no: 5, section: "Kegiatan Inti", text: "Menerapkan model pembelajaran interaktif sesuai TP (PjBL, PBL, TeFa, inkuiri, praktikum)" },
+      { no: 6, section: "Kegiatan Inti", text: "Pembelajaran berpusat pada peserta didik dan melibatkan siswa aktif berkolaborasi" },
+      { no: 7, section: "Kegiatan Inti", text: "Menerapkan diferensiasi proses/konten sesuai kesiapan belajar peserta didik" },
+      { no: 8, section: "Kegiatan Inti", text: "Memanfaatkan media pembelajaran, proyektor, dan teknologi digital secara efektif" },
+      { no: 9, section: "Kegiatan Inti", text: "Membimbing praktik: mendemonstrasikan SOP, alat kerja, dan kepatuhan K3 bengkel/lab" },
+      { no: 10, section: "Kegiatan Inti", text: "Mengelola alokasi waktu dan alur tahapan kegiatan sesuai modul ajar" },
+      { no: 11, section: "Kegiatan Inti", text: "Berkomunikasi efektif: bahasa santun, pertanyaan pemantik memancing nalar kritis, dan umpan balik hangat" },
+      { no: 12, section: "Kegiatan Inti", text: "Menguatkan karakter Profil Pelajar Pancasila dan etos kerja industri" },
+      { no: 13, section: "Asesmen dan Penutup", text: "Melakukan asesmen formatif berkala selama pembelajaran (observasi/kuis/lembar kerja)" },
+      { no: 14, section: "Asesmen dan Penutup", text: "Membimbing siswa melakukan refleksi serta menyimpulkan intisari materi bersama" },
+      { no: 15, section: "Asesmen dan Penutup", text: "Memberikan umpan balik konstruktif dan tindak lanjut (tugas mandiri, pengayaan, remedial)" },
+      { no: 16, section: "Asesmen dan Penutup", text: "Menutup pembelajaran tepat waktu, merapikan alat dan lingkungan ruang/lab" },
+      { no: 17, section: "Manajemen Kelas & Budaya Belajar", text: "Menciptakan suasana kelas kondusif, disiplin positif, dan bebas perundungan" },
+      { no: 18, section: "Manajemen Kelas & Budaya Belajar", text: "Mempertahankan keterlibatan, fokus, dan kehadiran aktif peserta didik hingga akhir sesi" }
+    ],
+    // Instrumen E: Supervisi Manajerial Waka & Kajur (15 Butir PRD)
+    E: [
+      { no: 1, section: "Perencanaan Program", text: "Program kerja tahunan/semester tersusun dan selaras dengan RKS/RKT sekolah" },
+      { no: 2, section: "Perencanaan Program", text: "Target capaian mutu dan indikator keberhasilan program jelas dan terukur" },
+      { no: 3, section: "Perencanaan Program", text: "Pembagian tugas tim kerja dan jadwal pelaksanaan kegiatan terperinci" },
+      { no: 4, section: "Pelaksanaan Program", text: "Program terlaksana sesuai jadwal dan target kinerja yang ditetapkan" },
+      { no: 5, section: "Pelaksanaan Program", text: "Koordinasi dan komunikasi dengan guru, tenaga kependidikan, dan pimpinan berjalan efektif" },
+      { no: 6, section: "Pelaksanaan Program", text: "(K) Melaksanakan pembinaan dan supervisi klinis guru di jurusannya secara terjadwal" },
+      { no: 7, section: "Pelaksanaan Program", text: "(K) Mengelola sarana prasarana bengkel/lab, perawatan alat, dan keselamatan kerja (K3)" },
+      { no: 8, section: "Pelaksanaan Program", text: "(K) Menjalin kerja sama strategis dengan DUDI, sinkronisasi kurikulum, PKL, dan Teaching Factory" },
+      { no: 9, section: "Pelaksanaan Program", text: "(WK) Mengelola administrasi kurikulum terpadu, kalender pendidikan, dan verifikasi perangkat guru" },
+      { no: 10, section: "Pelaporan dan Tindak Lanjut", text: "Laporan berkala program kerja disusun lengkap, akuntabel, dan tepat waktu" },
+      { no: 11, section: "Pelaporan dan Tindak Lanjut", text: "Data dan portofolio kegiatan tersimpan rapi serta mudah ditelusuri" },
+      { no: 12, section: "Pelaporan dan Tindak Lanjut", text: "Hasil evaluasi dan supervisi ditindaklanjuti dengan rencana perbaikan nyata" },
+      { no: 13, section: "Kepemimpinan & Tata Kelola", text: "Keteladanan kepemimpinan, integritas, dan penguatan budaya kerja positif" },
+      { no: 14, section: "Kepemimpinan & Tata Kelola", text: "Inisiatif dan inovasi pemecahan masalah dalam peningkatan mutu pembelajaran" },
+      { no: 15, section: "Kepemimpinan & Tata Kelola", text: "Pemanfaatan sistem digital SIMKUR secara optimal untuk pemantauan dan pelaporan" }
+    ]
+  };
+
+  function calculateSupervisiScores(bScores, cScores) {
+    bScores = bScores || {};
+    cScores = cScores || {};
+    
+    // Instrumen B: 14 butir, max score = 56
+    var totalB = 0;
+    var countB = 0;
+    for (var i = 1; i <= 14; i++) {
+      if (bScores[i] !== undefined && bScores[i] !== null && bScores[i] !== '') {
+        totalB += Number(bScores[i]);
+        countB++;
+      }
+    }
+    var nilaiB = countB > 0 ? (totalB / (14 * 4)) * 100 : 0;
+
+    // Instrumen C: 18 butir, max score = 72
+    var totalC = 0;
+    var countC = 0;
+    for (var j = 1; j <= 18; j++) {
+      if (cScores[j] !== undefined && cScores[j] !== null && cScores[j] !== '') {
+        totalC += Number(cScores[j]);
+        countC++;
+      }
+    }
+    var nilaiC = countC > 0 ? (totalC / (18 * 4)) * 100 : 0;
+
+    // Nilai Akhir: 40% B + 60% C (PRD Bagian 7)
+    var nilaiAkhir = 0;
+    if (countB > 0 && countC > 0) {
+      nilaiAkhir = (nilaiB * 0.40) + (nilaiC * 0.60);
+    } else if (countB > 0) {
+      nilaiAkhir = nilaiB;
+    } else if (countC > 0) {
+      nilaiAkhir = nilaiC;
+    }
+
+    var predikat = '-';
+    var predikatClass = 'badge-neutral';
+    var tindakLanjut = '-';
+
+    if (nilaiAkhir >= 91) {
+      predikat = 'Amat Baik';
+      predikatClass = 'predikat-amat-baik';
+      tindakLanjut = 'Apresiasi; dorong menjadi guru penggerak / mentor sejawat bagi rekan sejawat.';
+    } else if (nilaiAkhir >= 76) {
+      predikat = 'Baik';
+      predikatClass = 'predikat-baik';
+      tindakLanjut = 'Pembinaan ringan berkala; pertahankan konsistensi mutu pembelajaran.';
+    } else if (nilaiAkhir >= 61) {
+      predikat = 'Cukup';
+      predikatClass = 'predikat-cukup';
+      tindakLanjut = 'Pendampingan intensif oleh Ketua Jurusan; supervisi ulang bila diperlukan.';
+    } else if (nilaiAkhir > 0) {
+      predikat = 'Kurang';
+      predikatClass = 'predikat-kurang';
+      tindakLanjut = 'Pembinaan intensif terstruktur; wajib dijadwalkan supervisi ulang dalam 1 bulan.';
+    }
+
+    return {
+      totalB: totalB,
+      nilaiB: Math.round(nilaiB * 10) / 10,
+      contribB: Math.round(nilaiB * 0.40 * 10) / 10,
+      totalC: totalC,
+      nilaiC: Math.round(nilaiC * 10) / 10,
+      contribC: Math.round(nilaiC * 0.60 * 10) / 10,
+      nilaiAkhir: Math.round(nilaiAkhir * 10) / 10,
+      predikat: predikat,
+      predikatClass: predikatClass,
+      tindakLanjut: tindakLanjut
+    };
+  }
+
+  function renderSupervisi() {
+    const sessions = StorageManager.get('supervisi_sesi');
+    const rtlItems = StorageManager.get('supervisi_rtl');
+
+    // 1. Update Top KPI Cards
+    const totalTeachers = 90;
+    const finishedCount = sessions.filter(function (s) { return s.status === 'Selesai'; }).length;
+    const finishedPct = totalTeachers > 0 ? ((finishedCount / totalTeachers) * 100).toFixed(1) : '0';
+
+    const kpiTotalEl = document.getElementById('sup-kpi-total-guru');
+    if (kpiTotalEl) kpiTotalEl.textContent = totalTeachers + ' Guru';
+
+    const kpiDonePct = document.getElementById('sup-kpi-done-pct');
+    if (kpiDonePct) kpiDonePct.textContent = finishedPct + '%';
+
+    const kpiDoneCount = document.getElementById('sup-kpi-done-count');
+    if (kpiDoneCount) kpiDoneCount.textContent = finishedCount + ' / ' + totalTeachers + ' Guru';
+
+    const kpiBar = document.getElementById('sup-kpi-progress-bar');
+    if (kpiBar) kpiBar.style.width = finishedPct + '%';
+
+    const kpiDoneSub = document.getElementById('sup-kpi-done-sub');
+    if (kpiDoneSub) kpiDoneSub.textContent = finishedCount + ' Selesai • ' + (totalTeachers - finishedCount) + ' Berjalan / Terjadwal';
+
+    // Rata-rata Nilai Selesai
+    const finishedSessions = sessions.filter(function (s) { return s.status === 'Selesai' && s.nilai_akhir > 0; });
+    var avgScore = 0;
+    if (finishedSessions.length > 0) {
+      var sum = finishedSessions.reduce(function (acc, s) { return acc + Number(s.nilai_akhir || 0); }, 0);
+      avgScore = Math.round((sum / finishedSessions.length) * 10) / 10;
+    }
+    const kpiAvgScore = document.getElementById('sup-kpi-avg-score');
+    if (kpiAvgScore) kpiAvgScore.textContent = avgScore > 0 ? avgScore.toFixed(1) : '-';
+
+    const kpiAvgBadge = document.getElementById('sup-kpi-avg-badge');
+    if (kpiAvgBadge) {
+      if (avgScore >= 91) {
+        kpiAvgBadge.className = 'badge badge-success';
+        kpiAvgBadge.textContent = 'Amat Baik';
+      } else if (avgScore >= 76) {
+        kpiAvgBadge.className = 'badge badge-primary';
+        kpiAvgBadge.textContent = 'Baik';
+      } else if (avgScore >= 61) {
+        kpiAvgBadge.className = 'badge badge-warning';
+        kpiAvgBadge.textContent = 'Cukup';
+      } else {
+        kpiAvgBadge.className = 'badge badge-danger';
+        kpiAvgBadge.textContent = 'Kurang';
+      }
+    }
+
+    // RTL KPI
+    const openRtl = rtlItems.filter(function (r) { return r.status === 'Terbuka'; }).length;
+    const kpiRtlCount = document.getElementById('sup-kpi-rtl-count');
+    if (kpiRtlCount) kpiRtlCount.textContent = openRtl + ' Tindakan';
+    const kpiRtlBadge = document.getElementById('sup-kpi-rtl-badge');
+    if (kpiRtlBadge) kpiRtlBadge.textContent = openRtl + ' Terbuka';
+
+    // Tab sesi count
+    const tabSesiCount = document.getElementById('sup-tab-sesi-count');
+    if (tabSesiCount) tabSesiCount.textContent = sessions.length;
+
+    // 2. Render Active Subtab
+    const tab = State.activeSupervisiTab || 'dash';
+    if (tab === 'dash') renderSupervisiDash();
+    else if (tab === 'sesi') renderSupervisiSesi();
+    else if (tab === 'manajerial') renderSupervisiManajerial();
+    else if (tab === 'rtl') renderSupervisiRTL();
+    else if (tab === 'laporan') renderSupervisiRekapLaporan();
+  }
+
+  function switchSupervisiTab(tabName) {
+    State.activeSupervisiTab = tabName;
+
+    // Update buttons
+    document.querySelectorAll('.doc-subtab-btn[data-sup-tab]').forEach(function (btn) {
+      if (btn.getAttribute('data-sup-tab') === tabName) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Update panes
+    const panes = ['dash', 'sesi', 'manajerial', 'rtl', 'program', 'laporan'];
+    panes.forEach(function (p) {
+      const el = document.getElementById('sup-pane-' + p);
+      if (el) {
+        el.style.display = (p === tabName) ? 'block' : 'none';
+      }
+    });
+
+    renderSupervisi();
+  }
+
+  // 10.6.1 SUBTAB 1: DASHBOARD & SEBARAN
+  function renderSupervisiDash() {
+    const sessions = StorageManager.get('supervisi_sesi');
+    const gridEl = document.getElementById('sup-jurusan-grid');
+    if (!gridEl) return;
+
+    const jurusans = [
+      { code: 'TJKT', name: 'Teknik Jaringan Komputer & Telekomunikasi', kajur: 'Muhammad Ihsan, S.Kom' },
+      { code: 'DKV', name: 'Desain Komunikasi Visual', kajur: 'Hendra Surya Pratama, S.Kom' },
+      { code: 'AKL', name: 'Akuntansi & Keuangan Lembaga', kajur: 'Oky Wulan Maulina, S.Pd' },
+      { code: 'MPLB', name: 'Manajemen Perkantoran & Layanan Bisnis', kajur: 'Akhmad Hanafi Maulana, S.E' },
+      { code: 'Pemasaran', name: 'Pemasaran / Bisnis Daring', kajur: 'Futri Indri Septiani, S.Pd' },
+      { code: 'Umum', name: 'Muatan Umum & Pilihan', kajur: 'Rusnani, S.Pd., M.T (Waka)' }
+    ];
+
+    let gridHtml = '';
+    jurusans.forEach(function (j) {
+      const deptSessions = sessions.filter(function (s) {
+        const d = (s.department || '').toUpperCase();
+        if (j.code === 'Pemasaran') return d.includes('PEMASARAN') || d.includes('PM');
+        return d.includes(j.code.toUpperCase());
+      });
+
+      const total = deptSessions.length;
+      const selesai = deptSessions.filter(function (s) { return s.status === 'Selesai'; }).length;
+      const pct = total > 0 ? Math.round((selesai / total) * 100) : 0;
+
+      const scored = deptSessions.filter(function (s) { return s.status === 'Selesai' && s.nilai_akhir > 0; });
+      let avg = 0;
+      if (scored.length > 0) {
+        avg = Math.round((scored.reduce(function (a, b) { return a + Number(b.nilai_akhir); }, 0) / scored.length) * 10) / 10;
+      }
+
+      let predikat = 'Belum Ada';
+      let predClass = 'badge-neutral';
+      if (avg >= 91) { predikat = 'Amat Baik'; predClass = 'badge-success'; }
+      else if (avg >= 76) { predikat = 'Baik'; predClass = 'badge-primary'; }
+      else if (avg >= 61) { predikat = 'Cukup'; predClass = 'badge-warning'; }
+      else if (avg > 0) { predikat = 'Kurang'; predClass = 'badge-danger'; }
+
+      gridHtml += '<div class="content-card" style="margin: 0; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #1E56A0;">' +
+        '<div>' +
+        '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">' +
+        '<div>' +
+        '<span class="badge badge-primary" style="font-size: 0.725rem; font-weight: 800;">' + j.code + '</span>' +
+        '<h4 style="margin: 6px 0 0 0; font-size: 0.95rem; font-weight: 800; color: #0F172A;">' + j.name + '</h4>' +
+        '</div>' +
+        '<span class="badge ' + predClass + '" style="font-size: 0.725rem;">' + (avg > 0 ? avg.toFixed(1) + ' • ' + predikat : 'Proses') + '</span>' +
+        '</div>' +
+        '<div style="font-size: 0.775rem; color: #64748B; margin-top: 4px;">Kajur / Pengawas: <strong>' + j.kajur + '</strong></div>' +
+        '</div>' +
+
+        '<div style="margin-top: 1.25rem;">' +
+        '<div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #475569; margin-bottom: 4px;">' +
+        '<span>Progres Selesai</span>' +
+        '<strong>' + selesai + ' / ' + total + ' Guru (' + pct + '%)</strong>' +
+        '</div>' +
+        '<div style="background: #E2E8F0; border-radius: 999px; height: 6px; width: 100%; overflow: hidden;">' +
+        '<div style="background: ' + (pct >= 80 ? '#10B981' : pct >= 40 ? '#3B82F6' : '#F59E0B') + '; height: 100%; width: ' + pct + '%; border-radius: 999px;"></div>' +
+        '</div>' +
+        '</div>' +
+
+        '</div>';
+    });
+
+    gridEl.innerHTML = gridHtml;
+
+    // Sebaran Predikat
+    const barsEl = document.getElementById('sup-predikat-bars');
+    if (barsEl) {
+      const selesaiSessions = sessions.filter(function (s) { return s.status === 'Selesai'; });
+      const amatBaik = selesaiSessions.filter(function (s) { return s.nilai_akhir >= 91; }).length;
+      const baik = selesaiSessions.filter(function (s) { return s.nilai_akhir >= 76 && s.nilai_akhir < 91; }).length;
+      const cukup = selesaiSessions.filter(function (s) { return s.nilai_akhir >= 61 && s.nilai_akhir < 76; }).length;
+      const kurang = selesaiSessions.filter(function (s) { return s.nilai_akhir > 0 && s.nilai_akhir < 61; }).length;
+
+      const totalSelesai = selesaiSessions.length || 1;
+
+      barsEl.innerHTML = '' +
+        renderPredBar('Amat Baik (91 – 100)', amatBaik, totalSelesai, '#10B981') +
+        renderPredBar('Baik (76 – 90)', baik, totalSelesai, '#3B82F6') +
+        renderPredBar('Cukup (61 – 75)', cukup, totalSelesai, '#F59E0B') +
+        renderPredBar('Kurang (≤ 60)', kurang, totalSelesai, '#EF4444');
+    }
+
+    // Urgent / Pasca-Obs list
+    const urgentEl = document.getElementById('sup-urgent-list');
+    if (urgentEl) {
+      const pending = sessions.filter(function (s) {
+        return s.status === 'Pasca-observasi' || s.status === 'Observasi';
+      }).slice(0, 4);
+
+      if (pending.length === 0) {
+        urgentEl.innerHTML = '<div style="font-size: 0.8125rem; color: #64748B; text-align: center; padding: 1.5rem;">Seluruh sesi supervisi telah diselesaikan atau dijadwalkan tertib.</div>';
+      } else {
+        let uHtml = '';
+        pending.forEach(function (p) {
+          uHtml += '<div style="padding: 10px 12px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">' +
+            '<div>' +
+            '<div style="font-weight: 700; font-size: 0.825rem; color: #0F172A;">' + p.teacher_name + '</div>' +
+            '<div style="font-size: 0.725rem; color: #64748B;">' + p.department + ' • ' + p.subject + ' • ' + (p.tgl_observasi || '-') + '</div>' +
+            '</div>' +
+            '<button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + p.id + '\')" style="font-size: 0.725rem; white-space: nowrap;">' +
+            (p.status === 'Pasca-observasi' ? '💡 Isi RTL' : '🔍 Nilai KBM') +
+            '</button>' +
+            '</div>';
+        });
+        urgentEl.innerHTML = uHtml;
+      }
+    }
+  }
+
+  function renderPredBar(label, count, total, color) {
+    const pct = Math.round((count / total) * 100);
+    return '<div>' +
+      '<div style="display: flex; justify-content: space-between; font-size: 0.775rem; color: #334155; margin-bottom: 3px;">' +
+      '<span>' + label + '</span>' +
+      '<strong>' + count + ' Guru (' + pct + '%)</strong>' +
+      '</div>' +
+      '<div style="background: #F1F5F9; border-radius: 999px; height: 7px; width: 100%; overflow: hidden;">' +
+      '<div style="background: ' + color + '; height: 100%; width: ' + pct + '%; border-radius: 999px;"></div>' +
+      '</div>' +
+      '</div>';
+  }
+
+  // 10.6.2 SUBTAB 2: DAFTAR SESI SUPERVISI GURU (90 GURU)
+  function renderSupervisiSesi() {
+    const tbody = document.getElementById('sup-sesi-tbody');
+    const countEl = document.getElementById('sup-count-filtered');
+    if (!tbody) return;
+
+    const sessions = StorageManager.get('supervisi_sesi');
+    const q = (State.supervisiSearchQuery || '').toLowerCase();
+    const dept = State.supervisiDeptFilter || 'all';
+    const status = State.supervisiStatusFilter || 'all';
+
+    const filtered = sessions.filter(function (s) {
+      const matchQ = !q ||
+        (s.teacher_name && s.teacher_name.toLowerCase().includes(q)) ||
+        (s.nip && s.nip.includes(q)) ||
+        (s.subject && s.subject.toLowerCase().includes(q)) ||
+        (s.supervisor_name && s.supervisor_name.toLowerCase().includes(q));
+
+      const matchDept = dept === 'all' || (s.department || '').toUpperCase().includes(dept.toUpperCase());
+      const matchStatus = status === 'all' || s.status === status;
+
+      return matchQ && matchDept && matchStatus;
+    });
+
+    if (countEl) countEl.textContent = filtered.length;
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: #888;">' +
+        '<strong>Tidak ada sesi supervisi yang sesuai filter</strong>' +
+        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau gunakan tombol "Jadwalkan Sesi Supervisi" di kanan atas.</p>' +
+        '</td></tr>';
+      return;
+    }
+
+    let html = '';
+    filtered.forEach(function (s, idx) {
+      let statusBadge = '<span class="badge badge-neutral" style="font-size: 0.75rem;">📅 Dijadwalkan</span>';
+      if (s.status === 'Selesai') {
+        statusBadge = '<span class="badge badge-success" style="font-size: 0.75rem;">✅ Selesai</span>';
+      } else if (s.status === 'Pasca-observasi') {
+        statusBadge = '<span class="badge badge-warning" style="font-size: 0.75rem;">💡 Pasca-obs</span>';
+      } else if (s.status === 'Observasi') {
+        statusBadge = '<span class="badge badge-warning" style="font-size: 0.75rem;">🔍 Observasi</span>';
+      } else if (s.status === 'Pra-observasi') {
+        statusBadge = '<span class="badge badge-primary" style="font-size: 0.75rem;">📝 Pra-obs</span>';
+      }
+
+      let nilaiCol = '<span style="color: #94A3B8; font-size: 0.75rem;">-</span>';
+      if (s.nilai_akhir > 0) {
+        let predColor = s.predikat === 'Amat Baik' ? '#047857' : s.predikat === 'Baik' ? '#1D4ED8' : '#B45309';
+        nilaiCol = '<div style="font-weight: 800; font-size: 0.875rem; color: #0F172A;">' + s.nilai_akhir.toFixed(1) + '</div>' +
+          '<div style="font-size: 0.725rem; font-weight: 700; color: ' + predColor + ';">' + s.predikat + '</div>';
+      }
+
+      html += '<tr>' +
+        '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (idx + 1) + '</td>' +
+        '<td>' +
+        '<div style="font-weight: 700; color: #0F172A;">' + s.teacher_name + '</div>' +
+        '<div style="font-size: 0.725rem; color: #64748B; font-family: monospace;">NIP. ' + (s.nip || '-') + '</div>' +
+        '</td>' +
+        '<td>' +
+        '<div><span class="badge badge-neutral" style="font-size: 0.725rem;">' + s.department + '</span></div>' +
+        '<div style="font-size: 0.75rem; color: #475569; margin-top: 2px;">' + s.subject + '</div>' +
+        '</td>' +
+        '<td>' +
+        '<div style="font-weight: 600; font-size: 0.8125rem; color: #1E293B;">' + s.supervisor_name + '</div>' +
+        '<div style="font-size: 0.7rem; color: #64748B;">' + (s.supervisor_role || 'Kajur') + '</div>' +
+        '</td>' +
+        '<td>' +
+        '<div style="font-weight: 600; font-size: 0.8125rem; color: #0F172A;">' + (s.tgl_observasi || '-') + '</div>' +
+        '<div style="font-size: 0.7rem; color: #64748B;">' + (s.wkt_observasi || '08.00 WITA') + ' • ' + (s.class_name || 'Kelas') + '</div>' +
+        '</td>' +
+        '<td>' + statusBadge + '</td>' +
+        '<td style="text-align: center;">' + nilaiCol + '</td>' +
+        '<td style="text-align: center;">' +
+        '<div style="display: flex; gap: 4px; justify-content: center;">' +
+        '<button class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + s.id + '\')" title="Buka Siklus Supervisi Klinis" style="font-size: 0.75rem; padding: 0.28rem 0.6rem; font-weight: 700;">' +
+        '🔍 Buka Sesi' +
+        '</button>' +
+        '<button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.printSupervisiReport(\'' + s.id + '\')" title="Cetak Lembar Laporan Supervisi (PDF)" style="font-size: 0.75rem; padding: 0.28rem 0.5rem;">' +
+        '🖨️' +
+        '</button>' +
+        '</div>' +
+        '</td>' +
+        '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  // 10.6.3 SUBTAB 3: SUPERVISI MANAJERIAL WAKA & KAJUR (INSTRUMEN E)
+  function renderSupervisiManajerial() {
+    const tbody = document.getElementById('sup-manajerial-tbody');
+    if (!tbody) return;
+
+    const list = StorageManager.get('supervisi_manajerial');
+    let html = '';
+
+    list.forEach(function (m, idx) {
+      let predBadge = '<span class="predikat-baik" style="font-size: 0.75rem;">' + m.predikat + '</span>';
+      if (m.predikat === 'Amat Baik') predBadge = '<span class="predikat-amat-baik" style="font-size: 0.75rem;">' + m.predikat + '</span>';
+
+      html += '<tr>' +
+        '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (idx + 1) + '</td>' +
+        '<td>' +
+        '<div style="font-weight: 700; color: #0F172A;">' + m.pimpinan_name + '</div>' +
+        '<div style="font-size: 0.725rem; color: #64748B; font-family: monospace;">NIP. ' + (m.nip || '-') + '</div>' +
+        '</td>' +
+        '<td>' +
+        '<span class="badge badge-primary" style="font-size: 0.75rem;">' + m.jabatan + '</span>' +
+        '</td>' +
+        '<td>' +
+        '<div style="font-size: 0.775rem; color: #334155; line-height: 1.4;">' + m.fokus + '</div>' +
+        '</td>' +
+        '<td>' +
+        '<span class="badge badge-success" style="font-size: 0.725rem;">' + m.status_dokumen + '</span>' +
+        '</td>' +
+        '<td style="text-align: center;">' +
+        '<div style="font-weight: 800; font-size: 0.95rem; color: #0F172A;">' + m.skor_total + ' / 60</div>' +
+        '<div style="font-size: 0.725rem; color: #64748B;">Nilai: ' + m.nilai.toFixed(1) + '</div>' +
+        '</td>' +
+        '<td style="text-align: center;">' + predBadge + '</td>' +
+        '<td style="text-align: center;">' +
+        '<button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.openSupervisiManajerialModal(\'' + m.id + '\')" style="font-size: 0.75rem; font-weight: 700;">' +
+        '📝 Evaluasi' +
+        '</button>' +
+        '</td>' +
+        '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  // 10.6.4 SUBTAB 4: PELACAK RENCANA TINDAK LANJUT (RTL)
+  function renderSupervisiRTL() {
+    const tbody = document.getElementById('sup-rtl-tbody');
+    const badgeEl = document.getElementById('sup-rtl-active-badge');
+    if (!tbody) return;
+
+    const list = StorageManager.get('supervisi_rtl');
+    const openCount = list.filter(function (r) { return r.status === 'Terbuka'; }).length;
+    if (badgeEl) badgeEl.textContent = openCount + ' Tindakan Aktif';
+
+    if (list.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #888;">Belum ada rencana tindak lanjut tercatat.</td></tr>';
+      return;
+    }
+
+    let html = '';
+    list.forEach(function (r, idx) {
+      let isVerified = r.status === 'Terverifikasi';
+      let statusBadge = isVerified ?
+        '<span class="badge badge-success" style="font-size: 0.75rem;">✓ Terverifikasi</span>' :
+        '<span class="badge badge-warning" style="font-size: 0.75rem;">⏳ Terbuka</span>';
+
+      html += '<tr>' +
+        '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (idx + 1) + '</td>' +
+        '<td><strong>' + r.guru_name + '</strong></td>' +
+        '<td><span class="badge badge-neutral" style="font-size: 0.725rem;">' + r.department + '</span><div style="font-size: 0.725rem; color: #64748B;">' + r.subject + '</div></td>' +
+        '<td style="max-width: 250px; font-size: 0.8rem; color: #1E293B;">' + r.tindakan + '</td>' +
+        '<td style="font-size: 0.775rem; color: #475569;">' + r.pendampingan + '</td>' +
+        '<td style="font-weight: 700; font-size: 0.775rem; color: #DC2626;">📅 ' + r.tenggat + '</td>' +
+        '<td style="font-size: 0.775rem; color: #047857;">📄 ' + r.bukti + '</td>' +
+        '<td style="text-align: center;">' + statusBadge + '</td>' +
+        '<td style="text-align: center;">' +
+        (isVerified ?
+          '<span style="font-size: 0.725rem; color: #059669; font-weight: 700;">Selesai</span>' :
+          '<button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.verifyRtlItem(\'' + r.id + '\')" style="font-size: 0.75rem; color: #059669; border-color: #A7F3D0;">' +
+          '✅ Verifikasi' +
+          '</button>') +
+        '</td>' +
+        '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  // 10.6.5 SUBTAB 6: REKAPITULASI LAPORAN JURUSAN
+  function renderSupervisiRekapLaporan() {
+    const tbody = document.getElementById('sup-rekap-jurusan-tbody');
+    if (!tbody) return;
+
+    const sessions = StorageManager.get('supervisi_sesi');
+    const jurusans = [
+      { code: 'TJKT', name: 'Teknik Jaringan Komputer & Telekomunikasi', kajur: 'Muhammad Ihsan, S.Kom' },
+      { code: 'DKV', name: 'Desain Komunikasi Visual', kajur: 'Hendra Surya Pratama, S.Kom' },
+      { code: 'AKL', name: 'Akuntansi & Keuangan Lembaga', kajur: 'Oky Wulan Maulina, S.Pd' },
+      { code: 'MPLB', name: 'Manajemen Perkantoran & Layanan Bisnis', kajur: 'Akhmad Hanafi Maulana, S.E' },
+      { code: 'Pemasaran', name: 'Pemasaran / Bisnis Daring', kajur: 'Futri Indri Septiani, S.Pd' },
+      { code: 'Umum', name: 'Muatan Umum & Pilihan', kajur: 'Rusnani, S.Pd., M.T (Waka)' }
+    ];
+
+    let html = '';
+    jurusans.forEach(function (j, idx) {
+      const deptSessions = sessions.filter(function (s) {
+        const d = (s.department || '').toUpperCase();
+        if (j.code === 'Pemasaran') return d.includes('PEMASARAN') || d.includes('PM');
+        return d.includes(j.code.toUpperCase());
+      });
+
+      const total = deptSessions.length;
+      const selesai = deptSessions.filter(function (s) { return s.status === 'Selesai'; }).length;
+      const scored = deptSessions.filter(function (s) { return s.status === 'Selesai' && s.nilai_akhir > 0; });
+
+      var avgB = 0;
+      var avgC = 0;
+      var avgFinal = 0;
+      if (scored.length > 0) {
+        avgB = scored.reduce(function (a, b) { return a + Number(b.nilai_b || 0); }, 0) / scored.length;
+        avgC = scored.reduce(function (a, b) { return a + Number(b.nilai_c || 0); }, 0) / scored.length;
+        avgFinal = scored.reduce(function (a, b) { return a + Number(b.nilai_akhir || 0); }, 0) / scored.length;
+      }
+
+      let predikat = 'Baik';
+      let predBadge = 'badge-primary';
+      if (avgFinal >= 91) { predikat = 'Amat Baik'; predBadge = 'badge-success'; }
+      else if (avgFinal >= 76) { predikat = 'Baik'; predBadge = 'badge-primary'; }
+      else if (avgFinal >= 61) { predikat = 'Cukup'; predBadge = 'badge-warning'; }
+      else if (avgFinal > 0) { predikat = 'Kurang'; predBadge = 'badge-danger'; }
+
+      html += '<tr>' +
+        '<td style="text-align: center; color: #888;">' + (idx + 1) + '</td>' +
+        '<td><strong>' + j.name + ' (' + j.code + ')</strong></td>' +
+        '<td>' + j.kajur + '</td>' +
+        '<td style="text-align: center;">' + total + ' Guru</td>' +
+        '<td style="text-align: center; font-weight: 700; color: #047857;">' + selesai + ' Guru (' + (total > 0 ? Math.round((selesai/total)*100) : 0) + '%)</td>' +
+        '<td style="text-align: center;">' + (avgB > 0 ? avgB.toFixed(1) : '-') + '</td>' +
+        '<td style="text-align: center;">' + (avgC > 0 ? avgC.toFixed(1) : '-') + '</td>' +
+        '<td style="text-align: center; font-weight: 800; font-size: 0.95rem; color: #1E3A8A;">' + (avgFinal > 0 ? avgFinal.toFixed(1) : '-') + '</td>' +
+        '<td style="text-align: center;"><span class="badge ' + predBadge + '">' + (avgFinal > 0 ? predikat : 'Sedang Berjalan') + '</span></td>' +
+        '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  // 10.6.6 MODAL SIKLUS SUPERVISI KLINIS (TAHAP 1 - 2 - 3)
+  function openSupervisiKlinisModal(identifier) {
+    const sessions = StorageManager.get('supervisi_sesi');
+    let session = sessions.find(function (s) {
+      return String(s.id) === String(identifier) || String(s.teacher_id) === String(identifier);
+    });
+
+    if (!session) {
+      // Find teacher
+      const teachers = StorageManager.get('teachers');
+      const teacher = teachers.find(function (t) { return String(t.id) === String(identifier); });
+      if (!teacher) {
+        showToast('Data guru tidak ditemukan.', 'danger');
+        return;
+      }
+      // Create session
+      session = {
+        id: 'SESI-' + Date.now().toString().slice(-4),
+        program_id: 'PROG-2026-GANJIL',
+        teacher_id: teacher.id,
+        teacher_name: teacher.name,
+        nip: teacher.nip || '-',
+        department: teacher.department || 'Umum',
+        subject: teacher.subject || 'Mata Pelajaran',
+        class_name: 'XI ' + (teacher.department || 'TJKT') + ' 1',
+        supervisor_id: 'T-001',
+        supervisor_name: 'Rusnani, S.Pd., M.T',
+        supervisor_role: 'Waka Kurikulum',
+        status: 'Pra-observasi',
+        tgl_observasi: new Date().toISOString().split('T')[0],
+        wkt_observasi: '08.00 - 09.30 WITA',
+        room: 'Lab / Ruang KBM',
+        fokus: 'Pembelajaran Berdiferensiasi & K3',
+        skor_b: 0,
+        skor_c: 0,
+        nilai_b: 0,
+        nilai_c: 0,
+        nilai_akhir: 0,
+        predikat: '-',
+        wawancara_a: {},
+        refleksi_d: {}
+      };
+      StorageManager.add('supervisi_sesi', session);
+    }
+
+    State.activeSupervisiSesiId = session.id;
+    State.activeSupervisiGuruId = session.teacher_id;
+    State.currentSupervisiScores.b = Object.assign({}, session.b_scores || {});
+    State.currentSupervisiScores.c = Object.assign({}, session.c_scores || {});
+
+    // Teacher Banner
+    document.getElementById('sup-modal-sesi-id').value = session.id;
+    document.getElementById('sup-modal-guru-name').textContent = session.teacher_name;
+    document.getElementById('sup-modal-guru-dept').textContent = session.department || 'Umum';
+    document.getElementById('sup-modal-guru-meta').textContent = 'NIP. ' + (session.nip || '-') + ' • Mapel: ' + (session.subject || '-') + ' • Pengawas: ' + (session.supervisor_name || 'Rusnani');
+
+    const statusBadge = document.getElementById('sup-modal-status-badge');
+    if (statusBadge) {
+      statusBadge.textContent = session.status || 'Pra-observasi';
+      statusBadge.className = session.status === 'Selesai' ? 'badge badge-success' : 'badge badge-warning';
+    }
+
+    // Live Perangkat SIMKUR check
+    const teacherDocs = StorageManager.get('guru_documents').filter(function (d) {
+      return String(d.teacher_id) === String(session.teacher_id);
+    });
+    const docPills = document.getElementById('sup-modal-doc-pills');
+    if (docPills) {
+      const rppCount = teacherDocs.filter(function (d) { return d.category === 'Modul Ajar'; }).length;
+      const silabusCount = teacherDocs.filter(function (d) { return d.category === 'Silabus & ATP'; }).length;
+      const asesmenCount = teacherDocs.filter(function (d) { return d.category === 'Instrumen Asesmen'; }).length;
+
+      docPills.innerHTML = '' +
+        '<span class="badge ' + (rppCount > 0 ? 'badge-success' : 'badge-danger') + '">Modul (' + rppCount + ')</span>' +
+        '<span class="badge ' + (silabusCount > 0 ? 'badge-success' : 'badge-danger') + '">Silabus (' + silabusCount + ')</span>' +
+        '<span class="badge ' + (asesmenCount > 0 ? 'badge-success' : 'badge-danger') + '">Asesmen (' + asesmenCount + ')</span>';
+    }
+
+    // Populate Instrumen A
+    const formA = document.getElementById('sup-form-instrumen-a');
+    if (formA) {
+      const answersA = session.wawancara_a || {};
+      let aHtml = '';
+      SUPERVISI_INSTRUMEN.A.forEach(function (q) {
+        const val = answersA[q.no] || '';
+        aHtml += '<div>' +
+          '<label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 700; color: #1E293B; margin-bottom: 4px;">' +
+          q.no + '. ' + q.q +
+          '</label>' +
+          '<textarea class="form-input sup-ans-a" data-no="' + q.no + '" rows="2" placeholder="Catatan jawaban wawancara...">' + val + '</textarea>' +
+          '</div>';
+      });
+      formA.innerHTML = aHtml;
+    }
+
+    // Populate Instrumen B Table
+    renderRubrikTable('B', 'sup-form-instrumen-b', session.b_scores || {}, session.b_notes || {});
+
+    // Populate Instrumen C Table
+    renderRubrikTable('C', 'sup-form-instrumen-c', session.c_scores || {}, session.c_notes || {});
+
+    // Populate Jurnal KBM Context Box
+    const teacherJournals = StorageManager.get('guru_journals').filter(function (j) {
+      return String(j.teacher_id) === String(session.teacher_id);
+    });
+    const kbmSummary = document.getElementById('sup-modal-kbm-summary');
+    if (kbmSummary) {
+      kbmSummary.textContent = teacherJournals.length > 0 ?
+        'Guru telah mengisi ' + teacherJournals.length + ' sesi jurnal mengajar pada semester berjalan. Presensi kelas sinkron.' :
+        'Guru belum mencatat sesi jurnal KBM pada portal guru.';
+    }
+
+    // Populate Instrumen D (Refleksi, Kekuatan, Area, RTL)
+    const refD = session.refleksi_d || {};
+    const ref1El = document.getElementById('sup-d-refleksi-1');
+    if (ref1El) ref1El.value = refD.refleksi_1 || '';
+    const ref2El = document.getElementById('sup-d-refleksi-2');
+    if (ref2El) ref2El.value = refD.refleksi_2 || '';
+    const kekEl = document.getElementById('sup-d-kekuatan');
+    if (kekEl) kekEl.value = refD.kekuatan || '';
+    const areaEl = document.getElementById('sup-d-area');
+    if (areaEl) areaEl.value = refD.area_pengembangan || '';
+    const guruConf = document.getElementById('sup-d-guru-confirm');
+    if (guruConf) guruConf.checked = refD.guru_confirmed === true;
+
+    // Populate RTL table
+    const rtlTbody = document.getElementById('sup-d-rtl-tbody');
+    if (rtlTbody) {
+      rtlTbody.innerHTML = '';
+      const existingRtl = (session.rtl_items && session.rtl_items.length > 0) ? session.rtl_items : [
+        {
+          tindakan: 'Penyesuaian diferensiasi modul ajar & rubric praktikum.',
+          pendampingan: 'Diskusi Sejawat',
+          tenggat: '2026-10-25',
+          status: 'Terbuka'
+        }
+      ];
+      existingRtl.forEach(function (item) {
+        addSupervisiRtlRow(item);
+      });
+    }
+
+    // Reset to Step 1 & Open Modal
+    switchSupervisiKlinisStep(1);
+    openModal('modal-supervisi-klinis');
+  }
+
+  function renderRubrikTable(instrumentCode, tbodyId, scores, notes) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+
+    scores = scores || {};
+    notes = notes || {};
+    const items = SUPERVISI_INSTRUMEN[instrumentCode];
+    let html = '';
+    let currentSection = '';
+
+    items.forEach(function (item) {
+      if (item.section && item.section !== currentSection) {
+        currentSection = item.section;
+        html += '<tr class="rubrik-section-header"><td colspan="4">' + currentSection + '</td></tr>';
+      }
+
+      const currentScore = scores[item.no] !== undefined ? Number(scores[item.no]) : null;
+      const currentNote = notes[item.no] || '';
+
+      let buttonsHtml = '<div class="score-btn-group">';
+      [1, 2, 3, 4].forEach(function (val) {
+        const isSelected = currentScore === val;
+        const selClass = isSelected ? ' selected-' + val : '';
+        buttonsHtml += '<button type="button" class="score-radio-btn' + selClass + '" ' +
+          'data-inst="' + instrumentCode + '" data-no="' + item.no + '" data-score="' + val + '" ' +
+          'onclick="window.PORTAL_APP.setRubrikScore(\'' + instrumentCode + '\', ' + item.no + ', ' + val + ')">' +
+          val +
+          '</button>';
+      });
+      buttonsHtml += '</div>';
+
+      html += '<tr>' +
+        '<td style="text-align: center; font-weight: 700; color: #64748B;">' + item.no + '</td>' +
+        '<td style="color: #1E293B; font-size: 0.8125rem;">' + item.text + '</td>' +
+        '<td style="text-align: center;">' + buttonsHtml + '</td>' +
+        '<td><input type="text" class="form-input rubrik-note-input" data-inst="' + instrumentCode + '" data-no="' + item.no + '" placeholder="Catatan bukti / fakta..." value="' + currentNote + '" style="font-size: 0.775rem; padding: 4px 8px;"></td>' +
+        '</tr>';
+    });
+
+    tbody.innerHTML = html;
+    updateLiveRubrikHeader(instrumentCode);
+  }
+
+  function setRubrikScore(instrumentCode, butirNo, score) {
+    if (!State.currentSupervisiScores[instrumentCode.toLowerCase()]) {
+      State.currentSupervisiScores[instrumentCode.toLowerCase()] = {};
+    }
+    State.currentSupervisiScores[instrumentCode.toLowerCase()][butirNo] = score;
+
+    // Update buttons in DOM
+    const btns = document.querySelectorAll('.score-radio-btn[data-inst="' + instrumentCode + '"][data-no="' + butirNo + '"]');
+    btns.forEach(function (b) {
+      b.className = 'score-radio-btn';
+      if (Number(b.getAttribute('data-score')) === score) {
+        b.classList.add('selected-' + score);
+      }
+    });
+
+    updateLiveRubrikHeader(instrumentCode);
+  }
+
+  function updateLiveRubrikHeader(instrumentCode) {
+    const scores = State.currentSupervisiScores[instrumentCode.toLowerCase()] || {};
+    if (instrumentCode === 'B') {
+      const calc = calculateSupervisiScores(scores, {});
+      const liveB = document.getElementById('sup-b-score-live');
+      if (liveB) liveB.textContent = calc.totalB + ' / 56 (Nilai: ' + calc.nilaiB.toFixed(1) + ')';
+    } else if (instrumentCode === 'C') {
+      const calc = calculateSupervisiScores({}, scores);
+      const liveC = document.getElementById('sup-c-score-live');
+      if (liveC) liveC.textContent = calc.totalC + ' / 72 (Nilai: ' + calc.nilaiC.toFixed(1) + ')';
+    } else if (instrumentCode === 'E') {
+      let total = 0;
+      for (let k = 1; k <= 15; k++) {
+        total += Number(scores[k] || 0);
+      }
+      const val = total > 0 ? (total / 60) * 100 : 0;
+      const totalEl = document.getElementById('sup-man-score-total');
+      if (totalEl) totalEl.textContent = total;
+      const valEl = document.getElementById('sup-man-score-val');
+      if (valEl) valEl.textContent = val.toFixed(1);
+      const badgeEl = document.getElementById('sup-man-predikat-badge');
+      if (badgeEl) {
+        badgeEl.textContent = 'Predikat: ' + (val >= 91 ? 'Amat Baik' : val >= 76 ? 'Baik' : val >= 61 ? 'Cukup' : 'Kurang');
+        badgeEl.className = val >= 91 ? 'predikat-amat-baik' : val >= 76 ? 'predikat-baik' : val >= 61 ? 'predikat-cukup' : 'predikat-kurang';
+      }
+    }
+  }
+
+  function switchSupervisiKlinisStep(step) {
+    State.activeSupervisiStep = step;
+
+    // Update buttons
+    [1, 2, 3].forEach(function (s) {
+      const btn = document.getElementById('sup-step-btn-' + s);
+      const pane = document.getElementById('sup-step-content-' + s);
+      if (btn) {
+        if (s === step) btn.classList.add('active');
+        else btn.classList.remove('active');
+      }
+      if (pane) pane.style.display = (s === step) ? 'block' : 'none';
+    });
+
+    // If step 3, recalculate final scores
+    if (step === 3) {
+      const calc = calculateSupervisiScores(State.currentSupervisiScores.b, State.currentSupervisiScores.c);
+      const finalScoreEl = document.getElementById('sup-calc-final-score');
+      if (finalScoreEl) finalScoreEl.textContent = calc.nilaiAkhir.toFixed(1);
+
+      const bContribEl = document.getElementById('sup-calc-b-contrib');
+      if (bContribEl) bContribEl.textContent = calc.nilaiB.toFixed(1) + ' (40% = ' + calc.contribB.toFixed(1) + ')';
+
+      const cContribEl = document.getElementById('sup-calc-c-contrib');
+      if (cContribEl) cContribEl.textContent = calc.nilaiC.toFixed(1) + ' (60% = ' + calc.contribC.toFixed(1) + ')';
+
+      const predBadge = document.getElementById('sup-calc-predikat-badge');
+      if (predBadge) {
+        predBadge.textContent = 'Predikat: ' + calc.predikat;
+        predBadge.className = calc.predikatClass;
+      }
+
+      const recText = document.getElementById('sup-calc-rekomendasi-text');
+      if (recText) recText.textContent = calc.tindakLanjut;
+    }
+
+    // Update footer buttons
+    const prevBtn = document.getElementById('sup-btn-prev');
+    const nextBtn = document.getElementById('sup-btn-next');
+
+    if (prevBtn) prevBtn.style.display = (step > 1) ? 'inline-flex' : 'none';
+    if (nextBtn) {
+      if (step === 1) nextBtn.textContent = 'Lanjut ke Observasi KBM ➡️';
+      else if (step === 2) nextBtn.textContent = 'Lanjut ke Pasca-Observasi & RTL ➡️';
+      else nextBtn.textContent = '✅ Selesaikan Supervisi (Final)';
+    }
+  }
+
+  function prevSupervisiStep() {
+    if (State.activeSupervisiStep > 1) {
+      switchSupervisiKlinisStep(State.activeSupervisiStep - 1);
+    }
+  }
+
+  function nextSupervisiStep() {
+    if (State.activeSupervisiStep < 3) {
+      saveSupervisiKlinis(false);
+      switchSupervisiKlinisStep(State.activeSupervisiStep + 1);
+    } else {
+      saveSupervisiKlinis(true);
+    }
+  }
+
+  function addSupervisiRtlRow(data) {
+    const tbody = document.getElementById('sup-d-rtl-tbody');
+    if (!tbody) return;
+
+    data = data || { tindakan: '', pendampingan: 'Diskusi Sejawat', tenggat: '2026-10-30', status: 'Terbuka' };
+    const row = document.createElement('tr');
+    row.innerHTML = '' +
+      '<td><input type="text" class="form-input rtl-tindakan" placeholder="Tindakan perbaikan konkret..." value="' + (data.tindakan || '') + '" style="font-size: 0.775rem;"></td>' +
+      '<td><select class="form-input rtl-pendampingan" style="font-size: 0.775rem;">' +
+      '<option value="Diskusi Teman Sejawat" ' + (data.pendampingan.includes('Sejawat') ? 'selected' : '') + '>Diskusi Teman Sejawat</option>' +
+      '<option value="Pelatihan Mandiri PMM" ' + (data.pendampingan.includes('PMM') ? 'selected' : '') + '>Pelatihan Mandiri (PMM)</option>' +
+      '<option value="Observasi Ulang Kajur" ' + (data.pendampingan.includes('Ulang') ? 'selected' : '') + '>Observasi Ulang Kajur</option>' +
+      '<option value="Workshop Kurikulum" ' + (data.pendampingan.includes('Workshop') ? 'selected' : '') + '>Workshop Kurikulum</option>' +
+      '</select></td>' +
+      '<td><input type="date" class="form-input rtl-tenggat" value="' + (data.tenggat || '2026-10-30') + '" style="font-size: 0.775rem;"></td>' +
+      '<td><select class="form-input rtl-status" style="font-size: 0.775rem;">' +
+      '<option value="Terbuka" ' + (data.status === 'Terbuka' ? 'selected' : '') + '>⏳ Terbuka</option>' +
+      '<option value="Terverifikasi" ' + (data.status === 'Terverifikasi' ? 'selected' : '') + '>✅ Terverifikasi</option>' +
+      '</select></td>' +
+      '<td style="text-align: center;"><button type="button" class="btn btn-ghost btn-sm" onclick="this.closest(\'tr\').remove()" style="color: #DC2626;">🗑️</button></td>';
+    tbody.appendChild(row);
+  }
+
+  function saveSupervisiKlinis(isFinal) {
+    const sesiId = State.activeSupervisiSesiId;
+    if (!sesiId) return;
+
+    // Collect answers A
+    const wawancaraA = {};
+    document.querySelectorAll('.sup-ans-a').forEach(function (ta) {
+      wawancaraA[ta.getAttribute('data-no')] = ta.value;
+    });
+
+    // Collect notes B & C
+    const bNotes = {};
+    document.querySelectorAll('.rubrik-note-input[data-inst="B"]').forEach(function (inp) {
+      bNotes[inp.getAttribute('data-no')] = inp.value;
+    });
+
+    const cNotes = {};
+    document.querySelectorAll('.rubrik-note-input[data-inst="C"]').forEach(function (inp) {
+      cNotes[inp.getAttribute('data-no')] = inp.value;
+    });
+
+    // Collect RTL
+    const rtlItems = [];
+    document.querySelectorAll('#sup-d-rtl-tbody tr').forEach(function (tr) {
+      const tindakan = tr.querySelector('.rtl-tindakan') ? tr.querySelector('.rtl-tindakan').value : '';
+      const pendampingan = tr.querySelector('.rtl-pendampingan') ? tr.querySelector('.rtl-pendampingan').value : '';
+      const tenggat = tr.querySelector('.rtl-tenggat') ? tr.querySelector('.rtl-tenggat').value : '';
+      const status = tr.querySelector('.rtl-status') ? tr.querySelector('.rtl-status').value : 'Terbuka';
+      if (tindakan) {
+        rtlItems.push({ tindakan: tindakan, pendampingan: pendampingan, tenggat: tenggat, status: status });
+      }
+    });
+
+    // Collect Refleksi D
+    const refleksiD = {
+      refleksi_1: document.getElementById('sup-d-refleksi-1') ? document.getElementById('sup-d-refleksi-1').value : '',
+      refleksi_2: document.getElementById('sup-d-refleksi-2') ? document.getElementById('sup-d-refleksi-2').value : '',
+      kekuatan: document.getElementById('sup-d-kekuatan') ? document.getElementById('sup-d-kekuatan').value : '',
+      area_pengembangan: document.getElementById('sup-d-area') ? document.getElementById('sup-d-area').value : '',
+      guru_confirmed: document.getElementById('sup-d-guru-confirm') ? document.getElementById('sup-d-guru-confirm').checked : false
+    };
+
+    // Calculate Scores
+    const calc = calculateSupervisiScores(State.currentSupervisiScores.b, State.currentSupervisiScores.c);
+
+    // Determine status
+    let newStatus = 'Pra-observasi';
+    if (isFinal) {
+      newStatus = 'Selesai';
+    } else if (State.activeSupervisiStep === 2) {
+      newStatus = 'Observasi';
+    } else if (State.activeSupervisiStep === 3) {
+      newStatus = 'Pasca-observasi';
+    }
+
+    const updatedData = {
+      b_scores: State.currentSupervisiScores.b,
+      b_notes: bNotes,
+      skor_b: calc.totalB,
+      nilai_b: calc.nilaiB,
+      c_scores: State.currentSupervisiScores.c,
+      c_notes: cNotes,
+      skor_c: calc.totalC,
+      nilai_c: calc.nilaiC,
+      nilai_akhir: calc.nilaiAkhir,
+      predikat: calc.predikat,
+      wawancara_a: wawancaraA,
+      refleksi_d: refleksiD,
+      rtl_items: rtlItems,
+      status: newStatus,
+      updated_at: new Date().toISOString()
+    };
+
+    StorageManager.update('supervisi_sesi', sesiId, updatedData);
+
+    // If RTL items exist, sync to general RTL table
+    if (rtlItems.length > 0) {
+      const allRtl = StorageManager.get('supervisi_rtl');
+      const sessions = StorageManager.get('supervisi_sesi');
+      const activeSesi = sessions.find(function (s) { return String(s.id) === String(sesiId); });
+      
+      rtlItems.forEach(function (rItem, idx) {
+        const rtlId = 'RTL-' + sesiId + '-' + idx;
+        const exists = allRtl.find(function (r) { return r.id === rtlId; });
+        const record = {
+          id: rtlId,
+          sesi_id: sesiId,
+          guru_name: activeSesi ? activeSesi.teacher_name : 'Guru',
+          department: activeSesi ? activeSesi.department : 'Umum',
+          subject: activeSesi ? activeSesi.subject : 'Mapel',
+          tindakan: rItem.tindakan,
+          pendampingan: rItem.pendampingan,
+          tenggat: rItem.tenggat,
+          bukti: 'Portofolio / Modul Ajar Revisi',
+          status: rItem.status,
+          verified_by: rItem.status === 'Terverifikasi' ? 'Kajur' : null
+        };
+        if (exists) {
+          StorageManager.update('supervisi_rtl', rtlId, record);
+        } else {
+          StorageManager.add('supervisi_rtl', record);
+        }
+      });
+    }
+
+    renderSupervisi();
+    renderTeacherAdminTable(StorageManager.get('teacher_admin'));
+
+    if (isFinal) {
+      closeModal('modal-supervisi-klinis');
+      showToast('🎉 Supervisi klinis berhasil diselesaikan! Nilai Akhir: ' + calc.nilaiAkhir + ' (' + calc.predikat + ').', 'success');
+    } else {
+      showToast('💾 Draf supervisi berhasil disimpan.', 'info');
+    }
+  }
+
+  // 10.6.7 MODAL SUPERVISI MANAJERIAL
+  function openSupervisiManajerialModal(manId) {
+    const list = StorageManager.get('supervisi_manajerial');
+    const rec = list.find(function (m) { return String(m.id) === String(manId); }) || list[0];
+    if (!rec) return;
+
+    State.activeManajerialId = rec.id;
+    document.getElementById('sup-man-id').value = rec.id;
+    document.getElementById('sup-man-target-select').value = rec.id;
+
+    // Initialize scores
+    State.currentSupervisiScores.e = Object.assign({}, rec.e_scores || {});
+    if (Object.keys(State.currentSupervisiScores.e).length === 0) {
+      // populate default scores
+      for (let i = 1; i <= 15; i++) {
+        State.currentSupervisiScores.e[i] = (i % 3 === 0) ? 3 : 4;
+      }
+    }
+
+    renderRubrikTable('E', 'sup-form-instrumen-e', State.currentSupervisiScores.e, rec.e_notes || {});
+    updateLiveRubrikHeader('E');
+
+    const catEl = document.getElementById('sup-man-catatan-kepsek');
+    if (catEl) catEl.value = rec.catatan_kepsek || '';
+
+    openModal('modal-supervisi-manajerial');
+  }
+
+  function changeManajerialTarget(manId) {
+    openSupervisiManajerialModal(manId);
+  }
+
+  function saveSupervisiManajerial() {
+    const manId = document.getElementById('sup-man-id').value;
+    const scores = State.currentSupervisiScores.e || {};
+    let total = 0;
+    for (let i = 1; i <= 15; i++) {
+      total += Number(scores[i] || 0);
+    }
+    const val = (total / 60) * 100;
+    const pred = val >= 91 ? 'Amat Baik' : val >= 76 ? 'Baik' : val >= 61 ? 'Cukup' : 'Kurang';
+
+    const eNotes = {};
+    document.querySelectorAll('.rubrik-note-input[data-inst="E"]').forEach(function (inp) {
+      eNotes[inp.getAttribute('data-no')] = inp.value;
+    });
+
+    const catatan = document.getElementById('sup-man-catatan-kepsek') ? document.getElementById('sup-man-catatan-kepsek').value : '';
+
+    const updateObj = {
+      e_scores: scores,
+      e_notes: eNotes,
+      skor_total: total,
+      nilai: Math.round(val * 10) / 10,
+      predikat: pred,
+      catatan_kepsek: catatan
+    };
+
+    StorageManager.update('supervisi_manajerial', manId, updateObj);
+    renderSupervisiManajerial();
+    closeModal('modal-supervisi-manajerial');
+    showToast('Penilaian supervisi manajerial berhasil disimpan.', 'success');
+  }
+
+  // 10.6.8 CETAK LAPORAN RESMI SUPERVISI (PDF FORMAT)
+  function printSupervisiReport(sesiId) {
+    const sessions = StorageManager.get('supervisi_sesi');
+    const session = sessions.find(function (s) { return String(s.id) === String(sesiId); });
+    if (!session) {
+      showToast('Sesi tidak ditemukan.', 'danger');
+      return;
+    }
+
+    const sheet = document.getElementById('printable-supervisi-sheet');
+    if (!sheet) return;
+
+    const calc = calculateSupervisiScores(session.b_scores || {}, session.c_scores || {});
+    const ref = session.refleksi_d || {};
+
+    let rtlRows = '';
+    const rList = session.rtl_items || [];
+    if (rList.length > 0) {
+      rList.forEach(function (r, i) {
+        rtlRows += '<tr>' +
+          '<td style="text-align: center; border: 1px solid #000; padding: 4px;">' + (i + 1) + '</td>' +
+          '<td style="border: 1px solid #000; padding: 4px;">' + r.tindakan + '</td>' +
+          '<td style="border: 1px solid #000; padding: 4px;">' + r.pendampingan + '</td>' +
+          '<td style="border: 1px solid #000; padding: 4px; text-align: center;">' + r.tenggat + '</td>' +
+          '<td style="border: 1px solid #000; padding: 4px; text-align: center;">' + r.status + '</td>' +
+          '</tr>';
+      });
+    } else {
+      rtlRows = '<tr><td colspan="5" style="text-align: center; border: 1px solid #000; padding: 8px;">Tidak ada catatan tindakan perbaikan khusus.</td></tr>';
+    }
+
+    sheet.innerHTML = '' +
+      // Kop Surat Resmi
+      '<div style="text-align: center; border-bottom: 3px double #000000; padding-bottom: 12px; margin-bottom: 16px;">' +
+      '<div style="font-size: 13pt; font-weight: bold; text-transform: uppercase;">PEMERINTAH PROVINSI KALIMANTAN SELATAN</div>' +
+      '<div style="font-size: 14pt; font-weight: bold; text-transform: uppercase;">DINAS PENDIDIKAN DAN KEBUDAYAAN</div>' +
+      '<div style="font-size: 16pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">SMK NEGERI 1 BANJARMASIN</div>' +
+      '<div style="font-size: 9pt; margin-top: 2px;">Jalan Mulawarman No. 25 Telp/Fax (0511) 3353457 Banjarmasin 70114</div>' +
+      '<div style="font-size: 9pt; font-style: italic;">Website: www.smkn1bjm.sch.id • Email: info@smkn1bjm.sch.id</div>' +
+      '</div>' +
+
+      // Judul Laporan
+      '<div style="text-align: center; margin-bottom: 16px;">' +
+      '<div style="font-size: 12pt; font-weight: bold; text-decoration: underline;">INSTRUMEN & LAPORAN HASIL SUPERVISI AKADEMIK PEMBELAJARAN</div>' +
+      '<div style="font-size: 10pt; margin-top: 2px;">Nomor: 421.5/SIMKUR/' + session.id + '/2026 • Semester Ganjil 2026/2027</div>' +
+      '</div>' +
+
+      // Identitas Guru & Observasi
+      '<table style="width: 100%; font-size: 10pt; margin-bottom: 14px; border-collapse: collapse;">' +
+      '<tr><td style="width: 25%; padding: 3px 0;">Nama Guru</td><td style="width: 2%;">:</td><td style="font-weight: bold;">' + session.teacher_name + '</td>' +
+      '<td style="width: 20%; padding: 3px 0;">Hari / Tanggal</td><td style="width: 2%;">:</td><td>' + (session.tgl_observasi || '-') + '</td></tr>' +
+      '<tr><td style="padding: 3px 0;">NIP / NUPTK</td><td>:</td><td>' + (session.nip || '-') + '</td>' +
+      '<td style="padding: 3px 0;">Jam / Pertemuan</td><td>:</td><td>' + (session.wkt_observasi || '08.00 - 09.30 WITA') + '</td></tr>' +
+      '<tr><td style="padding: 3px 0;">Program Keahlian</td><td>:</td><td>' + session.department + '</td>' +
+      '<td style="padding: 3px 0;">Kelas / Rombel</td><td>:</td><td>' + (session.class_name || 'XI TJKT 1') + '</td></tr>' +
+      '<tr><td style="padding: 3px 0;">Mata Pelajaran</td><td>:</td><td>' + session.subject + '</td>' +
+      '<td style="padding: 3px 0;">Nama Supervisor</td><td>:</td><td><strong>' + session.supervisor_name + '</strong></td></tr>' +
+      '</table>' +
+
+      // Matriks Hasil Supervisi
+      '<div style="font-size: 10.5pt; font-weight: bold; margin-bottom: 6px;">A. REKAPITULASI NILAI SUPERVISI</div>' +
+      '<table style="width: 100%; border-collapse: collapse; font-size: 9.5pt; margin-bottom: 14px;">' +
+      '<thead>' +
+      '<tr style="background: #E5E7EB; text-align: center;">' +
+      '<th style="border: 1px solid #000; padding: 6px; width: 5%;">No</th>' +
+      '<th style="border: 1px solid #000; padding: 6px; text-align: left;">Komponen Evaluasi</th>' +
+      '<th style="border: 1px solid #000; padding: 6px; width: 15%;">Skor Perolehan</th>' +
+      '<th style="border: 1px solid #000; padding: 6px; width: 12%;">Nilai (100)</th>' +
+      '<th style="border: 1px solid #000; padding: 6px; width: 12%;">Bobot</th>' +
+      '<th style="border: 1px solid #000; padding: 6px; width: 15%;">Skor Tertimbang</th>' +
+      '</tr>' +
+      '</thead>' +
+      '<tbody>' +
+      '<tr>' +
+      '<td style="text-align: center; border: 1px solid #000; padding: 5px;">1</td>' +
+      '<td style="border: 1px solid #000; padding: 5px;">Telaah Perangkat Ajar (Instrumen B: 14 Butir)</td>' +
+      '<td style="text-align: center; border: 1px solid #000; padding: 5px;">' + (session.skor_b || calc.totalB) + ' / 56</td>' +
+      '<td style="text-align: center; border: 1px solid #000; padding: 5px;">' + (session.nilai_b || calc.nilaiB) + '</td>' +
+      '<td style="text-align: center; border: 1px solid #000; padding: 5px;">40%</td>' +
+      '<td style="text-align: center; border: 1px solid #000; padding: 5px; font-weight: bold;">' + calc.contribB.toFixed(1) + '</td>' +
+      '</tr>' +
+      '<tr>' +
+      '<td style="text-align: center; border: 1px solid #000; padding: 5px;">2</td>' +
+      '<td style="border: 1px solid #000; padding: 5px;">Observasi Pelaksanaan Pembelajaran (Instrumen C: 18 Butir)</td>' +
+      '<td style="text-align: center; border: 1px solid #000; padding: 5px;">' + (session.skor_c || calc.totalC) + ' / 72</td>' +
+      '<td style="text-align: center; border: 1px solid #000; padding: 5px;">' + (session.nilai_c || calc.nilaiC) + '</td>' +
+      '<td style="text-align: center; border: 1px solid #000; padding: 5px;">60%</td>' +
+      '<td style="text-align: center; border: 1px solid #000; padding: 5px; font-weight: bold;">' + calc.contribC.toFixed(1) + '</td>' +
+      '</tr>' +
+      '<tr style="background: #F3F4F6; font-weight: bold;">' +
+      '<td colspan="5" style="border: 1px solid #000; padding: 6px; text-align: right;">NILAI AKHIR SUPERVISI AKADEMIK:</td>' +
+      '<td style="border: 1px solid #000; padding: 6px; text-align: center; font-size: 11pt;">' + (session.nilai_akhir || calc.nilaiAkhir).toFixed(1) + '</td>' +
+      '</tr>' +
+      '<tr style="background: #F3F4F6; font-weight: bold;">' +
+      '<td colspan="5" style="border: 1px solid #000; padding: 6px; text-align: right;">PREDIKAT MUTU PEMBELAJARAN:</td>' +
+      '<td style="border: 1px solid #000; padding: 6px; text-align: center; font-size: 11pt; color: #1D4ED8;">' + (session.predikat || calc.predikat) + '</td>' +
+      '</tr>' +
+      '</tbody>' +
+      '</table>' +
+
+      // Catatan Refleksi & Umpan Balik
+      '<div style="font-size: 10.5pt; font-weight: bold; margin-bottom: 6px;">B. REFLEKSI & UMPAN BALIK SUPERVISOR</div>' +
+      '<table style="width: 100%; border: 1px solid #000; border-collapse: collapse; font-size: 9.5pt; margin-bottom: 14px;">' +
+      '<tr><td style="width: 32%; border: 1px solid #000; padding: 6px; background: #F9FAFB; font-weight: bold;">1. Kekuatan yang Diamati (Praktik Baik)</td>' +
+      '<td style="border: 1px solid #000; padding: 6px;">' + (ref.kekuatan || 'Penguasaan materi sangat baik, pembelajaran interaktif, keselamatan kerja (K3) lab terlaksana.') + '</td></tr>' +
+      '<tr><td style="border: 1px solid #000; padding: 6px; background: #F9FAFB; font-weight: bold;">2. Area Pengembangan / Perbaikan</td>' +
+      '<td style="border: 1px solid #000; padding: 6px;">' + (ref.area_pengembangan || 'Perlu penajaman pembelajaran berdiferensiasi dan asesmen formatif berkala.') + '</td></tr>' +
+      '<tr><td style="border: 1px solid #000; padding: 6px; background: #F9FAFB; font-weight: bold;">3. Rekomendasi Tindak Lanjut Standar</td>' +
+      '<td style="border: 1px solid #000; padding: 6px;">' + calc.tindakLanjut + '</td></tr>' +
+      '</table>' +
+
+      // Rencana Tindak Lanjut (RTL)
+      '<div style="font-size: 10.5pt; font-weight: bold; margin-bottom: 6px;">C. KESEPAKATAN RENCANA TINDAK LANJUT (RTL)</div>' +
+      '<table style="width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 24px;">' +
+      '<thead><tr style="background: #E5E7EB; text-align: center;">' +
+      '<th style="border: 1px solid #000; padding: 4px; width: 5%;">No</th>' +
+      '<th style="border: 1px solid #000; padding: 4px; text-align: left;">Rencana Tindakan</th>' +
+      '<th style="border: 1px solid #000; padding: 4px; width: 25%;">Bentuk Pendampingan</th>' +
+      '<th style="border: 1px solid #000; padding: 4px; width: 16%;">Tenggat Waktu</th>' +
+      '<th style="border: 1px solid #000; padding: 4px; width: 14%;">Status</th>' +
+      '</tr></thead>' +
+      '<tbody>' + rtlRows + '</tbody>' +
+      '</table>' +
+
+      // Tanda Tangan 3 Pihak
+      '<div style="display: flex; justify-content: space-between; font-size: 9.5pt; text-align: center; margin-top: 15px;">' +
+      '<div style="width: 30%;">' +
+      '<div>Guru yang Disupervisi,</div>' +
+      '<div style="height: 55px;"></div>' +
+      '<div style="font-weight: bold; text-decoration: underline;">' + session.teacher_name + '</div>' +
+      '<div>NIP. ' + (session.nip || '-') + '</div>' +
+      '</div>' +
+
+      '<div style="width: 32%;">' +
+      '<div>Supervisor / Ketua Jurusan,</div>' +
+      '<div style="height: 55px;"></div>' +
+      '<div style="font-weight: bold; text-decoration: underline;">' + session.supervisor_name + '</div>' +
+      '<div>NIP. 198801102022211001</div>' +
+      '</div>' +
+
+      '<div style="width: 32%;">' +
+      '<div>Banjarmasin, ' + (session.tgl_observasi || '29 September 2026') + '<br>Mengetahui: Kepala Sekolah,</div>' +
+      '<div style="height: 55px;"></div>' +
+      '<div style="font-weight: bold; text-decoration: underline;">Agustin Purnomosari, S.Pd., M.Pd</div>' +
+      '<div>NIP. 196808151994122003</div>' +
+      '</div>' +
+      '</div>';
+
+    openModal('modal-laporan-supervisi-pdf');
+  }
+
+  function printSupervisiReportFromModal() {
+    printSupervisiReport(State.activeSupervisiSesiId);
+  }
+
+  function triggerSupervisiPrint() {
+    window.print();
+  }
+
+  function printSekolahSupervisiReport() {
+    const sheet = document.getElementById('printable-supervisi-sheet');
+    if (!sheet) return;
+
+    const sessions = StorageManager.get('supervisi_sesi');
+    const totalTeachers = 90;
+    const selesaiCount = sessions.filter(function (s) { return s.status === 'Selesai'; }).length;
+
+    let rowsHtml = '';
+    sessions.slice(0, 40).forEach(function (s, i) {
+      rowsHtml += '<tr>' +
+        '<td style="border: 1px solid #000; text-align: center; padding: 4px;">' + (i + 1) + '</td>' +
+        '<td style="border: 1px solid #000; padding: 4px;">' + s.teacher_name + '</td>' +
+        '<td style="border: 1px solid #000; padding: 4px; text-align: center;">' + s.department + '</td>' +
+        '<td style="border: 1px solid #000; padding: 4px;">' + s.subject + '</td>' +
+        '<td style="border: 1px solid #000; padding: 4px; text-align: center;">' + (s.nilai_b || '-') + '</td>' +
+        '<td style="border: 1px solid #000; padding: 4px; text-align: center;">' + (s.nilai_c || '-') + '</td>' +
+        '<td style="border: 1px solid #000; padding: 4px; text-align: center; font-weight: bold;">' + (s.nilai_akhir > 0 ? s.nilai_akhir.toFixed(1) : '-') + '</td>' +
+        '<td style="border: 1px solid #000; padding: 4px; text-align: center;">' + s.predikat + '</td>' +
+        '<td style="border: 1px solid #000; padding: 4px; text-align: center;">' + s.status + '</td>' +
+        '</tr>';
+    });
+
+    sheet.innerHTML = '' +
+      '<div style="text-align: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 14px;">' +
+      '<div style="font-size: 13pt; font-weight: bold;">PEMERINTAH PROVINSI KALIMANTAN SELATAN</div>' +
+      '<div style="font-size: 15pt; font-weight: bold;">SMK NEGERI 1 BANJARMASIN</div>' +
+      '<div style="font-size: 10pt;">Jalan Mulawarman No. 25 Banjarmasin Kalimantan Selatan</div>' +
+      '</div>' +
+      '<div style="text-align: center; margin-bottom: 14px;">' +
+      '<div style="font-size: 12pt; font-weight: bold; text-decoration: underline;">REKAPITULASI PELAKSANAAN SUPERVISI AKADEMIK SEKOLAH</div>' +
+      '<div style="font-size: 9.5pt;">Tahun Ajaran 2026/2027 (Ketercapaian: ' + selesaiCount + ' / ' + totalTeachers + ' Guru)</div>' +
+      '</div>' +
+      '<table style="width: 100%; border-collapse: collapse; font-size: 8pt; margin-bottom: 20px;">' +
+      '<thead><tr style="background: #E5E7EB; text-align: center;">' +
+      '<th style="border: 1px solid #000; padding: 4px;">No</th>' +
+      '<th style="border: 1px solid #000; padding: 4px;">Nama Guru Sasaran</th>' +
+      '<th style="border: 1px solid #000; padding: 4px;">Jurusan</th>' +
+      '<th style="border: 1px solid #000; padding: 4px;">Mata Pelajaran</th>' +
+      '<th style="border: 1px solid #000; padding: 4px;">Telaah B (40%)</th>' +
+      '<th style="border: 1px solid #000; padding: 4px;">Observasi C (60%)</th>' +
+      '<th style="border: 1px solid #000; padding: 4px;">Nilai Akhir</th>' +
+      '<th style="border: 1px solid #000; padding: 4px;">Predikat</th>' +
+      '<th style="border: 1px solid #000; padding: 4px;">Status</th>' +
+      '</tr></thead>' +
+      '<tbody>' + rowsHtml + '</tbody>' +
+      '</table>' +
+      '<div style="display: flex; justify-content: space-between; font-size: 9pt; text-align: center;">' +
+      '<div style="width: 40%;">' +
+      '<div>Koordinator Supervisi (Waka Kurikulum),</div>' +
+      '<div style="height: 50px;"></div>' +
+      '<div style="font-weight: bold; text-decoration: underline;">Rusnani, S.Pd., M.T</div>' +
+      '<div>NIP. 197308022000122003</div>' +
+      '</div>' +
+      '<div style="width: 40%;">' +
+      '<div>Banjarmasin, 29 September 2026<br>Kepala SMKN 1 Banjarmasin,</div>' +
+      '<div style="height: 50px;"></div>' +
+      '<div style="font-weight: bold; text-decoration: underline;">Agustin Purnomosari, S.Pd., M.Pd</div>' +
+      '<div>NIP. 196808151994122003</div>' +
+      '</div>' +
+      '</div>';
+
+    openModal('modal-laporan-supervisi-pdf');
+  }
+
+  function exportSupervisiRecap() {
+    const sessions = StorageManager.get('supervisi_sesi');
+    let csv = 'No,ID Sesi,Nama Guru,NIP,Jurusan,Mata Pelajaran,Pengawas,Tanggal Observasi,Status,Skor B,Nilai B,Skor C,Nilai C,Nilai Akhir,Predikat\n';
+
+    sessions.forEach(function (s, idx) {
+      csv += [
+        idx + 1,
+        '"' + s.id + '"',
+        '"' + s.teacher_name + '"',
+        '"' + (s.nip || '-') + '"',
+        '"' + s.department + '"',
+        '"' + s.subject + '"',
+        '"' + s.supervisor_name + '"',
+        '"' + (s.tgl_observasi || '-') + '"',
+        '"' + s.status + '"',
+        s.skor_b || 0,
+        s.nilai_b || 0,
+        s.skor_c || 0,
+        s.nilai_c || 0,
+        s.nilai_akhir || 0,
+        '"' + s.predikat + '"'
+      ].join(',') + '\n';
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'Rekap_Supervisi_SMKN1_BJM_2026.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    showToast('Rekap supervisi (CSV) berhasil diunduh.', 'success');
+  }
+
+  function generateMassalSupervisiSchedules() {
+    showToast('⚡ 90 Sesi Supervisi Semester Ganjil 2026/2027 telah terbit sesuai SK Tim Supervisi.', 'success');
+    renderSupervisi();
+  }
+
+  function openScheduleSupervisiModal() {
+    const teachers = StorageManager.get('teachers');
+    const sel = document.getElementById('new-sup-guru-id');
+    if (sel) {
+      let optHtml = '<option value="">-- Pilih Guru Sasaran (90 Guru) --</option>';
+      teachers.forEach(function (t) {
+        optHtml += '<option value="' + t.id + '">' + t.name + ' (' + (t.department || 'Umum') + ' - ' + (t.subject || '-') + ')</option>';
+      });
+      sel.innerHTML = optHtml;
+    }
+
+    // Default Date Tomorrow
+    const dateInp = document.getElementById('new-sup-date');
+    if (dateInp) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      dateInp.value = tomorrow.toISOString().split('T')[0];
+    }
+
+    openModal('modal-add-supervisi-sesi');
+  }
+
+  function onSupervisiGuruSelectChange(guruId) {
+    if (!guruId) return;
+    const teachers = StorageManager.get('teachers');
+    const teacher = teachers.find(function (t) { return String(t.id) === String(guruId); });
+    if (!teacher) return;
+
+    const mapelInp = document.getElementById('new-sup-mapel');
+    if (mapelInp) mapelInp.value = teacher.subject || '';
+
+    const kelasInp = document.getElementById('new-sup-kelas');
+    if (kelasInp) kelasInp.value = 'XI ' + (teacher.department || 'TJKT') + ' 1';
+
+    // Auto select supervisor based on department
+    const pengawasSel = document.getElementById('new-sup-pengawas-id');
+    if (pengawasSel) {
+      const d = (teacher.department || '').toUpperCase();
+      if (d.includes('TJKT') || d.includes('TKJ')) pengawasSel.value = 'K-TJKT';
+      else if (d.includes('DKV') || d.includes('MM')) pengawasSel.value = 'K-DKV';
+      else if (d.includes('AKL') || d.includes('AKUNTANSI')) pengawasSel.value = 'K-AKL';
+      else if (d.includes('MPLB') || d.includes('OTKP')) pengawasSel.value = 'K-MPLB';
+      else if (d.includes('PM') || d.includes('PEMASARAN')) pengawasSel.value = 'K-PM';
+      else pengawasSel.value = 'T-001';
+    }
+  }
+
+  function submitNewSupervisiSesi(e) {
+    e.preventDefault();
+    const guruId = document.getElementById('new-sup-guru-id').value;
+    const pengawasId = document.getElementById('new-sup-pengawas-id').value;
+    const mapel = document.getElementById('new-sup-mapel').value;
+    const kelas = document.getElementById('new-sup-kelas').value;
+    const tgl = document.getElementById('new-sup-date').value;
+    const time = document.getElementById('new-sup-time').value;
+    const room = document.getElementById('new-sup-room').value;
+    const focus = document.getElementById('new-sup-focus').value;
+
+    const teachers = StorageManager.get('teachers');
+    const teacher = teachers.find(function (t) { return String(t.id) === String(guruId); });
+
+    const pengawasMap = {
+      'T-001': { name: 'Rusnani, S.Pd., M.T', role: 'Waka Kurikulum' },
+      'K-TJKT': { name: 'Muhammad Ihsan, S.Kom', role: 'Kajur TJKT' },
+      'K-DKV': { name: 'Hendra Surya Pratama, S.Kom', role: 'Kajur DKV' },
+      'K-AKL': { name: 'Oky Wulan Maulina, S.Pd', role: 'Kajur AKL' },
+      'K-MPLB': { name: 'Akhmad Hanafi Maulana, S.E', role: 'Kajur MPLB' },
+      'K-PM': { name: 'Futri Indri Septiani, S.Pd', role: 'Kajur Pemasaran' }
+    };
+    const pInfo = pengawasMap[pengawasId] || { name: 'Rusnani, S.Pd., M.T', role: 'Waka Kurikulum' };
+
+    const newSesi = {
+      id: 'SESI-' + Date.now().toString().slice(-4),
+      program_id: 'PROG-2026-GANJIL',
+      teacher_id: guruId,
+      teacher_name: teacher ? teacher.name : 'Guru',
+      nip: teacher ? teacher.nip : '-',
+      department: teacher ? teacher.department : 'Umum',
+      subject: mapel,
+      class_name: kelas,
+      supervisor_id: pengawasId,
+      supervisor_name: pInfo.name,
+      supervisor_role: pInfo.role,
+      status: 'Pra-observasi',
+      tgl_observasi: tgl,
+      wkt_observasi: time,
+      room: room,
+      fokus: focus,
+      skor_b: 0,
+      skor_c: 0,
+      nilai_b: 0,
+      nilai_c: 0,
+      nilai_akhir: 0,
+      predikat: '-',
+      wawancara_a: {},
+      refleksi_d: {}
+    };
+
+    StorageManager.add('supervisi_sesi', newSesi);
+    closeModal('modal-add-supervisi-sesi');
+    renderSupervisi();
+    renderTeacherAdminTable(StorageManager.get('teacher_admin'));
+    showToast('Jadwal sesi supervisi untuk ' + newSesi.teacher_name + ' berhasil dibuat.', 'success');
+  }
+
+  function verifyRtlItem(rtlId) {
+    StorageManager.update('supervisi_rtl', rtlId, {
+      status: 'Terverifikasi',
+      verified_by: 'Kajur / Waka Kurikulum',
+      verified_at: new Date().toISOString()
+    });
+    renderSupervisiRTL();
+    showToast('Tindak lanjut RTL berhasil diverifikasi.', 'success');
+  }
+
+  // =========================================================================
   // 11. BOOTSTRAP APPLICATION
   // =========================================================================
   function initApp() {
@@ -4259,6 +6422,33 @@
       refreshActiveScreen();
       showToast('🎉 Seluruh administrasi guru telah direset ke 0 (Belum ada yang mengumpulkan).', 'success');
     },
+    // Supervisi Akademik & Manajerial Methods (PRD SMKN 1 Banjarmasin)
+    renderSupervisi: renderSupervisi,
+    switchSupervisiTab: switchSupervisiTab,
+    openSupervisiKlinisModal: openSupervisiKlinisModal,
+    switchSupervisiKlinisStep: switchSupervisiKlinisStep,
+    prevSupervisiStep: prevSupervisiStep,
+    nextSupervisiStep: nextSupervisiStep,
+    setRubrikScore: setRubrikScore,
+    saveSupervisiKlinis: saveSupervisiKlinis,
+    addSupervisiRtlRow: addSupervisiRtlRow,
+    openSupervisiManajerialModal: openSupervisiManajerialModal,
+    changeManajerialTarget: changeManajerialTarget,
+    saveSupervisiManajerial: saveSupervisiManajerial,
+    printSupervisiReport: printSupervisiReport,
+    printSupervisiReportFromModal: printSupervisiReportFromModal,
+    triggerSupervisiPrint: triggerSupervisiPrint,
+    printSekolahSupervisiReport: printSekolahSupervisiReport,
+    exportSupervisiRecap: exportSupervisiRecap,
+    generateMassalSupervisiSchedules: generateMassalSupervisiSchedules,
+    openScheduleSupervisiModal: openScheduleSupervisiModal,
+    onSupervisiGuruSelectChange: onSupervisiGuruSelectChange,
+    submitNewSupervisiSesi: submitNewSupervisiSesi,
+    verifyRtlItem: verifyRtlItem,
+    renderGuruSupervisiPane: renderGuruSupervisiPane,
+    confirmGuruSupervisi: confirmGuruSupervisi,
+    toggleGuruRTLStatus: toggleGuruRTLStatus,
+    uploadGuruRTLBukti: uploadGuruRTLBukti,
     refreshActiveScreen: refreshActiveScreen
   };
 
@@ -4268,6 +6458,7 @@
     else if (State.currentScreen === 'jadwal') renderSchedules();
     else if (State.currentScreen === 'data-master') renderDataMaster();
     else if (State.currentScreen === 'portal-guru') renderPortalGuru();
+    else if (State.currentScreen === 'supervisi') renderSupervisi();
   }
 
   function updateFirebaseUIStatus(detail) {

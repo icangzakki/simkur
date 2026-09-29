@@ -42,7 +42,11 @@ export const COLLECTION_MAP = {
   'teacher_admin': 'teacher_admin',
   'guru_journals': 'guru_journals',
   'guru_documents': 'guru_documents',
-  'guru_attendance': 'guru_attendance'
+  'guru_attendance': 'guru_attendance',
+  'supervisi_program': 'supervisi_program',
+  'supervisi_sesi': 'supervisi_sesi',
+  'supervisi_rtl': 'supervisi_rtl',
+  'supervisi_manajerial': 'supervisi_manajerial'
 };
 
 class FirebaseService {
