@@ -5871,3 +5871,533 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
   .guru-doc-score-value  { font-size: 1.25rem !important; }
   .guru-doc-title        { font-size: 0.8125rem !important; }
 }
+
+/* ==========================================================================
+   GURU SUPERVISI KLINIS & RTL — Mobile-Friendly Card & Layout System
+   Menghilangkan scroll horizontal dan merapikan tampilan ponsel
+   ========================================================================== */
+
+/* 1. Header Card */
+.guru-supervisi-header-card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(75, 34, 184, 0.08);
+  border: 1px solid #EDE9FE;
+  background: #FFFFFF;
+}
+.guru-supervisi-header-inner {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.guru-supervisi-header-info {
+  flex: 1 1 280px;
+}
+.guru-supervisi-title-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.guru-supervisi-main-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1E1B4B;
+  margin: 0;
+  line-height: 1.3;
+}
+.guru-supervisi-meta-desc {
+  font-size: 0.8125rem;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.5;
+  word-break: break-word;
+}
+.guru-supervisi-header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.guru-supervisi-act-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+/* 2. 4 KPI Grid Nilai & Predikat */
+.guru-supervisi-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.guru-supervisi-kpi-card {
+  padding: 1.125rem;
+  border-radius: 16px;
+  margin: 0;
+  background: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.guru-supervisi-kpi-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+}
+.guru-supervisi-kpi-val {
+  font-size: 1.625rem;
+  font-weight: 800;
+  color: #1E1B4B;
+  margin: 4px 0;
+  line-height: 1.1;
+}
+.guru-supervisi-kpi-max {
+  font-size: 0.875rem;
+  color: #94A3B8;
+  font-weight: 600;
+  margin-left: 2px;
+}
+.guru-supervisi-kpi-sub {
+  font-size: 0.75rem;
+  color: #64748B;
+  line-height: 1.35;
+}
+.guru-supervisi-predikat-badge {
+  font-size: 0.875rem;
+  padding: 5px 12px;
+  font-weight: 800;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+/* 3. Timeline 3 Tahap Siklus Klinis */
+.guru-supervisi-timeline-card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  background: #FFFFFF;
+}
+.guru-supervisi-timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.guru-supervisi-step-box {
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1.125rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+.guru-supervisi-step-box.is-done {
+  background: #F0FDF4;
+  border-color: #BBF7D0;
+}
+.guru-supervisi-step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.guru-supervisi-step-tag {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #4B22B8;
+  letter-spacing: 0.03em;
+}
+.badge-step-done {
+  background: #DCFCE7;
+  color: #15803D;
+  font-weight: 700;
+  font-size: 0.7rem;
+  border-radius: 20px;
+  padding: 3px 9px;
+}
+.badge-step-wait {
+  background: #E2E8F0;
+  color: #64748B;
+  font-weight: 700;
+  font-size: 0.7rem;
+  border-radius: 20px;
+  padding: 3px 9px;
+}
+.guru-supervisi-step-title {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: #1E293B;
+  margin-bottom: 4px;
+  line-height: 1.35;
+}
+.guru-supervisi-step-desc {
+  font-size: 0.8125rem;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* 4. Refleksi & Konfirmasi Umpan Balik (PRD FR-11) */
+.guru-supervisi-feedback-card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  background: #FFFFFF;
+}
+.guru-supervisi-feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #F1F5F9;
+}
+.guru-supervisi-feedback-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1E1B4B;
+  margin: 0 0 2px 0;
+}
+.guru-supervisi-confirmed-box {
+  background: #F0FDF4;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 14px;
+  padding: 1.125rem;
+}
+.guru-supervisi-confirm-wrap {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+.guru-supervisi-confirm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(75, 34, 184, 0.2);
+  transition: all 0.15s ease;
+}
+
+/* 5. Daftar Rencana Tindak Lanjut (RTL) - Card List (No Horizontal Scroll) */
+.guru-rtl-list-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 4px 18px rgba(99, 102, 241, 0.07);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  border: 1px solid #F1F5F9;
+}
+.guru-rtl-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 1.125rem 1.25rem 0.875rem;
+  border-bottom: 1px solid #F1F5F9;
+}
+.guru-rtl-list-title-wrap {
+  flex: 1 1 200px;
+}
+.guru-rtl-list-title {
+  margin: 0 0 2px 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1E1B4B;
+  letter-spacing: -0.01em;
+}
+.guru-rtl-list-sub {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #64748B;
+}
+.guru-rtl-list-body {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.guru-rtl-card {
+  padding: 1.125rem 1.25rem;
+  border-bottom: 1px solid #F1F5F9;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  transition: background 0.15s ease;
+  background: #FFFFFF;
+}
+.guru-rtl-card:last-child {
+  border-bottom: none;
+}
+.guru-rtl-card:hover {
+  background: #FAFBFF;
+}
+.guru-rtl-card.is-done {
+  background: #FAFDFB;
+}
+.guru-rtl-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.guru-rtl-item-num {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #4B22B8;
+  background: #EDE9FE;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.guru-rtl-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 3px 10px;
+  display: inline-block;
+}
+.guru-rtl-badge.badge-selesai {
+  background: #DEF7EC;
+  color: #03543F;
+}
+.guru-rtl-badge.badge-terbuka {
+  background: #FEF3C7;
+  color: #92400E;
+}
+.guru-rtl-card-title {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: #1E293B;
+  margin: 0;
+  line-height: 1.4;
+  word-break: break-word;
+}
+.guru-rtl-meta-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 0.625rem 0.75rem;
+}
+.guru-rtl-meta-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 0.8125rem;
+  color: #475569;
+  line-height: 1.4;
+  word-break: break-word;
+}
+.guru-rtl-icon {
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+.guru-rtl-meta-val {
+  word-break: break-word;
+}
+.guru-rtl-meta-row.completed-row {
+  color: #047857;
+  font-weight: 600;
+}
+.guru-rtl-meta-row.bukti-row {
+  color: #4338CA;
+  font-weight: 600;
+  word-break: break-all;
+}
+.guru-rtl-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+  flex-wrap: wrap;
+}
+.guru-rtl-btn-group {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.guru-rtl-btn-done {
+  flex: 1 1 140px;
+  min-height: 38px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 10px;
+}
+.guru-rtl-btn-upload {
+  flex: 1 1 120px;
+  min-height: 38px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 10px;
+}
+.guru-rtl-btn-reopen {
+  width: 100%;
+  min-height: 38px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 10px;
+  color: #64748B;
+  border-color: #CBD5E1;
+}
+.guru-rtl-empty {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS (< 768px) UNTUK SUPERVISI KLINIS & RTL
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Header Supervisi */
+  .guru-supervisi-header-inner {
+    padding: 1.125rem 1rem !important;
+    gap: 0.875rem !important;
+  }
+  .guru-supervisi-main-title {
+    font-size: 1.125rem !important;
+  }
+  .guru-supervisi-header-actions {
+    width: 100% !important;
+    flex-direction: column !important;
+  }
+  .guru-supervisi-act-btn {
+    width: 100% !important;
+    min-height: 44px !important;
+    font-size: 0.8125rem !important;
+  }
+
+  /* 4 KPI Grid: 2 kolom rapi di mobile */
+  .guru-supervisi-kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.625rem !important;
+    margin-bottom: 1rem !important;
+  }
+  .guru-supervisi-kpi-card {
+    padding: 0.875rem 0.75rem !important;
+    border-radius: 14px !important;
+  }
+  .guru-supervisi-kpi-label {
+    font-size: 0.6875rem !important;
+  }
+  .guru-supervisi-kpi-val {
+    font-size: 1.35rem !important;
+  }
+  .guru-supervisi-kpi-sub {
+    font-size: 0.6875rem !important;
+  }
+  .guru-supervisi-predikat-badge {
+    font-size: 0.75rem !important;
+    padding: 4px 8px !important;
+  }
+
+  /* Timeline 3 Tahap: 1 kolom di mobile */
+  .guru-supervisi-timeline-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+  .guru-supervisi-step-box {
+    padding: 0.875rem !important;
+    border-radius: 12px !important;
+  }
+
+  /* Konfirmasi Umpan Balik: full width button tanpa meluber */
+  .guru-supervisi-feedback-header {
+    padding: 0.875rem 1rem !important;
+  }
+  .guru-supervisi-confirm-wrap {
+    justify-content: stretch !important;
+  }
+  .guru-supervisi-confirm-btn {
+    width: 100% !important;
+    min-height: 48px !important;
+    font-size: 0.875rem !important;
+    padding: 0.75rem 0.875rem !important;
+  }
+
+  /* RTL Card List: Full Screen Mobile Clean Cards */
+  .guru-rtl-list-header {
+    padding: 0.875rem 1rem !important;
+  }
+  .guru-rtl-card {
+    padding: 0.875rem 1rem !important;
+    gap: 0.5rem !important;
+  }
+  .guru-rtl-card-title {
+    font-size: 0.875rem !important;
+  }
+  .guru-rtl-meta-row {
+    font-size: 0.75rem !important;
+  }
+  .guru-rtl-btn-group {
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+  .guru-rtl-btn-done,
+  .guru-rtl-btn-upload,
+  .guru-rtl-btn-reopen {
+    width: 100% !important;
+    min-height: 42px !important;
+    font-size: 0.8125rem !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .guru-supervisi-kpi-val {
+    font-size: 1.2rem !important;
+  }
+  .guru-supervisi-main-title {
+    font-size: 1rem !important;
+  }
+  .guru-supervisi-confirm-btn {
+    font-size: 0.8125rem !important;
+  }
+}

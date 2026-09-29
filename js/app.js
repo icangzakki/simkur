@@ -4533,123 +4533,162 @@
     var step2Done = ['Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
     var step3Done = ['Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
 
-    // Tabel RTL HTML
-    var rtlRowsHtml = '';
+    // RTL Cards HTML (Card List - Tidak Ada Scroll Horizontal)
+    var rtlCardsHtml = '';
     if (myRtl.length === 0) {
-      rtlRowsHtml = '<tr><td colspan="6" style="text-align: center; padding: 1.5rem; color: #9CA3AF;">Belum ada tindakan RTL terbuka untuk sesi supervisi Anda.</td></tr>';
+      rtlCardsHtml = '' +
+        '<div class="guru-rtl-empty">' +
+          '<div style="font-size: 2.25rem; margin-bottom: 0.5rem;">📋</div>' +
+          '<div style="font-size: 0.9375rem; font-weight: 700; color: #374151; margin-bottom: 4px;">Belum Ada Rencana Tindak Lanjut</div>' +
+          '<div style="font-size: 0.8125rem; color: #9CA3AF;">Belum ada butir RTL yang ditetapkan oleh supervisor untuk sesi supervisi Anda.</div>' +
+        '</div>';
     } else {
       myRtl.forEach(function (r, idx) {
         var isDone = r.status === 'Selesai';
         var statusBadge = isDone 
-          ? '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700;">✓ Selesai</span>'
-          : '<span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 700;">⏳ Terbuka</span>';
+          ? '<span class="guru-rtl-badge badge-selesai">✓ Selesai</span>'
+          : '<span class="guru-rtl-badge badge-terbuka">⏳ Terbuka</span>';
         
-        var aksiBtn = isDone
-          ? '<button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.toggleGuruRTLStatus(\'' + r.id + '\')" style="color: #6B7280; font-size: 0.75rem;">↩ Buka Kembali</button>'
-          : '<div style="display: flex; gap: 4px; justify-content: center;">' +
-              '<button type="button" class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.toggleGuruRTLStatus(\'' + r.id + '\')" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">✓ Tandai Selesai</button>' +
-              '<button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.uploadGuruRTLBukti(\'' + r.id + '\')" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">📎 Bukti</button>' +
+        var buktiVal = r.bukti_url || r.bukti_file || '';
+        var buktiInfo = buktiVal
+          ? '<div class="guru-rtl-meta-row bukti-row">' +
+              '<span class="guru-rtl-icon">📎</span>' +
+              '<span class="guru-rtl-meta-val"><strong>Bukti:</strong> ' + escapeHtml(buktiVal) + '</span>' +
+            '</div>'
+          : '';
+
+        var completedInfo = (isDone && r.completed_at)
+          ? '<div class="guru-rtl-meta-row completed-row">' +
+              '<span class="guru-rtl-icon">✅</span>' +
+              '<span class="guru-rtl-meta-val"><strong>Diselesaikan:</strong> ' + escapeHtml(r.completed_at) + '</span>' +
+            '</div>'
+          : '';
+
+        var aksiHtml = isDone
+          ? '<button type="button" class="btn btn-outline guru-rtl-btn-reopen" onclick="window.PORTAL_APP.toggleGuruRTLStatus(\'' + r.id + '\')">' +
+              '<span>↩ Buka Kembali</span>' +
+            '</button>'
+          : '<div class="guru-rtl-btn-group">' +
+              '<button type="button" class="btn btn-primary guru-rtl-btn-done" onclick="window.PORTAL_APP.toggleGuruRTLStatus(\'' + r.id + '\')">' +
+                '<span>✓ Tandai Selesai</span>' +
+              '</button>' +
+              '<button type="button" class="btn btn-outline guru-rtl-btn-upload" onclick="window.PORTAL_APP.uploadGuruRTLBukti(\'' + r.id + '\')">' +
+                '<span>📎 ' + (buktiVal ? 'Ganti Bukti' : 'Unggah Bukti') + '</span>' +
+              '</button>' +
             '</div>';
 
-        rtlRowsHtml += '<tr>' +
-          '<td style="text-align: center; color: #6B7280;">' + (idx + 1) + '</td>' +
-          '<td style="font-weight: 600; color: #1F2937;">' + r.tindakan + '</td>' +
-          '<td style="color: #4B5563; font-size: 0.8125rem;">' + (r.bentuk || 'Pendampingan Mandiri / MGMP') + '</td>' +
-          '<td style="color: #6B7280; font-size: 0.8125rem;">' + (r.tenggat || '30 Oktober 2026') + '</td>' +
-          '<td style="text-align: center;">' + statusBadge + '</td>' +
-          '<td style="text-align: center;">' + aksiBtn + '</td>' +
-          '</tr>';
+        rtlCardsHtml += '' +
+          '<div class="guru-rtl-card ' + (isDone ? 'is-done' : '') + '">' +
+            '<div class="guru-rtl-card-header">' +
+              '<div class="guru-rtl-item-num">Tindakan #' + (idx + 1) + '</div>' +
+              '<div>' + statusBadge + '</div>' +
+            '</div>' +
+            '<h4 class="guru-rtl-card-title">' + escapeHtml(r.tindakan || 'Tindakan Peningkatan Mutu Pembelajaran') + '</h4>' +
+            '<div class="guru-rtl-meta-container">' +
+              '<div class="guru-rtl-meta-row">' +
+                '<span class="guru-rtl-icon">👥</span>' +
+                '<span class="guru-rtl-meta-val"><strong>Pendampingan:</strong> ' + escapeHtml(r.bentuk || 'Pendampingan Mandiri / MGMP') + '</span>' +
+              '</div>' +
+              '<div class="guru-rtl-meta-row">' +
+                '<span class="guru-rtl-icon">📅</span>' +
+                '<span class="guru-rtl-meta-val"><strong>Tenggat Waktu:</strong> ' + escapeHtml(r.tenggat || '30 Oktober 2026') + '</span>' +
+              '</div>' +
+              completedInfo +
+              buktiInfo +
+            '</div>' +
+            '<div class="guru-rtl-card-actions">' + aksiHtml + '</div>' +
+          '</div>';
       });
     }
 
     container.innerHTML = '' +
       '<!-- 1. HEADER KARTU STATUS SUPERVISI GURU -->' +
-      '<div class="content-card" style="margin-bottom: 1.25rem; border-left: 4px solid var(--simkur-purple);">' +
-        '<div class="content-card-body" style="padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">' +
-          '<div>' +
-            '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">' +
-              '<h3 style="font-size: 1.25rem; font-weight: 800; color: #1F2937; margin: 0;">Siklus Supervisi Akademik Klinis Guru</h3>' +
-              '<span class="badge" style="' + statusBadgeStyle + ' font-weight: 700; font-size: 0.78125rem;">' + sData.status + '</span>' +
+      '<div class="content-card guru-supervisi-header-card" style="margin-bottom: 1.25rem; border-left: 4px solid var(--simkur-purple);">' +
+        '<div class="content-card-body guru-supervisi-header-inner">' +
+          '<div class="guru-supervisi-header-info">' +
+            '<div class="guru-supervisi-title-wrap">' +
+              '<h3 class="guru-supervisi-main-title">Siklus Supervisi Akademik Klinis Guru</h3>' +
+              '<span class="badge" style="' + statusBadgeStyle + ' font-weight: 700; font-size: 0.78125rem; border-radius: 20px; padding: 3px 10px;">' + sData.status + '</span>' +
             '</div>' +
-            '<p style="font-size: 0.8125rem; color: #6B7280; margin: 0;">' +
+            '<p class="guru-supervisi-meta-desc">' +
               'Supervisor: <strong>' + (sData.supervisor_name || 'Ketua Jurusan') + '</strong> • Jadwal: <strong>' + (sData.tgl_observasi || 'Terjadwal') + ' (' + (sData.wkt_observasi || '08.00 - 09.30 WITA') + ')</strong> • Kelas: <strong>' + (sData.class_name || 'XI KBM') + '</strong>' +
             '</p>' +
           '</div>' +
-          '<div style="display: flex; gap: 8px; flex-wrap: wrap;">' +
-            '<button type="button" class="btn btn-outline" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + sData.id + '\')" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">' +
+          '<div class="guru-supervisi-header-actions">' +
+            '<button type="button" class="btn btn-outline guru-supervisi-act-btn" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + sData.id + '\')">' +
               '<span>👁️ Detail Rubrik A, B, C</span>' +
             '</button>' +
-            '<button type="button" class="btn btn-primary" onclick="window.PORTAL_APP.printSupervisiReport(\'' + sData.id + '\')" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700;">' +
-              '<span>🖨️ Cetak Lembar Hasil PDF (3 Tanda Tangan)</span>' +
+            '<button type="button" class="btn btn-primary guru-supervisi-act-btn" onclick="window.PORTAL_APP.printSupervisiReport(\'' + sData.id + '\')">' +
+              '<span>🖨️ Cetak Lembar Hasil PDF</span>' +
             '</button>' +
           '</div>' +
         '</div>' +
       '</div>' +
 
       '<!-- 2. 4 KPI CARDS: NILAI & PREDIKAT -->' +
-      '<div class="kpi-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">' +
+      '<div class="kpi-grid guru-supervisi-kpi-grid">' +
         
-        '<div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #6366F1;">' +
-          '<span style="font-size: 0.75rem; font-weight: 700; color: #6B7280; text-transform: uppercase;">1. Telaah Perangkat (40%)</span>' +
-          '<div style="font-size: 1.5rem; font-weight: 800; color: #1F2937; margin: 4px 0;">' + (sData.nilai_b > 0 ? sData.nilai_b.toFixed(1) : '-') + ' <span style="font-size: 0.875rem; color: #9CA3AF; font-weight: 600;">/ 100</span></div>' +
-          '<div style="font-size: 0.75rem; color: #6B7280;">Skor: ' + (sData.skor_b || 0) + ' / 56 (14 Butir Instrumen B)</div>' +
+        '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #6366F1;">' +
+          '<span class="guru-supervisi-kpi-label">1. Telaah Perangkat (40%)</span>' +
+          '<div class="guru-supervisi-kpi-val">' + (sData.nilai_b > 0 ? sData.nilai_b.toFixed(1) : '-') + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
+          '<div class="guru-supervisi-kpi-sub">Skor: ' + (sData.skor_b || 0) + ' / 56 (Instrumen B)</div>' +
         '</div>' +
 
-        '<div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #0EA5E9;">' +
-          '<span style="font-size: 0.75rem; font-weight: 700; color: #6B7280; text-transform: uppercase;">2. Observasi KBM (60%)</span>' +
-          '<div style="font-size: 1.5rem; font-weight: 800; color: #1F2937; margin: 4px 0;">' + (sData.nilai_c > 0 ? sData.nilai_c.toFixed(1) : '-') + ' <span style="font-size: 0.875rem; color: #9CA3AF; font-weight: 600;">/ 100</span></div>' +
-          '<div style="font-size: 0.75rem; color: #6B7280;">Skor: ' + (sData.skor_c || 0) + ' / 72 (18 Butir Instrumen C)</div>' +
+        '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #0EA5E9;">' +
+          '<span class="guru-supervisi-kpi-label">2. Observasi KBM (60%)</span>' +
+          '<div class="guru-supervisi-kpi-val">' + (sData.nilai_c > 0 ? sData.nilai_c.toFixed(1) : '-') + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
+          '<div class="guru-supervisi-kpi-sub">Skor: ' + (sData.skor_c || 0) + ' / 72 (Instrumen C)</div>' +
         '</div>' +
 
-        '<div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #10B981;">' +
-          '<span style="font-size: 0.75rem; font-weight: 700; color: #6B7280; text-transform: uppercase;">Nilai Akhir Supervisi</span>' +
-          '<div style="font-size: 1.5rem; font-weight: 800; color: #047857; margin: 4px 0;">' + (sData.nilai_akhir > 0 ? sData.nilai_akhir.toFixed(1) : '-') + ' <span style="font-size: 0.875rem; color: #9CA3AF; font-weight: 600;">/ 100</span></div>' +
-          '<div style="font-size: 0.75rem; color: #059669; font-weight: 600;">Formula SK: 40% B + 60% C</div>' +
+        '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #10B981;">' +
+          '<span class="guru-supervisi-kpi-label">Nilai Akhir Supervisi</span>' +
+          '<div class="guru-supervisi-kpi-val text-success" style="color: #047857;">' + (sData.nilai_akhir > 0 ? sData.nilai_akhir.toFixed(1) : '-') + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
+          '<div class="guru-supervisi-kpi-sub text-success" style="color: #059669; font-weight: 600;">Bobot: 40% B + 60% C</div>' +
         '</div>' +
 
-        '<div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #F59E0B;">' +
-          '<span style="font-size: 0.75rem; font-weight: 700; color: #6B7280; text-transform: uppercase;">Predikat Mutu</span>' +
-          '<div style="margin: 6px 0;">' +
-            '<span class="badge ' + predikatBadgeClass + '" style="font-size: 1rem; padding: 6px 14px; font-weight: 800;">⭐ ' + predikatLabel.toUpperCase() + '</span>' +
+        '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #F59E0B;">' +
+          '<span class="guru-supervisi-kpi-label">Predikat Mutu</span>' +
+          '<div style="margin: 4px 0;">' +
+            '<span class="badge ' + predikatBadgeClass + ' guru-supervisi-predikat-badge">⭐ ' + predikatLabel.toUpperCase() + '</span>' +
           '</div>' +
-          '<div style="font-size: 0.75rem; color: #6B7280;">Standar SMKN 1 Banjarmasin</div>' +
+          '<div class="guru-supervisi-kpi-sub">Standar SMKN 1 Banjarmasin</div>' +
         '</div>' +
 
       '</div>' +
 
       '<!-- 3. TIMELINE 3 TAHAP SIKLUS KLINIS -->' +
-      '<div class="content-card" style="margin-bottom: 1.25rem;">' +
+      '<div class="content-card guru-supervisi-timeline-card" style="margin-bottom: 1.25rem;">' +
         '<div class="content-card-header">' +
           '<h3 style="font-size: 0.9375rem; font-weight: 700; color: #1F2937; margin: 0;">Siklus 3 Tahap Supervisi Klinis Berkelanjutan</h3>' +
         '</div>' +
         '<div class="content-card-body" style="padding: 1.25rem;">' +
-          '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">' +
+          '<div class="guru-supervisi-timeline-grid">' +
             
-            '<div style="background: ' + (step1Done ? '#F0FDF4' : '#F9FAFB') + '; border: 1.5px solid ' + (step1Done ? '#BBF7D0' : '#E5E7EB') + '; border-radius: 12px; padding: 1rem;">' +
-              '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">' +
-                '<span style="font-size: 0.75rem; font-weight: 700; color: #4B22B8;">TAHAP 1: PRA-OBSERVASI</span>' +
-                '<span class="badge" style="' + (step1Done ? 'background: #DCFCE7; color: #15803D;' : 'background: #E5E7EB; color: #6B7280;') + ' font-weight: 700; font-size: 0.7rem;">' + (step1Done ? '✓ Terlaksana' : 'Menunggu') + '</span>' +
+            '<div class="guru-supervisi-step-box ' + (step1Done ? 'is-done' : '') + '">' +
+              '<div class="guru-supervisi-step-header">' +
+                '<span class="guru-supervisi-step-tag">TAHAP 1: PRA-OBSERVASI</span>' +
+                '<span class="badge ' + (step1Done ? 'badge-step-done' : 'badge-step-wait') + '">' + (step1Done ? '✓ Terlaksana' : 'Menunggu') + '</span>' +
               '</div>' +
-              '<div style="font-size: 0.875rem; font-weight: 700; color: #1F2937; margin-bottom: 4px;">Wawancara & Telaah Berkas SIMKUR</div>' +
-              '<p style="font-size: 0.8125rem; color: #6B7280; margin: 0;">Pemeriksaan Modul Ajar, Silabus/ATP, Prota/Promes, dan Asesmen yang diunggah guru di SIMKUR.</p>' +
+              '<div class="guru-supervisi-step-title">Wawancara & Telaah Berkas SIMKUR</div>' +
+              '<p class="guru-supervisi-step-desc">Pemeriksaan Modul Ajar, Silabus/ATP, Prota/Promes, dan Asesmen yang diunggah guru di SIMKUR.</p>' +
             '</div>' +
 
-            '<div style="background: ' + (step2Done ? '#F0FDF4' : '#F9FAFB') + '; border: 1.5px solid ' + (step2Done ? '#BBF7D0' : '#E5E7EB') + '; border-radius: 12px; padding: 1rem;">' +
-              '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">' +
-                '<span style="font-size: 0.75rem; font-weight: 700; color: #4B22B8;">TAHAP 2: OBSERVASI KBM</span>' +
-                '<span class="badge" style="' + (step2Done ? 'background: #DCFCE7; color: #15803D;' : 'background: #E5E7EB; color: #6B7280;') + ' font-weight: 700; font-size: 0.7rem;">' + (step2Done ? '✓ Terlaksana' : 'Menunggu') + '</span>' +
+            '<div class="guru-supervisi-step-box ' + (step2Done ? 'is-done' : '') + '">' +
+              '<div class="guru-supervisi-step-header">' +
+                '<span class="guru-supervisi-step-tag">TAHAP 2: OBSERVASI KBM</span>' +
+                '<span class="badge ' + (step2Done ? 'badge-step-done' : 'badge-step-wait') + '">' + (step2Done ? '✓ Terlaksana' : 'Menunggu') + '</span>' +
               '</div>' +
-              '<div style="font-size: 0.875rem; font-weight: 700; color: #1F2937; margin-bottom: 4px;">Pengamatan di Ruang / Bengkel / Lab</div>' +
-              '<p style="font-size: 0.8125rem; color: #6B7280; margin: 0;">Observasi pembelajaran berdiferensiasi, keterlibatan aktif siswa, integrasi PjBL/TeFa, dan kepatuhan K3.</p>' +
+              '<div class="guru-supervisi-step-title">Pengamatan di Ruang / Bengkel / Lab</div>' +
+              '<p class="guru-supervisi-step-desc">Observasi pembelajaran berdiferensiasi, keterlibatan aktif siswa, integrasi PjBL/TeFa, dan kepatuhan K3.</p>' +
             '</div>' +
 
-            '<div style="background: ' + (step3Done ? '#F0FDF4' : '#F9FAFB') + '; border: 1.5px solid ' + (step3Done ? '#BBF7D0' : '#E5E7EB') + '; border-radius: 12px; padding: 1rem;">' +
-              '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">' +
-                '<span style="font-size: 0.75rem; font-weight: 700; color: #4B22B8;">TAHAP 3: PASCA & RTL</span>' +
-                '<span class="badge" style="' + (step3Done ? 'background: #DCFCE7; color: #15803D;' : 'background: #E5E7EB; color: #6B7280;') + ' font-weight: 700; font-size: 0.7rem;">' + (step3Done ? '✓ Terlaksana' : 'Menunggu') + '</span>' +
+            '<div class="guru-supervisi-step-box ' + (step3Done ? 'is-done' : '') + '">' +
+              '<div class="guru-supervisi-step-header">' +
+                '<span class="guru-supervisi-step-tag">TAHAP 3: PASCA & RTL</span>' +
+                '<span class="badge ' + (step3Done ? 'badge-step-done' : 'badge-step-wait') + '">' + (step3Done ? '✓ Terlaksana' : 'Menunggu') + '</span>' +
               '</div>' +
-              '<div style="font-size: 0.875rem; font-weight: 700; color: #1F2937; margin-bottom: 4px;">Refleksi, Umpan Balik & RTL</div>' +
-              '<p style="font-size: 0.8125rem; color: #6B7280; margin: 0;">Diskusi hangat hasil observasi, apresiasi keunggulan guru, kesepakatan butir RTL dan bukti tindak lanjut.</p>' +
+              '<div class="guru-supervisi-step-title">Refleksi, Umpan Balik & RTL</div>' +
+              '<p class="guru-supervisi-step-desc">Diskusi hangat hasil observasi, apresiasi keunggulan guru, kesepakatan butir RTL dan bukti tindak lanjut.</p>' +
             '</div>' +
 
           '</div>' +
@@ -4657,27 +4696,32 @@
       '</div>' +
 
       '<!-- 4. UMPAN BALIK SUPERVISOR & KONFIRMASI GURU (PRD FR-11) -->' +
-      '<div class="content-card" style="margin-bottom: 1.25rem;">' +
-        '<div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center;">' +
-          '<h3 style="font-size: 0.9375rem; font-weight: 700; color: #1F2937; margin: 0;">Refleksi Guru & Konfirmasi Umpan Balik (PRD FR-11)</h3>' +
-          (isConfirmed 
-            ? '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700;">✓ Sudah Dikonfirmasi Guru</span>'
-            : '<span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 700;">⏳ Menunggu Konfirmasi Guru</span>') +
+      '<div class="content-card guru-supervisi-feedback-card" style="margin-bottom: 1.25rem;">' +
+        '<div class="content-card-header guru-supervisi-feedback-header">' +
+          '<div style="flex: 1 1 200px;">' +
+            '<h3 class="guru-supervisi-feedback-title" style="font-size: 0.9375rem; font-weight: 700; color: #1F2937; margin: 0 0 2px 0;">Refleksi Guru & Konfirmasi Umpan Balik (PRD FR-11)</h3>' +
+            '<p style="font-size: 0.75rem; color: #6B7280; margin: 0;">Konfirmasi penerimaan umpan balik dan catatan refleksi perbaikan diri</p>' +
+          '</div>' +
+          '<div>' +
+            (isConfirmed 
+              ? '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; border-radius: 20px; padding: 4px 12px;">✓ Sudah Dikonfirmasi Guru</span>'
+              : '<span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 700; border-radius: 20px; padding: 4px 12px;">⏳ Menunggu Konfirmasi Guru</span>') +
+          '</div>' +
         '</div>' +
         '<div class="content-card-body" style="padding: 1.25rem;">' +
           (isConfirmed 
-            ? '<div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">' +
-                '<div style="font-weight: 700; color: #166534; font-size: 0.875rem; margin-bottom: 4px;">✓ Anda telah membaca dan mengonfirmasi hasil umpan balik supervisi ini.</div>' +
-                '<div style="font-size: 0.8125rem; color: #15803D;">Waktu Konfirmasi: ' + (sData.guru_konfirmasi_at || 'Terverifikasi') + '</div>' +
-                (sData.guru_refleksi ? '<div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #86EFAC; font-size: 0.8125rem; color: #14532D;"><strong>Refleksi Mandiri Anda:</strong> ' + sData.guru_refleksi + '</div>' : '') +
+            ? '<div class="guru-supervisi-confirmed-box" style="background: #F0FDF4; border: 1.5px solid #BBF7D0; border-radius: 14px; padding: 1.125rem;">' +
+                '<div style="font-weight: 800; color: #166534; font-size: 0.9375rem; margin-bottom: 4px;">✓ Anda telah membaca dan mengonfirmasi hasil umpan balik supervisi ini.</div>' +
+                '<div style="font-size: 0.8125rem; color: #15803D; margin-bottom: 6px;">Waktu Konfirmasi: <strong>' + (sData.guru_konfirmasi_at || 'Terverifikasi') + '</strong></div>' +
+                (sData.guru_refleksi ? '<div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #86EFAC; font-size: 0.8125rem; color: #14532D; line-height: 1.45;"><strong>Catatan Refleksi Mandiri Anda:</strong> ' + escapeHtml(sData.guru_refleksi) + '</div>' : '') +
               '</div>'
-            : '<div style="margin-bottom: 1.25rem;">' +
-                '<label class="form-label" style="font-weight: 700; color: #374151; font-size: 0.8125rem; margin-bottom: 6px;">' +
+            : '<div style="margin-bottom: 0.5rem;">' +
+                '<label class="form-label" style="font-weight: 700; color: #374151; font-size: 0.8125rem; margin-bottom: 6px; display: block;">' +
                   'Catatan Refleksi Mandiri Guru (Opsional):' +
                 '</label>' +
-                '<textarea id="input-guru-refleksi-text" class="form-input" rows="3" placeholder="Tuliskan refleksi mandiri Anda mengenai proses pembelajaran yang telah disupervisi dan komitmen tindak lanjut..." style="width: 100%; border-radius: 8px; padding: 8px; font-size: 0.875rem;"></textarea>' +
-                '<div style="margin-top: 10px; display: flex; justify-content: flex-end;">' +
-                  '<button type="button" class="btn btn-primary" onclick="window.PORTAL_APP.confirmGuruSupervisi(\'' + sData.id + '\')" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700;">' +
+                '<textarea id="input-guru-refleksi-text" class="form-input" rows="3" placeholder="Tuliskan refleksi mandiri Anda mengenai proses pembelajaran yang telah disupervisi dan komitmen tindak lanjut..." style="width: 100%; box-sizing: border-box; border-radius: 10px; padding: 10px; font-size: 0.875rem; line-height: 1.4; border: 1.5px solid #E2E8F0;"></textarea>' +
+                '<div class="guru-supervisi-confirm-wrap" style="margin-top: 12px;">' +
+                  '<button type="button" class="btn btn-primary guru-supervisi-confirm-btn" onclick="window.PORTAL_APP.confirmGuruSupervisi(\'' + sData.id + '\')">' +
                     '<span>✓ Konfirmasi Sudah Membaca Umpan Balik (PRD FR-11)</span>' +
                   '</button>' +
                 '</div>' +
@@ -4685,26 +4729,17 @@
         '</div>' +
       '</div>' +
 
-      '<!-- 5. TABEL PELACAK RENCANA TINDAK LANJUT (RTL) GURU (PRD FR-21) -->' +
-      '<div class="content-card" style="margin: 0;">' +
-        '<div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center;">' +
-          '<h3 style="font-size: 0.9375rem; font-weight: 700; color: #1F2937; margin: 0;">Daftar Rencana Tindak Lanjut (RTL) & Pelacak Bukti Fisik</h3>' +
-          '<span class="badge" style="background: rgba(75, 34, 184, 0.1); color: #4B22B8; font-weight: 700;">' + myRtl.length + ' Tindakan Terdaftar</span>' +
+      '<!-- 5. DAFTAR RENCANA TINDAK LANJUT (RTL) GURU (PRD FR-21) - CARD LIST -->' +
+      '<div class="guru-rtl-list-card">' +
+        '<div class="guru-rtl-list-header">' +
+          '<div class="guru-rtl-list-title-wrap">' +
+            '<h3 class="guru-rtl-list-title">Daftar Rencana Tindak Lanjut (RTL) & Pelacak Bukti Fisik</h3>' +
+            '<p class="guru-rtl-list-sub">Komitmen peningkatan mutu pasca-observasi klinis supervisi</p>' +
+          '</div>' +
+          '<span class="badge" style="background: rgba(75, 34, 184, 0.1); color: #4B22B8; font-weight: 700; border-radius: 20px; padding: 4px 12px;">' + myRtl.length + ' Tindakan Terdaftar</span>' +
         '</div>' +
-        '<div class="content-card-body table-responsive" style="padding: 0;">' +
-          '<table class="data-table">' +
-            '<thead>' +
-              '<tr>' +
-                '<th style="width: 45px; text-align: center;">No</th>' +
-                '<th>Rencana Tindakan Peningkatan Mutu</th>' +
-                '<th>Bentuk Pendampingan</th>' +
-                '<th>Tenggat Waktu</th>' +
-                '<th style="width: 110px; text-align: center;">Status</th>' +
-                '<th style="width: 150px; text-align: center;">Aksi Guru</th>' +
-              '</tr>' +
-            '</thead>' +
-            '<tbody>' + rtlRowsHtml + '</tbody>' +
-          '</table>' +
+        '<div class="guru-rtl-list-body">' +
+          rtlCardsHtml +
         '</div>' +
       '</div>';
   }
