@@ -184,7 +184,6 @@ a:hover {
 .nav-item-link.active .nav-icon {
   stroke: var(--simkur-blue) !important;
 }
-}
 
 .nav-pill-badge {
   margin-left: auto;
