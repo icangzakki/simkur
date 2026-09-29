@@ -4301,34 +4301,58 @@
     });
 
     if (teacherDocs.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #777777;">Belum ada dokumen yang diunggah. Silakan klik tombol Unggah Dokumen.</td></tr>';
+      tbody.innerHTML =
+        '<div class="guru-doc-empty">' +
+          '<span style="font-size:2.5rem;">📂</span>' +
+          '<p style="font-size:0.9375rem;font-weight:700;color:#374151;margin:8px 0 4px;">Belum Ada Berkas</p>' +
+          '<p style="font-size:0.8125rem;color:#6B7280;margin:0;">Klik tombol <strong>+ Unggah Berkas Baru</strong><br>untuk menambahkan perangkat ajar Anda.</p>' +
+        '</div>';
       return;
     }
 
+    const categoryColors = {
+      'Modul Ajar':         { bg: '#EDE8F5', color: '#4B22B8', icon: '📘' },
+      'Silabus & ATP':      { bg: '#E0F2FE', color: '#0369A1', icon: '📗' },
+      'Program Tahunan':    { bg: '#FEF3C7', color: '#92400E', icon: '📅' },
+      'Program Semester':   { bg: '#FEF3C7', color: '#92400E', icon: '📆' },
+      'Instrumen Asesmen':  { bg: '#DEF7EC', color: '#03543F', icon: '📋' },
+      'default':            { bg: '#F1F5F9', color: '#334155', icon: '📁' }
+    };
+
     let html = '';
     teacherDocs.forEach(function (d, idx) {
-      html += '<tr>' +
-        '<td style="text-align: center; color: #777777;">' + (idx + 1) + '</td>' +
-        '<td>' +
-          '<div style="font-weight: 700; color: #262626;">' + d.title + '</div>' +
-          '<div style="font-size: 0.75rem; color: #777777;">📁 ' + (d.file_name || 'dokumen.pdf') + ' (' + (d.file_size || '1.2 MB') + ')</div>' +
-        '</td>' +
-        '<td><span class="badge" style="background: rgba(75, 34, 184, 0.1); color: #4B22B8; font-weight: 600;">' + d.category + '</span></td>' +
-        '<td style="font-size: 0.8125rem; color: #666666;">' + (d.uploaded_at || '2026-07-15') + '</td>' +
-        '<td style="text-align: center;"><span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700;">✓ ' + (d.status || 'Disetujui Waka Kur') + '</span></td>' +
-        '<td style="font-size: 0.8125rem; color: #666666;">' + (d.notes || 'Lengkap & Terverifikasi') + '</td>' +
-        '<td>' +
-          '<div style="display: flex; gap: 4px;">' +
-            '<button class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.previewTeacherDoc(\'' + d.id + '\')" title="Lihat Pratinjau Lembar Dokumen" style="font-size: 0.75rem; padding: 0.28rem 0.5rem;">👁️</button>' +
-            '<button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.downloadTeacherDocFile(\'' + d.id + '\')" title="Unduh File">⬇️</button>' +
-            '<button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.deleteGuruDoc(\'' + d.id + '\')" style="color: #dc2626;" title="Hapus">🗑️</button>' +
+      var cat = categoryColors[d.category] || categoryColors['default'];
+      var statusOk = (d.status || '').toLowerCase().indexOf('setuju') >= 0 || (d.status || '').toLowerCase().indexOf('verif') >= 0;
+      html +=
+        '<div class="guru-doc-card">' +
+          '<div class="guru-doc-card-left">' +
+            '<div class="guru-doc-num">' + (idx + 1) + '</div>' +
+            '<div class="guru-doc-icon-wrap" style="background:' + cat.bg + ';color:' + cat.color + ';">' +
+              cat.icon +
+            '</div>' +
           '</div>' +
-        '</td>' +
-      '</tr>';
+          '<div class="guru-doc-card-body">' +
+            '<div class="guru-doc-title">' + d.title + '</div>' +
+            '<div class="guru-doc-filename">📎 ' + (d.file_name || 'dokumen.pdf') + ' &nbsp;·&nbsp; ' + (d.file_size || '1.2 MB') + '</div>' +
+            '<div class="guru-doc-meta-row">' +
+              '<span class="guru-doc-cat-badge" style="background:' + cat.bg + ';color:' + cat.color + ';">' + d.category + '</span>' +
+              '<span class="guru-doc-status-badge ' + (statusOk ? 'status-ok' : 'status-pending') + '">' +
+                (statusOk ? '✓ ' : '⏳ ') + (d.status || 'Disetujui') +
+              '</span>' +
+            '</div>' +
+            (d.notes ? '<div class="guru-doc-notes">' + d.notes + '</div>' : '') +
+          '</div>' +
+          '<div class="guru-doc-card-actions">' +
+            '<button class="guru-doc-btn" onclick="window.PORTAL_APP.previewTeacherDoc(\'' + d.id + '\')" title="Pratinjau">👁️</button>' +
+            '<button class="guru-doc-btn" onclick="window.PORTAL_APP.downloadTeacherDocFile(\'' + d.id + '\')" title="Unduh">⬇️</button>' +
+            '<button class="guru-doc-btn guru-doc-btn-danger" onclick="window.PORTAL_APP.deleteGuruDoc(\'' + d.id + '\')" title="Hapus">🗑️</button>' +
+          '</div>' +
+        '</div>';
     });
 
     tbody.innerHTML = html;
   }
+
 
   function openUploadGuruDocModal() {
     State.uploadTargetTeacherId = null;

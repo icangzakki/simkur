@@ -1650,72 +1650,57 @@
         <!-- PANE 3: UPLOAD DOKUMEN ADMINISTRASI & PERANGKAT AJAR -->
         <div id="guru-pane-dokumen" style="display: none;">
           
-          <!-- Header Card & Upload Button -->
-          <div class="content-card" style="margin-bottom: 1.25rem;">
-            <div class="content-card-body" style="padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-              <div>
-                <h3 style="font-size: 1.125rem; font-weight: 700; color: #262626; margin: 0 0 3px 0;">Berkas Administrasi & Perangkat Ajar Mandiri (TA 2026/2027)</h3>
-                <p style="font-size: 0.8125rem; color: #777777; margin: 0;">Unggah berkas modul ajar, silabus/ATP, prota/prosem, dan rubrik asesmen untuk supervisi Waka Kurikulum.</p>
+          <!-- Header & Upload -->
+          <div class="guru-doc-header-card">
+            <div class="guru-doc-header-inner">
+              <div class="guru-doc-header-text">
+                <h3 class="guru-doc-header-title">Perangkat Ajar &amp; Berkas Kurikulum</h3>
+                <p class="guru-doc-header-sub">Unggah modul ajar, silabus/ATP, prota/prosem, dan rubrik asesmen untuk supervisi Waka Kurikulum.</p>
               </div>
-              <button type="button" class="btn btn-primary" onclick="window.PORTAL_APP.openUploadGuruDocModal()" style="display: flex; align-items: center; gap: 6px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                + Unggah Berkas Baru
+              <button type="button" class="btn btn-primary guru-doc-upload-btn" onclick="window.PORTAL_APP.openUploadGuruDocModal()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Unggah Berkas Baru
               </button>
             </div>
           </div>
 
-          <!-- 4 Status Perangkat Cards -->
-          <div class="kpi-grid">
-            
-            <div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #5135D8;">
-              <span style="font-size: 0.75rem; font-weight: 700; color: #777777; text-transform: uppercase;">Modul Ajar ASJ</span>
-              <div style="font-size: 1.5rem; font-weight: 800; color: #262626; margin: 4px 0;">98 / 100</div>
-              <span class="badge" style="background: #DEF7EC; color: #03543F; font-size: 0.72rem; font-weight: 700;">✓ Disetujui Waka Kur</span>
+          <!-- 4 Skor Perangkat -->
+          <div class="guru-doc-score-grid">
+
+            <div class="guru-doc-score-card" style="border-top: 3px solid #5135D8;">
+              <div class="guru-doc-score-label">📘 Modul Ajar</div>
+              <div class="guru-doc-score-value">98<span class="guru-doc-score-max">/100</span></div>
+              <span class="guru-doc-score-badge badge-ok">✓ Disetujui Waka</span>
             </div>
 
-            <div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #45A9E8;">
-              <span style="font-size: 0.75rem; font-weight: 700; color: #777777; text-transform: uppercase;">Silabus & ATP TJKT</span>
-              <div style="font-size: 1.5rem; font-weight: 800; color: #262626; margin: 4px 0;">95 / 100</div>
-              <span class="badge" style="background: #DEF7EC; color: #03543F; font-size: 0.72rem; font-weight: 700;">✓ Disetujui Waka Kur</span>
+            <div class="guru-doc-score-card" style="border-top: 3px solid #45A9E8;">
+              <div class="guru-doc-score-label">📗 Silabus &amp; ATP</div>
+              <div class="guru-doc-score-value">95<span class="guru-doc-score-max">/100</span></div>
+              <span class="guru-doc-score-badge badge-ok">✓ Disetujui Waka</span>
             </div>
 
-            <div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #20C985;">
-              <span style="font-size: 0.75rem; font-weight: 700; color: #777777; text-transform: uppercase;">Program Tahunan & Semester</span>
-              <div style="font-size: 1.5rem; font-weight: 800; color: #262626; margin: 4px 0;">94 / 100</div>
-              <span class="badge" style="background: #DEF7EC; color: #03543F; font-size: 0.72rem; font-weight: 700;">✓ Disetujui Waka Kur</span>
+            <div class="guru-doc-score-card" style="border-top: 3px solid #20C985;">
+              <div class="guru-doc-score-label">📅 Prota &amp; Prosem</div>
+              <div class="guru-doc-score-value">94<span class="guru-doc-score-max">/100</span></div>
+              <span class="guru-doc-score-badge badge-ok">✓ Disetujui Waka</span>
             </div>
 
-            <div class="content-card kpi-card" style="margin: 0; padding: 1.125rem; border-top: 3px solid #8BCB3D;">
-              <span style="font-size: 0.75rem; font-weight: 700; color: #777777; text-transform: uppercase;">Perangkat Asesmen</span>
-              <div style="font-size: 1.5rem; font-weight: 800; color: #262626; margin: 4px 0;">96 / 100</div>
-              <span class="badge" style="background: #DEF7EC; color: #03543F; font-size: 0.72rem; font-weight: 700;">✓ Disetujui Waka Kur</span>
+            <div class="guru-doc-score-card" style="border-top: 3px solid #8BCB3D;">
+              <div class="guru-doc-score-label">📋 Asesmen</div>
+              <div class="guru-doc-score-value">96<span class="guru-doc-score-max">/100</span></div>
+              <span class="guru-doc-score-badge badge-ok">✓ Disetujui Waka</span>
             </div>
 
           </div>
 
-          <!-- Uploaded Documents Table -->
-          <div class="content-card" style="margin: 0;">
-            <div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center;">
-              <h3 style="font-size: 1rem; font-weight: 700; color: #262626; margin: 0;">Daftar Berkas Perangkat Ajar yang Diunggah</h3>
-              <span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700;">4 / 4 Berkas Lengkap</span>
+          <!-- Daftar Berkas — Card List (no horizontal scroll) -->
+          <div class="guru-doc-list-card">
+            <div class="guru-doc-list-header">
+              <h3 class="guru-doc-list-title">Daftar Berkas yang Diunggah</h3>
+              <span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700;">4 / 4 Lengkap</span>
             </div>
-            <div class="content-card-body table-responsive" style="padding: 0;">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th style="width: 45px; text-align: center;">No</th>
-                    <th>Nama Berkas Dokumen</th>
-                    <th>Kategori</th>
-                    <th>Tgl Unggah</th>
-                    <th style="text-align: center;">Status Verifikasi</th>
-                    <th>Catatan Supervisi Waka</th>
-                    <th style="width: 90px; text-align: center;">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody id="guru-docs-tbody">
-                  <!-- Populated via app.js -->
-                </tbody>
-              </table>
+            <div id="guru-docs-tbody">
+              <!-- Populated via renderGuruDocuments() — card list, bukan table -->
             </div>
           </div>
 
