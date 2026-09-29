@@ -1757,6 +1757,114 @@
   </div>
 </div>
 
+<!-- 1.1B MODAL LIHAT BERKAS ADMINISTRASI GURU (WAKA KURIKULUM) -->
+<div class="modal-overlay" id="modal-view-teacher-docs">
+  <div class="modal-dialog" style="max-width: 800px; max-height: 90vh; border-radius: var(--radius-xl); overflow: hidden; display: flex; flex-direction: column;">
+    <div class="modal-header" style="background: linear-gradient(135deg, #123B66 0%, #1A4D80 100%); color: #ffffff; padding: 1.15rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.5rem;">📂</span>
+        <div>
+          <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #ffffff;" id="vt-modal-title">Berkas Administrasi Guru</h3>
+          <p style="margin: 0; font-size: 0.775rem; color: #E0EBF7;" id="vt-modal-subtitle">Pemeriksaan & Supervisi Dokumen Kurikulum Merdeka</p>
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" style="color: #ffffff; font-size: 1.1rem;" onclick="window.PORTAL_APP.closeModal('modal-view-teacher-docs')">✕</button>
+    </div>
+
+    <!-- Teacher Info Banner -->
+    <div style="background: #F8FAFC; border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; flex-shrink: 0;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #EDE8F5; color: #4B22B8; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700;" id="vt-teacher-avatar">
+          👨‍🏫
+        </div>
+        <div>
+          <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary);" id="vt-teacher-name">Nama Guru</div>
+          <div style="font-size: 0.775rem; color: var(--text-secondary);" id="vt-teacher-meta">NIP • Jurusan • Mapel</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <button type="button" class="btn btn-outline btn-sm" id="vt-btn-wa" onclick="window.PORTAL_APP.notifyActiveTeacherWA()" style="font-size: 0.775rem; color: #16A34A; border-color: #86EFAC;">
+          💬 WhatsApp
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.openUploadOnBehalfModal()" style="font-size: 0.775rem;">
+          ➕ Unggah Berkas
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Body: Tabs & Content -->
+    <div class="modal-body" style="padding: 1.25rem 1.5rem; overflow-y: auto; flex: 1;">
+      <!-- Category Tabs -->
+      <div style="display: flex; gap: 6px; margin-bottom: 1.25rem; flex-wrap: wrap;" id="vt-category-tabs">
+        <button type="button" class="btn btn-sm btn-primary vt-filter-tab active" data-cat="all" onclick="window.PORTAL_APP.filterTeacherDocs('all')">
+          Semua Berkas (<span id="vt-count-all">0</span>)
+        </button>
+        <button type="button" class="btn btn-sm btn-outline vt-filter-tab" data-cat="Modul Ajar" onclick="window.PORTAL_APP.filterTeacherDocs('Modul Ajar')">
+          RPP / Modul (<span id="vt-count-rpp">0</span>)
+        </button>
+        <button type="button" class="btn btn-sm btn-outline vt-filter-tab" data-cat="Silabus & ATP" onclick="window.PORTAL_APP.filterTeacherDocs('Silabus & ATP')">
+          Silabus & ATP (<span id="vt-count-silabus">0</span>)
+        </button>
+        <button type="button" class="btn btn-sm btn-outline vt-filter-tab" data-cat="Instrumen Asesmen" onclick="window.PORTAL_APP.filterTeacherDocs('Instrumen Asesmen')">
+          Asesmen (<span id="vt-count-asesmen">0</span>)
+        </button>
+        <button type="button" class="btn btn-sm btn-outline vt-filter-tab" data-cat="jurnal" onclick="window.PORTAL_APP.filterTeacherDocs('jurnal')">
+          Jurnal KBM (<span id="vt-count-jurnal">0</span>)
+        </button>
+      </div>
+
+      <!-- Document List Container -->
+      <div id="vt-docs-list" style="display: flex; flex-direction: column; gap: 10px;">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+
+    <div class="modal-footer" style="padding: 0.875rem 1.5rem; background: #F8FAFC; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); flex-shrink: 0;">
+      <span style="font-size: 0.75rem; color: var(--text-secondary);" id="vt-summary-text">Status: 0 Berkas Terunggah</span>
+      <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.closeModal('modal-view-teacher-docs')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-doc-previewer" style="z-index: 10050;">
+  <div class="modal-dialog" style="max-width: 860px; max-height: 94vh; border-radius: var(--radius-xl); overflow: hidden; display: flex; flex-direction: column;">
+    <div class="modal-header" style="background: #0F172A; color: #ffffff; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+      <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+        <span style="font-size: 1.3rem;">📄</span>
+        <div style="min-width: 0;">
+          <h3 style="margin: 0; font-size: 1rem; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="prev-doc-title">Pratinjau Dokumen</h3>
+          <p style="margin: 0; font-size: 0.75rem; color: #94A3B8; margin-top: 2px;" id="prev-doc-meta">File Dokumen</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn btn-outline btn-sm" style="color: #ffffff; border-color: #475569;" onclick="window.PORTAL_APP.printPreviewDoc()">🖨️ Cetak</button>
+        <button type="button" class="btn btn-ghost btn-sm" style="color: #ffffff; font-size: 1.1rem;" onclick="window.PORTAL_APP.closeModal('modal-doc-previewer')">✕</button>
+      </div>
+    </div>
+
+    <!-- Viewer Body -->
+    <div class="modal-body" id="prev-doc-body" style="padding: 1.5rem; background: #F1F5F9; overflow-y: auto; flex: 1;">
+      <!-- Content rendered dynamically -->
+    </div>
+
+    <!-- Viewer Footer with Waka Kur Approval -->
+    <div class="modal-footer" style="padding: 0.875rem 1.5rem; background: #FFFFFF; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 8px; flex-shrink: 0;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 0.775rem; font-weight: 700; color: var(--text-secondary);">Status Supervisi:</span>
+        <span id="prev-doc-status-badge" class="badge badge-success">✓ Disetujui Waka Kur</span>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" class="btn btn-outline btn-sm" style="color: #D97706; border-color: #FDE68A;" id="btn-prev-revisi" onclick="window.PORTAL_APP.markDocRevision()">
+          ⚠️ Minta Revisi
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-prev-approve" onclick="window.PORTAL_APP.approveDoc()">
+          ✅ Setujui & Verifikasi
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 1.2 MODAL UNGGAH BERKAS PERANGKAT AJAR GURU -->
 <div class="modal-overlay" id="modal-guru-upload-doc">
   <div class="modal-dialog" style="max-width: 540px;">

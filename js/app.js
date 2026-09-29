@@ -186,6 +186,10 @@
     dashScheduleClassFilter: 'all',
     masterSearchQuery: '',
     editingItem: null,
+    // Teacher Doc Inspection State
+    activeAdminTeacherId: null,
+    activePreviewDocId: null,
+    activeDocFilter: 'all',
     // Portal Guru State
     activeGuruTab: 'jurnal', // 'jurnal' | 'presensi' | 'dokumen'
     currentGuruId: 'T-010', // Default Ahmad Gajali
@@ -629,40 +633,84 @@
       return;
     }
 
+    const allGuruDocs = StorageManager.get('guru_documents');
+    const allGuruJournals = StorageManager.get('guru_journals');
+
     let html = '';
     filtered.forEach(function (m, idx) {
-      // Badge RPP
-      let rppBadge = '<span class="badge badge-success" style="font-size: 0.75rem;">✅ Lengkap</span>';
-      if (m.rpp_status === 'Review') {
-        rppBadge = '<span class="badge badge-warning" style="font-size: 0.75rem;">⏳ Review</span>';
-      } else if (m.rpp_status === 'Belum') {
-        rppBadge = '<span class="badge badge-danger" style="font-size: 0.75rem;">❌ Belum</span>';
+      const teacherDocs = allGuruDocs.filter(function (d) { return String(d.teacher_id) === String(m.teacher_id); });
+      const teacherJournals = allGuruJournals.filter(function (j) { return String(j.teacher_id) === String(m.teacher_id); });
+
+      const rppDocs = teacherDocs.filter(function (d) { return d.category === 'Modul Ajar' || d.category === 'RPP'; });
+      const silabusDocs = teacherDocs.filter(function (d) { return d.category === 'Silabus & ATP' || d.category === 'Silabus'; });
+      const asesmenDocs = teacherDocs.filter(function (d) { return d.category === 'Instrumen Asesmen' || d.category === 'Asesmen'; });
+
+      // Badge RPP / Modul Ajar
+      let rppBadge = '';
+      if (rppDocs.length > 0) {
+        rppBadge = '<button type="button" class="btn-table-doc-pill doc-pill-success" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\', \'Modul Ajar\')" title="Klik untuk melihat isi ' + rppDocs.length + ' berkas RPP / Modul Ajar">' +
+          '📄 Ada (' + rppDocs.length + ')' +
+          '</button>';
+      } else if (m.rpp_status === 'Lengkap') {
+        rppBadge = '<span class="badge badge-success" style="font-size: 0.75rem;">✅ Lengkap</span>';
+      } else if (m.rpp_status === 'Review') {
+        rppBadge = '<button type="button" class="btn-table-doc-pill doc-pill-warning" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\', \'Modul Ajar\')" title="Sedang direview. Klik untuk periksa">' +
+          '⏳ Review' +
+          '</button>';
+      } else {
+        rppBadge = '<button type="button" class="btn-table-doc-pill doc-pill-empty" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\', \'Modul Ajar\')" title="Belum mengunggah. Klik untuk periksa / unggah berkas">' +
+          '❌ Belum' +
+          '</button>';
       }
 
-      // Badge Jurnal
-      let jurnalBadge = '<span class="badge badge-primary" style="font-size: 0.75rem;">✅ ' + (m.jurnal_count || 12) + ' Sesi</span>';
-      if (m.jurnal_status === 'Belum') {
+      // Badge Jurnal Mengajar
+      let jurnalBadge = '';
+      if (teacherJournals.length > 0) {
+        jurnalBadge = '<button type="button" class="btn-table-doc-pill doc-pill-primary" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\', \'jurnal\')" title="Klik untuk membaca riwayat ' + teacherJournals.length + ' sesi jurnal KBM">' +
+          '📘 ' + teacherJournals.length + ' Sesi' +
+          '</button>';
+      } else if (m.jurnal_status === 'Sudah') {
+        jurnalBadge = '<span class="badge badge-primary" style="font-size: 0.75rem;">✅ ' + (m.jurnal_count || 1) + ' Sesi</span>';
+      } else {
         jurnalBadge = '<span class="badge badge-danger" style="font-size: 0.75rem;">❌ 0 Sesi</span>';
       }
 
-      // Badge Silabus
-      let silabusBadge = m.silabus_status === 'Lengkap'
-        ? '<span class="badge badge-success" style="font-size: 0.75rem;">✅ Ada</span>'
-        : '<span class="badge badge-neutral" style="font-size: 0.75rem;">❌ Belum</span>';
+      // Badge Silabus & ATP
+      let silabusBadge = '';
+      if (silabusDocs.length > 0) {
+        silabusBadge = '<button type="button" class="btn-table-doc-pill doc-pill-success" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\', \'Silabus & ATP\')" title="Klik untuk melihat isi ' + silabusDocs.length + ' berkas Silabus & ATP">' +
+          '📄 Ada (' + silabusDocs.length + ')' +
+          '</button>';
+      } else if (m.silabus_status === 'Lengkap') {
+        silabusBadge = '<span class="badge badge-success" style="font-size: 0.75rem;">✅ Ada</span>';
+      } else {
+        silabusBadge = '<button type="button" class="btn-table-doc-pill doc-pill-empty" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\', \'Silabus & ATP\')" title="Belum mengunggah. Klik untuk periksa / unggah berkas">' +
+          '❌ Belum' +
+          '</button>';
+      }
 
-      // Badge Asesmen
-      let asesmenBadge = m.asesmen_status === 'Lengkap'
-        ? '<span class="badge badge-success" style="font-size: 0.75rem;">✅ Ada</span>'
-        : '<span class="badge badge-neutral" style="font-size: 0.75rem;">❌ Belum</span>';
+      // Badge Instrumen Asesmen
+      let asesmenBadge = '';
+      if (asesmenDocs.length > 0) {
+        asesmenBadge = '<button type="button" class="btn-table-doc-pill doc-pill-success" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\', \'Instrumen Asesmen\')" title="Klik untuk melihat isi ' + asesmenDocs.length + ' berkas Asesmen">' +
+          '📄 Ada (' + asesmenDocs.length + ')' +
+          '</button>';
+      } else if (m.asesmen_status === 'Lengkap') {
+        asesmenBadge = '<span class="badge badge-success" style="font-size: 0.75rem;">✅ Ada</span>';
+      } else {
+        asesmenBadge = '<button type="button" class="btn-table-doc-pill doc-pill-empty" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\', \'Instrumen Asesmen\')" title="Belum mengunggah. Klik untuk periksa / unggah berkas">' +
+          '❌ Belum' +
+          '</button>';
+      }
 
       // Overall Status
       const isAllDone = m.rpp_status === 'Lengkap' && m.jurnal_status === 'Sudah' && m.silabus_status === 'Lengkap';
-      const isNoneDone = (!m.rpp_status || m.rpp_status === 'Belum') && (!m.jurnal_status || m.jurnal_status === 'Belum') && (!m.silabus_status || m.silabus_status === 'Belum');
+      const isNoneDone = (!m.rpp_status || m.rpp_status === 'Belum') && (!m.jurnal_status || m.jurnal_status === 'Belum') && (!m.silabus_status || m.silabus_status === 'Belum') && teacherDocs.length === 0;
       let statusPill = '<span class="badge" style="background: #F1F5F9; color: #64748B; font-weight: 700; font-size: 0.75rem;">Belum Ada</span>';
       if (isAllDone) {
         statusPill = '<span class="badge" style="background: #E8FAF3; color: #20C985; font-weight: 700; font-size: 0.75rem;">Lengkap</span>';
-      } else if (!isNoneDone) {
-        statusPill = '<span class="badge" style="background: #FEF3C7; color: #D97706; font-weight: 700; font-size: 0.75rem;">Ada Pending</span>';
+      } else if (teacherDocs.length > 0 || !isNoneDone) {
+        statusPill = '<span class="badge" style="background: #FEF3C7; color: #D97706; font-weight: 700; font-size: 0.75rem;">Ada Berkas (' + teacherDocs.length + ')</span>';
       }
 
       html += '<tr>' +
@@ -681,9 +729,17 @@
         '<td>' + asesmenBadge + '</td>' +
         '<td>' + statusPill + '</td>' +
         '<td>' +
-        '<button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.openTeacherAdminModal(\'' + m.teacher_id + '\')" title="Update Status Kelengkapan">' +
-        '✏️ Update' +
+        '<div style="display: flex; gap: 4px; align-items: center;">' +
+        '<button class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\')" title="Lihat Berkas Administrasi & Jurnal Guru Ini" style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 700; padding: 0.28rem 0.6rem;">' +
+        '👁️ Berkas (' + teacherDocs.length + ')' +
         '</button>' +
+        '<button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.openTeacherAdminModal(\'' + m.teacher_id + '\')" title="Update Status Kelengkapan" style="font-size: 0.75rem; padding: 0.28rem 0.5rem;">' +
+        '⚙️' +
+        '</button>' +
+        '<button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.notifyTeacherWA(\'' + m.teacher_id + '\')" title="Kirim Pesan WhatsApp ke Guru" style="font-size: 0.85rem; padding: 0.28rem 0.45rem; color: #16A34A;">' +
+        '💬' +
+        '</button>' +
+        '</div>' +
         '</td>' +
         '</tr>';
     });
@@ -768,6 +824,585 @@
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     showToast('Rekapitulasi administrasi guru berhasil diunduh (CSV).');
+  }
+
+  // =========================================================================
+  // 7.1B PEMERIKSAAN & SUPERVISI BERKAS DOKUMEN GURU OLEH WAKA KURIKULUM
+  // =========================================================================
+  function openTeacherAdminFilesModal(teacherId, filterCategory) {
+    State.activeAdminTeacherId = teacherId;
+    State.activeDocFilter = filterCategory || 'all';
+
+    const teachers = StorageManager.get('teachers');
+    const monitoring = StorageManager.get('teacher_admin');
+    const teacher = teachers.find(function (t) { return String(t.id) === String(teacherId); }) ||
+      monitoring.find(function (m) { return String(m.teacher_id) === String(teacherId); }) || {
+        id: teacherId,
+        name: 'Guru',
+        nip: '-',
+        department: '-',
+        subject: '-'
+      };
+
+    // Update Header
+    const titleEl = document.getElementById('vt-modal-title');
+    const subtitleEl = document.getElementById('vt-modal-subtitle');
+    const nameEl = document.getElementById('vt-teacher-name');
+    const metaEl = document.getElementById('vt-teacher-meta');
+    const avatarEl = document.getElementById('vt-teacher-avatar');
+
+    if (titleEl) titleEl.textContent = 'Berkas Administrasi - ' + teacher.name;
+    if (subtitleEl) subtitleEl.textContent = 'Supervisi & Verifikasi Dokumen Pembelajaran SMKN 1 Banjarmasin';
+    if (nameEl) nameEl.textContent = teacher.name;
+    if (metaEl) metaEl.textContent = 'NIP. ' + (teacher.nip || '-') + ' • Jurusan: ' + (teacher.department || '-') + ' • Mapel: ' + (teacher.subject || '-');
+    if (avatarEl) {
+      const initials = (teacher.name || 'G').split(' ').filter(Boolean).map(function (n) { return n[0]; }).slice(0, 2).join('');
+      avatarEl.textContent = initials || '👨‍🏫';
+    }
+
+    // Set Active Filter Tab visually
+    const tabs = document.querySelectorAll('.vt-filter-tab');
+    tabs.forEach(function (tab) {
+      if (tab.getAttribute('data-cat') === State.activeDocFilter) {
+        tab.className = 'btn btn-sm btn-primary vt-filter-tab active';
+      } else {
+        tab.className = 'btn btn-sm btn-outline vt-filter-tab';
+      }
+    });
+
+    renderTeacherDocsList(teacherId, State.activeDocFilter);
+    openModal('modal-view-teacher-docs');
+  }
+
+  function filterTeacherDocs(category) {
+    State.activeDocFilter = category;
+    const tabs = document.querySelectorAll('.vt-filter-tab');
+    tabs.forEach(function (tab) {
+      if (tab.getAttribute('data-cat') === category) {
+        tab.className = 'btn btn-sm btn-primary vt-filter-tab active';
+      } else {
+        tab.className = 'btn btn-sm btn-outline vt-filter-tab';
+      }
+    });
+    renderTeacherDocsList(State.activeAdminTeacherId, category);
+  }
+
+  function renderTeacherDocsList(teacherId, category) {
+    const listEl = document.getElementById('vt-docs-list');
+    if (!listEl) return;
+
+    const allDocs = StorageManager.get('guru_documents') || [];
+    const allJournals = StorageManager.get('guru_journals') || [];
+
+    const teacherDocs = allDocs.filter(function (d) { return String(d.teacher_id) === String(teacherId); });
+    const teacherJournals = allJournals.filter(function (j) { return String(j.teacher_id) === String(teacherId); });
+
+    const rppDocs = teacherDocs.filter(function (d) { return d.category === 'Modul Ajar' || d.category === 'RPP'; });
+    const silabusDocs = teacherDocs.filter(function (d) { return d.category === 'Silabus & ATP' || d.category === 'Silabus'; });
+    const asesmenDocs = teacherDocs.filter(function (d) { return d.category === 'Instrumen Asesmen' || d.category === 'Asesmen'; });
+
+    // Update Counter Badges in Modal Tabs
+    const countAllEl = document.getElementById('vt-count-all');
+    const countRppEl = document.getElementById('vt-count-rpp');
+    const countSilabusEl = document.getElementById('vt-count-silabus');
+    const countAsesmenEl = document.getElementById('vt-count-asesmen');
+    const countJurnalEl = document.getElementById('vt-count-jurnal');
+    const summaryEl = document.getElementById('vt-summary-text');
+
+    if (countAllEl) countAllEl.textContent = teacherDocs.length + teacherJournals.length;
+    if (countRppEl) countRppEl.textContent = rppDocs.length;
+    if (countSilabusEl) countSilabusEl.textContent = silabusDocs.length;
+    if (countAsesmenEl) countAsesmenEl.textContent = asesmenDocs.length;
+    if (countJurnalEl) countJurnalEl.textContent = teacherJournals.length;
+    if (summaryEl) {
+      summaryEl.textContent = 'Total: ' + teacherDocs.length + ' Dokumen Diunggah • ' + teacherJournals.length + ' Sesi Jurnal KBM Tercatat';
+    }
+
+    // Determine what to display based on filter
+    let itemsToRender = [];
+    if (category === 'all') {
+      teacherDocs.forEach(function (d) { itemsToRender.push({ type: 'doc', data: d }); });
+      teacherJournals.forEach(function (j) { itemsToRender.push({ type: 'journal', data: j }); });
+    } else if (category === 'Modul Ajar') {
+      rppDocs.forEach(function (d) { itemsToRender.push({ type: 'doc', data: d }); });
+    } else if (category === 'Silabus & ATP') {
+      silabusDocs.forEach(function (d) { itemsToRender.push({ type: 'doc', data: d }); });
+    } else if (category === 'Instrumen Asesmen') {
+      asesmenDocs.forEach(function (d) { itemsToRender.push({ type: 'doc', data: d }); });
+    } else if (category === 'jurnal') {
+      teacherJournals.forEach(function (j) { itemsToRender.push({ type: 'journal', data: j }); });
+    }
+
+    if (itemsToRender.length === 0) {
+      listEl.innerHTML = '<div style="text-align: center; padding: 2.5rem 1.5rem; background: #FAF9FD; border: 2px dashed #E2E8F0; border-radius: 12px;">' +
+        '<div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📭</div>' +
+        '<h4 style="margin: 0; font-size: 1rem; color: #334155; font-weight: 700;">Belum Ada Berkas yang Diunggah</h4>' +
+        '<p style="margin: 6px 0 16px 0; font-size: 0.8125rem; color: #64748B; max-width: 440px; margin-left: auto; margin-right: auto;">' +
+        'Guru yang bersangkutan belum mengunggah berkas untuk kategori ini melalui Portal Guru. Anda dapat mengingatkan guru via WhatsApp atau mengunggah langsung jika menerima berkas fisik/offline.' +
+        '</p>' +
+        '<div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">' +
+        '<button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.notifyActiveTeacherWA()" style="color: #16A34A; border-color: #86EFAC;">💬 Ingatkan Guru via WhatsApp</button>' +
+        '<button type="button" class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.openUploadOnBehalfModal()">➕ Unggah Berkas Sekarang</button>' +
+        '</div>' +
+        '</div>';
+      return;
+    }
+
+    let html = '';
+    itemsToRender.forEach(function (item) {
+      if (item.type === 'doc') {
+        const d = item.data;
+        const icon = d.category === 'Modul Ajar' ? '📘' : (d.category === 'Silabus & ATP' ? '📑' : (d.category === 'Instrumen Asesmen' ? '📊' : '📄'));
+        const statusBadge = d.status === 'Perlu Revisi' 
+          ? '<span class="badge" style="background: #FEE2E2; color: #DC2626; font-weight: 700; font-size: 0.75rem;">⚠️ Perlu Revisi</span>'
+          : '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; font-size: 0.75rem;">✓ ' + (d.status || 'Disetujui Waka Kur') + '</span>';
+
+        html += '<div class="teacher-doc-card" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); gap: 12px;">' +
+          '<div style="display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1;">' +
+            '<div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(75, 34, 184, 0.08); color: #4B22B8; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0;">' +
+              icon +
+            '</div>' +
+            '<div style="min-width: 0; flex: 1;">' +
+              '<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">' +
+                '<h4 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: #1E293B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + d.title + '</h4>' +
+                '<span class="badge badge-neutral" style="font-size: 0.7rem; font-weight: 600;">' + d.category + '</span>' +
+                statusBadge +
+              '</div>' +
+              '<div style="font-size: 0.775rem; color: #64748B; margin-top: 4px; display: flex; gap: 12px; flex-wrap: wrap;">' +
+                '<span>📁 ' + (d.file_name || 'dokumen.pdf') + ' (' + (d.file_size || '1.2 MB') + ')</span>' +
+                '<span>📅 Diunggah: ' + (d.uploaded_at || 'Baru Saja') + '</span>' +
+                (d.notes ? '<span>💬 ' + d.notes + '</span>' : '') +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">' +
+            '<button type="button" class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.previewTeacherDoc(\'' + d.id + '\')" style="display: inline-flex; align-items: center; gap: 4px; font-weight: 700;">' +
+              '👁️ Lihat Isi' +
+            '</button>' +
+            '<button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.downloadTeacherDocFile(\'' + d.id + '\')" title="Unduh File">' +
+              '⬇️' +
+            '</button>' +
+            '<button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.deleteUploadedTeacherDoc(\'' + d.id + '\')" title="Hapus Berkas" style="color: #DC2626;">' +
+              '🗑️' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+      } else if (item.type === 'journal') {
+        const j = item.data;
+        const hadir = j.hadir || 0;
+        const total = (j.hadir || 0) + (j.sakit || 0) + (j.izin || 0) + (j.alfa || 0);
+        html += '<div class="teacher-doc-card" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); gap: 12px;">' +
+          '<div style="display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1;">' +
+            '<div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(32, 201, 133, 0.1); color: #20C985; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0;">' +
+              '📘' +
+            '</div>' +
+            '<div style="min-width: 0; flex: 1;">' +
+              '<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">' +
+                '<h4 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: #1E293B;">' + (j.topic || 'Jurnal KBM Harian') + '</h4>' +
+                '<span class="badge badge-primary" style="font-size: 0.7rem; font-weight: 700;">' + (j.class_name || 'Kelas') + '</span>' +
+                '<span class="badge badge-neutral" style="font-size: 0.7rem;">Jam Ke-' + (j.jam_ke || '1-2') + '</span>' +
+                '<span class="badge badge-success" style="font-size: 0.7rem;">✓ ' + hadir + '/' + (total || 36) + ' Hadir</span>' +
+              '</div>' +
+              '<div style="font-size: 0.775rem; color: #64748B; margin-top: 4px; display: flex; gap: 12px; flex-wrap: wrap;">' +
+                '<span>📅 Tanggal: ' + (j.date || '-') + '</span>' +
+                '<span>📖 Mapel: ' + (j.subject || '-') + '</span>' +
+                (j.activity ? '<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px;">📝 ' + j.activity + '</span>' : '') +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">' +
+            '<button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.previewTeacherJournal(\'' + j.id + '\')" style="display: inline-flex; align-items: center; gap: 4px; font-weight: 700;">' +
+              '👁️ Periksa Sesi' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+      }
+    });
+
+    listEl.innerHTML = html;
+  }
+
+  function previewTeacherDoc(docId) {
+    State.activePreviewDocId = docId;
+    const allDocs = StorageManager.get('guru_documents') || [];
+    const doc = allDocs.find(function (d) { return String(d.id) === String(docId); });
+
+    if (!doc) {
+      showToast('Dokumen tidak ditemukan.', 'warning');
+      return;
+    }
+
+    const teachers = StorageManager.get('teachers');
+    const teacher = teachers.find(function (t) { return String(t.id) === String(doc.teacher_id); }) || {
+      name: 'Guru Pengampu',
+      nip: '-',
+      department: 'Keahlian Terkait',
+      subject: 'Mata Pelajaran'
+    };
+
+    const titleEl = document.getElementById('prev-doc-title');
+    const metaEl = document.getElementById('prev-doc-meta');
+    const badgeEl = document.getElementById('prev-doc-status-badge');
+    const bodyEl = document.getElementById('prev-doc-body');
+
+    if (titleEl) titleEl.textContent = doc.title;
+    if (metaEl) metaEl.textContent = doc.category + ' • ' + (doc.file_name || 'dokumen.pdf') + ' (' + (doc.file_size || '1.2 MB') + ') • ' + teacher.name;
+    if (badgeEl) {
+      if (doc.status === 'Perlu Revisi') {
+        badgeEl.className = 'badge badge-danger';
+        badgeEl.textContent = '⚠️ Perlu Revisi';
+      } else {
+        badgeEl.className = 'badge badge-success';
+        badgeEl.textContent = '✓ ' + (doc.status || 'Disetujui Waka Kur');
+      }
+    }
+
+    if (!bodyEl) return;
+
+    // Check if real file (Base64 data url)
+    if (doc.file_data && doc.file_data.startsWith('data:application/pdf')) {
+      bodyEl.innerHTML = '<iframe src="' + doc.file_data + '" style="width: 100%; height: 75vh; border: none; border-radius: 8px; background: #fff; box-shadow: var(--shadow-md);"></iframe>';
+    } else if (doc.file_data && doc.file_data.startsWith('data:image/')) {
+      bodyEl.innerHTML = '<div style="text-align: center; padding: 1rem;"><img src="' + doc.file_data + '" style="max-width: 100%; max-height: 75vh; border-radius: 8px; box-shadow: var(--shadow-md);"></div>';
+    } else {
+      // High-Fidelity Indonesian Official Curriculum Merdeka Sheet
+      const docCat = doc.category || 'Modul Ajar';
+      const mapel = teacher.subject || 'Produktif Kejuruan';
+      const fase = 'Fase F (Kelas XI / XII SMK)';
+      const alokasi = '4 JP x 45 Menit (Pertemuan 1 s.d 4)';
+      const tahunAjaran = doc.school_year || '2026/2027';
+
+      bodyEl.innerHTML = '<div style="background: #ffffff; color: #1e293b; padding: 2.5rem 3rem; max-width: 780px; margin: 0 auto; box-shadow: 0 4px 25px rgba(0,0,0,0.07); border-radius: 8px; font-family: Inter, sans-serif; line-height: 1.6;">' +
+        '<!-- Kop Surat -->' +
+        '<div style="display: flex; align-items: center; justify-content: center; gap: 18px; border-bottom: 3px double #0f172a; padding-bottom: 14px; margin-bottom: 24px; text-align: center;">' +
+          '<div style="font-size: 3rem; line-height: 1;">🏛️</div>' +
+          '<div>' +
+            '<div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #475569;">Pemerintah Provinsi Kalimantan Selatan</div>' +
+            '<div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: #475569;">Dinas Pendidikan dan Kebudayaan</div>' +
+            '<div style="font-size: 1.25rem; font-weight: 900; text-transform: uppercase; color: #0f172a; letter-spacing: 0.8px;">SMK NEGERI 1 BANJARMASIN</div>' +
+            '<div style="font-size: 0.775rem; color: #64748b;">Jalan Pramuka No. 4, Pemurus Luar, Kec. Banjarmasin Timur, Kota Banjarmasin 70238</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<!-- Judul Perangkat -->' +
+        '<div style="text-align: center; margin-bottom: 26px;">' +
+          '<h2 style="font-size: 1.25rem; font-weight: 800; text-transform: uppercase; margin: 0; color: #0f172a; letter-spacing: 0.5px; text-decoration: underline;">' + doc.title + '</h2>' +
+          '<div style="font-size: 0.85rem; font-weight: 700; color: #4B22B8; margin-top: 4px;">KURIKULUM MERDEKA • TAHUN PELAJARAN ' + tahunAjaran + '</div>' +
+          '<div style="font-size: 0.775rem; color: #64748B; margin-top: 2px;">Kategori: ' + docCat + ' • File: ' + (doc.file_name || 'perangkat.pdf') + '</div>' +
+        '</div>' +
+
+        '<!-- Identitas Modul Table -->' +
+        '<div style="margin-bottom: 22px;">' +
+          '<h4 style="font-size: 0.95rem; font-weight: 800; color: #0f172a; border-left: 4px solid #4B22B8; padding-left: 10px; margin: 0 0 10px 0; text-transform: uppercase;">I. Identitas Modul & Informasi Umum</h4>' +
+          '<table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">' +
+            '<tr><td style="width: 28%; padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Nama Penyusun / Guru</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0; font-weight: 700; color: #0F172A;">' + teacher.name + '</td></tr>' +
+            '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">NIP Guru</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0;">' + (teacher.nip || '-') + '</td></tr>' +
+            '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Satuan Pendidikan</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0;">SMK Negeri 1 Banjarmasin</td></tr>' +
+            '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Program / Konsentrasi Keahlian</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0;">' + (teacher.department || 'Teknologi Informasi & Bisnis') + '</td></tr>' +
+            '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Mata Pelajaran</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0; font-weight: 600;">' + mapel + '</td></tr>' +
+            '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Fase / Kelas / Semester</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0;">' + fase + ' / Semester Ganjil</td></tr>' +
+            '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Alokasi Waktu KBM</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0;">' + alokasi + '</td></tr>' +
+          '</table>' +
+        '</div>' +
+
+        '<!-- Capaian & Tujuan Pembelajaran -->' +
+        '<div style="margin-bottom: 22px;">' +
+          '<h4 style="font-size: 0.95rem; font-weight: 800; color: #0f172a; border-left: 4px solid #4B22B8; padding-left: 10px; margin: 0 0 10px 0; text-transform: uppercase;">II. Capaian & Alur Tujuan Pembelajaran (ATP)</h4>' +
+          '<div style="font-size: 0.85rem; color: #334155; line-height: 1.6; text-align: justify; background: #F8FAFC; padding: 12px 16px; border: 1px solid #E2E8F0; border-radius: 6px;">' +
+            '<strong>Capaian Pembelajaran (Elemen Kompetensi):</strong><br>' +
+            'Peserta didik mampu memahami konsep dasar, menganalisis struktur alur kerja praktis, mengimplementasikan prosedur operasional standar industri di laboratorium kejuruan, serta memecahkan studi kasus secara mandiri dan kolaboratif sesuai standar dunia kerja.<br><br>' +
+            '<strong>Tujuan Pembelajaran:</strong>' +
+            '<ol style="margin: 4px 0 0 0; padding-left: 20px;">' +
+              '<li>Peserta didik dapat menguraikan konsep dan prinsip kerja fundamental dengan tepat (Kognitif C2).</li>' +
+              '<li>Peserta didik mampu mendemonstrasikan langkah kerja operasional sesuai jobsheet praktikum (Psikomotorik P3).</li>' +
+              '<li>Peserta didik menunjukkan profil Pelajar Pancasila: Gotong royong, bernalar kritis, dan mandiri selama sesi KBM (Afektif A3).</li>' +
+            '</ol>' +
+          '</div>' +
+        '</div>' +
+
+        '<!-- Skenario Kegiatan Pembelajaran -->' +
+        '<div style="margin-bottom: 22px;">' +
+          '<h4 style="font-size: 0.95rem; font-weight: 800; color: #0f172a; border-left: 4px solid #4B22B8; padding-left: 10px; margin: 0 0 10px 0; text-transform: uppercase;">III. Rencana Skenario Kegiatan Pembelajaran (Project-Based Learning)</h4>' +
+          '<table style="width: 100%; border-collapse: collapse; font-size: 0.825rem;">' +
+            '<thead>' +
+              '<tr style="background: #1E293B; color: #fff;">' +
+                '<th style="padding: 6px 10px; border: 1px solid #334155; width: 22%; text-align: left;">Tahapan</th>' +
+                '<th style="padding: 6px 10px; border: 1px solid #334155; text-align: left;">Deskripsi Aktivitas Guru & Siswa</th>' +
+                '<th style="padding: 6px 10px; border: 1px solid #334155; width: 15%; text-align: center;">Durasi</th>' +
+              '</tr>' +
+            '</thead>' +
+            '<tbody>' +
+              '<tr>' +
+                '<td style="padding: 8px 10px; border: 1px solid #E2E8F0; font-weight: 700; background: #F8FAFC;">Pendahuluan</td>' +
+                '<td style="padding: 8px 10px; border: 1px solid #E2E8F0;">Salam pembuka, doa bersama, presensi digital SIMKUR, apersepsi materi terdahulu, penyampaian tujuan pembelajaran & motivasi industri.</td>' +
+                '<td style="padding: 8px 10px; border: 1px solid #E2E8F0; text-align: center;">15 Menit</td>' +
+              '</tr>' +
+              '<tr>' +
+                '<td style="padding: 8px 10px; border: 1px solid #E2E8F0; font-weight: 700; background: #F8FAFC;">Kegiatan Inti</td>' +
+                '<td style="padding: 8px 10px; border: 1px solid #E2E8F0;">Penentuan pertanyaan mendasar, perancangan desain proyek praktikum, penyusunan jadwal penyelesaian, monitoring kemajuan proyek, pengujian hasil jobsheet, dan evaluasi pengalaman belajar.</td>' +
+                '<td style="padding: 8px 10px; border: 1px solid #E2E8F0; text-align: center;">150 Menit</td>' +
+              '</tr>' +
+              '<tr>' +
+                '<td style="padding: 8px 10px; border: 1px solid #E2E8F0; font-weight: 700; background: #F8FAFC;">Penutup</td>' +
+                '<td style="padding: 8px 10px; border: 1px solid #E2E8F0;">Refleksi bersama siswa, umpan balik terhadap praktikum, pemberian tugas tindak lanjut mandiri, doa penutup dan salam.</td>' +
+                '<td style="padding: 8px 10px; border: 1px solid #E2E8F0; text-align: center;">15 Menit</td>' +
+              '</tr>' +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+
+        '<!-- Asesmen & Penilaian -->' +
+        '<div style="margin-bottom: 28px;">' +
+          '<h4 style="font-size: 0.95rem; font-weight: 800; color: #0f172a; border-left: 4px solid #4B22B8; padding-left: 10px; margin: 0 0 10px 0; text-transform: uppercase;">IV. Rencana Asesmen & Tindak Lanjut</h4>' +
+          '<div style="font-size: 0.825rem; color: #334155; line-height: 1.6; background: #F8FAFC; padding: 12px 16px; border: 1px solid #E2E8F0; border-radius: 6px;">' +
+            '• <strong>Asesmen Formatif Awal (Diagnostik):</strong> Tanya jawab materi prasyarat kejuruan.<br>' +
+            '• <strong>Asesmen Formatif Proses:</strong> Observasi lembar observasi sikap bernalar kritis dan kerja tim selama praktikum.<br>' +
+            '• <strong>Asesmen Sumatif (Produk/Kinerja):</strong> Penilaian hasil jobsheet dan laporan proyek berdasarkan rubrik terstandar.' +
+          '</div>' +
+        '</div>' +
+
+        '<!-- Catatan Tambahan Guru -->' +
+        (doc.notes ? '<div style="margin-bottom: 24px; padding: 10px 14px; background: #FFFBEB; border-left: 4px solid #F59E0B; border-radius: 4px; font-size: 0.8125rem; color: #92400E;"><strong>Catatan Tambahan Guru:</strong> ' + doc.notes + '</div>' : '') +
+
+        '<!-- Kolom Pengesahan Tanda Tangan -->' +
+        '<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 36px; padding-top: 18px; border-top: 1px solid #E2E8F0;">' +
+          '<div style="text-align: center; width: 42%;">' +
+            '<div style="font-size: 0.8rem; color: #64748B;">Mengetahui & Menyetujui,</div>' +
+            '<div style="font-size: 0.85rem; font-weight: 700; color: #0F172A; margin-top: 2px;">Waka Bidang Kurikulum</div>' +
+            '<div style="height: 60px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: #03543F; font-weight: 700; background: #DEF7EC; border-radius: 6px; margin: 10px 0; border: 1px dashed #31C48D;">' +
+              '✅ TERVERIFIKASI DIGITAL SIMKUR<br>' + (doc.uploaded_at || '2026/2027') +
+            '</div>' +
+            '<div style="font-size: 0.85rem; font-weight: 800; color: #0F172A; text-decoration: underline;">Ichsan Zakki, S.Pd., M.T.</div>' +
+            '<div style="font-size: 0.75rem; color: #64748B;">NIP. 19850312 201001 1 014</div>' +
+          '</div>' +
+
+          '<div style="text-align: center; width: 42%;">' +
+            '<div style="font-size: 0.8rem; color: #64748B;">Banjarmasin, ' + (doc.uploaded_at || 'Juli 2026') + '</div>' +
+            '<div style="font-size: 0.85rem; font-weight: 700; color: #0F172A; margin-top: 2px;">Guru Pengampu Mata Pelajaran</div>' +
+            '<div style="height: 60px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: #4B22B8; font-weight: 700; background: #F3F0FA; border-radius: 6px; margin: 10px 0; border: 1px dashed #9061F9;">' +
+              '✍️ TTD ELEKTRONIK GURU<br>' + teacher.name +
+            '</div>' +
+            '<div style="font-size: 0.85rem; font-weight: 800; color: #0F172A; text-decoration: underline;">' + teacher.name + '</div>' +
+            '<div style="font-size: 0.75rem; color: #64748B;">NIP. ' + (teacher.nip || '-') + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    openModal('modal-doc-previewer');
+  }
+
+  function previewTeacherJournal(journalId) {
+    const allJournals = StorageManager.get('guru_journals') || [];
+    const j = allJournals.find(function (item) { return String(item.id) === String(journalId); });
+    if (!j) {
+      showToast('Data jurnal tidak ditemukan.', 'warning');
+      return;
+    }
+
+    const teachers = StorageManager.get('teachers');
+    const teacher = teachers.find(function (t) { return String(t.id) === String(j.teacher_id); }) || {
+      name: 'Guru Pengampu',
+      nip: '-'
+    };
+
+    const titleEl = document.getElementById('prev-doc-title');
+    const metaEl = document.getElementById('prev-doc-meta');
+    const badgeEl = document.getElementById('prev-doc-status-badge');
+    const bodyEl = document.getElementById('prev-doc-body');
+
+    if (titleEl) titleEl.textContent = 'Jurnal Mengajar - ' + (j.class_name || 'Kelas') + ' (' + (j.date || '-') + ')';
+    if (metaEl) metaEl.textContent = 'Sesi KBM Jam Ke-' + (j.jam_ke || '1-2') + ' • ' + (j.subject || 'Mata Pelajaran') + ' • ' + teacher.name;
+    if (badgeEl) {
+      badgeEl.className = 'badge badge-primary';
+      badgeEl.textContent = '📘 Sesi KBM Selesai';
+    }
+
+    if (!bodyEl) return;
+
+    const hadir = j.hadir || 0;
+    const sakit = j.sakit || 0;
+    const izin = j.izin || 0;
+    const alfa = j.alfa || 0;
+    const total = hadir + sakit + izin + alfa || 36;
+    const attendancePct = Math.round((hadir / total) * 100);
+
+    bodyEl.innerHTML = '<div style="background: #ffffff; color: #1e293b; padding: 2.5rem 3rem; max-width: 780px; margin: 0 auto; box-shadow: 0 4px 25px rgba(0,0,0,0.07); border-radius: 8px; font-family: Inter, sans-serif; line-height: 1.6;">' +
+      '<!-- Header Jurnal -->' +
+      '<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #E2E8F0; padding-bottom: 14px; margin-bottom: 20px;">' +
+        '<div>' +
+          '<h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #0F172A;">LEMBAR JURNAL KBM HARIAN</h3>' +
+          '<div style="font-size: 0.775rem; color: #64748B;">SMK Negeri 1 Banjarmasin • Tahun Pelajaran 2026/2027</div>' +
+        '</div>' +
+        '<span class="badge badge-success" style="font-size: 0.8rem; font-weight: 700;">' + (j.date || '-') + '</span>' +
+      '</div>' +
+
+      '<!-- Info Grid -->' +
+      '<table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 20px;">' +
+        '<tr><td style="width: 25%; padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Guru Pengampu</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0; font-weight: 700;">' + teacher.name + '</td></tr>' +
+        '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Kelas & Jam Ke</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0;">' + (j.class_name || '-') + ' • Jam Ke-' + (j.jam_ke || '-') + '</td></tr>' +
+        '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Mata Pelajaran</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0; font-weight: 600;">' + (j.subject || '-') + '</td></tr>' +
+        '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Materi / Topik</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0; font-weight: 700; color: #4B22B8;">' + (j.topic || '-') + '</td></tr>' +
+        '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Aktivitas KBM</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0;">' + (j.activity || '-') + '</td></tr>' +
+        '<tr><td style="padding: 6px 8px; font-weight: 600; color: #475569; border: 1px solid #E2E8F0; background: #F8FAFC;">Catatan Kelas</td><td style="padding: 6px 10px; border: 1px solid #E2E8F0; color: #D97706;">' + (j.notes || 'Pembelajaran berlangsung kondusif.') + '</td></tr>' +
+      '</table>' +
+
+      '<!-- Rekapitulasi Presensi -->' +
+      '<div style="margin-bottom: 22px;">' +
+        '<h4 style="font-size: 0.9rem; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;">Rekap Kehadiran Siswa (' + attendancePct + '% Hadir)</h4>' +
+        '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center;">' +
+          '<div style="padding: 10px; background: #DEF7EC; border-radius: 6px;"><div style="font-size: 1.25rem; font-weight: 800; color: #03543F;">' + hadir + '</div><div style="font-size: 0.75rem; color: #046C4E;">Hadir</div></div>' +
+          '<div style="padding: 10px; background: #FEF08A; border-radius: 6px;"><div style="font-size: 1.25rem; font-weight: 800; color: #854D0E;">' + sakit + '</div><div style="font-size: 0.75rem; color: #854D0E;">Sakit</div></div>' +
+          '<div style="padding: 10px; background: #E0E7FF; border-radius: 6px;"><div style="font-size: 1.25rem; font-weight: 800; color: #3730A3;">' + izin + '</div><div style="font-size: 0.75rem; color: #3730A3;">Izin</div></div>' +
+          '<div style="padding: 10px; background: #FEE2E2; border-radius: 6px;"><div style="font-size: 1.25rem; font-weight: 800; color: #991B1B;">' + alfa + '</div><div style="font-size: 0.75rem; color: #991B1B;">Alfa</div></div>' +
+        '</div>' +
+      '</div>' +
+
+      (j.photo ? '<div style="margin-bottom: 20px;"><h4 style="font-size: 0.9rem; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;">Dokumentasi Foto KBM</h4><img src="' + j.photo + '" style="max-width: 100%; max-height: 350px; border-radius: 6px; box-shadow: var(--shadow-sm);"></div>' : '') +
+
+      '<!-- Verifikasi -->' +
+      '<div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E2E8F0; padding-top: 14px; margin-top: 20px;">' +
+        '<div style="font-size: 0.75rem; color: #64748B;">Dicatat secara digital melalui SIMKUR SMKN 1 Banjarmasin</div>' +
+        '<div style="text-align: right;"><div style="font-size: 0.8rem; font-weight: 700; color: #0F172A;">' + teacher.name + '</div><div style="font-size: 0.75rem; color: #64748B;">NIP. ' + (teacher.nip || '-') + '</div></div>' +
+      '</div>' +
+    '</div>';
+
+    openModal('modal-doc-previewer');
+  }
+
+  function approveDoc() {
+    if (!State.activePreviewDocId) return;
+    const allDocs = StorageManager.get('guru_documents') || [];
+    const doc = allDocs.find(function (d) { return String(d.id) === String(State.activePreviewDocId); });
+    if (!doc) return;
+
+    doc.status = 'Disetujui Waka Kur';
+    doc.notes = 'Telah diperiksa dan diverifikasi oleh Waka Kurikulum.';
+    StorageManager.update('guru_documents', doc.id, { status: doc.status, notes: doc.notes });
+
+    // Sync to monitoring
+    const teacherId = doc.teacher_id;
+    if (doc.category === 'Modul Ajar') {
+      StorageManager.update('teacher_admin', teacherId, { rpp_status: 'Lengkap' });
+    } else if (doc.category === 'Silabus & ATP') {
+      StorageManager.update('teacher_admin', teacherId, { silabus_status: 'Lengkap' });
+    } else if (doc.category === 'Instrumen Asesmen') {
+      StorageManager.update('teacher_admin', teacherId, { asesmen_status: 'Lengkap' });
+    }
+
+    const badgeEl = document.getElementById('prev-doc-status-badge');
+    if (badgeEl) {
+      badgeEl.className = 'badge badge-success';
+      badgeEl.textContent = '✓ Disetujui Waka Kur';
+    }
+
+    showToast('✓ Berkas berhasil diverifikasi dan disetujui oleh Waka Kurikulum!', 'success');
+    renderTeacherDocsList(teacherId, State.activeDocFilter);
+    renderDocuments();
+    renderDashboard();
+  }
+
+  function markDocRevision() {
+    if (!State.activePreviewDocId) return;
+    const allDocs = StorageManager.get('guru_documents') || [];
+    const doc = allDocs.find(function (d) { return String(d.id) === String(State.activePreviewDocId); });
+    if (!doc) return;
+
+    const revisionNotes = prompt('Masukkan catatan perbaikan/revisi untuk guru:', 'Mohon lengkapi rubrik asesmen dan tujuan pembelajaran...');
+    if (revisionNotes === null) return;
+
+    doc.status = 'Perlu Revisi';
+    doc.notes = revisionNotes || 'Perlu perbaikan kelengkapan komponen modul.';
+    StorageManager.update('guru_documents', doc.id, { status: doc.status, notes: doc.notes });
+
+    const teacherId = doc.teacher_id;
+    if (doc.category === 'Modul Ajar') {
+      StorageManager.update('teacher_admin', teacherId, { rpp_status: 'Review', notes: 'Revisi: ' + doc.notes });
+    } else if (doc.category === 'Silabus & ATP') {
+      StorageManager.update('teacher_admin', teacherId, { silabus_status: 'Review', notes: 'Revisi: ' + doc.notes });
+    } else if (doc.category === 'Instrumen Asesmen') {
+      StorageManager.update('teacher_admin', teacherId, { asesmen_status: 'Review', notes: 'Revisi: ' + doc.notes });
+    }
+
+    const badgeEl = document.getElementById('prev-doc-status-badge');
+    if (badgeEl) {
+      badgeEl.className = 'badge badge-danger';
+      badgeEl.textContent = '⚠️ Perlu Revisi';
+    }
+
+    showToast('⚠️ Catatan revisi telah disimpan untuk guru.', 'warning');
+    renderTeacherDocsList(teacherId, State.activeDocFilter);
+    renderDocuments();
+    renderDashboard();
+  }
+
+  function printPreviewDoc() {
+    const bodyEl = document.getElementById('prev-doc-body');
+    if (!bodyEl) return;
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write('<!DOCTYPE html><html><head><title>Cetak Dokumen SIMKUR</title><style>body { font-family: Inter, sans-serif; padding: 20px; }</style></head><body>' + bodyEl.innerHTML + '</body></html>');
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(function () {
+      printWindow.print();
+      printWindow.close();
+    }, 400);
+  }
+
+  function notifyTeacherWA(teacherId) {
+    const teachers = StorageManager.get('teachers');
+    const teacher = teachers.find(function (t) { return String(t.id) === String(teacherId); });
+    const name = teacher ? teacher.name : 'Bapak/Ibu Guru';
+    let phone = teacher && teacher.phone ? teacher.phone.replace(/\D/g, '') : '';
+    if (phone.startsWith('0')) {
+      phone = '62' + phone.substring(1);
+    }
+
+    const message = encodeURIComponent('Halo Bapak/Ibu ' + name + ',\n\nMohon untuk segera mengunggah kelengkapan administrasi pembelajaran (RPP/Modul Ajar, Silabus/ATP, Asesmen, serta Jurnal Mengajar) melalui Portal Guru SIMKUR SMKN 1 Banjarmasin.\n\nTerima kasih.\n— Waka Bidang Kurikulum SMKN 1 Banjarmasin');
+
+    const waUrl = phone ? ('https://wa.me/' + phone + '?text=' + message) : ('https://wa.me/?text=' + message);
+    window.open(waUrl, '_blank');
+  }
+
+  function notifyActiveTeacherWA() {
+    if (State.activeAdminTeacherId) {
+      notifyTeacherWA(State.activeAdminTeacherId);
+    }
+  }
+
+  function openUploadOnBehalfModal() {
+    if (State.activeAdminTeacherId) {
+      State.uploadTargetTeacherId = State.activeAdminTeacherId;
+    }
+    openModal('modal-guru-upload-doc');
+  }
+
+  function deleteUploadedTeacherDoc(id) {
+    if (confirm('Yakin ingin menghapus berkas dokumen ini?')) {
+      StorageManager.delete('guru_documents', id);
+      showToast('Berkas dokumen berhasil dihapus.');
+      renderTeacherDocsList(State.activeAdminTeacherId, State.activeDocFilter);
+      renderDocuments();
+      renderDashboard();
+    }
+  }
+
+  function downloadTeacherDocFile(id) {
+    const allDocs = StorageManager.get('guru_documents') || [];
+    const doc = allDocs.find(function (d) { return String(d.id) === String(id); });
+    if (!doc) return;
+
+    if (doc.file_data) {
+      const a = document.createElement('a');
+      a.href = doc.file_data;
+      a.download = doc.file_name || (doc.title + '.pdf');
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } else {
+      previewTeacherDoc(id);
+      showToast('Pratinjau lembar digital ditampilkan. Anda dapat mencetak/menyimpan PDF via tombol Cetak.');
+    }
   }
 
   // 7.2 TAB ARSIP DOKUMEN SEKOLAH
@@ -3028,7 +3663,7 @@
     const tbody = document.getElementById('guru-docs-tbody');
     if (!tbody) return;
 
-    const allDocs = StorageManager.get('guru_documents');
+    const allDocs = StorageManager.get('guru_documents') || [];
     const teacherDocs = allDocs.filter(function (d) {
       return String(d.teacher_id) === String(State.currentGuruId);
     });
@@ -3044,7 +3679,7 @@
         '<td style="text-align: center; color: #777777;">' + (idx + 1) + '</td>' +
         '<td>' +
           '<div style="font-weight: 700; color: #262626;">' + d.title + '</div>' +
-          '<div style="font-size: 0.75rem; color: #777777;">📁 ' + d.file_name + ' (' + (d.file_size || '1.2 MB') + ')</div>' +
+          '<div style="font-size: 0.75rem; color: #777777;">📁 ' + (d.file_name || 'dokumen.pdf') + ' (' + (d.file_size || '1.2 MB') + ')</div>' +
         '</td>' +
         '<td><span class="badge" style="background: rgba(75, 34, 184, 0.1); color: #4B22B8; font-weight: 600;">' + d.category + '</span></td>' +
         '<td style="font-size: 0.8125rem; color: #666666;">' + (d.uploaded_at || '2026-07-15') + '</td>' +
@@ -3052,7 +3687,8 @@
         '<td style="font-size: 0.8125rem; color: #666666;">' + (d.notes || 'Lengkap & Terverifikasi') + '</td>' +
         '<td>' +
           '<div style="display: flex; gap: 4px;">' +
-            '<button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.downloadDocument(\'' + d.id + '\')" title="Unduh File">⬇️</button>' +
+            '<button class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.previewTeacherDoc(\'' + d.id + '\')" title="Lihat Pratinjau Lembar Dokumen" style="font-size: 0.75rem; padding: 0.28rem 0.5rem;">👁️</button>' +
+            '<button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.downloadTeacherDocFile(\'' + d.id + '\')" title="Unduh File">⬇️</button>' +
             '<button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.deleteGuruDoc(\'' + d.id + '\')" style="color: #dc2626;" title="Hapus">🗑️</button>' +
           '</div>' +
         '</td>' +
@@ -3063,6 +3699,7 @@
   }
 
   function openUploadGuruDocModal() {
+    State.uploadTargetTeacherId = null;
     openModal('modal-guru-upload-doc');
   }
 
@@ -3073,39 +3710,66 @@
     const fileInput = document.getElementById('input-guru-doc-file');
     const notes = document.getElementById('input-guru-doc-notes').value.trim();
 
-    const fileName = fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0].name : (title.replace(/\s+/g, '_') + '.pdf');
-    const fileSize = fileInput && fileInput.files && fileInput.files[0] ? (fileInput.files[0].size / 1024 / 1024).toFixed(1) + ' MB' : '1.5 MB';
+    const targetTeacherId = State.uploadTargetTeacherId || State.activeAdminTeacherId || State.currentGuruId;
 
-    const newDoc = {
-      id: 'GDOC-' + Date.now(),
-      teacher_id: State.currentGuruId,
-      title: title,
-      category: category,
-      school_year: '2026/2027',
-      file_name: fileName,
-      file_size: fileSize,
-      status: 'Disetujui Waka Kur',
-      score: 96,
-      notes: notes || 'Perangkat ajar mandiri diunggah melalui Portal Guru.',
-      uploaded_at: new Date().toISOString().split('T')[0]
-    };
+    const file = fileInput && fileInput.files && fileInput.files[0];
+    const fileName = file ? file.name : (title.replace(/\s+/g, '_') + '.pdf');
+    const fileSize = file ? (file.size / 1024 / 1024).toFixed(1) + ' MB' : '1.5 MB';
 
-    StorageManager.add('guru_documents', newDoc);
+    function commitDoc(fileDataUrl) {
+      const newDoc = {
+        id: 'GDOC-' + Date.now(),
+        teacher_id: targetTeacherId,
+        title: title,
+        category: category,
+        school_year: '2026/2027',
+        file_name: fileName,
+        file_size: fileSize,
+        file_data: fileDataUrl || null,
+        status: 'Disetujui Waka Kur',
+        score: 96,
+        notes: notes || 'Perangkat ajar diunggah melalui SIMKUR.',
+        uploaded_at: new Date().toISOString().split('T')[0]
+      };
 
-    // Sync with Waka Kur Monitoring
-    if (category === 'Modul Ajar') {
-      StorageManager.update('teacher_admin', State.currentGuruId, { rpp_status: 'Lengkap' });
-    } else if (category === 'Silabus & ATP') {
-      StorageManager.update('teacher_admin', State.currentGuruId, { silabus_status: 'Lengkap' });
-    } else if (category === 'Instrumen Asesmen') {
-      StorageManager.update('teacher_admin', State.currentGuruId, { asesmen_status: 'Lengkap' });
+      StorageManager.add('guru_documents', newDoc);
+
+      // Sync with Waka Kur Monitoring
+      if (category === 'Modul Ajar') {
+        StorageManager.update('teacher_admin', targetTeacherId, { rpp_status: 'Lengkap' });
+      } else if (category === 'Silabus & ATP') {
+        StorageManager.update('teacher_admin', targetTeacherId, { silabus_status: 'Lengkap' });
+      } else if (category === 'Instrumen Asesmen') {
+        StorageManager.update('teacher_admin', targetTeacherId, { asesmen_status: 'Lengkap' });
+      }
+
+      closeModal('modal-guru-upload-doc');
+      showToast('✓ Berkas perangkat ajar berhasil diunggah dan terverifikasi!');
+      
+      State.uploadTargetTeacherId = null;
+      if (fileInput) fileInput.value = '';
+
+      renderGuruDocuments();
+      renderPortalGuru();
+      if (State.activeAdminTeacherId) {
+        renderTeacherDocsList(State.activeAdminTeacherId, State.activeDocFilter || 'all');
+      }
+      renderDocuments();
+      renderDashboard();
     }
 
-    closeModal('modal-guru-upload-doc');
-    showToast('✓ Berkas perangkat ajar berhasil diunggah dan terverifikasi!');
-    renderGuruDocuments();
-    renderPortalGuru();
-    renderDocuments(); // Sync with Waka Kur
+    if (file && file.size <= 5 * 1024 * 1024) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        commitDoc(reader.result);
+      };
+      reader.onerror = function () {
+        commitDoc(null);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      commitDoc(null);
+    }
   }
 
   function deleteGuruDoc(id) {
@@ -3114,6 +3778,11 @@
       showToast('Dokumen berhasil dihapus.');
       renderGuruDocuments();
       renderPortalGuru();
+      if (State.activeAdminTeacherId) {
+        renderTeacherDocsList(State.activeAdminTeacherId, State.activeDocFilter || 'all');
+      }
+      renderDocuments();
+      renderDashboard();
     }
   }
 
@@ -3399,12 +4068,26 @@
     switchScreen: switchScreen,
     openModal: openModal,
     closeModal: closeModal,
+    StorageManager: StorageManager,
     selectDashboardDay: selectDashboardDay,
     filterDashboardSchedule: filterDashboardSchedule,
     openAddAgendaModal: openAddAgendaModal,
     deleteAgenda: deleteAgenda,
     switchDocTab: switchDocTab,
     openTeacherAdminModal: openTeacherAdminModal,
+    openTeacherAdminFilesModal: openTeacherAdminFilesModal,
+    filterTeacherDocs: filterTeacherDocs,
+    renderTeacherDocsList: renderTeacherDocsList,
+    previewTeacherDoc: previewTeacherDoc,
+    previewTeacherJournal: previewTeacherJournal,
+    approveDoc: approveDoc,
+    markDocRevision: markDocRevision,
+    printPreviewDoc: printPreviewDoc,
+    notifyTeacherWA: notifyTeacherWA,
+    notifyActiveTeacherWA: notifyActiveTeacherWA,
+    openUploadOnBehalfModal: openUploadOnBehalfModal,
+    deleteUploadedTeacherDoc: deleteUploadedTeacherDoc,
+    downloadTeacherDocFile: downloadTeacherDocFile,
     exportAdminRecap: exportAdminRecap,
     openUploadDocModal: openUploadDocModal,
     editDocument: function (id) { openUploadDocModal(id); },

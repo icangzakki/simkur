@@ -3729,6 +3729,74 @@ td.table-empty-cell {
   100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
 }
 
+/* Document Table Badge Pills (Waka Kurikulum Document Inspection) */
+.btn-table-doc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.28rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.725rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  line-height: 1.2;
+}
+
+.btn-table-doc-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.btn-table-doc-pill.doc-pill-success {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  border-color: var(--color-success-border);
+}
+
+.btn-table-doc-pill.doc-pill-primary {
+  background: var(--soft-blue);
+  color: var(--simkur-blue);
+  border-color: var(--soft-blue-border);
+}
+
+.btn-table-doc-pill.doc-pill-warning {
+  background: #FEF3C7;
+  color: #B45309;
+  border-color: #FCD34D;
+}
+
+.btn-table-doc-pill.doc-pill-empty {
+  background: #F8FAFC;
+  color: #94A3B8;
+  border-color: #E2E8F0;
+  cursor: pointer;
+}
+
+.btn-table-doc-pill.doc-pill-empty:hover {
+  background: #F1F5F9;
+  color: #475569;
+}
+
+/* Document Item Card in Teacher Docs Modal */
+.teacher-doc-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.teacher-doc-card:hover {
+  border-color: var(--simkur-blue);
+  box-shadow: 0 2px 8px rgba(18, 59, 102, 0.06);
+}
+
 /* 3. Quick Actions Grid (Section 5) */
 .quick-actions-bar {
   display: grid;
