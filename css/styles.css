@@ -7185,3 +7185,443 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
     grid-column: span 2;
   }
 }
+
+/* ========================================================================= */
+/* ZERO-SCROLL CARDS: ARSIP DOKUMEN SEKOLAH                                  */
+/* ========================================================================= */
+.doc-archives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.doc-archive-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1.125rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.875rem;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.doc-archive-card:hover {
+  transform: translateY(-2px);
+  border-color: #C7D2FE;
+  box-shadow: 0 8px 20px -4px rgba(75, 34, 184, 0.1);
+}
+
+.doc-archive-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.doc-icon-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.doc-archive-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-archive-title {
+  margin: 0 0 4px 0;
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.doc-archive-desc {
+  margin: 0;
+  font-size: 0.775rem;
+  color: #64748B;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.doc-archive-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 10px;
+  background: #F8FAFC;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: #475569;
+}
+
+.doc-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.doc-archive-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid #F1F5F9;
+  padding-top: 0.75rem;
+}
+
+.doc-act-btn {
+  font-size: 0.775rem !important;
+  font-weight: 600 !important;
+  padding: 0.35rem 0.65rem !important;
+}
+
+/* ========================================================================= */
+/* ZERO-SCROLL CARDS: DATA MASTER (GURU, KELAS, MAPEL, RUANG)                */
+/* ========================================================================= */
+.master-cards-grid {
+  display: grid;
+  gap: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.master-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1rem 1.125rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+.master-card:hover {
+  transform: translateY(-2px);
+  border-color: #CBD5E1;
+  box-shadow: 0 6px 16px -3px rgba(15, 23, 42, 0.08);
+}
+
+.master-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.master-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #EDE7FF 0%, #DDD2FF 100%);
+  color: #4B22B8;
+  font-weight: 800;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.master-class-icon,
+.master-room-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #EFF6FF;
+  color: #2563EB;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.master-code-badge {
+  background: #0F172A;
+  color: #FFFFFF;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 6px 8px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.master-card-header-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.master-card-title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.master-card-subtitle {
+  font-size: 0.75rem;
+  color: #64748B;
+  display: block;
+  margin-top: 2px;
+}
+
+.master-card-desc {
+  margin: 2px 0 0 0;
+  font-size: 0.775rem;
+  color: #64748B;
+  line-height: 1.35;
+}
+
+.master-card-body {
+  font-size: 0.8125rem;
+}
+
+.master-badge-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.master-card-subject {
+  font-size: 0.775rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.master-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid #F1F5F9;
+  padding-top: 0.65rem;
+}
+
+.master-act-btn {
+  font-size: 0.775rem !important;
+  font-weight: 600 !important;
+  padding: 0.3rem 0.6rem !important;
+}
+
+/* ========================================================================= */
+/* ZERO-SCROLL CARDS: SUPERVISI KLINIS                                       */
+/* ========================================================================= */
+.sup-sesi-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.sup-sesi-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1.125rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+.sup-sesi-card:hover {
+  transform: translateY(-2px);
+  border-color: #CBD5E1;
+  box-shadow: 0 6px 16px -3px rgba(15, 23, 42, 0.08);
+}
+
+.sup-sesi-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sup-sesi-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.sup-sesi-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #F8FAFC;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.sup-sesi-meta-item {
+  font-size: 0.775rem;
+  color: #64748B;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.sup-sesi-meta-item span {
+  min-width: 110px;
+}
+
+.sup-sesi-meta-item strong {
+  color: #1E293B;
+}
+
+.sup-sesi-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sup-cards-grid {
+  display: grid;
+  gap: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.sup-manajerial-card,
+.sup-rtl-card,
+.sup-rekap-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1.125rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+.sup-manajerial-card:hover,
+.sup-rtl-card:hover,
+.sup-rekap-card:hover {
+  transform: translateY(-2px);
+  border-color: #CBD5E1;
+  box-shadow: 0 6px 16px -3px rgba(15, 23, 42, 0.08);
+}
+
+.sup-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.sup-card-title {
+  margin: 0;
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+/* ========================================================================= */
+/* GLOBAL MOBILE ZERO-SCROLL IMPROVEMENTS                                    */
+/* ========================================================================= */
+@media (max-width: 768px) {
+  /* Prevent any horizontal page bounciness */
+  body, .app-main, .main-content {
+    overflow-x: hidden !important;
+  }
+
+  /* Schedule Table on Mobile: Card transformation */
+  #sched-container-table .data-table,
+  #sched-container-table .data-table thead,
+  #sched-container-table .data-table tbody,
+  #sched-container-table .data-table tr,
+  #sched-container-table .data-table td {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  #sched-container-table .data-table thead {
+    display: none !important;
+  }
+
+  #sched-container-table .data-table tr {
+    background: #FFFFFF !important;
+    border: 1px solid #ECECF2 !important;
+    border-radius: 12px !important;
+    margin-bottom: 0.75rem !important;
+    padding: 0.875rem !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  }
+
+  #sched-container-table .data-table td {
+    border: none !important;
+    padding: 0.25rem 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  /* Rubrik Tables inside Modals on Mobile: Card Stack */
+  .rubrik-table,
+  .rubrik-table thead,
+  .rubrik-table tbody,
+  .rubrik-table tr,
+  .rubrik-table td {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .rubrik-table thead {
+    display: none !important;
+  }
+
+  .rubrik-table tr {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 12px !important;
+    margin-bottom: 0.875rem !important;
+    padding: 0.75rem !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .rubrik-table td {
+    border: none !important;
+    padding: 0.35rem 0 !important;
+  }
+
+  .rubrik-section-header td {
+    border-radius: 8px !important;
+    padding: 0.5rem 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Single Column on Narrow Mobile Screens */
+  .doc-archives-grid,
+  .doc-archives-cards-grid,
+  .master-cards-grid,
+  .sup-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+

@@ -490,6 +490,9 @@
     docTeacherDeptFilter: 'all',
     docTeacherStatusFilter: 'all',
     docTeacherViewMode: 'card', // 'card' (bebas geser) | 'table'
+    docArchiveViewMode: 'card', // 'card' (bebas geser) | 'table'
+    masterViewMode: 'card',     // 'card' (bebas geser) | 'table'
+    supSesiViewMode: 'card',    // 'card' (bebas geser) | 'table'
     scheduleViewMode: 'table', // 'table' | 'timeline' | 'agenda'
     scheduleDayFilter: 'all',
     scheduleClassFilter: 'all',
@@ -2263,13 +2266,28 @@
     }
   }
 
-  // 7.2 TAB ARSIP DOKUMEN SEKOLAH
+  // 7.2 TAB ARSIP DOKUMEN SEKOLAH - RESPONSIVE BEBAS GESER
+  function setArchiveDocViewMode(mode) {
+    State.docArchiveViewMode = mode;
+    const cardCont = document.getElementById('doc-archives-cards-container');
+    const tableCont = document.getElementById('doc-archives-table-container');
+    const btnCard = document.getElementById('btn-doc-archive-card');
+    const btnTable = document.getElementById('btn-doc-archive-table');
+
+    if (btnCard) btnCard.classList.toggle('active', mode === 'card');
+    if (btnTable) btnTable.classList.toggle('active', mode === 'table');
+
+    if (cardCont) cardCont.style.display = (mode === 'card') ? 'grid' : 'none';
+    if (tableCont) tableCont.style.display = (mode === 'table') ? 'block' : 'none';
+  }
+
   function renderArchiveDocsTable(docs) {
     const tbody = document.getElementById('doc-table-tbody');
+    const cardsContainer = document.getElementById('doc-archives-cards-container');
     const badgeCount = document.getElementById('doc-total-badge');
     if (badgeCount) badgeCount.textContent = docs.length + ' Dokumen';
 
-    if (!tbody) return;
+    if (!tbody && !cardsContainer) return;
 
     const filtered = docs.filter(function (d) {
       const matchesSearch = !State.docSearchQuery ||
@@ -2283,20 +2301,65 @@
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 3rem; color: #888888;">' +
-        '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📁</div>' +
-        '<strong>Tidak ada arsip dokumen yang sesuai</strong>' +
-        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau unggah dokumen baru.</p>' +
-        '</td></tr>';
+      if (cardsContainer) {
+        cardsContainer.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: #FFFFFF; border-radius: 16px; border: 1.5px dashed #CBD5E1; color: #64748B;">' +
+          '<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📁</div>' +
+          '<h4 style="font-weight: 700; color: #1E293B; margin-bottom: 4px;">Tidak Ada Arsip Dokumen yang Sesuai</h4>' +
+          '<p style="font-size: 0.8125rem; color: #94A3B8; margin: 0;">Ubah filter atau unggah dokumen baru.</p>' +
+          '</div>';
+      }
+      if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 3rem; color: #888888;">' +
+          '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📁</div>' +
+          '<strong>Tidak ada arsip dokumen yang sesuai</strong>' +
+          '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau unggah dokumen baru.</p>' +
+          '</td></tr>';
+      }
       return;
     }
 
-    let html = '';
+    let cardsHtml = '';
+    let tableHtml = '';
+
     filtered.forEach(function (d) {
-      html += '<tr>' +
+      const isDocx = d.name && (d.name.endsWith('.docx') || d.name.endsWith('.doc'));
+      const iconText = isDocx ? 'DOC' : 'PDF';
+      const iconBg = isDocx ? '#EFF6FF' : '#EDE7FF';
+      const iconColor = isDocx ? '#2563EB' : '#4B22B8';
+
+      // 1. Responsive Card
+      cardsHtml += '<div class="doc-archive-card" id="doc-card-' + d.id + '">' +
+        '  <div class="doc-archive-card-top">' +
+        '    <div class="doc-icon-badge" style="background: ' + iconBg + '; color: ' + iconColor + ';">' + iconText + '</div>' +
+        '    <div class="doc-archive-info">' +
+        '      <h4 class="doc-archive-title">' + d.name + '</h4>' +
+        '      <p class="doc-archive-desc">' + (d.description || d.file_name || '-') + '</p>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="doc-archive-meta-row">' +
+        '    <span class="badge badge-primary">' + d.category + '</span>' +
+        '    <span class="badge badge-neutral">' + d.school_year + '</span>' +
+        '    <span class="doc-meta-item">📅 ' + (d.uploaded_at || '-') + '</span>' +
+        '    <span class="doc-meta-item">💾 ' + (d.file_size || '1.5 MB') + '</span>' +
+        '  </div>' +
+        '  <div class="doc-archive-actions">' +
+        '    <button type="button" class="btn btn-outline btn-sm doc-act-btn" onclick="window.PORTAL_APP.downloadDocument(\'' + d.id + '\')" title="Unduh Berkas">' +
+        '      <span>📥 Unduh</span>' +
+        '    </button>' +
+        '    <button type="button" class="btn btn-ghost btn-sm doc-act-btn" onclick="window.PORTAL_APP.editDocument(\'' + d.id + '\')" title="Edit Metadata">' +
+        '      <span>✏️ Edit</span>' +
+        '    </button>' +
+        '    <button type="button" class="btn btn-ghost btn-sm doc-act-btn" style="color: #dc2626;" onclick="window.PORTAL_APP.deleteDocument(\'' + d.id + '\')" title="Hapus">' +
+        '      <span>🗑️</span>' +
+        '    </button>' +
+        '  </div>' +
+        '</div>';
+
+      // 2. Compact Table Row
+      tableHtml += '<tr>' +
         '<td>' +
         '<div style="display: flex; align-items: center; gap: 10px;">' +
-        '<div style="width: 36px; height: 36px; border-radius: 8px; background: #EDE7FF; color: #4B22B8; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; flex-shrink: 0;">PDF</div>' +
+        '<div style="width: 36px; height: 36px; border-radius: 8px; background: ' + iconBg + '; color: ' + iconColor + '; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; flex-shrink: 0;">' + iconText + '</div>' +
         '<div>' +
         '<div style="font-weight: 600; color: #262626;">' + d.name + '</div>' +
         '<div style="font-size: 0.775rem; color: #777777;">' + (d.description || d.file_name || '-') + '</div>' +
@@ -2317,7 +2380,10 @@
         '</tr>';
     });
 
-    tbody.innerHTML = html;
+    if (cardsContainer) cardsContainer.innerHTML = cardsHtml;
+    if (tbody) tbody.innerHTML = tableHtml;
+
+    setArchiveDocViewMode(State.docArchiveViewMode || 'card');
   }
 
   function openUploadDocModal(editId) {
@@ -2804,8 +2870,23 @@
   }
 
   // =========================================================================
-  // 9. SCREEN 4: DATA MASTER (GURU, KELAS, MAPEL, RUANG)
+  // 9. SCREEN 4: DATA MASTER (GURU, KELAS, MAPEL, RUANG) - BEBAS GESER
   // =========================================================================
+  function setMasterViewMode(mode) {
+    State.masterViewMode = mode;
+    const btnCard = document.getElementById('btn-master-mode-card');
+    const btnTable = document.getElementById('btn-master-mode-table');
+    if (btnCard) btnCard.classList.toggle('active', mode === 'card');
+    if (btnTable) btnTable.classList.toggle('active', mode === 'table');
+
+    ['teachers', 'classes', 'subjects', 'rooms'].forEach(function (k) {
+      const cardCont = document.getElementById('master-' + k + '-cards-container');
+      const tableCont = document.getElementById('master-' + k + '-table-container');
+      if (cardCont) cardCont.style.display = (mode === 'card') ? 'grid' : 'none';
+      if (tableCont) tableCont.style.display = (mode === 'table') ? 'block' : 'none';
+    });
+  }
+
   function renderDataMaster() {
     const tab = State.activeMasterTab || 'teachers';
 
@@ -2868,6 +2949,8 @@
     else if (tab === 'classes') renderMasterClasses(classes);
     else if (tab === 'subjects') renderMasterSubjects(subjects);
     else if (tab === 'rooms') renderMasterRooms(rooms);
+
+    setMasterViewMode(State.masterViewMode || 'card');
   }
 
   function switchMasterTab(tabName) {
@@ -2878,7 +2961,8 @@
   // 9.1 Master Guru
   function renderMasterTeachers(teachers) {
     const tbody = document.getElementById('master-teachers-tbody');
-    if (!tbody) return;
+    const cardsCont = document.getElementById('master-teachers-cards-container');
+    if (!tbody && !cardsCont) return;
 
     const q = (State.masterSearchQuery || '').toLowerCase();
     const filtered = teachers.filter(function (t) {
@@ -2886,17 +2970,30 @@
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #888;">Tidak ada data guru yang cocok.</td></tr>';
+      if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #888;">Tidak ada data guru yang cocok.</td></tr>';
+      if (cardsCont) {
+        cardsCont.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: #FFFFFF; border-radius: 16px; border: 1.5px dashed #CBD5E1; color: #64748B;">' +
+          '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">👨‍🏫</div>' +
+          '<h4 style="font-weight: 700; color: #1E293B; margin-bottom: 4px;">Tidak Ada Data Guru yang Cocok</h4>' +
+          '<p style="font-size: 0.8125rem; color: #94A3B8; margin: 0;">Ubah kata kunci pencarian atau tambah guru baru.</p>' +
+          '</div>';
+      }
       return;
     }
 
-    let html = '';
+    let tableHtml = '';
+    let cardsHtml = '';
+
     filtered.forEach(function (t, i) {
-      html += '<tr>' +
+      const initials = (t.name || 'G').split(' ').map(function (n) { return n[0]; }).slice(0, 2).join('').toUpperCase();
+      const dept = t.department || 'Umum';
+
+      // 1. Table row
+      tableHtml += '<tr>' +
         '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (i + 1) + '</td>' +
         '<td style="font-weight: 600; color: #262626;">' + t.name + '</td>' +
         '<td style="font-family: monospace; font-size: 0.8125rem;">' + (t.nip || '-') + '</td>' +
-        '<td><span class="badge badge-neutral">' + (t.department || 'Umum') + '</span></td>' +
+        '<td><span class="badge badge-neutral">' + dept + '</span></td>' +
         '<td>' + (t.subject || '-') + '</td>' +
         '<td>' +
         '<span class="badge ' + (t.is_active ? 'badge-success' : 'badge-neutral') + '">' +
@@ -2910,9 +3007,38 @@
         '</div>' +
         '</td>' +
         '</tr>';
+
+      // 2. Responsive Card (Bebas Geser)
+      cardsHtml += '<div class="master-card master-teacher-card" id="master-teacher-card-' + t.id + '">' +
+        '  <div class="master-card-header">' +
+        '    <div class="master-avatar" title="' + t.name + '">' + initials + '</div>' +
+        '    <div class="master-card-header-info">' +
+        '      <h4 class="master-card-title">' + t.name + '</h4>' +
+        '      <span class="master-card-subtitle font-mono">NIP. ' + (t.nip || '-') + '</span>' +
+        '    </div>' +
+        '    <span class="badge ' + (t.is_active ? 'badge-success' : 'badge-neutral') + '" style="font-size: 0.725rem; white-space: nowrap;">' +
+        (t.is_active ? '● Aktif' : '○ Nonaktif') +
+        '    </span>' +
+        '  </div>' +
+        '  <div class="master-card-body">' +
+        '    <div class="master-badge-row">' +
+        '      <span class="badge badge-primary" style="font-size: 0.75rem;">' + dept + '</span>' +
+        '      <span class="master-card-subject">📚 ' + (t.subject || 'Pengampu Mapel') + '</span>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="master-card-footer">' +
+        '    <button type="button" class="btn btn-outline btn-sm master-act-btn" onclick="window.PORTAL_APP.editTeacher(\'' + t.id + '\')" title="Edit Data">' +
+        '      <span>✏️ Edit</span>' +
+        '    </button>' +
+        '    <button type="button" class="btn btn-ghost btn-sm master-act-btn" style="color: #dc2626;" onclick="window.PORTAL_APP.deleteTeacher(\'' + t.id + '\')" title="Hapus Data">' +
+        '      <span>🗑️</span>' +
+        '    </button>' +
+        '  </div>' +
+        '</div>';
     });
 
-    tbody.innerHTML = html;
+    if (tbody) tbody.innerHTML = tableHtml;
+    if (cardsCont) cardsCont.innerHTML = cardsHtml;
   }
 
   function openTeacherModal(editId) {
@@ -2995,7 +3121,8 @@
   // 9.2 Master Kelas
   function renderMasterClasses(classes) {
     const tbody = document.getElementById('master-classes-tbody');
-    if (!tbody) return;
+    const cardsCont = document.getElementById('master-classes-cards-container');
+    if (!tbody && !cardsCont) return;
 
     const q = (State.masterSearchQuery || '').toLowerCase();
     const filtered = classes.filter(function (c) {
@@ -3003,13 +3130,23 @@
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #888;">Tidak ada data kelas yang cocok.</td></tr>';
+      if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #888;">Tidak ada data kelas yang cocok.</td></tr>';
+      if (cardsCont) {
+        cardsCont.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: #FFFFFF; border-radius: 16px; border: 1.5px dashed #CBD5E1; color: #64748B;">' +
+          '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🏫</div>' +
+          '<h4 style="font-weight: 700; color: #1E293B; margin-bottom: 4px;">Tidak Ada Data Kelas yang Cocok</h4>' +
+          '<p style="font-size: 0.8125rem; color: #94A3B8; margin: 0;">Ubah kata kunci pencarian atau tambah kelas baru.</p>' +
+          '</div>';
+      }
       return;
     }
 
-    let html = '';
+    let tableHtml = '';
+    let cardsHtml = '';
+
     filtered.forEach(function (c, i) {
-      html += '<tr>' +
+      // 1. Table row
+      tableHtml += '<tr>' +
         '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (i + 1) + '</td>' +
         '<td style="font-weight: 700; color: #262626;">' + c.name + '</td>' +
         '<td><span class="badge badge-neutral">' + c.grade + '</span></td>' +
@@ -3023,9 +3160,38 @@
         '</div>' +
         '</td>' +
         '</tr>';
+
+      // 2. Responsive Card
+      cardsHtml += '<div class="master-card master-class-card" id="master-class-card-' + c.id + '">' +
+        '  <div class="master-card-header">' +
+        '    <div class="master-class-icon">🏫</div>' +
+        '    <div class="master-card-header-info">' +
+        '      <h4 class="master-card-title">' + c.name + '</h4>' +
+        '      <span class="master-card-subtitle">Tingkat ' + c.grade + '</span>' +
+        '    </div>' +
+        '    <span class="badge ' + (c.is_active ? 'badge-success' : 'badge-neutral') + '" style="font-size: 0.725rem;">' +
+        (c.is_active ? '● Aktif' : '○ Nonaktif') +
+        '    </span>' +
+        '  </div>' +
+        '  <div class="master-card-body">' +
+        '    <div class="master-badge-row">' +
+        '      <span class="badge badge-primary" style="font-size: 0.75rem;">' + c.major + '</span>' +
+        '      <span class="badge badge-neutral" style="font-size: 0.75rem;">👥 ' + (c.total_students || 36) + ' Siswa</span>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="master-card-footer">' +
+        '    <button type="button" class="btn btn-outline btn-sm master-act-btn" onclick="window.PORTAL_APP.editClass(\'' + c.id + '\')">' +
+        '      <span>✏️ Edit</span>' +
+        '    </button>' +
+        '    <button type="button" class="btn btn-ghost btn-sm master-act-btn" style="color: #dc2626;" onclick="window.PORTAL_APP.deleteClass(\'' + c.id + '\')">' +
+        '      <span>🗑️</span>' +
+        '    </button>' +
+        '  </div>' +
+        '</div>';
     });
 
-    tbody.innerHTML = html;
+    if (tbody) tbody.innerHTML = tableHtml;
+    if (cardsCont) cardsCont.innerHTML = cardsHtml;
   }
 
   function openClassModal(editId) {
@@ -3108,7 +3274,8 @@
   // 9.3 Master Mapel
   function renderMasterSubjects(subjects) {
     const tbody = document.getElementById('master-subjects-tbody');
-    if (!tbody) return;
+    const cardsCont = document.getElementById('master-subjects-cards-container');
+    if (!tbody && !cardsCont) return;
 
     const q = (State.masterSearchQuery || '').toLowerCase();
     const filtered = subjects.filter(function (s) {
@@ -3116,17 +3283,29 @@
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem; color: #888;">Tidak ada data mata pelajaran.</td></tr>';
+      if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem; color: #888;">Tidak ada data mata pelajaran.</td></tr>';
+      if (cardsCont) {
+        cardsCont.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: #FFFFFF; border-radius: 16px; border: 1.5px dashed #CBD5E1; color: #64748B;">' +
+          '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📖</div>' +
+          '<h4 style="font-weight: 700; color: #1E293B; margin-bottom: 4px;">Tidak Ada Data Mata Pelajaran</h4>' +
+          '<p style="font-size: 0.8125rem; color: #94A3B8; margin: 0;">Ubah kata kunci pencarian atau tambah mapel baru.</p>' +
+          '</div>';
+      }
       return;
     }
 
-    let html = '';
+    let tableHtml = '';
+    let cardsHtml = '';
+
     filtered.forEach(function (s, i) {
-      html += '<tr>' +
+      const isKejuruan = s.category === 'Kejuruan';
+
+      // 1. Table row
+      tableHtml += '<tr>' +
         '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (i + 1) + '</td>' +
         '<td><span class="badge badge-neutral" style="font-family: monospace; font-weight: 700;">' + s.code + '</span></td>' +
         '<td style="font-weight: 600; color: #262626;">' + s.name + '</td>' +
-        '<td><span class="badge ' + (s.category === 'Kejuruan' ? 'badge-primary' : 'badge-outline') + '">' + (s.category || 'Umum') + '</span></td>' +
+        '<td><span class="badge ' + (isKejuruan ? 'badge-primary' : 'badge-outline') + '">' + (s.category || 'Umum') + '</span></td>' +
         '<td><span class="badge ' + (s.is_active ? 'badge-success' : 'badge-neutral') + '">' + (s.is_active ? '● Aktif' : '○ Nonaktif') + '</span></td>' +
         '<td>' +
         '<div style="display: flex; gap: 6px;">' +
@@ -3135,9 +3314,32 @@
         '</div>' +
         '</td>' +
         '</tr>';
+
+      // 2. Responsive Card
+      cardsHtml += '<div class="master-card master-subject-card" id="master-subject-card-' + s.id + '">' +
+        '  <div class="master-card-header">' +
+        '    <div class="master-code-badge">' + s.code + '</div>' +
+        '    <div class="master-card-header-info">' +
+        '      <h4 class="master-card-title">' + s.name + '</h4>' +
+        '      <span class="badge ' + (isKejuruan ? 'badge-primary' : 'badge-neutral') + '" style="font-size: 0.725rem; width: fit-content; margin-top: 3px;">' + (s.category || 'Umum') + '</span>' +
+        '    </div>' +
+        '    <span class="badge ' + (s.is_active ? 'badge-success' : 'badge-neutral') + '" style="font-size: 0.725rem;">' +
+        (s.is_active ? '● Aktif' : '○ Nonaktif') +
+        '    </span>' +
+        '  </div>' +
+        '  <div class="master-card-footer">' +
+        '    <button type="button" class="btn btn-outline btn-sm master-act-btn" onclick="window.PORTAL_APP.editSubject(\'' + s.id + '\')">' +
+        '      <span>✏️ Edit</span>' +
+        '    </button>' +
+        '    <button type="button" class="btn btn-ghost btn-sm master-act-btn" style="color: #dc2626;" onclick="window.PORTAL_APP.deleteSubject(\'' + s.id + '\')">' +
+        '      <span>🗑️</span>' +
+        '    </button>' +
+        '  </div>' +
+        '</div>';
     });
 
-    tbody.innerHTML = html;
+    if (tbody) tbody.innerHTML = tableHtml;
+    if (cardsCont) cardsCont.innerHTML = cardsHtml;
   }
 
   function openSubjectModal(editId) {
@@ -3214,7 +3416,8 @@
   // 9.4 Master Ruang
   function renderMasterRooms(rooms) {
     const tbody = document.getElementById('master-rooms-tbody');
-    if (!tbody) return;
+    const cardsCont = document.getElementById('master-rooms-cards-container');
+    if (!tbody && !cardsCont) return;
 
     const q = (State.masterSearchQuery || '').toLowerCase();
     const filtered = rooms.filter(function (r) {
@@ -3222,13 +3425,23 @@
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 2rem; color: #888;">Tidak ada data ruang.</td></tr>';
+      if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 2rem; color: #888;">Tidak ada data ruang.</td></tr>';
+      if (cardsCont) {
+        cardsCont.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: #FFFFFF; border-radius: 16px; border: 1.5px dashed #CBD5E1; color: #64748B;">' +
+          '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🚪</div>' +
+          '<h4 style="font-weight: 700; color: #1E293B; margin-bottom: 4px;">Tidak Ada Data Ruang</h4>' +
+          '<p style="font-size: 0.8125rem; color: #94A3B8; margin: 0;">Ubah kata kunci pencarian atau tambah ruang baru.</p>' +
+          '</div>';
+      }
       return;
     }
 
-    let html = '';
+    let tableHtml = '';
+    let cardsHtml = '';
+
     filtered.forEach(function (r, i) {
-      html += '<tr>' +
+      // 1. Table row
+      tableHtml += '<tr>' +
         '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (i + 1) + '</td>' +
         '<td style="font-weight: 700; color: #262626;">' + r.name + '</td>' +
         '<td style="color: #666;">' + (r.description || '-') + '</td>' +
@@ -3240,9 +3453,32 @@
         '</div>' +
         '</td>' +
         '</tr>';
+
+      // 2. Responsive Card
+      cardsHtml += '<div class="master-card master-room-card" id="master-room-card-' + r.id + '">' +
+        '  <div class="master-card-header">' +
+        '    <div class="master-room-icon">🚪</div>' +
+        '    <div class="master-card-header-info">' +
+        '      <h4 class="master-card-title">' + r.name + '</h4>' +
+        '      <p class="master-card-desc">' + (r.description || 'Ruang Belajar / Praktik') + '</p>' +
+        '    </div>' +
+        '    <span class="badge ' + (r.is_active ? 'badge-success' : 'badge-neutral') + '" style="font-size: 0.725rem;">' +
+        (r.is_active ? '● Aktif' : '○ Nonaktif') +
+        '    </span>' +
+        '  </div>' +
+        '  <div class="master-card-footer">' +
+        '    <button type="button" class="btn btn-outline btn-sm master-act-btn" onclick="window.PORTAL_APP.editRoom(\'' + r.id + '\')">' +
+        '      <span>✏️ Edit</span>' +
+        '    </button>' +
+        '    <button type="button" class="btn btn-ghost btn-sm master-act-btn" style="color: #dc2626;" onclick="window.PORTAL_APP.deleteRoom(\'' + r.id + '\')">' +
+        '      <span>🗑️</span>' +
+        '    </button>' +
+        '  </div>' +
+        '</div>';
     });
 
-    tbody.innerHTML = html;
+    if (tbody) tbody.innerHTML = tableHtml;
+    if (cardsCont) cardsCont.innerHTML = cardsHtml;
   }
 
   function openRoomModal(editId) {
@@ -5562,11 +5798,25 @@
       '</div>';
   }
 
-  // 10.6.2 SUBTAB 2: DAFTAR SESI SUPERVISI GURU (90 GURU)
+  // 10.6.2 SUBTAB 2: DAFTAR SESI SUPERVISI GURU (90 GURU) - BEBAS GESER
+  function setSupSesiViewMode(mode) {
+    State.supSesiViewMode = mode;
+    const btnCard = document.getElementById('btn-sup-sesi-card');
+    const btnTable = document.getElementById('btn-sup-sesi-table');
+    if (btnCard) btnCard.classList.toggle('active', mode === 'card');
+    if (btnTable) btnTable.classList.toggle('active', mode === 'table');
+
+    const cardCont = document.getElementById('sup-sesi-cards-container');
+    const tableCont = document.getElementById('sup-sesi-table-container');
+    if (cardCont) cardCont.style.display = (mode === 'card') ? 'flex' : 'none';
+    if (tableCont) tableCont.style.display = (mode === 'table') ? 'block' : 'none';
+  }
+
   function renderSupervisiSesi() {
     const tbody = document.getElementById('sup-sesi-tbody');
+    const cardsCont = document.getElementById('sup-sesi-cards-container');
     const countEl = document.getElementById('sup-count-filtered');
-    if (!tbody) return;
+    if (!tbody && !cardsCont) return;
 
     const sessions = StorageManager.get('supervisi_sesi');
     const q = (State.supervisiSearchQuery || '').toLowerCase();
@@ -5591,14 +5841,25 @@
     if (countEl) countEl.textContent = filtered.length;
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: #888;">' +
-        '<strong>Tidak ada sesi supervisi yang sesuai filter</strong>' +
-        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau gunakan tombol "Jadwalkan Sesi Supervisi" di kanan atas.</p>' +
-        '</td></tr>';
+      if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: #888;">' +
+          '<strong>Tidak ada sesi supervisi yang sesuai filter</strong>' +
+          '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau gunakan tombol "Jadwalkan Sesi Supervisi" di kanan atas.</p>' +
+          '</td></tr>';
+      }
+      if (cardsCont) {
+        cardsCont.innerHTML = '<div style="text-align: center; padding: 3rem 1.5rem; background: #FFFFFF; border-radius: 16px; border: 1.5px dashed #CBD5E1; color: #64748B;">' +
+          '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🔍</div>' +
+          '<h4 style="font-weight: 700; color: #1E293B; margin-bottom: 4px;">Tidak Ada Sesi Supervisi yang Sesuai</h4>' +
+          '<p style="font-size: 0.8125rem; color: #94A3B8; margin: 0;">Ubah filter atau gunakan tombol "Jadwalkan Sesi Supervisi" di kanan atas.</p>' +
+          '</div>';
+      }
       return;
     }
 
-    let html = '';
+    let tableHtml = '';
+    let cardsHtml = '';
+
     filtered.forEach(function (s, idx) {
       let statusBadge = '<span class="badge badge-neutral" style="font-size: 0.75rem;">📅 Dijadwalkan</span>';
       if (s.status === 'Selesai') {
@@ -5612,13 +5873,17 @@
       }
 
       let nilaiCol = '<span style="color: #94A3B8; font-size: 0.75rem;">-</span>';
+      let scorePill = '';
       if (s.nilai_akhir > 0) {
         let predColor = s.predikat === 'Amat Baik' ? '#047857' : s.predikat === 'Baik' ? '#1D4ED8' : '#B45309';
+        let predBg = s.predikat === 'Amat Baik' ? '#D1FAE5' : s.predikat === 'Baik' ? '#DBEAFE' : '#FEF3C7';
         nilaiCol = '<div style="font-weight: 800; font-size: 0.875rem; color: #0F172A;">' + s.nilai_akhir.toFixed(1) + '</div>' +
           '<div style="font-size: 0.725rem; font-weight: 700; color: ' + predColor + ';">' + s.predikat + '</div>';
+        scorePill = '<span class="badge" style="background: ' + predBg + '; color: ' + predColor + '; font-weight: 800; font-size: 0.75rem;">Nilai: ' + s.nilai_akhir.toFixed(1) + ' (' + s.predikat + ')</span>';
       }
 
-      html += '<tr>' +
+      // 1. Table row
+      tableHtml += '<tr>' +
         '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (idx + 1) + '</td>' +
         '<td>' +
         '<div style="font-weight: 700; color: #0F172A;">' + s.teacher_name + '</div>' +
@@ -5649,24 +5914,57 @@
         '</div>' +
         '</td>' +
         '</tr>';
+
+      // 2. Responsive Card (Bebas Geser)
+      cardsHtml += '<div class="sup-sesi-card" id="sup-sesi-card-' + s.id + '">' +
+        '  <div class="sup-sesi-card-top">' +
+        '    <div>' +
+        '      <h4 class="sup-sesi-title">' + s.teacher_name + '</h4>' +
+        '      <div style="font-size: 0.75rem; color: #64748B; font-family: monospace;">NIP. ' + (s.nip || '-') + '</div>' +
+        '    </div>' +
+        '    <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">' +
+        statusBadge +
+        scorePill +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="sup-sesi-card-body">' +
+        '    <div class="sup-sesi-meta-item"><span>Jurusan & Mapel:</span> <strong>' + s.department + ' • ' + s.subject + '</strong></div>' +
+        '    <div class="sup-sesi-meta-item"><span>Supervisor:</span> <strong>' + s.supervisor_name + ' (' + (s.supervisor_role || 'Kajur') + ')</strong></div>' +
+        '    <div class="sup-sesi-meta-item"><span>Waktu Observasi:</span> <strong>📅 ' + (s.tgl_observasi || '-') + ' • ' + (s.wkt_observasi || '08.00 WITA') + ' (' + (s.class_name || 'Kelas') + ')</strong></div>' +
+        '  </div>' +
+        '  <div class="sup-sesi-card-actions">' +
+        '    <button type="button" class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + s.id + '\')" style="flex: 1; font-weight: 700; padding: 0.45rem 0.75rem;">' +
+        '      🔍 Buka Siklus Sesi' +
+        '    </button>' +
+        '    <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.printSupervisiReport(\'' + s.id + '\')" title="Cetak Raport PDF" style="padding: 0.45rem 0.75rem;">' +
+        '      🖨️ Cetak' +
+        '    </button>' +
+        '  </div>' +
+        '</div>';
     });
 
-    tbody.innerHTML = html;
+    if (tbody) tbody.innerHTML = tableHtml;
+    if (cardsCont) cardsCont.innerHTML = cardsHtml;
+
+    setSupSesiViewMode(State.supSesiViewMode || 'card');
   }
 
-  // 10.6.3 SUBTAB 3: SUPERVISI MANAJERIAL WAKA & KAJUR (INSTRUMEN E)
+  // 10.6.3 SUBTAB 3: SUPERVISI MANAJERIAL WAKA & KAJUR (INSTRUMEN E) - BEBAS GESER
   function renderSupervisiManajerial() {
     const tbody = document.getElementById('sup-manajerial-tbody');
-    if (!tbody) return;
+    const cardsCont = document.getElementById('sup-manajerial-cards-container');
+    if (!tbody && !cardsCont) return;
 
     const list = StorageManager.get('supervisi_manajerial');
-    let html = '';
+    let tableHtml = '';
+    let cardsHtml = '';
 
     list.forEach(function (m, idx) {
       let predBadge = '<span class="predikat-baik" style="font-size: 0.75rem;">' + m.predikat + '</span>';
       if (m.predikat === 'Amat Baik') predBadge = '<span class="predikat-amat-baik" style="font-size: 0.75rem;">' + m.predikat + '</span>';
 
-      html += '<tr>' +
+      // 1. Table row
+      tableHtml += '<tr>' +
         '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (idx + 1) + '</td>' +
         '<td>' +
         '<div style="font-weight: 700; color: #0F172A;">' + m.pimpinan_name + '</div>' +
@@ -5692,34 +5990,77 @@
         '</button>' +
         '</td>' +
         '</tr>';
+
+      // 2. Responsive Card
+      cardsHtml += '<div class="sup-manajerial-card" id="sup-manajerial-card-' + m.id + '">' +
+        '  <div class="sup-card-top">' +
+        '    <div>' +
+        '      <span class="badge badge-primary" style="font-size: 0.725rem;">' + m.jabatan + '</span>' +
+        '      <h4 class="sup-card-title" style="margin-top: 4px;">' + m.pimpinan_name + '</h4>' +
+        '      <span class="font-mono" style="font-size: 0.725rem; color: #64748B;">NIP. ' + (m.nip || '-') + '</span>' +
+        '    </div>' +
+        '    <div>' + predBadge + '</div>' +
+        '  </div>' +
+        '  <div class="sup-card-body">' +
+        '    <p style="font-size: 0.8125rem; color: #334155; margin-bottom: 0.75rem; line-height: 1.4;">' + m.fokus + '</p>' +
+        '    <div style="display: flex; justify-content: space-between; align-items: center; background: #F8FAFC; border-radius: 8px; padding: 8px 12px; margin-bottom: 0.75rem;">' +
+        '      <div>' +
+        '        <span style="font-size: 0.725rem; color: #64748B;">Skor Total</span>' +
+        '        <div style="font-weight: 800; font-size: 0.95rem; color: #0F172A;">' + m.skor_total + ' / 60</div>' +
+        '      </div>' +
+        '      <div style="text-align: right;">' +
+        '        <span style="font-size: 0.725rem; color: #64748B;">Nilai Akhir</span>' +
+        '        <div style="font-weight: 800; font-size: 0.95rem; color: #2563EB;">' + m.nilai.toFixed(1) + '</div>' +
+        '      </div>' +
+        '      <span class="badge badge-success" style="font-size: 0.725rem;">' + m.status_dokumen + '</span>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="sup-card-footer">' +
+        '    <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.openSupervisiManajerialModal(\'' + m.id + '\')" style="width: 100%; font-weight: 700;">' +
+        '      📝 Buka Instrumen Evaluasi Manajerial' +
+        '    </button>' +
+        '  </div>' +
+        '</div>';
     });
 
-    tbody.innerHTML = html;
+    if (tbody) tbody.innerHTML = tableHtml;
+    if (cardsCont) cardsCont.innerHTML = cardsHtml;
   }
 
-  // 10.6.4 SUBTAB 4: PELACAK RENCANA TINDAK LANJUT (RTL)
+  // 10.6.4 SUBTAB 4: PELACAK RENCANA TINDAK LANJUT (RTL) - BEBAS GESER
   function renderSupervisiRTL() {
     const tbody = document.getElementById('sup-rtl-tbody');
+    const cardsCont = document.getElementById('sup-rtl-cards-container');
     const badgeEl = document.getElementById('sup-rtl-active-badge');
-    if (!tbody) return;
+    if (!tbody && !cardsCont) return;
 
     const list = StorageManager.get('supervisi_rtl');
     const openCount = list.filter(function (r) { return r.status === 'Terbuka'; }).length;
     if (badgeEl) badgeEl.textContent = openCount + ' Tindakan Aktif';
 
     if (list.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #888;">Belum ada rencana tindak lanjut tercatat.</td></tr>';
+      if (tbody) tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #888;">Belum ada rencana tindak lanjut tercatat.</td></tr>';
+      if (cardsCont) {
+        cardsCont.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: #FFFFFF; border-radius: 16px; border: 1.5px dashed #CBD5E1; color: #64748B;">' +
+          '<div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📋</div>' +
+          '<h4 style="font-weight: 700; color: #1E293B; margin-bottom: 4px;">Belum Ada Rencana Tindak Lanjut</h4>' +
+          '<p style="font-size: 0.8125rem; color: #94A3B8; margin: 0;">Selesaikan observasi KBM untuk merumuskan RTL bagi guru.</p>' +
+          '</div>';
+      }
       return;
     }
 
-    let html = '';
+    let tableHtml = '';
+    let cardsHtml = '';
+
     list.forEach(function (r, idx) {
       let isVerified = r.status === 'Terverifikasi';
       let statusBadge = isVerified ?
         '<span class="badge badge-success" style="font-size: 0.75rem;">✓ Terverifikasi</span>' :
         '<span class="badge badge-warning" style="font-size: 0.75rem;">⏳ Terbuka</span>';
 
-      html += '<tr>' +
+      // 1. Table row
+      tableHtml += '<tr>' +
         '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (idx + 1) + '</td>' +
         '<td><strong>' + r.guru_name + '</strong></td>' +
         '<td><span class="badge badge-neutral" style="font-size: 0.725rem;">' + r.department + '</span><div style="font-size: 0.725rem; color: #64748B;">' + r.subject + '</div></td>' +
@@ -5736,15 +6077,41 @@
           '</button>') +
         '</td>' +
         '</tr>';
+
+      // 2. Responsive Card
+      cardsHtml += '<div class="sup-rtl-card" id="sup-rtl-card-' + r.id + '">' +
+        '  <div class="sup-card-top">' +
+        '    <div>' +
+        '      <h4 class="sup-card-title">' + r.guru_name + '</h4>' +
+        '      <div style="font-size: 0.75rem; color: #64748B;">' + r.department + ' • ' + r.subject + '</div>' +
+        '    </div>' +
+        '    <div>' + statusBadge + '</div>' +
+        '  </div>' +
+        '  <div class="sup-card-body">' +
+        '    <div style="font-size: 0.825rem; font-weight: 600; color: #1E293B; margin-bottom: 0.5rem;">' + r.tindakan + '</div>' +
+        '    <div class="sup-sesi-meta-item"><span>Pendampingan:</span> <strong>' + r.pendampingan + '</strong></div>' +
+        '    <div class="sup-sesi-meta-item"><span>Tenggat Waktu:</span> <strong style="color: #DC2626;">📅 ' + r.tenggat + '</strong></div>' +
+        '    <div class="sup-sesi-meta-item"><span>Bukti Fisik:</span> <strong style="color: #047857;">📄 ' + r.bukti + '</strong></div>' +
+        '  </div>' +
+        '  <div class="sup-card-footer">' +
+        (isVerified ?
+          '<div style="text-align: center; color: #059669; font-weight: 700; font-size: 0.8125rem; padding: 6px;">✓ Tindakan Telah Diverifikasi</div>' :
+          '<button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.verifyRtlItem(\'' + r.id + '\')" style="width: 100%; color: #059669; border-color: #A7F3D0; font-weight: 700;">' +
+          '  ✅ Verifikasi Ketercapaian RTL' +
+          '</button>') +
+        '  </div>' +
+        '</div>';
     });
 
-    tbody.innerHTML = html;
+    if (tbody) tbody.innerHTML = tableHtml;
+    if (cardsCont) cardsCont.innerHTML = cardsHtml;
   }
 
-  // 10.6.5 SUBTAB 6: REKAPITULASI LAPORAN JURUSAN
+  // 10.6.5 SUBTAB 6: REKAPITULASI LAPORAN JURUSAN - BEBAS GESER
   function renderSupervisiRekapLaporan() {
     const tbody = document.getElementById('sup-rekap-jurusan-tbody');
-    if (!tbody) return;
+    const cardsCont = document.getElementById('sup-rekap-cards-container');
+    if (!tbody && !cardsCont) return;
 
     const sessions = StorageManager.get('supervisi_sesi');
     const jurusans = [
@@ -5756,7 +6123,9 @@
       { code: 'Umum', name: 'Muatan Umum & Pilihan', kajur: 'Rusnani, S.Pd., M.T (Waka)' }
     ];
 
-    let html = '';
+    let tableHtml = '';
+    let cardsHtml = '';
+
     jurusans.forEach(function (j, idx) {
       const deptSessions = sessions.filter(function (s) {
         const d = (s.department || '').toUpperCase();
@@ -5784,20 +6153,61 @@
       else if (avgFinal >= 61) { predikat = 'Cukup'; predBadge = 'badge-warning'; }
       else if (avgFinal > 0) { predikat = 'Kurang'; predBadge = 'badge-danger'; }
 
-      html += '<tr>' +
+      const pct = total > 0 ? Math.round((selesai / total) * 100) : 0;
+
+      // 1. Table row
+      tableHtml += '<tr>' +
         '<td style="text-align: center; color: #888;">' + (idx + 1) + '</td>' +
         '<td><strong>' + j.name + ' (' + j.code + ')</strong></td>' +
         '<td>' + j.kajur + '</td>' +
         '<td style="text-align: center;">' + total + ' Guru</td>' +
-        '<td style="text-align: center; font-weight: 700; color: #047857;">' + selesai + ' Guru (' + (total > 0 ? Math.round((selesai/total)*100) : 0) + '%)</td>' +
+        '<td style="text-align: center; font-weight: 700; color: #047857;">' + selesai + ' Guru (' + pct + '%)</td>' +
         '<td style="text-align: center;">' + (avgB > 0 ? avgB.toFixed(1) : '-') + '</td>' +
         '<td style="text-align: center;">' + (avgC > 0 ? avgC.toFixed(1) : '-') + '</td>' +
         '<td style="text-align: center; font-weight: 800; font-size: 0.95rem; color: #1E3A8A;">' + (avgFinal > 0 ? avgFinal.toFixed(1) : '-') + '</td>' +
         '<td style="text-align: center;"><span class="badge ' + predBadge + '">' + (avgFinal > 0 ? predikat : 'Sedang Berjalan') + '</span></td>' +
         '</tr>';
+
+      // 2. Responsive Card
+      cardsHtml += '<div class="sup-rekap-card" id="sup-rekap-card-' + j.code + '">' +
+        '  <div class="sup-card-top">' +
+        '    <div>' +
+        '      <span class="badge badge-primary" style="font-weight: 800; font-size: 0.725rem;">' + j.code + '</span>' +
+        '      <h4 class="sup-card-title" style="margin-top: 4px;">' + j.name + '</h4>' +
+        '      <div style="font-size: 0.75rem; color: #64748B;">Kajur: ' + j.kajur + '</div>' +
+        '    </div>' +
+        '    <span class="badge ' + predBadge + '" style="font-size: 0.725rem;">' + (avgFinal > 0 ? avgFinal.toFixed(1) + ' • ' + predikat : 'Proses') + '</span>' +
+        '  </div>' +
+        '  <div class="sup-card-body">' +
+        '    <div style="margin-bottom: 0.75rem;">' +
+        '      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #475569; margin-bottom: 4px;">' +
+        '        <span>Progres Supervisi:</span>' +
+        '        <strong>' + selesai + ' / ' + total + ' Guru (' + pct + '%)</strong>' +
+        '      </div>' +
+        '      <div style="background: #E2E8F0; border-radius: 999px; height: 6px; width: 100%; overflow: hidden;">' +
+        '        <div style="background: ' + (pct >= 80 ? '#10B981' : pct >= 40 ? '#3B82F6' : '#F59E0B') + '; height: 100%; width: ' + pct + '%; border-radius: 999px;"></div>' +
+        '      </div>' +
+        '    </div>' +
+        '    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: #F8FAFC; border-radius: 8px; padding: 8px; text-align: center;">' +
+        '      <div>' +
+        '        <span style="font-size: 0.7rem; color: #64748B;">Telaah B</span>' +
+        '        <div style="font-weight: 700; font-size: 0.875rem; color: #1E293B;">' + (avgB > 0 ? avgB.toFixed(1) : '-') + '</div>' +
+        '      </div>' +
+        '      <div>' +
+        '        <span style="font-size: 0.7rem; color: #64748B;">Observasi C</span>' +
+        '        <div style="font-weight: 700; font-size: 0.875rem; color: #1E293B;">' + (avgC > 0 ? avgC.toFixed(1) : '-') + '</div>' +
+        '      </div>' +
+        '      <div>' +
+        '        <span style="font-size: 0.7rem; color: #64748B;">Nilai Akhir</span>' +
+        '        <div style="font-weight: 800; font-size: 0.875rem; color: #2563EB;">' + (avgFinal > 0 ? avgFinal.toFixed(1) : '-') + '</div>' +
+        '      </div>' +
+        '    </div>' +
+        '  </div>' +
+        '</div>';
     });
 
-    tbody.innerHTML = html;
+    if (tbody) tbody.innerHTML = tableHtml;
+    if (cardsCont) cardsCont.innerHTML = cardsHtml;
   }
 
   // 10.6.6 MODAL SIKLUS SUPERVISI KLINIS (TAHAP 1 - 2 - 3)
@@ -7080,6 +7490,9 @@
     downloadTeacherDocFile: downloadTeacherDocFile,
     exportAdminRecap: exportAdminRecap,
     openUploadDocModal: openUploadDocModal,
+    setArchiveDocViewMode: setArchiveDocViewMode,
+    setMasterViewMode: setMasterViewMode,
+    setSupSesiViewMode: setSupSesiViewMode,
     editDocument: function (id) { openUploadDocModal(id); },
     deleteDocument: deleteDocument,
     downloadDocument: downloadDocument,

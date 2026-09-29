@@ -876,20 +876,38 @@
               </select>
             </div>
 
-            <span class="badge badge-neutral" id="doc-total-badge" style="font-weight: 700;">11 Dokumen</span>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <!-- View mode toggle: Kartu (Bebas Geser) vs Tabel -->
+              <div class="schedule-mode-tabs" id="doc-archive-mode-tabs" style="margin: 0;">
+                <button type="button" class="schedule-mode-btn active" id="btn-doc-archive-card" onclick="window.PORTAL_APP.setArchiveDocViewMode('card')" title="Tampilan Kartu Bebas Geser">
+                  🗂️ Kartu Bebas Geser
+                </button>
+                <button type="button" class="schedule-mode-btn" id="btn-doc-archive-table" onclick="window.PORTAL_APP.setArchiveDocViewMode('table')" title="Tampilan Tabel">
+                  📋 Tabel
+                </button>
+              </div>
+
+              <span class="badge badge-neutral" id="doc-total-badge" style="font-weight: 700;">11 Dokumen</span>
+            </div>
           </div>
 
-          <div class="content-card" style="margin: 0;">
+          <!-- CARDS CONTAINER (DEFAULT - 100% BEBAS GESER) -->
+          <div id="doc-archives-cards-container" class="doc-archives-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+            <!-- Rendered via app.js -->
+          </div>
+
+          <!-- TABLE CONTAINER (OPTIONAL TOGGLE) -->
+          <div id="doc-archives-table-container" class="content-card" style="margin: 0; display: none;">
             <div class="content-card-body table-responsive" style="padding: 0;">
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th style="min-width: 320px;">Nama Dokumen</th>
+                    <th>Nama Dokumen</th>
                     <th>Kategori</th>
                     <th>Tahun Ajaran</th>
                     <th>Tanggal Upload</th>
                     <th>Ukuran</th>
-                    <th style="min-width: 170px;">Aksi</th>
+                    <th>Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="doc-table-tbody">
@@ -1047,14 +1065,29 @@
             <input type="text" id="master-search-input" placeholder="Cari nama, NIP, kode..." style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.8125rem; color: var(--text-primary);">
           </div>
 
-          <div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <!-- View mode toggle: Kartu (Bebas Geser) vs Tabel -->
+            <div class="schedule-mode-tabs" id="master-mode-tabs" style="margin: 0;">
+              <button type="button" class="schedule-mode-btn active" id="btn-master-mode-card" onclick="window.PORTAL_APP.setMasterViewMode('card')" title="Tampilan Kartu Bebas Geser">
+                🗂️ Kartu Bebas Geser
+              </button>
+              <button type="button" class="schedule-mode-btn" id="btn-master-mode-table" onclick="window.PORTAL_APP.setMasterViewMode('table')" title="Tampilan Tabel">
+                📋 Tabel
+              </button>
+            </div>
             <button class="btn btn-primary btn-sm" id="btn-add-master-item" onclick="window.PORTAL_APP.openAddMasterModal()">+ Tambah Guru</button>
           </div>
         </div>
 
         <!-- TAB PANE 1: GURU -->
         <div id="master-pane-teachers" class="master-tab-pane">
-          <div class="content-card" style="margin: 0;">
+          <!-- CARDS CONTAINER (DEFAULT - BEBAS GESER) -->
+          <div id="master-teachers-cards-container" class="master-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.875rem; margin-bottom: 1.5rem;">
+            <!-- Rendered via app.js -->
+          </div>
+
+          <!-- TABLE CONTAINER (OPTIONAL TOGGLE) -->
+          <div id="master-teachers-table-container" class="content-card" style="margin: 0; display: none;">
             <div class="content-card-body table-responsive" style="padding: 0;">
               <table class="data-table">
                 <thead>
@@ -1078,7 +1111,13 @@
 
         <!-- TAB PANE 2: KELAS -->
         <div id="master-pane-classes" class="master-tab-pane" style="display: none;">
-          <div class="content-card" style="margin: 0;">
+          <!-- CARDS CONTAINER (DEFAULT - BEBAS GESER) -->
+          <div id="master-classes-cards-container" class="master-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.875rem; margin-bottom: 1.5rem;">
+            <!-- Rendered via app.js -->
+          </div>
+
+          <!-- TABLE CONTAINER (OPTIONAL TOGGLE) -->
+          <div id="master-classes-table-container" class="content-card" style="margin: 0; display: none;">
             <div class="content-card-body table-responsive" style="padding: 0;">
               <table class="data-table">
                 <thead>
@@ -1102,7 +1141,13 @@
 
         <!-- TAB PANE 3: MAPEL -->
         <div id="master-pane-subjects" class="master-tab-pane" style="display: none;">
-          <div class="content-card" style="margin: 0;">
+          <!-- CARDS CONTAINER (DEFAULT - BEBAS GESER) -->
+          <div id="master-subjects-cards-container" class="master-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.875rem; margin-bottom: 1.5rem;">
+            <!-- Rendered via app.js -->
+          </div>
+
+          <!-- TABLE CONTAINER (OPTIONAL TOGGLE) -->
+          <div id="master-subjects-table-container" class="content-card" style="margin: 0; display: none;">
             <div class="content-card-body table-responsive" style="padding: 0;">
               <table class="data-table">
                 <thead>
@@ -1125,7 +1170,13 @@
 
         <!-- TAB PANE 4: RUANG -->
         <div id="master-pane-rooms" class="master-tab-pane" style="display: none;">
-          <div class="content-card" style="margin: 0;">
+          <!-- CARDS CONTAINER (DEFAULT - BEBAS GESER) -->
+          <div id="master-rooms-cards-container" class="master-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.875rem; margin-bottom: 1.5rem;">
+            <!-- Rendered via app.js -->
+          </div>
+
+          <!-- TABLE CONTAINER (OPTIONAL TOGGLE) -->
+          <div id="master-rooms-table-container" class="content-card" style="margin: 0; display: none;">
             <div class="content-card-body table-responsive" style="padding: 0;">
               <table class="data-table">
                 <thead>
@@ -1955,13 +2006,29 @@
                 <option value="Futri Indri">Futri Indri (Kajur Pemasaran)</option>
               </select>
 
-              <div style="font-size: 0.8125rem; color: #666666; font-weight: 600; white-space: nowrap; margin-left: auto;">
-                <span id="sup-count-filtered">90</span> Sesi Ditampilkan
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-left: auto;">
+                <div class="schedule-mode-tabs" id="sup-sesi-mode-tabs" style="margin: 0;">
+                  <button type="button" class="schedule-mode-btn active" id="btn-sup-sesi-card" onclick="window.PORTAL_APP.setSupSesiViewMode('card')" title="Tampilan Kartu Bebas Geser">
+                    🗂️ Kartu Bebas Geser
+                  </button>
+                  <button type="button" class="schedule-mode-btn" id="btn-sup-sesi-table" onclick="window.PORTAL_APP.setSupSesiViewMode('table')" title="Tampilan Tabel">
+                    📋 Tabel
+                  </button>
+                </div>
+                <div style="font-size: 0.8125rem; color: #666666; font-weight: 600; white-space: nowrap;">
+                  <span id="sup-count-filtered">90</span> Sesi Ditampilkan
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="content-card" style="margin: 0;">
+          <!-- CARDS CONTAINER (DEFAULT - BEBAS GESER) -->
+          <div id="sup-sesi-cards-container" class="sup-sesi-cards-list" style="display: flex; flex-direction: column; gap: 0.875rem; margin-bottom: 1.5rem;">
+            <!-- Rendered via app.js -->
+          </div>
+
+          <!-- TABLE CONTAINER (OPTIONAL TOGGLE) -->
+          <div id="sup-sesi-table-container" class="content-card" style="margin: 0; display: none;">
             <div class="content-card-body table-responsive" style="padding: 0;">
               <table class="data-table">
                 <thead>
@@ -1999,7 +2066,13 @@
             </button>
           </div>
 
-          <div class="content-card" style="margin: 0;">
+          <!-- CARDS CONTAINER (DEFAULT - BEBAS GESER) -->
+          <div id="sup-manajerial-cards-container" class="sup-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.875rem; margin-bottom: 1.5rem;">
+            <!-- Rendered via app.js -->
+          </div>
+
+          <!-- TABLE CONTAINER (OPTIONAL) -->
+          <div id="sup-manajerial-table-container" class="content-card" style="margin: 0; display: none;">
             <div class="content-card-body table-responsive" style="padding: 0;">
               <table class="data-table">
                 <thead>
@@ -2034,7 +2107,13 @@
             <span class="badge badge-warning" id="sup-rtl-active-badge">4 Tindakan Aktif</span>
           </div>
 
-          <div class="content-card" style="margin: 0;">
+          <!-- CARDS CONTAINER (DEFAULT - BEBAS GESER) -->
+          <div id="sup-rtl-cards-container" class="sup-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.875rem; margin-bottom: 1.5rem;">
+            <!-- Rendered via app.js -->
+          </div>
+
+          <!-- TABLE CONTAINER (OPTIONAL) -->
+          <div id="sup-rtl-table-container" class="content-card" style="margin: 0; display: none;">
             <div class="content-card-body table-responsive" style="padding: 0;">
               <table class="data-table">
                 <thead>
@@ -2129,7 +2208,12 @@
               </div>
             </div>
 
-            <div class="table-responsive">
+            <!-- CARDS CONTAINER (DEFAULT - BEBAS GESER) -->
+            <div id="sup-rekap-cards-container" class="sup-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.875rem; margin-bottom: 1.5rem;">
+              <!-- Rendered via app.js -->
+            </div>
+
+            <div id="sup-rekap-table-container" class="table-responsive" style="display: none;">
               <table class="data-table">
                 <thead>
                   <tr>
