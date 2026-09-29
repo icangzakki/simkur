@@ -8071,7 +8071,15 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
     display: none !important;
   }
 
-  /* 1. Schedule Screen Mobile */
+  /* ── SCREEN HEADER ROW (all screens) ─────────────────────────────── */
+  .screen-header-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* ── 1. JADWAL PELAJARAN ─────────────────────────────────────────── */
   .sched-header-actions {
     display: flex !important;
     flex-direction: column !important;
@@ -8082,16 +8090,15 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
   .sched-header-actions .schedule-mode-tabs {
     width: 100% !important;
     display: flex !important;
-    justify-content: space-between !important;
-    margin: 0 !important;
     box-sizing: border-box !important;
+    margin: 0 !important;
   }
 
   .sched-header-actions .schedule-mode-btn {
     flex: 1 !important;
     justify-content: center !important;
     text-align: center !important;
-    padding: 0.5rem 0.25rem !important;
+    padding: 0.45rem 0.25rem !important;
     font-size: 0.8rem !important;
     white-space: nowrap !important;
   }
@@ -8138,7 +8145,7 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
     padding-top: 0 !important;
   }
 
-  /* 2. Supervisi Screen Mobile */
+  /* ── 2. SUPERVISI ────────────────────────────────────────────────── */
   .supervisi-screen-actions {
     display: flex !important;
     flex-direction: column !important;
@@ -8168,7 +8175,22 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
     white-space: nowrap !important;
   }
 
-  /* 3. Dashboard Schedule Mobile */
+  /* KPI grid compact for supervisi */
+  #screen-supervisi .kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.625rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  #screen-supervisi .kpi-card {
+    padding: 0.75rem !important;
+  }
+
+  #screen-supervisi .kpi-card div[style*="1.75rem"] {
+    font-size: 1.2rem !important;
+  }
+
+  /* ── 3. DASHBOARD ────────────────────────────────────────────────── */
   .dash-sched-card-header {
     padding: 0.875rem 1rem !important;
     gap: 8px !important;
@@ -8178,12 +8200,20 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
     flex-direction: row !important;
     justify-content: space-between !important;
     align-items: flex-start !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+  }
+
+  .dash-sched-header-top > div:first-child {
+    flex: 1 !important;
+    min-width: 0 !important;
   }
 
   .btn-karhutla-chip {
     padding: 0.35rem 0.6rem !important;
     font-size: 0.72rem !important;
     flex-shrink: 0 !important;
+    white-space: nowrap !important;
   }
 
   .day-pills-bar {
@@ -8200,10 +8230,55 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
     flex-shrink: 0 !important;
   }
 
+  /* Toolbar row: search | grade pills | rombel+toggle */
+  .dash-sched-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .dash-sched-search-wrap {
+    width: 100% !important;
+    flex: none !important;
+  }
+
+  .dash-sched-grade-pills {
+    width: 100% !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    padding-bottom: 2px !important;
+    scrollbar-width: none !important;
+  }
+
+  .dash-sched-grade-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sched-grade-pill {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .dash-sched-tool-right {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+  }
+
   .dash-sched-select {
+    flex: 1 !important;
+    min-width: 0 !important;
     font-size: 0.78rem !important;
     padding: 0.35rem 0.5rem !important;
     height: 36px !important;
+    max-width: 55% !important;
+  }
+
+  .dash-sched-view-toggle {
+    flex-shrink: 0 !important;
   }
 
   .sched-view-btn {
@@ -8212,7 +8287,15 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
     white-space: nowrap !important;
   }
 
-  /* 4. Dokumen Screen Mobile */
+  /* ── 4. DOKUMEN ──────────────────────────────────────────────────── */
+  /* The filter-row-top inside filter-card-structured must be column */
+  .filter-card-structured .filter-row-top {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  /* Doc selects now 2-column grid */
   .doc-filter-selects-grid {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
@@ -8229,11 +8312,10 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
     text-overflow: ellipsis !important;
   }
 
+  /* Doc mode tab buttons smaller on mobile */
   #doc-teacher-mode-tabs .schedule-mode-btn {
     font-size: 0.78rem !important;
     padding: 0.45rem 0.65rem !important;
   }
 }
-
-
 
