@@ -1850,25 +1850,70 @@ a:hover {
 }
 
 .form-input, .form-textarea, .form-select {
-  padding: 0.625rem 0.75rem;
-  font-family: var(--font-body);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.625rem 0.875rem;
+  font-family: inherit;
   font-size: var(--text-sm);
-  border: 1px solid var(--outline-variant);
+  border: 1.5px solid #CBD5E1;
   border-radius: var(--radius-sm);
   background-color: #ffffff;
-  color: var(--primary);
+  color: var(--text-primary);
   outline: none;
-  transition: all 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .form-input:focus, .form-textarea:focus, .form-select:focus {
-  border-color: var(--secondary);
-  box-shadow: 0 0 0 1px var(--secondary);
+  border-color: #4B22B8;
+  box-shadow: 0 0 0 3px rgba(75, 34, 184, 0.12);
 }
 
-.form-textarea {
-  min-height: 90px;
+.form-textarea,
+textarea.form-input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 85px;
+  line-height: 1.5;
   resize: vertical;
+}
+
+.sup-question-card {
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 1rem 1.125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.sup-question-card:focus-within {
+  border-color: #C7D2FE;
+  box-shadow: 0 4px 14px rgba(75, 34, 184, 0.08);
+}
+
+.sup-ans-a {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  background: #F8FAFC !important;
+  border: 1.5px solid #CBD5E1 !important;
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+  font-size: 0.875rem !important;
+  color: #0F172A !important;
+  line-height: 1.5 !important;
+  resize: vertical !important;
+  min-height: 80px !important;
+  font-family: inherit !important;
+  transition: all 0.18s ease !important;
+}
+
+.sup-ans-a:focus {
+  background: #FFFFFF !important;
+  border-color: #4B22B8 !important;
+  box-shadow: 0 0 0 3px rgba(75, 34, 184, 0.12) !important;
+  outline: none !important;
 }
 
 .pills-selector-group {

@@ -6295,11 +6295,16 @@
       let aHtml = '';
       SUPERVISI_INSTRUMEN.A.forEach(function (q) {
         const val = answersA[q.no] || '';
-        aHtml += '<div>' +
-          '<label class="form-label" style="display: block; font-size: 0.8125rem; font-weight: 700; color: #1E293B; margin-bottom: 4px;">' +
-          q.no + '. ' + q.q +
+        aHtml += '<div class="sup-question-card" style="background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 1.125rem; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 1px 3px rgba(15,23,42,0.03);">' +
+          '<div style="display: flex; align-items: flex-start; gap: 12px;">' +
+          '<span style="width: 28px; height: 28px; border-radius: 8px; background: #EDE7FF; color: #4B22B8; font-weight: 800; font-size: 0.8125rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">' +
+          q.no +
+          '</span>' +
+          '<label class="form-label" style="display: block; font-size: 0.875rem; font-weight: 700; color: #0F172A; line-height: 1.45; margin: 0; flex: 1;">' +
+          q.q +
           '</label>' +
-          '<textarea class="form-input sup-ans-a" data-no="' + q.no + '" rows="2" placeholder="Catatan jawaban wawancara...">' + val + '</textarea>' +
+          '</div>' +
+          '<textarea class="form-input sup-ans-a" data-no="' + q.no + '" rows="3" placeholder="Tuliskan catatan jawaban atau kesepakatan wawancara pra-observasi..." style="width: 100% !important; box-sizing: border-box !important; background: #F8FAFC !important; border: 1.5px solid #CBD5E1 !important; border-radius: 10px !important; padding: 10px 14px !important; font-size: 0.875rem !important; color: #0F172A !important; line-height: 1.5 !important; resize: vertical !important; min-height: 85px !important; outline: none; font-family: inherit;">' + val + '</textarea>' +
           '</div>';
       });
       formA.innerHTML = aHtml;
