@@ -4,6 +4,7 @@
   "description": "Sistem Informasi Manajemen Kurikulum SMKN 1 Banjarmasin",
   "private": true,
   "scripts": {
-    "dev": "python3 -m http.server 8000"
+    "dev": "python3 -m http.server 8000",
+    "protect": "node scripts/obfuscate.js"
   }
 }

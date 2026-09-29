@@ -12,7 +12,8 @@ sk_pages/
 
 # Python
 *.py
-scripts/
+scripts/*
+!scripts/obfuscate.js
 __pycache__/
 
 # Scratch & Metadata
