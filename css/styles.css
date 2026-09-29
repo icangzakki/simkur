@@ -279,20 +279,19 @@ a:hover {
 }
 
 .app-topbar {
-  height: 64px;
-  min-height: 64px;
-  max-height: 64px;
+  height: 68px;
+  min-height: 68px;
   background-color: #ffffff;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   position: sticky;
   top: 0;
   z-index: 90;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
-  gap: 1.25rem;
+  box-shadow: 0 1px 4px rgba(18, 59, 102, 0.04);
+  gap: 1rem;
   box-sizing: border-box;
 }
 
@@ -300,63 +299,84 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  min-width: 0;
-  flex: 1;
+  min-width: max-content;
+  flex-shrink: 0;
 }
 
 .topbar-screen-title {
   font-family: var(--font-headline);
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  color: #1E293B;
+  color: var(--simkur-navy);
   letter-spacing: -0.02em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.25;
+}
+
+.header-school-context {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  white-space: nowrap;
 }
 
 .topbar-center {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  flex: 1;
+  max-width: 340px;
 }
 
 .topbar-search-pill {
   display: flex;
   align-items: center;
-  background: #F1F3F9;
+  background: #F4F7FA;
   border-radius: 999px;
   padding: 0.45rem 1rem;
-  width: 250px;
-  border: 1px solid transparent;
+  width: 100%;
+  border: 1px solid var(--border);
   transition: all 0.2s ease;
 }
 
 .topbar-search-pill:focus-within {
   background: #ffffff;
-  border-color: #CBD5E1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  width: 280px;
+  border-color: var(--simkur-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 166, 0.12);
 }
 
 .topbar-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
+}
+
+.btn-toggle-mobile {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+
+.btn-toggle-mobile:hover {
+  background: var(--bg);
 }
 
 .btn-mobile-sidebar {
   display: none;
-  background: transparent;
-  border: none;
-  color: var(--text-primary);
-  cursor: pointer;
-  padding: 4px;
-  border-radius: var(--radius-sm);
 }
 
 .btn-mobile-sidebar-floating {
@@ -1507,10 +1527,10 @@ a:hover {
   align-items: center;
   justify-content: space-between;
   padding: 0.45rem 1rem;
-  background: #EDE7FF;
-  border-bottom: 1px solid #D8CCFF;
+  background: var(--soft-blue);
+  border-bottom: 1px solid var(--soft-blue-border);
   font-size: 0.75rem;
-  color: #4B22B8;
+  color: var(--simkur-navy);
   font-weight: 600;
   user-select: none;
   gap: 0.5rem;
@@ -1519,14 +1539,14 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #4B22B8;
+  background: var(--simkur-blue);
   color: #ffffff;
   padding: 2px 8px;
   border-radius: var(--radius-pill);
   font-size: 0.6875rem;
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(75, 34, 184, 0.25);
+  box-shadow: 0 1px 3px rgba(37, 99, 166, 0.25);
 }
 
 .data-table tbody tr {
@@ -1534,11 +1554,11 @@ a:hover {
 }
 
 .data-table tbody tr:hover {
-  background-color: #FAF9FD;
+  background-color: #F8FAFC;
 }
 
 .data-table tbody tr:nth-child(even) {
-  background-color: #FCFCFE;
+  background-color: #FAFCFE;
 }
 
 /* Status Badges (desain.md Section 13: Pill shapes) */
@@ -1578,9 +1598,9 @@ a:hover {
 }
 
 .badge-primary, .badge-info {
-  background-color: #EDE7FF;
-  color: #4B22B8;
-  border: 1px solid #D8CCFF;
+  background-color: var(--soft-blue);
+  color: var(--simkur-blue);
+  border: 1px solid var(--soft-blue-border);
 }
 
 /* ==========================================================================
@@ -2536,6 +2556,29 @@ a:hover {
   box-shadow: 0 2px 4px rgba(239, 68, 68, 0.25);
 }
 
+/* Filter Card & Toolbar Base (Desktop) */
+.filter-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0.875rem 1.25rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: var(--shadow-xs);
+  flex-wrap: wrap;
+}
+
+.filter-card .filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
 /* Responsive Media Queries */
 @media (max-width: 1240px) {
   .dashboard-2col-layout {
@@ -2680,8 +2723,11 @@ a:hover {
     flex-shrink: 0 !important;
   }
 
+  .header-school-context,
+  .header-academic-selector,
+  .sync-status-badge,
   .topbar-right .badge {
-    display: none !important; /* Hide compliance pill on phone header */
+    display: none !important; /* Hide wide status pills on mobile phone header */
   }
 
   .topbar-user-chip {
@@ -3557,8 +3603,11 @@ td.table-empty-cell {
 /* 2. Topbar Contextual Headers & Badges (Section 5) */
 .header-school-context {
   display: flex;
-  flex-direction: column;
-  line-height: 1.15;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .header-school-name {
@@ -3619,9 +3668,28 @@ td.table-empty-cell {
 /* 3. Quick Actions Grid (Section 5) */
 .quick-actions-bar {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 0.875rem;
   margin-bottom: 1.5rem;
+}
+
+@media (max-width: 1200px) {
+  .quick-actions-bar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .quick-actions-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.625rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-actions-bar {
+    grid-template-columns: 1fr;
+  }
 }
 
 .quick-action-item {

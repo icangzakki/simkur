@@ -546,17 +546,31 @@
       return;
     }
 
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
     let html = '';
     agendas.forEach(function (a) {
-      html += '<div style="display: flex; gap: 12px; align-items: flex-start; padding: 0.75rem 0; border-bottom: 1px solid #eeeeee;">' +
-        '<div style="background: #EDE7FF; color: #4B22B8; font-weight: 700; font-size: 0.75rem; padding: 6px 10px; border-radius: 8px; text-align: center; min-width: 68px;">' +
-        (a.date || 'TBA') +
+      let dateDisplay = a.date || 'TBA';
+      let yearDisplay = '';
+      if (a.date && a.date.includes('-')) {
+        const parts = a.date.split('-');
+        if (parts.length === 3) {
+          const mIdx = parseInt(parts[1], 10) - 1;
+          dateDisplay = parseInt(parts[2], 10) + ' ' + (months[mIdx] || parts[1]);
+          yearDisplay = parts[0];
+        }
+      }
+
+      html += '<div style="display: flex; gap: 12px; align-items: flex-start; padding: 0.875rem 0; border-bottom: 1px solid var(--border); transition: background 0.15s ease;">' +
+        '<div style="background: var(--soft-blue); border: 1px solid var(--soft-blue-border); color: var(--simkur-navy); border-radius: var(--radius-md); padding: 6px 8px; text-align: center; min-width: 68px; flex-shrink: 0;">' +
+          '<div style="font-size: 0.8125rem; font-weight: 800; color: var(--simkur-blue); line-height: 1.1;">' + dateDisplay + '</div>' +
+          (yearDisplay ? '<div style="font-size: 0.6875rem; font-weight: 600; color: var(--text-secondary); margin-top: 2px;">' + yearDisplay + '</div>' : '') +
         '</div>' +
-        '<div style="flex: 1;">' +
-        '<div style="font-weight: 600; font-size: 0.875rem; color: #262626;">' + a.title + '</div>' +
-        '<div style="font-size: 0.775rem; color: #777777; margin-top: 2px;">' + (a.description || '-') + '</div>' +
+        '<div style="flex: 1; min-width: 0;">' +
+          '<div style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary); line-height: 1.3;">' + a.title + '</div>' +
+          '<div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 3px; line-height: 1.35;">' + (a.description || '-') + '</div>' +
         '</div>' +
-        '<button class="btn btn-ghost btn-sm" style="color: #dc2626; padding: 4px;" onclick="window.PORTAL_APP.deleteAgenda(\'' + a.id + '\')" title="Hapus Agenda">✕</button>' +
+        '<button class="btn btn-ghost btn-sm" style="color: var(--color-danger); padding: 4px 6px; border-radius: 4px;" onclick="window.PORTAL_APP.deleteAgenda(\'' + a.id + '\')" title="Hapus Agenda">✕</button>' +
         '</div>';
     });
 
