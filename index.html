@@ -545,46 +545,84 @@
         <!-- 2-COLUMN LAYOUT: OPERASIONAL HARI INI (Section 5) -->
         <div class="dashboard-2col-layout" style="gap: 1.25rem;">
           
-          <!-- LEFT: Jadwal Pelajaran Hari Ini -->
-          <div class="content-card" style="margin: 0; border-radius: var(--radius-xl);">
-            <div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <!-- LEFT: Jadwal Pelajaran Hari Ini (Alokasi Karhutla) -->
+          <div class="content-card dash-sched-main-card" style="margin: 0; border-radius: var(--radius-xl);">
+            <div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
               <div>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0;">Jadwal Pelajaran Hari Ini</h3>
-                  <span class="badge" style="background: var(--soft-blue); color: var(--simkur-blue); font-weight: 700; font-size: 0.72rem;">Revisi 2 X-XI</span>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-primary); margin: 0;">Jadwal Pelajaran Hari Ini</h3>
+                  <span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 800; font-size: 0.72rem; border: 1px solid #FCD34D;">🔥 Alokasi Karhutla 2026/2027</span>
                 </div>
-                <span style="font-size: 0.775rem; color: var(--text-secondary);" id="dash-current-day-label">Hari: Senin</span>
+                <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 2px;" id="dash-current-day-label">Hari: Selasa • 114 Sesi KBM (Alokasi Karhutla)</div>
               </div>
-              <div class="day-pills-bar" style="display: flex; gap: 6px; flex-wrap: wrap;">
-                <button type="button" class="day-pill-btn active" data-day="Senin" onclick="window.PORTAL_APP.selectDashboardDay('Senin', this)">Senin</button>
-                <button type="button" class="day-pill-btn" data-day="Selasa" onclick="window.PORTAL_APP.selectDashboardDay('Selasa', this)">Selasa</button>
-                <button type="button" class="day-pill-btn" data-day="Rabu" onclick="window.PORTAL_APP.selectDashboardDay('Rabu', this)">Rabu</button>
-                <button type="button" class="day-pill-btn" data-day="Kamis" onclick="window.PORTAL_APP.selectDashboardDay('Kamis', this)">Kamis</button>
-                <button type="button" class="day-pill-btn" data-day="Jumat" onclick="window.PORTAL_APP.selectDashboardDay('Jumat', this)">Jumat</button>
-                <button type="button" class="day-pill-btn" data-day="Sabtu" onclick="window.PORTAL_APP.selectDashboardDay('Sabtu', this)">Sabtu</button>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.openKarhutlaModal()" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; border-color: #FCD34D; color: #92400E; background: #FFFDF5; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; border-radius: 8px;" title="Lihat Tabel Alokasi Waktu Jam Mengajar Selama Karhutla">
+                  <span>📋 Alokasi Waktu</span>
+                </button>
+                <div class="day-pills-bar" style="display: flex; gap: 4px; flex-wrap: wrap;">
+                  <button type="button" class="day-pill-btn active" data-day="Senin" onclick="window.PORTAL_APP.selectDashboardDay('Senin', this)">Senin</button>
+                  <button type="button" class="day-pill-btn" data-day="Selasa" onclick="window.PORTAL_APP.selectDashboardDay('Selasa', this)">Selasa</button>
+                  <button type="button" class="day-pill-btn" data-day="Rabu" onclick="window.PORTAL_APP.selectDashboardDay('Rabu', this)">Rabu</button>
+                  <button type="button" class="day-pill-btn" data-day="Kamis" onclick="window.PORTAL_APP.selectDashboardDay('Kamis', this)">Kamis</button>
+                  <button type="button" class="day-pill-btn" data-day="Jumat" onclick="window.PORTAL_APP.selectDashboardDay('Jumat', this)">Jum'at</button>
+                  <button type="button" class="day-pill-btn" data-day="Sabtu" onclick="window.PORTAL_APP.selectDashboardDay('Sabtu', this)">Sabtu</button>
+                </div>
               </div>
             </div>
 
-            <!-- Quick Filter Bar -->
-            <div style="padding: 0.5rem 1.25rem; background: #F8FAFC; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
-              <div style="display: flex; align-items: center; gap: 6px; flex: 1; min-width: 220px;">
+            <!-- Mini Live Status & Stats Bar -->
+            <div id="dash-sched-live-bar" class="dash-sched-live-bar">
+              <!-- Rendered via js/app.js -->
+            </div>
+
+            <!-- Filter & View Toolbar -->
+            <div class="dash-sched-toolbar">
+              <div class="dash-sched-search-wrap">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7A90" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="dash-sched-search" placeholder="Cari guru, kelas, atau mata pelajaran..." class="form-input" style="padding: 0.35rem 0.65rem; font-size: 0.8125rem; height: auto;" oninput="window.PORTAL_APP.filterDashboardSchedule()">
+                <input type="text" id="dash-sched-search" placeholder="Cari guru, rombel, mapel, atau lab/ruang..." class="form-input dash-sched-input" oninput="window.PORTAL_APP.filterDashboardSchedule()">
               </div>
-              <select id="dash-sched-class" class="form-input" style="width: auto; min-width: 140px; padding: 0.35rem 0.65rem; font-size: 0.8125rem; height: auto;" onchange="window.PORTAL_APP.filterDashboardSchedule()">
-                <option value="all">Semua Rombel</option>
-              </select>
+
+              <!-- Quick Grade Pills -->
+              <div class="dash-sched-grade-pills">
+                <button type="button" class="sched-grade-pill active" onclick="window.PORTAL_APP.setSchedGradeFilter('all', this)">Semua</button>
+                <button type="button" class="sched-grade-pill" onclick="window.PORTAL_APP.setSchedGradeFilter('X', this)">Kelas X</button>
+                <button type="button" class="sched-grade-pill" onclick="window.PORTAL_APP.setSchedGradeFilter('XI', this)">Kelas XI</button>
+                <button type="button" class="sched-grade-pill" onclick="window.PORTAL_APP.setSchedGradeFilter('XII', this)">Kelas XII</button>
+                <button type="button" class="sched-grade-pill pill-live-only" onclick="window.PORTAL_APP.toggleSchedLiveOnly(this)" title="Tampilkan hanya kelas yang sedang aktif jam ini">🟢 Sedang KBM</button>
+              </div>
+
+              <!-- Dropdown Rombel & View Toggle -->
+              <div class="dash-sched-tool-right">
+                <select id="dash-sched-class" class="form-input dash-sched-select" onchange="window.PORTAL_APP.filterDashboardSchedule()">
+                  <option value="all">Semua Rombel</option>
+                </select>
+                <div class="dash-sched-view-toggle">
+                  <button type="button" id="btn-sched-view-card" class="sched-view-btn active" onclick="window.PORTAL_APP.setSchedViewMode('card')" title="Tampilan Kartu Sesi">
+                    🗂️ Kartu
+                  </button>
+                  <button type="button" id="btn-sched-view-table" class="sched-view-btn" onclick="window.PORTAL_APP.setSchedViewMode('table')" title="Tampilan Tabel Rapi">
+                    📑 Tabel
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <div class="content-card-body table-responsive" style="padding: 0; max-height: 480px; overflow-y: auto;">
-              <table class="data-table">
+            <!-- Card View Container (Default) -->
+            <div id="dash-sched-card-container" class="dash-sched-card-container">
+              <!-- Rendered via js/app.js -->
+            </div>
+
+            <!-- Table View Container -->
+            <div id="dash-sched-table-container" class="content-card-body table-responsive dash-sched-table-container" style="display: none;">
+              <table class="data-table dash-sched-table">
                 <thead>
                   <tr style="position: sticky; top: 0; background: #F8FAFC; z-index: 2;">
-                    <th>Jam</th>
-                    <th>Kelas</th>
+                    <th style="min-width: 130px;">Waktu (WITA)</th>
+                    <th style="min-width: 95px;">Kelas</th>
                     <th>Mata Pelajaran</th>
                     <th>Guru Pengampu</th>
-                    <th>Ruang</th>
+                    <th>Ruang / Lokasi</th>
+                    <th style="width: 110px; text-align: center;">Status</th>
                   </tr>
                 </thead>
                 <tbody id="dash-schedule-tbody">
@@ -593,8 +631,8 @@
               </table>
             </div>
 
-            <div style="padding: 0.875rem 1.25rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #F8FAFC;">
-              <span style="font-size: 0.775rem; color: var(--text-secondary);" id="dash-schedule-footer-info">Jadwal resmi tersinkron dari dokumen kurikulum Revisi 2 X-XI.</span>
+            <div style="padding: 0.875rem 1.25rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #F8FAFC; flex-wrap: wrap; gap: 8px;">
+              <span style="font-size: 0.775rem; color: var(--text-secondary);" id="dash-schedule-footer-info">Jadwal resmi tersinkron dari dokumen kurikulum Revisi 2 X-XI (Alokasi Karhutla).</span>
               <button class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.switchScreen('jadwal')">Lihat Seluruh Jadwal →</button>
             </div>
           </div>
@@ -2402,6 +2440,121 @@
         <button type="submit" class="btn btn-primary" style="background: var(--jobie-primary, #4B22B8); border-color: var(--jobie-primary, #4B22B8);">Unggah Dokumen</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- MODAL ALOKASI WAKTU JAM MENGAJAR SELAMA KARHUTLA (TA 2026/2027) -->
+<div class="modal-overlay" id="modal-karhutla-timetable">
+  <div class="modal-dialog" style="max-width: 840px; width: 95%;">
+    <div style="padding: 1.25rem 1.5rem; background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); color: #ffffff; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; border-radius: 16px 16px 0 0;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+          ⏰
+        </div>
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <h3 style="font-size: 1.125rem; font-weight: 800; color: #FFFFFF; margin: 0;">Alokasi Waktu Jam Mengajar Selama Karhutla</h3>
+            <span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 700; font-size: 0.7rem;">TA 2026/2027</span>
+          </div>
+          <p style="font-size: 0.78125rem; color: #C7D2FE; margin: 2px 0 0 0;">SMK Negeri 1 Banjarmasin • Pedoman Resmi Durasi KBM Tanggap Darurat Bencana Asap</p>
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.closeModal('modal-karhutla-timetable')" style="color: #ffffff; font-size: 1.25rem;">✕</button>
+    </div>
+
+    <div style="padding: 1.25rem; max-height: 75vh; overflow-y: auto; background: #F8FAFC;">
+      <!-- Grid 2 Kolom Alokasi Waktu -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;">
+        
+        <!-- Tabel 1: Senin s.d Kamis -->
+        <div style="background: #FFFFFF; border-radius: 14px; border: 1.5px solid #E2E8F0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <div style="background: #EEF2FF; padding: 0.75rem 1rem; border-bottom: 1px solid #E0E7FF; display: flex; justify-content: space-between; align-items: center;">
+            <strong style="color: #3730A3; font-size: 0.875rem;">📅 SENIN S.D KAMIS</strong>
+            <span style="font-size: 0.75rem; color: #4338CA; font-weight: 700;">11 Jam Pelajaran (JP)</span>
+          </div>
+          <table class="data-table" style="margin: 0; font-size: 0.8125rem;">
+            <thead>
+              <tr style="background: #F8FAFC;">
+                <th style="width: 50px; text-align: center;">Jam</th>
+                <th>Keterangan Sesi</th>
+                <th style="width: 130px; text-align: center;">Waktu (WITA)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="text-align: center; font-weight: 700;">1</td><td>Jam Pelajaran 1</td><td style="text-align: center; font-family: monospace; font-weight: 700;">07.30 - 08.15</td></tr>
+              <tr><td style="text-align: center; font-weight: 700;">2</td><td>Jam Pelajaran 2</td><td style="text-align: center; font-family: monospace; font-weight: 700;">08.15 - 09.00</td></tr>
+              <tr><td style="text-align: center; font-weight: 700;">3</td><td>Jam Pelajaran 3</td><td style="text-align: center; font-family: monospace; font-weight: 700;">09.00 - 09.45</td></tr>
+              <tr><td style="text-align: center; font-weight: 700;">4</td><td>Jam Pelajaran 4</td><td style="text-align: center; font-family: monospace; font-weight: 700;">09.45 - 10.30</td></tr>
+              <tr style="background: #FEF3C7; color: #92400E; font-weight: 700;">
+                <td style="text-align: center;">☕</td>
+                <td>Istirahat Pagi</td>
+                <td style="text-align: center; font-family: monospace;">10.30 - 10.45</td>
+              </tr>
+              <tr><td style="text-align: center; font-weight: 700;">5</td><td>Jam Pelajaran 5</td><td style="text-align: center; font-family: monospace; font-weight: 700;">10.45 - 11.30</td></tr>
+              <tr><td style="text-align: center; font-weight: 700;">6</td><td>Jam Pelajaran 6</td><td style="text-align: center; font-family: monospace; font-weight: 700;">11.30 - 12.15</td></tr>
+              <tr><td style="text-align: center; font-weight: 700;">7</td><td>Jam Pelajaran 7</td><td style="text-align: center; font-family: monospace; font-weight: 700;">12.15 - 13.00</td></tr>
+              <tr style="background: #DEF7EC; color: #03543F; font-weight: 700;">
+                <td style="text-align: center;">🍱</td>
+                <td>Istirahat & Sholat Dzuhur</td>
+                <td style="text-align: center; font-family: monospace;">13.00 - 13.30</td>
+              </tr>
+              <tr><td style="text-align: center; font-weight: 700;">8</td><td>Jam Pelajaran 8</td><td style="text-align: center; font-family: monospace; font-weight: 700;">13.30 - 14.15</td></tr>
+              <tr><td style="text-align: center; font-weight: 700;">9</td><td>Jam Pelajaran 9</td><td style="text-align: center; font-family: monospace; font-weight: 700;">14.15 - 15.00</td></tr>
+              <tr><td style="text-align: center; font-weight: 700;">10</td><td>Jam Pelajaran 10</td><td style="text-align: center; font-family: monospace; font-weight: 700;">15.00 - 15.45</td></tr>
+              <tr><td style="text-align: center; font-weight: 700;">11</td><td>Jam Pelajaran 11</td><td style="text-align: center; font-family: monospace; font-weight: 700;">15.45 - 16.30</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tabel 2: Jum'at -->
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="background: #FFFFFF; border-radius: 14px; border: 1.5px solid #E2E8F0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+            <div style="background: #ECFDF5; padding: 0.75rem 1rem; border-bottom: 1px solid #D1FAE5; display: flex; justify-content: space-between; align-items: center;">
+              <strong style="color: #065F46; font-size: 0.875rem;">🕌 JUM'AT</strong>
+              <span style="font-size: 0.75rem; color: #047857; font-weight: 700;">4 Jam Pelajaran (Selesai 11.00)</span>
+            </div>
+            <table class="data-table" style="margin: 0; font-size: 0.8125rem;">
+              <thead>
+                <tr style="background: #F8FAFC;">
+                  <th style="width: 50px; text-align: center;">Jam</th>
+                  <th>Keterangan Sesi</th>
+                  <th style="width: 130px; text-align: center;">Waktu (WITA)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="text-align: center; font-weight: 700;">1</td><td>Jam Pelajaran 1</td><td style="text-align: center; font-family: monospace; font-weight: 700;">07.30 - 08.15</td></tr>
+                <tr><td style="text-align: center; font-weight: 700;">2</td><td>Jam Pelajaran 2</td><td style="text-align: center; font-family: monospace; font-weight: 700;">08.15 - 09.00</td></tr>
+                <tr style="background: #FEF3C7; color: #92400E; font-weight: 700;">
+                  <td style="text-align: center;">☕</td>
+                  <td>Istirahat Pagi</td>
+                  <td style="text-align: center; font-family: monospace;">09.00 - 09.30</td>
+                </tr>
+                <tr><td style="text-align: center; font-weight: 700;">3</td><td>Jam Pelajaran 3</td><td style="text-align: center; font-family: monospace; font-weight: 700;">09.30 - 10.15</td></tr>
+                <tr><td style="text-align: center; font-weight: 700;">4</td><td>Jam Pelajaran 4</td><td style="text-align: center; font-family: monospace; font-weight: 700;">10.15 - 11.00</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Info Box Tambahan -->
+          <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 14px; padding: 1rem;">
+            <div style="font-weight: 700; color: #1E40AF; font-size: 0.875rem; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+              <span>ℹ️ Ketentuan Tanggap Karhutla:</span>
+            </div>
+            <p style="font-size: 0.8125rem; color: #1D4ED8; margin: 0; line-height: 1.45;">
+              • Alokasi 1 Jam Pelajaran (JP) adalah <strong>45 Menit</strong>.<br>
+              • Pembelajaran berakhir lebih cepat pada hari Jum'at pukul <strong>11.00 WITA</strong>.<br>
+              • Pelaksanaan praktikum bengkel/lab mengacu pada jadwal rombel terdaftar.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #FAF9FD; border-radius: 0 0 16px 16px;">
+      <span style="font-size: 0.75rem; color: #64748B;">Kurikulum Merdeka • SMKN 1 Banjarmasin TA 2026/2027</span>
+      <button type="button" class="btn btn-primary" onclick="window.PORTAL_APP.closeModal('modal-karhutla-timetable')">Tutup</button>
+    </div>
   </div>
 </div>
 

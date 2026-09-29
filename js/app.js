@@ -59,9 +59,15 @@
         localStorage.setItem(this.KEYS.ROOMS, JSON.stringify([]));
       }
 
-      const storedScheds = localStorage.getItem(this.KEYS.SCHEDULES);
-      if (!storedScheds || JSON.parse(storedScheds).length < 50) {
-        localStorage.setItem(this.KEYS.SCHEDULES, JSON.stringify(data.schedules || []));
+      const karhutlaSynced = localStorage.getItem('portal_scheds_karhutla_v2026');
+      if (!karhutlaSynced && data.schedules && data.schedules.length > 0) {
+        localStorage.setItem(this.KEYS.SCHEDULES, JSON.stringify(data.schedules));
+        localStorage.setItem('portal_scheds_karhutla_v2026', 'true');
+      } else {
+        const storedScheds = localStorage.getItem(this.KEYS.SCHEDULES);
+        if (!storedScheds || JSON.parse(storedScheds).length < 50) {
+          localStorage.setItem(this.KEYS.SCHEDULES, JSON.stringify(data.schedules || []));
+        }
       }
       if (!localStorage.getItem(this.KEYS.DOCUMENTS)) {
         localStorage.setItem(this.KEYS.DOCUMENTS, JSON.stringify(data.documents || []));
@@ -491,6 +497,9 @@
     scheduleSearchQuery: '',
     dashScheduleQuery: '',
     dashScheduleClassFilter: 'all',
+    dashScheduleGradeFilter: 'all', // 'all' | 'X' | 'XI' | 'XII'
+    dashScheduleViewMode: 'card', // 'card' | 'table'
+    dashScheduleLiveOnly: false,
     masterSearchQuery: '',
     editingItem: null,
     // Teacher Doc Inspection State
@@ -792,7 +801,45 @@
     renderDashboardAgendas(agendas);
   }
 
+  function openKarhutlaModal() {
+    openModal('modal-karhutla-timetable');
+  }
+
+  function setSchedViewMode(mode) {
+    State.dashScheduleViewMode = mode;
+    const btnCard = document.getElementById('btn-sched-view-card');
+    const btnTable = document.getElementById('btn-sched-view-table');
+    const cardContainer = document.getElementById('dash-sched-card-container');
+    const tableContainer = document.getElementById('dash-sched-table-container');
+
+    if (btnCard) btnCard.classList.toggle('active', mode === 'card');
+    if (btnTable) btnTable.classList.toggle('active', mode === 'table');
+
+    if (cardContainer) cardContainer.style.display = mode === 'card' ? 'block' : 'none';
+    if (tableContainer) tableContainer.style.display = mode === 'table' ? 'block' : 'none';
+
+    renderDashboardSchedule(StorageManager.get('schedules'));
+  }
+
+  function setSchedGradeFilter(grade, btnEl) {
+    State.dashScheduleGradeFilter = grade;
+    document.querySelectorAll('.sched-grade-pill:not(.pill-live-only)').forEach(function (b) {
+      b.classList.remove('active');
+    });
+    if (btnEl) btnEl.classList.add('active');
+    renderDashboardSchedule(StorageManager.get('schedules'));
+  }
+
+  function toggleSchedLiveOnly(btnEl) {
+    State.dashScheduleLiveOnly = !State.dashScheduleLiveOnly;
+    if (btnEl) {
+      btnEl.classList.toggle('active', State.dashScheduleLiveOnly);
+    }
+    renderDashboardSchedule(StorageManager.get('schedules'));
+  }
+
   function renderDashboardSchedule(schedules) {
+    schedules = schedules || StorageManager.get('schedules') || [];
     const day = State.selectedDay || 'Senin';
     const daySchedules = schedules.filter(function (s) {
       return s.day && s.day.toLowerCase() === day.toLowerCase();
@@ -812,55 +859,280 @@
 
     const searchQuery = (State.dashScheduleQuery || '').toLowerCase();
     const classFilter = State.dashScheduleClassFilter || 'all';
+    const gradeFilter = State.dashScheduleGradeFilter || 'all';
+    const liveOnly = State.dashScheduleLiveOnly || false;
 
+    // Detect Current Real Time in WITA (UTC+8)
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const witaDate = new Date(utc + (3600000 * 8));
+    const nowHours = witaDate.getHours();
+    const nowMinutes = witaDate.getMinutes();
+    const nowTotalMinutes = nowHours * 60 + nowMinutes;
+    const nowTimeStr = (nowHours < 10 ? '0' : '') + nowHours + '.' + (nowMinutes < 10 ? '0' : '') + nowMinutes;
+
+    const indonesianDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const todayName = indonesianDays[witaDate.getDay()];
+    const isToday = day.toLowerCase() === todayName.toLowerCase();
+
+    function timeToMinutes(t) {
+      if (!t) return 0;
+      var clean = t.replace(':', '.').split('.');
+      return parseInt(clean[0], 10) * 60 + parseInt(clean[1] || '0', 10);
+    }
+
+    // Filter day schedules
     let dayFiltered = daySchedules.filter(function (s) {
       const matchClass = classFilter === 'all' || s.class_name === classFilter;
+      
+      let matchGrade = true;
+      if (gradeFilter !== 'all') {
+        matchGrade = s.class_name && s.class_name.toUpperCase().startsWith(gradeFilter + ' ');
+      }
+
       const matchSearch = !searchQuery ||
         (s.subject_name && s.subject_name.toLowerCase().includes(searchQuery)) ||
         (s.teacher_name && s.teacher_name.toLowerCase().includes(searchQuery)) ||
         (s.class_name && s.class_name.toLowerCase().includes(searchQuery)) ||
         (s.room_name && s.room_name.toLowerCase().includes(searchQuery));
-      return matchClass && matchSearch;
+
+      var isLive = false;
+      if (isToday && s.start_time && s.end_time) {
+        var sMin = timeToMinutes(s.start_time);
+        var eMin = timeToMinutes(s.end_time);
+        isLive = nowTotalMinutes >= sMin && nowTotalMinutes <= eMin;
+      }
+      s._isLive = isLive;
+
+      if (liveOnly && !isLive) return false;
+
+      return matchClass && matchGrade && matchSearch;
     });
 
-    // Sort chronologically by start_time, then class_name
+    // Count live classes across all schedules today
+    var allLiveTodayCount = 0;
+    if (isToday) {
+      daySchedules.forEach(function (s) {
+        if (s.start_time && s.end_time) {
+          var sMin = timeToMinutes(s.start_time);
+          var eMin = timeToMinutes(s.end_time);
+          if (nowTotalMinutes >= sMin && nowTotalMinutes <= eMin) {
+            allLiveTodayCount++;
+          }
+        }
+      });
+    }
+
+    // Sort chronologically by start_time, then period_start, then class_name
     dayFiltered.sort(function (a, b) {
       const timeCompare = (a.start_time || '').localeCompare(b.start_time || '');
       if (timeCompare !== 0) return timeCompare;
+      const pDiff = (parseInt(a.period_start) || 0) - (parseInt(b.period_start) || 0);
+      if (pDiff !== 0) return pDiff;
       return (a.class_name || '').localeCompare(b.class_name || '');
     });
 
-    const tbody = document.getElementById('dash-schedule-tbody');
+    // Update label in header
     const labelDay = document.getElementById('dash-current-day-label');
     if (labelDay) {
-      labelDay.textContent = 'Hari: ' + day + ' • ' + dayFiltered.length + ' Sesi KBM' + (classFilter !== 'all' || searchQuery ? ' (Tersaring)' : ' (Revisi 2 X-XI)');
+      labelDay.textContent = 'Hari: ' + day + ' • ' + dayFiltered.length + ' Sesi KBM' + 
+        (classFilter !== 'all' || searchQuery || gradeFilter !== 'all' || liveOnly ? ' (Tersaring)' : ' • Alokasi Karhutla (07.30 - 16.30 WITA)');
     }
 
-    if (!tbody) return;
+    // Update Live Status Bar
+    const liveBar = document.getElementById('dash-sched-live-bar');
+    if (liveBar) {
+      var isJumat = day.toLowerCase() === 'jumat' || day.toLowerCase() === "jum'at";
+      var isBreakTime = false;
+      var breakName = '';
 
-    if (dayFiltered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2.5rem; color: #888888;">' +
-        '<div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>' +
-        '<strong>Tidak ada jadwal yang cocok untuk hari ' + day + '</strong>' +
-        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">' +
-        (searchQuery || classFilter !== 'all' ? 'Coba reset filter atau pencarian Anda.' : 'Gunakan menu Jadwal Pelajaran untuk menyusun jadwal.') +
-        '</p>' +
-        '</td></tr>';
-      return;
+      if (isToday) {
+        if (!isJumat) {
+          if (nowTotalMinutes >= timeToMinutes('10.30') && nowTotalMinutes < timeToMinutes('10.45')) {
+            isBreakTime = true;
+            breakName = 'Istirahat Pagi (10.30 - 10.45 WITA)';
+          } else if (nowTotalMinutes >= timeToMinutes('13.00') && nowTotalMinutes < timeToMinutes('13.30')) {
+            isBreakTime = true;
+            breakName = 'Istirahat & Sholat Dzuhur (13.00 - 13.30 WITA)';
+          }
+        } else {
+          if (nowTotalMinutes >= timeToMinutes('09.00') && nowTotalMinutes < timeToMinutes('09.30')) {
+            isBreakTime = true;
+            breakName = 'Istirahat Pagi Jum\'at (09.00 - 09.30 WITA)';
+          }
+        }
+      }
+
+      var liveStatusHtml = '';
+      if (isToday) {
+        if (isBreakTime) {
+          liveStatusHtml = '<span class="dash-live-chip chip-break">☕ ' + breakName + '</span>';
+        } else if (allLiveTodayCount > 0) {
+          liveStatusHtml = '<span class="dash-live-chip chip-active"><span class="pulse-dot-live"></span> 🟢 ' + allLiveTodayCount + ' Kelas Sedang KBM Aktif</span>';
+        } else if (nowTotalMinutes < timeToMinutes('07.30')) {
+          liveStatusHtml = '<span class="dash-live-chip chip-waiting">⏳ KBM Belum Dimulai (Mulai 07.30 WITA)</span>';
+        } else {
+          liveStatusHtml = '<span class="dash-live-chip chip-done">✓ KBM Hari Ini Telah Selesai</span>';
+        }
+      } else {
+        liveStatusHtml = '<span class="dash-live-chip chip-neutral">📅 Pratinjau Jadwal Hari ' + day + '</span>';
+      }
+
+      liveBar.innerHTML = '' +
+        '<div class="dash-live-bar-left">' +
+          '<span class="dash-live-time-badge">🕒 WITA: <strong>' + nowTimeStr + '</strong></span>' +
+          liveStatusHtml +
+        '</div>' +
+        '<div class="dash-live-bar-right">' +
+          '<span>Total: <strong>' + dayFiltered.length + ' Sesi Terjadwal</strong> (' + (isJumat ? '4 JP' : '11 JP') + ')</span>' +
+        '</div>';
     }
 
-    let html = '';
-    dayFiltered.forEach(function (s) {
-      html += '<tr>' +
-        '<td style="font-weight: 600; color: #262626;"><span class="badge badge-neutral" style="font-family: monospace;">' + s.start_time + ' - ' + s.end_time + '</span></td>' +
-        '<td><span class="badge badge-primary" style="font-weight: 700;">' + s.class_name + '</span></td>' +
-        '<td style="font-weight: 600; color: #262626;">' + s.subject_name + '</td>' +
-        '<td>' + s.teacher_name + '</td>' +
-        '<td><span class="badge badge-outline">' + s.room_name + '</span></td>' +
-        '</tr>';
-    });
+    // Helper for Department badge color
+    function getDeptClass(cName) {
+      if (!cName) return 'dept-default';
+      var upper = cName.toUpperCase();
+      if (upper.includes('AKL')) return 'dept-akl';
+      if (upper.includes('DKV')) return 'dept-dkv';
+      if (upper.includes('MPLB')) return 'dept-mplb';
+      if (upper.includes('PM')) return 'dept-pm';
+      if (upper.includes('TJKT')) return 'dept-tjkt';
+      return 'dept-default';
+    }
 
-    tbody.innerHTML = html;
+    function getInitials(name) {
+      if (!name) return 'GR';
+      var parts = name.split(' ');
+      if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+      return name.substring(0, 2).toUpperCase();
+    }
+
+    // 1. RENDER CARD VIEW
+    const cardContainer = document.getElementById('dash-sched-card-container');
+    if (cardContainer) {
+      if (dayFiltered.length === 0) {
+        cardContainer.innerHTML = '' +
+          '<div class="dash-sched-empty">' +
+            '<div style="font-size: 2.25rem; margin-bottom: 0.5rem;">📅</div>' +
+            '<h4 style="margin: 0 0 4px 0; font-size: 1rem; color: #1E293B;">Tidak ada jadwal KBM yang cocok</h4>' +
+            '<p style="margin: 0; font-size: 0.8125rem; color: #64748B;">' +
+              (searchQuery || classFilter !== 'all' || gradeFilter !== 'all' || liveOnly
+                ? 'Coba sesuaikan filter tingkat, rombel, atau pencarian Anda.'
+                : 'Tidak ada sesi KBM untuk hari ' + day + '.') +
+            '</p>' +
+          '</div>';
+      } else {
+        // Group schedules by Time Slot
+        var slots = {};
+        dayFiltered.forEach(function (s) {
+          var key = (s.start_time || '07.30') + ' - ' + (s.end_time || '08.15');
+          if (!slots[key]) {
+            slots[key] = {
+              time: key,
+              periodStart: s.period_start,
+              periodEnd: s.period_end,
+              items: []
+            };
+          }
+          slots[key].items.push(s);
+        });
+
+        var cardsHtml = '';
+        Object.keys(slots).forEach(function (slotKey) {
+          var slotObj = slots[slotKey];
+          var pLabel = slotObj.periodStart && slotObj.periodEnd 
+            ? 'Jam Ke-' + slotObj.periodStart + (slotObj.periodStart !== slotObj.periodEnd ? ' s.d ' + slotObj.periodEnd : '')
+            : 'Sesi Pembelajaran';
+
+          cardsHtml += '<div class="dash-sched-slot-group">';
+          cardsHtml += '<div class="dash-sched-slot-header">';
+          cardsHtml += '  <div class="dash-sched-slot-title">';
+          cardsHtml += '    <span class="dash-sched-clock-icon">⏰</span>';
+          cardsHtml += '    <strong>' + slotKey + ' WITA</strong>';
+          cardsHtml += '    <span class="dash-sched-period-tag">' + pLabel + '</span>';
+          cardsHtml += '  </div>';
+          cardsHtml += '  <span class="dash-sched-slot-count">' + slotObj.items.length + ' Kelas Aktif</span>';
+          cardsHtml += '</div>';
+
+          cardsHtml += '<div class="dash-sched-cards-grid">';
+          slotObj.items.forEach(function (s) {
+            var deptClass = getDeptClass(s.class_name);
+            var initials = getInitials(s.teacher_name);
+            var isLiveClass = s._isLive === true;
+
+            cardsHtml += '' +
+              '<div class="dash-sched-card ' + (isLiveClass ? 'is-live-card' : '') + '">' +
+                '<div class="dash-sched-card-top">' +
+                  '<div class="dash-sched-badge-row">' +
+                    '<span class="dash-sched-class-badge ' + deptClass + '">' + escapeHtml(s.class_name) + '</span>' +
+                    '<span class="dash-sched-jp-pill">' + (s.duration || (s.period_end - s.period_start + 1) || 2) + ' JP</span>' +
+                  '</div>' +
+                  (isLiveClass ? '<span class="badge-live-now">🟢 LIVE KBM</span>' : '') +
+                '</div>' +
+                '<h4 class="dash-sched-subj-name">' + escapeHtml(s.subject_name) + '</h4>' +
+                '<div class="dash-sched-card-bottom">' +
+                  '<div class="dash-sched-teacher-info">' +
+                    '<div class="dash-sched-avatar">' + initials + '</div>' +
+                    '<span class="dash-sched-teacher-name" title="' + escapeHtml(s.teacher_name) + '">' + escapeHtml(s.teacher_name) + '</span>' +
+                  '</div>' +
+                  '<div class="dash-sched-room-badge" title="Ruang Belajar">' +
+                    '<span>📍 ' + escapeHtml(s.room_name || 'Ruang Kelas') + '</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>';
+          });
+          cardsHtml += '</div>'; // end cards-grid
+          cardsHtml += '</div>'; // end slot-group
+        });
+
+        cardContainer.innerHTML = cardsHtml;
+      }
+    }
+
+    // 2. RENDER TABLE VIEW
+    const tbody = document.getElementById('dash-schedule-tbody');
+    if (tbody) {
+      if (dayFiltered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2.5rem; color: #888888;">' +
+          '<div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>' +
+          '<strong>Tidak ada jadwal yang cocok untuk hari ' + day + '</strong>' +
+          '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">' +
+          (searchQuery || classFilter !== 'all' || gradeFilter !== 'all' || liveOnly
+            ? 'Coba sesuaikan filter tingkat, rombel, atau pencarian Anda.'
+            : 'Gunakan menu Jadwal Pelajaran untuk menyusun jadwal.') +
+          '</p>' +
+          '</td></tr>';
+      } else {
+        let tableHtml = '';
+        dayFiltered.forEach(function (s) {
+          var deptClass = getDeptClass(s.class_name);
+          var isLiveClass = s._isLive === true;
+          var statusBadge = isLiveClass 
+            ? '<span class="badge badge-live-table">🟢 KBM Aktif</span>' 
+            : '<span class="badge badge-wait-table">⏳ Terjadwal</span>';
+
+          tableHtml += '<tr class="' + (isLiveClass ? 'tr-live-active' : '') + '">' +
+            '<td>' +
+              '<div style="font-weight: 700; color: #1E293B; font-family: monospace; font-size: 0.875rem;">' + s.start_time + ' - ' + s.end_time + '</div>' +
+              '<div style="font-size: 0.6875rem; color: #64748B;">Jam Ke-' + s.period_start + (s.period_start !== s.period_end ? '-' + s.period_end : '') + ' (' + (s.duration || 2) + ' JP)</div>' +
+            '</td>' +
+            '<td><span class="dash-sched-class-badge ' + deptClass + '">' + escapeHtml(s.class_name) + '</span></td>' +
+            '<td><strong style="color: #1E293B; font-size: 0.875rem;">' + escapeHtml(s.subject_name) + '</strong></td>' +
+            '<td>' +
+              '<div style="display: flex; align-items: center; gap: 6px;">' +
+                '<span class="dash-sched-avatar-sm">' + getInitials(s.teacher_name) + '</span>' +
+                '<span style="font-size: 0.8125rem; font-weight: 600; color: #334155;">' + escapeHtml(s.teacher_name) + '</span>' +
+              '</div>' +
+            '</td>' +
+            '<td>' +
+              '<span class="dash-sched-room-badge-table">📍 ' + escapeHtml(s.room_name || 'Ruang Kelas') + '</span>' +
+            '</td>' +
+            '<td style="text-align: center;">' + statusBadge + '</td>' +
+            '</tr>';
+        });
+        tbody.innerHTML = tableHtml;
+      }
+    }
   }
 
   function filterDashboardSchedule() {
@@ -6660,6 +6932,10 @@
     StorageManager: StorageManager,
     selectDashboardDay: selectDashboardDay,
     filterDashboardSchedule: filterDashboardSchedule,
+    openKarhutlaModal: openKarhutlaModal,
+    setSchedViewMode: setSchedViewMode,
+    setSchedGradeFilter: setSchedGradeFilter,
+    toggleSchedLiveOnly: toggleSchedLiveOnly,
     openAddAgendaModal: openAddAgendaModal,
     deleteAgenda: deleteAgenda,
     switchDocTab: switchDocTab,
