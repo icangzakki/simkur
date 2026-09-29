@@ -727,18 +727,7 @@
     });
 
     // Update breadcrumb title in topbar
-    const titleEl = document.getElementById('topbar-active-screen');
-    if (titleEl) {
-      const titles = {
-        'dashboard': 'Dashboard Kurikulum',
-        'dokumen': 'Dokumen & Administrasi',
-        'jadwal': 'Jadwal Pelajaran',
-        'data-master': 'Data Master Kurikulum',
-        'portal-guru': 'Portal Guru — KBM',
-        'supervisi': 'Supervisi Akademik & Manajerial'
-      };
-      titleEl.textContent = titles[screenName] || 'Portal Kurikulum';
-    }
+    updateTopbarTitle(screenName);
 
     // Close mobile sidebar if open
     closeMobileSidebar();
@@ -756,6 +745,33 @@
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  function updateTopbarTitle(screenName) {
+    const titleEl = document.getElementById('topbar-active-screen');
+    if (!titleEl) return;
+    screenName = screenName || State.currentScreen || 'dashboard';
+    const isMobile = window.innerWidth <= 768;
+    const titles = isMobile ? {
+      'dashboard': 'Dashboard',
+      'dokumen': 'Dokumen',
+      'jadwal': 'Jadwal Pelajaran',
+      'data-master': 'Data Master',
+      'portal-guru': 'Portal Guru',
+      'supervisi': 'Supervisi'
+    } : {
+      'dashboard': 'Dashboard Kurikulum',
+      'dokumen': 'Dokumen & Administrasi',
+      'jadwal': 'Jadwal Pelajaran',
+      'data-master': 'Data Master Kurikulum',
+      'portal-guru': 'Portal Guru — KBM',
+      'supervisi': 'Supervisi Akademik & Manajerial'
+    };
+    titleEl.textContent = titles[screenName] || 'Portal Kurikulum';
+  }
+
+  window.addEventListener('resize', function () {
+    updateTopbarTitle(State.currentScreen);
+  });
 
   function closeMobileSidebar() {
     document.body.classList.remove('sidebar-open');

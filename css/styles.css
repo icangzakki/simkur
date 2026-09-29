@@ -5191,53 +5191,114 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
      2. TOPBAR — App-style greeting header
      ============================================================ */
   .app-topbar {
-    height: 64px !important;
-    padding: 0 1rem !important;
+    height: 60px !important;
+    padding: 0 0.75rem !important;
     background: #FFFFFF !important;
-    border-bottom: none !important;
+    border-bottom: 1px solid #ECECF2 !important;
     box-shadow: 0 1px 12px rgba(99, 102, 241, 0.08) !important;
     position: sticky !important;
     top: 0 !important;
     z-index: 100 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .topbar-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .topbar-title-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    overflow: hidden !important;
   }
 
   .topbar-screen-title {
-    font-size: 1.0625rem !important;
+    font-size: 0.95rem !important;
     font-weight: 800 !important;
     color: #1E1B4B !important;
-    letter-spacing: -0.02em !important;
+    letter-spacing: -0.01em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin: 0 !important;
+    line-height: 1.25 !important;
+    min-width: 0 !important;
+    display: block !important;
   }
 
   .btn-toggle-mobile {
-    width: 40px !important;
-    height: 40px !important;
-    border-radius: 12px !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 10px !important;
     background: #EEF2FF !important;
     border: none !important;
     color: #4338CA !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+  }
+
+  .topbar-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
   }
 
   .topbar-user-chip {
-    background: #EEF2FF !important;
+    background: transparent !important;
     border: none !important;
-    border-radius: 20px !important;
-    padding: 4px 10px 4px 4px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .topbar-user-chip .user-chip-text,
+  .topbar-user-chip svg {
+    display: none !important; /* Hide chevron & text on mobile */
   }
 
   .topbar-user-chip img {
-    width: 32px !important;
-    height: 32px !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
     border-radius: 50% !important;
-    border: 2px solid #A5B4FC !important;
+    border: 2px solid #818CF8 !important;
+    object-fit: cover !important;
   }
 
   .topbar-circle-btn {
-    width: 36px !important;
-    height: 36px !important;
-    border-radius: 12px !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    border-radius: 10px !important;
     background: #EEF2FF !important;
     border: none !important;
     color: #4338CA !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
   }
 
   /* ============================================================

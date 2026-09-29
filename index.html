@@ -372,11 +372,11 @@
 
     <!-- TOPBAR / HEADER (Design Specification Section 5) -->
     <header class="app-topbar">
-      <div class="topbar-left" style="display: flex; align-items: center; gap: 12px;">
+      <div class="topbar-left" style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; overflow: hidden;">
         <button class="btn-toggle-mobile" id="btn-toggle-sidebar" aria-label="Buka Menu">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div style="display: flex; flex-direction: column;">
+        <div class="topbar-title-wrapper" style="display: flex; flex-direction: column; min-width: 0; flex: 1; overflow: hidden;">
           <h1 class="topbar-screen-title" id="topbar-active-screen" style="margin: 0; line-height: 1.2;">Dashboard Kurikulum</h1>
           <div class="header-school-context" style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
             <span class="header-school-name" style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">SMKN 1 Banjarmasin</span>
