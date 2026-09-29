@@ -90,7 +90,42 @@
           };
         });
         localStorage.setItem(this.KEYS.TEACHER_ADMIN, JSON.stringify(monitoring));
+      } else if (data.masterTeachers) {
+        // Selaraskan nama guru di TEACHER_ADMIN jika ada pembaruan nama resmi master
+        try {
+          var adminList = JSON.parse(localStorage.getItem(this.KEYS.TEACHER_ADMIN) || '[]');
+          var adminUpdated = false;
+          adminList.forEach(function (rec) {
+            var mt = data.masterTeachers.find(function (t) {
+              return t.id === rec.teacher_id || (t.nip && rec.nip && t.nip === rec.nip);
+            });
+            if (mt && rec.name !== mt.name) {
+              rec.name = mt.name;
+              adminUpdated = true;
+            }
+          });
+          if (adminUpdated) {
+            localStorage.setItem(this.KEYS.TEACHER_ADMIN, JSON.stringify(adminList));
+          }
+        } catch (e) {}
       }
+
+      // Perbarui nama di sesi login lokal jika NIP cocok dengan data master yang diperbaiki
+      try {
+        var rawSess = localStorage.getItem('simkur_session');
+        if (rawSess && data.masterTeachers) {
+          var currSess = JSON.parse(rawSess);
+          if (currSess && currSess.nip) {
+            var mtSess = data.masterTeachers.find(function (t) {
+              return t.nip && t.nip.replace(/\D/g, '') === currSess.nip.replace(/\D/g, '');
+            });
+            if (mtSess && currSess.name !== mtSess.name) {
+              currSess.name = mtSess.name;
+              localStorage.setItem('simkur_session', JSON.stringify(currSess));
+            }
+          }
+        }
+      } catch (e) {}
 
       // Inisialisasi Riwayat Jurnal Guru: KOSONG (0 Jurnal)
       if (!localStorage.getItem(this.KEYS.GURU_JOURNALS)) {

@@ -246,7 +246,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "199607252025211097",
-    "name": "Ihsnan Azmi, S.Pd",
+    "name": "Hasnan Azmi, S.Pd",
     "role": "guru",
     "title": "Guru Mapel Matematika | SMKN 1 Banjarmasin",
     "department": "Umum",
@@ -268,7 +268,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "197312022022212001",
-    "name": "Perlina Sari, S.Hut, S.Kom",
+    "name": "Herlina Sari, S.Hut, S.Kom",
     "role": "guru",
     "title": "Guru DKV • Wali Kelas XII-A DKV | SMKN 1 Banjarmasin",
     "department": "DKV",
@@ -290,7 +290,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "197807092014061003",
-    "name": "H. Akhmad Ihsan Muzakki, SE",
+    "name": "Ihsan Muzakki, SE",
     "role": "guru",
     "title": "Guru Kejuruan TJKT | SMKN 1 Banjarmasin",
     "department": "TJKT",
@@ -301,7 +301,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "199202192025212021",
-    "name": "Irma Rufina, S.Pd.I",
+    "name": "Irma Rutina, S.Pd.I",
     "role": "guru",
     "title": "Guru Mapel Pendidikan Agama dan Budi Pekerti | SMKN 1 Banjarmasin",
     "department": "Umum",
@@ -422,7 +422,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "199209212022212003",
-    "name": "Wasnah, S.Tr.Kom",
+    "name": "Masnah, S.Tr.Kom",
     "role": "guru",
     "title": "Guru DKV • Wali Kelas XI-A DKV | SMKN 1 Banjarmasin",
     "department": "DKV",
@@ -576,7 +576,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "198902042023212026",
-    "name": "Neti Amelia, S.Pd",
+    "name": "Nelly Amelia, S.Pd",
     "role": "guru",
     "title": "Guru Pemasaran • Wali Kelas X-B PM | SMKN 1 Banjarmasin",
     "department": "Pemasaran",
@@ -587,7 +587,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "199012082025212026",
-    "name": "Nia Resti Maulida, S.Pd",
+    "name": "Nia Resti Maulina, S.Pd",
     "role": "guru",
     "title": "Guru Mapel IPAS | SMKN 1 Banjarmasin",
     "department": "Umum",
@@ -653,7 +653,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "198906052023212031",
-    "name": "Nurisa Hayani, S.Pd",
+    "name": "Nurlisa Hayani, S.Pd",
     "role": "guru",
     "title": "Guru Umum • Wali Kelas X-C DKV | SMKN 1 Banjarmasin",
     "department": "Umum",
@@ -851,7 +851,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "197701262022211002",
-    "name": "Tuhamsi, S.Pd",
+    "name": "Tusamsi, S.Pd",
     "role": "guru",
     "title": "Guru Kejuruan MPLB | SMKN 1 Banjarmasin",
     "department": "MPLB",
@@ -873,7 +873,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "199310122025212024",
-    "name": "Wijaya Savitri, S.Pd",
+    "name": "Widya Savitri, S.Pd",
     "role": "guru",
     "title": "Guru Mapel Seni Budaya | SMKN 1 Banjarmasin",
     "department": "Umum",
@@ -917,7 +917,7 @@ window.SIMKUR_AUTH_USERS = [
   },
   {
     "nip": "199704072022212003",
-    "name": "Yunada Arfitiani, S.Pd",
+    "name": "Yunada Afriliani, S.Pd",
     "role": "guru",
     "title": "Guru Pemasaran • Wali Kelas XI-C PM | SMKN 1 Banjarmasin",
     "department": "Pemasaran",

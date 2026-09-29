@@ -211,7 +211,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-023",
-        "name": "Ihsnan Azmi, S.Pd",
+        "name": "Hasnan Azmi, S.Pd",
         "nip": "199607252025211097",
         "department": "Umum",
         "subject": "Matematika",
@@ -227,7 +227,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-025",
-        "name": "Perlina Sari, S.Hut, S.Kom",
+        "name": "Herlina Sari, S.Hut, S.Kom",
         "nip": "197312022022212001",
         "department": "DKV",
         "subject": "Desain Grafis, Fotografi, Mapel Pilihan (Fotografi Lanjutan), Informatika",
@@ -243,7 +243,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-027",
-        "name": "H. Akhmad Ihsan Muzakki, SE",
+        "name": "Ihsan Muzakki, SE",
         "nip": "197807092014061003",
         "department": "TJKT",
         "subject": "Konsentrasi Keahlian TJKT (Administrasi Sistem Jaringan / ASJ)",
@@ -251,7 +251,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-028",
-        "name": "Irma Rufina, S.Pd.I",
+        "name": "Irma Rutina, S.Pd.I",
         "nip": "199202192025212021",
         "department": "Umum",
         "subject": "Pendidikan Agama dan Budi Pekerti, Mulok (Pend. Alquran)",
@@ -339,7 +339,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-039",
-        "name": "Wasnah, S.Tr.Kom",
+        "name": "Masnah, S.Tr.Kom",
         "nip": "199209212022212003",
         "department": "DKV",
         "subject": "Desain Multimedia (Dasar), Web & App Design",
@@ -451,7 +451,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-053",
-        "name": "Neti Amelia, S.Pd",
+        "name": "Nelly Amelia, S.Pd",
         "nip": "198902042023212026",
         "department": "Pemasaran",
         "subject": "Konsentrasi Keahlian Pemasaran, Digital on Boarding (MAPIL), Dasar-Dasar Pemasaran",
@@ -459,7 +459,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-054",
-        "name": "Nia Resti Maulida, S.Pd",
+        "name": "Nia Resti Maulina, S.Pd",
         "nip": "199012082025212026",
         "department": "Umum",
         "subject": "IPAS",
@@ -507,7 +507,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-060",
-        "name": "Nurisa Hayani, S.Pd",
+        "name": "Nurlisa Hayani, S.Pd",
         "nip": "198906052023212031",
         "department": "Umum",
         "subject": "Pendidikan Pancasila",
@@ -651,7 +651,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-078",
-        "name": "Tuhamsi, S.Pd",
+        "name": "Tusamsi, S.Pd",
         "nip": "197701262022211002",
         "department": "MPLB",
         "subject": "Teknologi Perkantoran, Pengelolaan Rapat, Pengelolaan Keuangan Sederhana, Dasar MPLB, KIK MPLB",
@@ -667,7 +667,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-080",
-        "name": "Wijaya Savitri, S.Pd",
+        "name": "Widya Savitri, S.Pd",
         "nip": "199310122025212024",
         "department": "Umum",
         "subject": "Seni Budaya, KIK MPLB & DKV",
@@ -699,7 +699,7 @@ window.SIMKUR_DATA = {
     },
     {
         "id": "T-084",
-        "name": "Yunada Arfitiani, S.Pd",
+        "name": "Yunada Afriliani, S.Pd",
         "nip": "199704072022212003",
         "department": "Pemasaran",
         "subject": "Konsentrasi Keahlian Pemasaran, Mapel Pilihan Pemasaran, Informatika",
