@@ -1846,7 +1846,7 @@
                 statusBadge +
               '</div>' +
               '<div style="font-size: 0.775rem; color: #64748B; margin-top: 4px; display: flex; gap: 12px; flex-wrap: wrap;">' +
-                '<span>📁 ' + (d.file_name || 'dokumen.pdf') + ' (' + (d.file_size || '1.2 MB') + ')</span>' +
+                (d.file_link ? '<span>🌐 <a href="' + d.file_link + '" target="_blank" rel="noopener noreferrer" style="color: #2563EB; font-weight: 700; text-decoration: underline;">Google Drive</a> (' + (d.file_size || 'Cloud Link') + ')</span>' : ('<span>📁 ' + (d.file_name || 'dokumen.pdf') + ' (' + (d.file_size || '1.2 MB') + ')</span>')) +
                 '<span>📅 Diunggah: ' + (d.uploaded_at || 'Baru Saja') + '</span>' +
                 (d.notes ? '<span>💬 ' + d.notes + '</span>' : '') +
               '</div>' +
@@ -1935,6 +1935,27 @@
     }
 
     if (!bodyEl) return;
+
+    // Check if Google Drive / Cloud Link
+    if (doc.file_link) {
+      bodyEl.innerHTML = '<div style="text-align: center; padding: 3rem 1.5rem; background: #F8FAFC; border-radius: 12px; border: 1.5px solid #E2E8F0; max-width: 680px; margin: 0 auto;">' +
+        '<div style="font-size: 3.5rem; margin-bottom: 1rem;">🌐</div>' +
+        '<h3 style="font-size: 1.25rem; font-weight: 800; color: #0F172A; margin: 0 0 0.5rem 0;">Tautan Dokumen Google Drive</h3>' +
+        '<p style="font-size: 0.875rem; color: #64748B; max-width: 480px; margin: 0 auto 1.5rem auto; line-height: 1.5;">' +
+        'Berkas perangkat pembelajaran ini tersimpan aman di Google Drive akun <strong>@guru.smk.belajar.id</strong> guru yang bersangkutan.' +
+        '</p>' +
+        '<div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">' +
+        '<a href="' + doc.file_link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 0.75rem 1.5rem; text-decoration: none; font-weight: 700; border-radius: 10px;">' +
+        '<span>Buka Dokumen di Google Drive</span>' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>' +
+        '</a>' +
+        '<button type="button" class="btn btn-outline" onclick="navigator.clipboard.writeText(\'' + doc.file_link + '\'); showToast(\'Tautan Google Drive berhasil disalin!\', \'success\');" style="display: inline-flex; align-items: center; gap: 6px; padding: 0.75rem 1rem; border-radius: 10px;">' +
+        '📋 Salin Link' +
+        '</button>' +
+        '</div>' +
+        '</div>';
+      return;
+    }
 
     // Check if real file (Base64 data url)
     if (doc.file_data && doc.file_data.startsWith('data:application/pdf')) {
@@ -2268,6 +2289,12 @@
     const allDocs = StorageManager.get('guru_documents') || [];
     const doc = allDocs.find(function (d) { return String(d.id) === String(id); });
     if (!doc) return;
+
+    if (doc.file_link) {
+      window.open(doc.file_link, '_blank');
+      showToast('Membuka tautan berkas di Google Drive...', 'info');
+      return;
+    }
 
     if (doc.file_data) {
       const a = document.createElement('a');
@@ -4744,25 +4771,85 @@
     renderDocuments(); // Update Waka Kur Monitoring automatically!
   }
 
+  // Client-Side Image Compressor (Optimized for 90 Teachers Daily Journals)
+  function compressImage(file, maxWidth, maxHeight, quality, callback) {
+    maxWidth = maxWidth || 1024;
+    maxHeight = maxHeight || 1024;
+    quality = quality || 0.72;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const img = new Image();
+      img.onload = function () {
+        let width = img.width;
+        let height = img.height;
+
+        // Maintain aspect ratio within bounding box
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+          const head = 'data:image/jpeg;base64,';
+          const sizeInBytes = Math.round(((compressedDataUrl.length - head.length) * 3) / 4);
+          const sizeInKb = (sizeInBytes / 1024).toFixed(1);
+          callback(compressedDataUrl, sizeInKb);
+        } else {
+          callback(e.target.result, (file.size / 1024).toFixed(1));
+        }
+      };
+      img.onerror = function () {
+        callback(e.target.result, (file.size / 1024).toFixed(1));
+      };
+      img.src = e.target.result;
+    };
+    reader.onerror = function () {
+      showToast('Gagal membaca berkas gambar kamera.', 'danger');
+    };
+    reader.readAsDataURL(file);
+  }
+
   function handleJournalPhotoUpload(event) {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      State.tempJournalPhoto = e.target.result;
+    const originalSizeMb = (file.size / (1024 * 1024)).toFixed(1);
+    showToast('⚡ Mengompres foto KBM secara otomatis...', 'info');
+
+    compressImage(file, 1024, 1024, 0.72, function (compressedDataUrl, compressedKb) {
+      State.tempJournalPhoto = compressedDataUrl;
       const previewBox = document.getElementById('jurnal-photo-preview-box');
       const previewImg = document.getElementById('jurnal-preview-img');
       const filenameEl = document.getElementById('jurnal-photo-filename');
       const detailsEl = document.getElementById('jurnal-photo-details');
 
-      if (previewImg) previewImg.src = e.target.result;
+      if (previewImg) previewImg.src = compressedDataUrl;
       if (filenameEl) filenameEl.textContent = file.name;
-      if (detailsEl) detailsEl.textContent = 'Ukuran: ' + (file.size / 1024 / 1024).toFixed(1) + ' MB • ' + new Date().toLocaleTimeString('id-ID');
+      if (detailsEl) {
+        detailsEl.innerHTML = '<span style="color: #059669; font-weight: 700;">⚡ Terkompresi Otomatis: ' + compressedKb + ' KB</span>' +
+          ' <span style="color: #94A3B8;">(Asli: ' + originalSizeMb + ' MB)</span> • ' +
+          new Date().toLocaleTimeString('id-ID');
+      }
       if (previewBox) previewBox.style.display = 'block';
-      showToast('Foto dokumentasi KBM berhasil diunggah!');
-    };
-    reader.readAsDataURL(file);
+      showToast('✓ Foto berhasil dikompresi menjadi ' + compressedKb + ' KB (Hemat ~95%)!', 'success');
+    });
   }
 
   function removeJournalPhoto() {
@@ -4981,7 +5068,10 @@
           '</div>' +
           '<div class="guru-doc-card-body">' +
             '<div class="guru-doc-title">' + d.title + '</div>' +
-            '<div class="guru-doc-filename">📎 ' + (d.file_name || 'dokumen.pdf') + ' &nbsp;·&nbsp; ' + (d.file_size || '1.2 MB') + '</div>' +
+            '<div class="guru-doc-filename">' +
+              (d.file_link ? '🌐 <a href="' + d.file_link + '" target="_blank" rel="noopener noreferrer" style="color: #4B22B8; font-weight: 700; text-decoration: underline;">Tautan Google Drive (Belajar.id)</a>' : ('📎 ' + (d.file_name || 'dokumen.pdf'))) +
+              ' &nbsp;·&nbsp; ' + (d.file_size || (d.file_link ? 'Cloud Link' : '1.2 MB')) +
+            '</div>' +
             '<div class="guru-doc-meta-row">' +
               '<span class="guru-doc-cat-badge" style="background:' + cat.bg + ';color:' + cat.color + ';">' + d.category + '</span>' +
               '<span class="guru-doc-status-badge ' + (statusOk ? 'status-ok' : 'status-pending') + '">' +
@@ -5011,14 +5101,23 @@
     e.preventDefault();
     const category = document.getElementById('select-guru-doc-cat').value;
     const title = document.getElementById('input-guru-doc-title').value.trim();
+    const linkInput = document.getElementById('input-guru-doc-link');
+    const fileLink = linkInput ? linkInput.value.trim() : '';
     const fileInput = document.getElementById('input-guru-doc-file');
     const notes = document.getElementById('input-guru-doc-notes').value.trim();
 
     const targetTeacherId = State.uploadTargetTeacherId || State.activeAdminTeacherId || State.currentGuruId;
 
     const file = fileInput && fileInput.files && fileInput.files[0];
-    const fileName = file ? file.name : (title.replace(/\s+/g, '_') + '.pdf');
-    const fileSize = file ? (file.size / 1024 / 1024).toFixed(1) + ' MB' : '1.5 MB';
+
+    // Must provide either a file or a Google Drive link
+    if (!file && !fileLink) {
+      showToast('Harap tempelkan tautan Google Drive atau pilih berkas dokumen untuk diunggah.', 'warning');
+      return;
+    }
+
+    const fileName = file ? file.name : (fileLink ? 'Tautan Google Drive (Akun Belajar.id)' : (title.replace(/\s+/g, '_') + '.pdf'));
+    const fileSize = file ? (file.size / 1024 / 1024).toFixed(1) + ' MB' : 'Cloud Link';
 
     function commitDoc(fileDataUrl) {
       const newDoc = {
@@ -5029,10 +5128,11 @@
         school_year: '2026/2027',
         file_name: fileName,
         file_size: fileSize,
+        file_link: fileLink || '',
         file_data: fileDataUrl || null,
         status: 'Disetujui Waka Kur',
         score: 96,
-        notes: notes || 'Perangkat ajar diunggah melalui SIMKUR.',
+        notes: notes || (fileLink ? 'Perangkat ajar terlampir via Google Drive akun belajar.id.' : 'Perangkat ajar diunggah melalui SIMKUR.'),
         uploaded_at: new Date().toISOString().split('T')[0]
       };
 
@@ -5048,10 +5148,11 @@
       }
 
       closeModal('modal-guru-upload-doc');
-      showToast('✓ Berkas perangkat ajar berhasil diunggah dan terverifikasi!');
+      showToast('✓ Berkas perangkat ajar berhasil disimpan dan terverifikasi!');
       
       State.uploadTargetTeacherId = null;
       if (fileInput) fileInput.value = '';
+      if (linkInput) linkInput.value = '';
 
       renderGuruDocuments();
       renderPortalGuru();
