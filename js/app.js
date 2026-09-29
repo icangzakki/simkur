@@ -3012,6 +3012,7 @@
     const supSearch = document.getElementById('sup-search-guru');
     const supDept = document.getElementById('sup-filter-dept');
     const supStatus = document.getElementById('sup-filter-status');
+    const supSupervisor = document.getElementById('sup-filter-supervisor');
 
     if (supSearch) {
       supSearch.addEventListener('input', function () {
@@ -3028,6 +3029,12 @@
     if (supStatus) {
       supStatus.addEventListener('change', function () {
         State.supervisiStatusFilter = this.value;
+        renderSupervisiSesi();
+      });
+    }
+    if (supSupervisor) {
+      supSupervisor.addEventListener('change', function () {
+        State.supervisiSupervisorFilter = this.value;
         renderSupervisiSesi();
       });
     }
@@ -4980,6 +4987,7 @@
     const q = (State.supervisiSearchQuery || '').toLowerCase();
     const dept = State.supervisiDeptFilter || 'all';
     const status = State.supervisiStatusFilter || 'all';
+    const sup = (State.supervisiSupervisorFilter || 'all').toLowerCase();
 
     const filtered = sessions.filter(function (s) {
       const matchQ = !q ||
@@ -4990,8 +4998,9 @@
 
       const matchDept = dept === 'all' || (s.department || '').toUpperCase().includes(dept.toUpperCase());
       const matchStatus = status === 'all' || s.status === status;
+      const matchSup = sup === 'all' || (s.supervisor_name && s.supervisor_name.toLowerCase().includes(sup));
 
-      return matchQ && matchDept && matchStatus;
+      return matchQ && matchDept && matchStatus && matchSup;
     });
 
     if (countEl) countEl.textContent = filtered.length;
@@ -6170,6 +6179,9 @@
         else if (d.includes('AKL') || d.includes('AKUNTANSI')) State.supervisiDeptFilter = 'AKL';
         else if (d.includes('MPLB') || d.includes('OTKP')) State.supervisiDeptFilter = 'MPLB';
         else if (d.includes('PM') || d.includes('PEMASARAN')) State.supervisiDeptFilter = 'Pemasaran';
+
+        var deptSelect = document.getElementById('sup-filter-dept');
+        if (deptSelect && State.supervisiDeptFilter) deptSelect.value = State.supervisiDeptFilter;
       }
     } else if (isGuruOnly) {
       // Guru Biasa: HANYA Portal Guru
