@@ -1836,22 +1836,30 @@
       <section id="screen-supervisi" class="screen-view" style="display: none;">
         
         <!-- HEADER SCREEN -->
-        <div class="screen-header">
+        <div class="screen-header-row" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.25rem; margin-bottom: 1.75rem;">
           <div>
-            <h2 class="screen-title" style="margin: 0; font-size: 1.5rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em;">Supervisi Akademik & Manajerial</h2>
-            <p class="screen-subtitle" style="margin: 4px 0 0 0; font-size: 0.875rem; color: var(--text-secondary);">
-              Siklus Klinis Berjenjang: Kepala Sekolah → Waka & Kajur → Guru Pengampu (Kurikulum Merdeka SMKN 1 Banjarmasin)
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <span class="badge" style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em; background: #EDE7FF; color: #4B22B8; padding: 3px 8px; border-radius: 6px;">SIKLUS KLINIS TERPADU</span>
+              <span style="font-size: 0.75rem; color: #CBD5E1;">•</span>
+              <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">SMKN 1 Banjarmasin</span>
+            </div>
+            <h2 class="screen-title" style="margin: 0; font-size: 1.45rem; font-weight: 800; color: #0F172A; letter-spacing: -0.025em; line-height: 1.25;">Supervisi Akademik &amp; Manajerial</h2>
+            <p class="screen-subtitle" style="margin: 5px 0 0 0; font-size: 0.85rem; color: #64748B; line-height: 1.45; max-width: 620px;">
+              Siklus Klinis Berjenjang: Kepala Sekolah → Waka &amp; Kajur → Guru Pengampu (Kurikulum Merdeka)
             </p>
           </div>
-          <div class="screen-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.exportSupervisiRecap()" title="Unduh Rekap Nilai Supervisi (CSV/Excel)">
-              📥 Unduh Rekap CSV
+          <div class="screen-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.exportSupervisiRecap()" title="Unduh Rekap Nilai Supervisi (CSV/Excel)" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 0.5rem 0.875rem; border-radius: 10px; background: #FFFFFF; border: 1.5px solid #E2E8F0; color: #334155; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Unduh Rekap CSV</span>
             </button>
-            <button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.switchSupervisiTab('program')" style="border-color: #CBD5E1; color: var(--simkur-blue); font-weight: 700;">
-              📜 Program Supervisi (SK)
+            <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.switchSupervisiTab('program')" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; padding: 0.5rem 0.875rem; border-radius: 10px; background: #EFF6FF; border: 1.5px solid #BFDBFE; color: #1D4ED8; box-shadow: 0 1px 2px rgba(37,99,235,0.06);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              <span>Program Supervisi (SK)</span>
             </button>
-            <button class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.openScheduleSupervisiModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700;">
-              ➕ Jadwalkan Sesi Supervisi
+            <button type="button" class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.openScheduleSupervisiModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; padding: 0.5rem 1rem; border-radius: 10px; background: linear-gradient(135deg, #4B22B8 0%, #3B1B94 100%); color: #FFFFFF; border: none; box-shadow: 0 4px 12px rgba(75, 34, 184, 0.25);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Jadwalkan Sesi Supervisi</span>
             </button>
           </div>
         </div>
@@ -1860,52 +1868,52 @@
         <div class="kpi-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
           
           <!-- Card 1: Total Sasaran Guru -->
-          <div class="content-card kpi-card stat-purple" style="margin: 0; padding: 1.25rem; border-top: 3px solid #4B22B8;">
+          <div class="content-card kpi-card stat-purple" style="margin: 0; padding: 1.25rem; border: 1px solid #E2E8F0; border-top: 3.5px solid #4B22B8; border-radius: 14px; box-shadow: 0 1px 3px rgba(15,23,42,0.03);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-              <span style="font-size: 0.8125rem; font-weight: 700; color: #777777; text-transform: uppercase;">Total Guru Sasaran</span>
-              <span class="badge" style="background: rgba(75, 34, 184, 0.1); color: #4B22B8; font-weight: 700;">100%</span>
+              <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: #64748B; text-transform: uppercase;">Total Guru Sasaran</span>
+              <span class="badge" style="background: #EDE7FF; color: #4B22B8; font-weight: 800; font-size: 0.75rem; padding: 2px 8px; border-radius: 6px;">100%</span>
             </div>
-            <div style="font-size: 1.75rem; font-weight: 800; color: #262626; line-height: 1.1;" id="sup-kpi-total-guru">90 Guru</div>
-            <div style="font-size: 0.75rem; color: #777777; margin-top: 8px;">Terpetakan ke 5 Jurusan & Muatan Umum</div>
+            <div style="font-size: 1.75rem; font-weight: 800; color: #0F172A; line-height: 1.1;" id="sup-kpi-total-guru">90 Guru</div>
+            <div style="font-size: 0.75rem; color: #64748B; margin-top: 8px;">Terpetakan ke 5 Jurusan &amp; Muatan Umum</div>
           </div>
 
           <!-- Card 2: Progres Supervisi Semester -->
-          <div class="content-card kpi-card stat-blue" style="margin: 0; padding: 1.25rem; border-top: 3px solid #1E56A0;">
+          <div class="content-card kpi-card stat-blue" style="margin: 0; padding: 1.25rem; border: 1px solid #E2E8F0; border-top: 3.5px solid #2563EB; border-radius: 14px; box-shadow: 0 1px 3px rgba(15,23,42,0.03);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-              <span style="font-size: 0.8125rem; font-weight: 700; color: #777777; text-transform: uppercase;">Selesai Disupervisi</span>
-              <span class="badge" style="background: rgba(30, 86, 160, 0.12); color: #1E56A0; font-weight: 700;" id="sup-kpi-done-pct">26.7%</span>
+              <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: #64748B; text-transform: uppercase;">Selesai Disupervisi</span>
+              <span class="badge" style="background: #EFF6FF; color: #2563EB; font-weight: 800; font-size: 0.75rem; padding: 2px 8px; border-radius: 6px;" id="sup-kpi-done-pct">26.7%</span>
             </div>
-            <div style="font-size: 1.75rem; font-weight: 800; color: #262626; line-height: 1.1;" id="sup-kpi-done-count">24 / 90 Guru</div>
-            <div style="background: #EEEEEE; border-radius: 999px; height: 6px; width: 100%; margin: 8px 0; overflow: hidden;">
-              <div id="sup-kpi-progress-bar" style="background: #1E56A0; height: 100%; width: 26.7%; border-radius: 999px; transition: width 0.3s ease;"></div>
+            <div style="font-size: 1.75rem; font-weight: 800; color: #0F172A; line-height: 1.1;" id="sup-kpi-done-count">24 / 90 Guru</div>
+            <div style="background: #F1F5F9; border-radius: 999px; height: 6px; width: 100%; margin: 8px 0; overflow: hidden;">
+              <div id="sup-kpi-progress-bar" style="background: #2563EB; height: 100%; width: 26.7%; border-radius: 999px; transition: width 0.3s ease;"></div>
             </div>
-            <div style="font-size: 0.75rem; color: #777777;" id="sup-kpi-done-sub">24 Selesai • 66 Berjalan / Terjadwal</div>
+            <div style="font-size: 0.75rem; color: #64748B;" id="sup-kpi-done-sub">24 Selesai • 66 Berjalan / Terjadwal</div>
           </div>
 
           <!-- Card 3: Rata-Rata Nilai Sekolah -->
-          <div class="content-card kpi-card stat-teal" style="margin: 0; padding: 1.25rem; border-top: 3px solid #20C985;">
+          <div class="content-card kpi-card stat-teal" style="margin: 0; padding: 1.25rem; border: 1px solid #E2E8F0; border-top: 3.5px solid #10B981; border-radius: 14px; box-shadow: 0 1px 3px rgba(15,23,42,0.03);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-              <span style="font-size: 0.8125rem; font-weight: 700; color: #777777; text-transform: uppercase;">Rata-Rata Nilai</span>
-              <span class="badge badge-success" id="sup-kpi-avg-badge">Amat Baik</span>
+              <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: #64748B; text-transform: uppercase;">Rata-Rata Nilai</span>
+              <span class="badge badge-success" id="sup-kpi-avg-badge" style="font-weight: 800; font-size: 0.75rem; padding: 2px 8px; border-radius: 6px;">Amat Baik</span>
             </div>
-            <div style="font-size: 1.75rem; font-weight: 800; color: #262626; line-height: 1.1;" id="sup-kpi-avg-score">87.8</div>
-            <div style="font-size: 0.75rem; color: #777777; margin-top: 8px;">Bobot: Telaah B (40%) + Observasi C (60%)</div>
+            <div style="font-size: 1.75rem; font-weight: 800; color: #0F172A; line-height: 1.1;" id="sup-kpi-avg-score">87.8</div>
+            <div style="font-size: 0.75rem; color: #64748B; margin-top: 8px;">Bobot: Telaah B (40%) + Observasi C (60%)</div>
           </div>
 
           <!-- Card 4: RTL Terbuka & Tindak Lanjut -->
-          <div class="content-card kpi-card stat-lime" style="margin: 0; padding: 1.25rem; border-top: 3px solid #F59E0B;">
+          <div class="content-card kpi-card stat-lime" style="margin: 0; padding: 1.25rem; border: 1px solid #E2E8F0; border-top: 3.5px solid #F59E0B; border-radius: 14px; box-shadow: 0 1px 3px rgba(15,23,42,0.03);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-              <span style="font-size: 0.8125rem; font-weight: 700; color: #777777; text-transform: uppercase;">Tindak Lanjut (RTL)</span>
-              <span class="badge badge-warning" id="sup-kpi-rtl-badge">4 Terbuka</span>
+              <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: #64748B; text-transform: uppercase;">Tindak Lanjut (RTL)</span>
+              <span class="badge badge-warning" id="sup-kpi-rtl-badge" style="font-weight: 800; font-size: 0.75rem; padding: 2px 8px; border-radius: 6px;">4 Terbuka</span>
             </div>
-            <div style="font-size: 1.75rem; font-weight: 800; color: #262626; line-height: 1.1;" id="sup-kpi-rtl-count">4 Tindakan</div>
-            <div style="font-size: 0.75rem; color: #777777; margin-top: 8px;">Pendampingan Sejawat & Supervisi Ulang</div>
+            <div style="font-size: 1.75rem; font-weight: 800; color: #0F172A; line-height: 1.1;" id="sup-kpi-rtl-count">4 Tindakan</div>
+            <div style="font-size: 0.75rem; color: #64748B; margin-top: 8px;">Pendampingan Sejawat &amp; Supervisi Ulang</div>
           </div>
 
         </div>
 
         <!-- SUBTAB NAVIGATION -->
-        <div class="subtabs-scroll-bar" style="display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; background: var(--surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 0.35rem 0.75rem; gap: 4px; overflow-x: auto;">
+        <div class="subtabs-scroll-bar" style="display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; background: var(--surface); border-radius: var(--radius-lg); padding: 0.4rem 0.75rem; gap: 6px;">
           <button class="doc-subtab-btn master-subtab-btn active" data-sup-tab="dash" onclick="window.PORTAL_APP.switchSupervisiTab('dash')">
             <span>📊 Dashboard & Sebaran</span>
           </button>

@@ -690,9 +690,10 @@ a:hover {
   box-sizing: border-box !important;
 }
 
+.screen-header,
 .screen-header-row {
   display: flex !important;
-  align-items: center !important;
+  align-items: flex-start !important;
   justify-content: space-between !important;
   margin-bottom: 1.75rem !important;
   flex-wrap: wrap !important;
