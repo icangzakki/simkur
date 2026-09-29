@@ -498,7 +498,8 @@
     activePreviewDocId: null,
     activeDocFilter: 'all',
     // Portal Guru State
-    activeGuruTab: 'jurnal', // 'jurnal' | 'presensi' | 'dokumen'
+    activeGuruTab: 'jurnal', // 'jurnal' | 'presensi' | 'dokumen' | 'supervisi'
+    isGuruDetailOpen: false, // false = Tampilan Beranda Hub (4 Kartu), true = Halaman Khusus Sub-Page
     currentGuruId: 'T-010', // Default Ahmad Gajali
     presensiClass: 'XI A-AKL',
     showAllClassesForGuru: false,
@@ -734,7 +735,10 @@
     else if (screenName === 'dokumen') renderDocuments();
     else if (screenName === 'jadwal') renderSchedules();
     else if (screenName === 'data-master') renderDataMaster();
-    else if (screenName === 'portal-guru') renderPortalGuru();
+    else if (screenName === 'portal-guru') {
+      State.isGuruDetailOpen = false;
+      renderPortalGuru();
+    }
     else if (screenName === 'supervisi') renderSupervisi();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3433,8 +3437,72 @@
     // Set mapel di formulir jurnal otomatis ke mapel guru ini
     populateTeacherSubjectSelect(currentTeacherId, teacher, session, State.presensiClass);
 
-    // 6. Render Active Subtab
+    // 6. Update Hub Card Badges
+    const hubBadgeJurnal = document.getElementById('hub-badge-jurnal');
+    if (hubBadgeJurnal) {
+      hubBadgeJurnal.textContent = '📝 ' + teacherJournals.length + ' Sesi Terisi';
+    }
+
+    const hubBadgeDokumen = document.getElementById('hub-badge-dokumen');
+    if (hubBadgeDokumen) {
+      hubBadgeDokumen.textContent = '📁 ' + teacherDocs.length + '/4 Berkas Lengkap';
+    }
+
+    const hubBadgePresensi = document.getElementById('hub-badge-presensi');
+    if (hubBadgePresensi) {
+      const presensiList = StorageManager.get('presensi_records') || [];
+      const teacherPresensi = presensiList.filter(function (p) {
+        return String(p.teacher_id) === String(currentTeacherId);
+      });
+      if (teacherPresensi.length > 0) {
+        hubBadgePresensi.textContent = '👥 ' + teacherPresensi.length + ' Sesi Terekam';
+      } else {
+        hubBadgePresensi.textContent = '👥 Siap Input Presensi';
+      }
+    }
+
+    const hubBadgeSupervisi = document.getElementById('hub-badge-supervisi');
+    if (hubBadgeSupervisi) {
+      const allSupervisi = StorageManager.get('supervisi_evaluations') || [];
+      const mySupervisi = allSupervisi.filter(function (s) {
+        return String(s.guru_id) === String(currentTeacherId);
+      });
+      if (mySupervisi.length > 0 && mySupervisi[0].score) {
+        hubBadgeSupervisi.textContent = '⭐ Nilai: ' + mySupervisi[0].score + ' (' + (mySupervisi[0].grade || 'Baik') + ')';
+      } else {
+        hubBadgeSupervisi.textContent = '⭐ Terjadwal / Siap';
+      }
+    }
+
+    // Toggle Hub View vs Detail View
+    const hubView = document.getElementById('guru-hub-view');
+    const detailView = document.getElementById('guru-detail-view');
+    const kpiGrid = document.querySelector('.portal-guru-kpi-grid');
+    const detailTitle = document.getElementById('guru-detail-header-title');
+
     const activeTab = State.activeGuruTab || 'jurnal';
+
+    if (State.isGuruDetailOpen) {
+      if (hubView) hubView.style.display = 'none';
+      if (kpiGrid) kpiGrid.style.display = 'none';
+      if (detailView) detailView.style.display = 'block';
+
+      if (detailTitle) {
+        const titles = {
+          'jurnal': '📝 Jurnal Mengajar Harian & Riwayat Tatap Muka',
+          'presensi': '👥 Presensi Kehadiran Siswa per Sesi KBM',
+          'dokumen': '📁 Perangkat Ajar & Berkas Kurikulum',
+          'supervisi': '🔍 Hasil Supervisi Klinis & RTL Pembinaan'
+        };
+        detailTitle.textContent = titles[activeTab] || 'Layanan Guru';
+      }
+    } else {
+      if (hubView) hubView.style.display = 'block';
+      if (kpiGrid) kpiGrid.style.display = 'grid';
+      if (detailView) detailView.style.display = 'none';
+    }
+
+    // 7. Render Active Subtab
     document.querySelectorAll('.guru-subtab-btn').forEach(function (btn) {
       if (btn.getAttribute('data-guru-tab') === activeTab) {
         btn.classList.add('active');
@@ -3824,8 +3892,28 @@
     }
   }
 
+  function openGuruSection(sectionName) {
+    State.activeGuruTab = sectionName || 'jurnal';
+    State.isGuruDetailOpen = true;
+    renderPortalGuru();
+    const detailView = document.getElementById('guru-detail-view');
+    if (detailView) {
+      detailView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function closeGuruSection() {
+    State.isGuruDetailOpen = false;
+    renderPortalGuru();
+    const hubView = document.getElementById('guru-hub-view');
+    if (hubView) {
+      hubView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
   function switchGuruTab(tabName) {
     State.activeGuruTab = tabName;
+    State.isGuruDetailOpen = true;
     renderPortalGuru();
   }
 
@@ -6564,6 +6652,8 @@
     showToast: showToast,
     // Portal Guru Methods
     renderPortalGuru: renderPortalGuru,
+    openGuruSection: openGuruSection,
+    closeGuruSection: closeGuruSection,
     switchGuruTab: switchGuruTab,
     changeActiveGuru: changeActiveGuru,
     toggleMethodTag: toggleMethodTag,
