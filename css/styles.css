@@ -3478,6 +3478,12 @@ textarea.form-input {
   .subtabs-scroll-bar .tab-label-mobile {
     display: inline !important;
   }
+  .doc-drive-actions {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
 
   /* Responsive Filter Cards on Mobile */
   .filter-card {

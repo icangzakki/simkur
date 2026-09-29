@@ -355,6 +355,14 @@
       <div class="nav-group-title" id="nav-group-5">5. Pengaturan</div>
       <ul class="sidebar-nav-list" id="nav-list-5" style="list-style: none; padding: 0 0.75rem; margin: 0;">
         <li style="margin-bottom: 4px;">
+          <a class="nav-item-link" href="javascript:void(0)" onclick="window.PORTAL_APP.openDriveConfigModal()">
+            <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span class="nav-label">Pengaturan Google Drive</span>
+          </a>
+        </li>
+        <li style="margin-bottom: 4px;">
           <a class="nav-item-link" href="javascript:void(0)" onclick="window.PORTAL_APP.openChangePasswordModal()">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -762,16 +770,31 @@
 
         </div>
 
-        <!-- SUBTAB NAVIGATION -->
-        <div class="subtabs-scroll-bar" style="display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; background: var(--surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 0.35rem 0.75rem;">
-          <button class="doc-subtab-btn master-subtab-btn active" data-doc-tab="teachers" onclick="window.PORTAL_APP.switchDocTab('teachers')">
-            <span class="tab-label-full">👨‍🏫 Monitoring Kelengkapan per Guru (90)</span>
-            <span class="tab-label-mobile">👨‍🏫 Guru (90)</span>
-          </button>
-          <button class="doc-subtab-btn master-subtab-btn" data-doc-tab="archives" onclick="window.PORTAL_APP.switchDocTab('archives')">
-            <span class="tab-label-full">📁 Arsip Dokumen Sekolah (<span id="doc-archive-count">11</span>)</span>
-            <span class="tab-label-mobile">📁 Arsip (<span id="doc-archive-count-mob">11</span>)</span>
-          </button>
+        <!-- SUBTAB NAVIGATION & GOOGLE DRIVE CONTROLS -->
+        <div class="subtabs-scroll-bar" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; background: var(--surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 0.35rem 0.75rem; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 4px; overflow-x: auto;">
+            <button class="doc-subtab-btn master-subtab-btn active" data-doc-tab="teachers" onclick="window.PORTAL_APP.switchDocTab('teachers')">
+              <span class="tab-label-full">👨‍🏫 Monitoring Kelengkapan per Guru (90)</span>
+              <span class="tab-label-mobile">👨‍🏫 Guru (90)</span>
+            </button>
+            <button class="doc-subtab-btn master-subtab-btn" data-doc-tab="archives" onclick="window.PORTAL_APP.switchDocTab('archives')">
+              <span class="tab-label-full">📁 Arsip Dokumen Sekolah (<span id="doc-archive-count">11</span>)</span>
+              <span class="tab-label-mobile">📁 Arsip (<span id="doc-archive-count-mob">11</span>)</span>
+            </button>
+          </div>
+
+          <!-- Waka Kur Google Drive Controls -->
+          <div class="doc-drive-actions" style="display: flex; align-items: center; gap: 6px; margin-left: auto;">
+            <button type="button" class="btn btn-sm btn-outline" id="btn-waka-open-drive" onclick="window.PORTAL_APP.openWakaDriveFolder()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.8125rem; border-color: #CBD5E1; background: #FFFFFF; color: #1E293B;" title="Buka folder repository Google Drive Kurikulum">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span>Buka Google Drive</span>
+              <span id="badge-waka-drive-status" class="badge" style="font-size: 0.65rem; padding: 1px 6px; background: #FEF3C7; color: #B45309; font-weight: 700;">Belum Diatur</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-ghost" onclick="window.PORTAL_APP.openDriveConfigModal()" title="Pengaturan Tautan Google Drive Kurikulum" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 600; font-size: 0.8125rem; background: rgba(75, 34, 184, 0.08); color: #4B22B8;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <span>Atur Link</span>
+            </button>
+          </div>
         </div>
 
         <!-- PANE 1: MONITORING KELENGKAPAN PER GURU -->
@@ -1766,11 +1789,33 @@
                 <h3 class="guru-doc-header-title">Perangkat Ajar &amp; Berkas Kurikulum</h3>
                 <p class="guru-doc-header-sub">Unggah modul ajar, silabus/ATP, prota/prosem, dan rubrik asesmen untuk supervisi Waka Kurikulum.</p>
               </div>
-              <button type="button" class="btn btn-primary guru-doc-upload-btn" onclick="window.PORTAL_APP.openUploadGuruDocModal()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Unggah Berkas Baru
-              </button>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                <button type="button" class="btn btn-outline" id="btn-guru-portal-open-drive" onclick="window.PORTAL_APP.openWakaDriveFolder()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.8125rem; background: #FFFFFF; border-color: #CBD5E1; color: #1E293B;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  <span>Folder Drive Kurikulum</span>
+                </button>
+                <button type="button" class="btn btn-primary guru-doc-upload-btn" onclick="window.PORTAL_APP.openUploadGuruDocModal()">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Unggah Berkas Baru
+                </button>
+              </div>
             </div>
+          </div>
+
+          <!-- Drive Status Banner for Guru -->
+          <div id="guru-drive-announcement-banner" style="margin-bottom: 1rem; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #FFFBEB; border: 1px solid #FDE68A;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span id="guru-drive-banner-icon" style="font-size: 1.25rem;">📁</span>
+              <div>
+                <strong id="guru-drive-banner-title" style="font-size: 0.85rem; color: #92400E; display: block;">Pengumpulan Berkas Digital SIMKUR</strong>
+                <span id="guru-drive-banner-desc" style="font-size: 0.775rem; color: #B45309; line-height: 1.4; display: block;">
+                  Tautan folder Google Drive resmi kurikulum belum disetel. Bapak/Ibu dapat mengunggah berkas PDF/DOCX langsung (&lt; 5MB) atau menempel link Drive akun belajar.id Anda.
+                </span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline" id="btn-guru-banner-drive" onclick="window.PORTAL_APP.openWakaDriveFolder()" style="white-space: nowrap; font-size: 0.775rem; background: #FFFFFF; color: #1D4ED8; border-color: #93C5FD; font-weight: 600; display: none;">
+              Buka Folder
+            </button>
           </div>
 
           <!-- 4 Skor Perangkat -->
@@ -2427,6 +2472,10 @@
         </div>
       </div>
       <div style="display: flex; gap: 8px; align-items: center;">
+        <button type="button" class="btn btn-outline btn-sm" id="vt-btn-drive" onclick="window.PORTAL_APP.openWakaDriveFolder()" style="font-size: 0.775rem; color: #2563EB; border-color: #93C5FD; display: inline-flex; align-items: center; gap: 4px;" title="Buka Google Drive Kurikulum">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>Drive</span>
+        </button>
         <button type="button" class="btn btn-outline btn-sm" id="vt-btn-wa" onclick="window.PORTAL_APP.notifyActiveTeacherWA()" style="font-size: 0.775rem; color: #16A34A; border-color: #86EFAC;">
           💬 WhatsApp
         </button>
@@ -2540,14 +2589,27 @@
 
         <!-- Opsi Metode Pengumpulan: Link Google Drive (Utama) atau File Langsung -->
         <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 10px;">
+          <!-- Status Banner Folder Drive Kurikulum -->
+          <div id="guru-modal-drive-status-box" style="padding: 10px 12px; border-radius: 8px; font-size: 0.785rem; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #FFFBEB; border: 1px solid #FDE68A;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="guru-modal-drive-status-icon" style="font-size: 1.1rem;">📁</span>
+              <span id="guru-modal-drive-status-text" style="color: #92400E; font-weight: 500; line-height: 1.35;">
+                Folder Google Drive terpusat belum disetel oleh Waka Kurikulum. Anda dapat menempel tautan Drive akun pribadi di bawah atau upload file langsung.
+              </span>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline" id="btn-guru-modal-open-drive" onclick="window.PORTAL_APP.openWakaDriveFolder()" style="white-space: nowrap; font-size: 0.75rem; padding: 4px 8px; background: #FFFFFF; color: #1D4ED8; border-color: #93C5FD; font-weight: 600; display: none;">
+              Buka Folder Drive
+            </button>
+          </div>
+
           <div>
             <label class="form-label" style="display: flex; align-items: center; justify-content: space-between; font-size: 0.8125rem; font-weight: 700; color: #0F172A; margin-bottom: 4px;">
-              <span>🌐 Tautan Google Drive / Belajar.id (Direkomendasikan)</span>
+              <span>🌐 Tautan Berkas / Folder Google Drive Anda</span>
               <span class="badge badge-success" style="font-size: 0.65rem; padding: 2px 6px;">HEMAT SERVER</span>
             </label>
             <input type="url" id="input-guru-doc-link" class="form-input" placeholder="https://drive.google.com/file/d/... atau docs.google.com/..." style="background: #FFFFFF;">
             <span style="font-size: 0.725rem; color: #64748B; margin-top: 4px; display: block; line-height: 1.4;">
-              💡 Tempelkan tautan berkas dari Google Drive akun <strong>@guru.smk.belajar.id</strong> Anda (pastikan akses disetel ke <em>'Siapa saja yang memiliki tautan'</em>).
+              💡 Tempelkan tautan berkas atau tautan folder dari Google Drive akun <strong>@guru.smk.belajar.id</strong> Anda (pastikan akses disetel ke <em>'Siapa saja yang memiliki tautan'</em>).
             </span>
           </div>
 
@@ -3078,6 +3140,91 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
           Simpan Kata Sandi
         </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- =================================================================== -->
+<!-- MODAL: PENGATURAN GOOGLE DRIVE WAKA KURIKULUM -->
+<!-- =================================================================== -->
+<div class="modal-overlay" id="modal-waka-drive-config">
+  <div class="modal-dialog" style="max-width: 580px; border-radius: var(--radius-xl); overflow: hidden;">
+    <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(75, 34, 184, 0.1); color: #4B22B8; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+          ⚙️
+        </div>
+        <div>
+          <h3 style="font-size: 1.125rem; font-weight: 700; color: #1E293B; margin: 0;">Pengaturan Google Drive Kurikulum</h3>
+          <p style="font-size: 0.8125rem; color: #64748B; margin: 2px 0 0 0;">Pusat penyimpanan &amp; pengumpulan berkas administrasi 90 guru</p>
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.closeModal('modal-waka-drive-config')">✕</button>
+    </div>
+
+    <form id="form-waka-drive-config" onsubmit="window.PORTAL_APP.handleSaveDriveConfig(event)" style="display: flex; flex-direction: column;">
+      <div style="padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1.15rem; max-height: 75vh; overflow-y: auto;">
+
+        <!-- Status Card -->
+        <div id="waka-drive-status-badge-container" style="padding: 12px 14px; border-radius: 10px; background: #FFFBEB; border: 1px solid #FDE68A; display: flex; align-items: flex-start; gap: 10px;">
+          <div id="waka-drive-status-icon" style="font-size: 1.25rem; line-height: 1;">⚪</div>
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <span id="waka-drive-status-title" style="font-size: 0.85rem; font-weight: 700; color: #92400E;">Status: Belum Diatur (Standby)</span>
+              <span id="waka-drive-status-pill" class="badge" style="background: #FEF3C7; color: #B45309; font-size: 0.7rem; font-weight: 700;">Belum Ada</span>
+            </div>
+            <p id="waka-drive-status-desc" style="font-size: 0.775rem; color: #B45309; margin: 4px 0 0 0; line-height: 1.4;">
+              Link Google Drive kurikulum belum diatur. Guru saat ini tetap dapat mengunggah berkas PDF/DOCX langsung (&lt; 5MB) atau menempel link Drive mandiri.
+            </p>
+          </div>
+        </div>
+
+        <!-- Input URL Google Drive -->
+        <div>
+          <label class="form-label" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8125rem; font-weight: 700; margin-bottom: 6px; color: #1E293B;">
+            <span>Tautan Folder Utama Google Drive</span>
+            <span style="font-size: 0.75rem; color: #64748B; font-weight: 400;">(Milik Waka Kurikulum / Sekolah)</span>
+          </label>
+          <div style="display: flex; gap: 8px;">
+            <input type="url" id="input-waka-drive-url" class="form-input" placeholder="https://drive.google.com/drive/folders/..." style="flex: 1; font-family: monospace; font-size: 0.825rem;" autocomplete="off">
+            <button type="button" class="btn btn-outline" onclick="window.PORTAL_APP.testWakaDriveLink()" title="Uji buka link di tab baru" style="display: inline-flex; align-items: center; gap: 5px; padding: 0 12px; font-size: 0.8rem; white-space: nowrap; border-color: #CBD5E1;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <span>Uji Link</span>
+            </button>
+          </div>
+          <span style="font-size: 0.725rem; color: #64748B; margin-top: 4px; display: block;">
+            Tempelkan link folder Google Drive tempat seluruh berkas RPP, Modul Ajar, Silabus, dan Asesmen guru dikumpulkan.
+          </span>
+        </div>
+
+        <!-- Panduan Singkat Setting Hak Akses di Google Drive -->
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px 14px;">
+          <div style="font-size: 0.8125rem; font-weight: 700; color: #1E293B; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+            <span>💡</span> <span>Panduan Waka Kurikulum:</span>
+          </div>
+          <ol style="margin: 0; padding-left: 1.25rem; font-size: 0.775rem; color: #475569; line-height: 1.6;">
+            <li>Buka <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" style="color: #2563EB; font-weight: 600; text-decoration: underline;">Google Drive</a> dengan akun Waka Kurikulum (disarankan akun <strong>@admin.smk.belajar.id</strong>).</li>
+            <li>Buat folder baru, beri nama contoh: <code>📁 PEMBERKASAN ADMINISTRASI GURU 2026-2027</code>.</li>
+            <li>Klik kanan pada folder tersebut &rarr; pilih <strong>Bagikan (Share)</strong>.</li>
+            <li>Di bagian <em>Akses umum</em>, ubah dari <em>Dibatasi</em> menjadi <strong>Siapa saja yang memiliki link</strong> dengan peran <strong>Editor</strong> (agar guru bisa mengunggah ke folder tersebut).</li>
+            <li>Klik <strong>Salin link (Copy link)</strong>, lalu tempelkan link tersebut pada kolom input di atas, lalu klik <strong>Simpan Pengaturan</strong>.</li>
+          </ol>
+        </div>
+
+        <!-- Tombol Reset / Kosongkan Link -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 4px;">
+          <button type="button" class="btn btn-sm btn-ghost" onclick="window.PORTAL_APP.clearWakaDriveConfig()" style="color: #EF4444; font-size: 0.775rem; padding: 4px 8px;">
+            🗑️ Kosongkan / Reset Link
+          </button>
+          <span style="font-size: 0.725rem; color: #94A3B8;">Tersimpan otomatis di sistem SIMKUR</span>
+        </div>
+
+      </div>
+
+      <div style="padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; background: #FAF9FD;">
+        <button type="button" class="btn btn-ghost" onclick="window.PORTAL_APP.closeModal('modal-waka-drive-config')">Tutup</button>
+        <button type="submit" class="btn btn-primary" style="background: var(--jobie-primary, #4B22B8); border-color: var(--jobie-primary, #4B22B8);">💾 Simpan Pengaturan</button>
       </div>
     </form>
   </div>
@@ -3734,6 +3881,13 @@
         <div>
           <div class="quick-action-title">Data Master</div>
           <div class="quick-action-sub">Guru, Kelas, Mapel, Ruang</div>
+        </div>
+      </a>
+      <a href="javascript:void(0)" class="quick-action-item" onclick="window.PORTAL_APP.openDriveConfigModal(); window.PORTAL_APP.closeModal('modal-mobile-menu');">
+        <div class="quick-action-icon" style="background: rgba(37, 99, 235, 0.1); color: #2563EB;">📂</div>
+        <div>
+          <div class="quick-action-title">Pengaturan Google Drive</div>
+          <div class="quick-action-sub">Atur link folder kurikulum</div>
         </div>
       </a>
       <a href="javascript:void(0)" class="quick-action-item" onclick="window.PORTAL_APP.openChangePasswordModal(); window.PORTAL_APP.closeModal('modal-mobile-menu');">

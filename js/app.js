@@ -28,7 +28,8 @@
       SUPERVISI_SESI: 'portal_supervisi_sesi_v1',
       SUPERVISI_HASIL: 'portal_supervisi_hasil_v1',
       SUPERVISI_RTL: 'portal_supervisi_rtl_v1',
-      SUPERVISI_MANAJERIAL: 'portal_supervisi_manajerial_v1'
+      SUPERVISI_MANAJERIAL: 'portal_supervisi_manajerial_v1',
+      SETTINGS: 'portal_system_settings_v1'
     },
 
     init: function () {
@@ -469,6 +470,28 @@
         window.FirebaseService.deleteDoc(key, id);
       }
       return items;
+    },
+
+    getSetting: function (key, defaultValue) {
+      try {
+        const raw = localStorage.getItem(this.KEYS.SETTINGS);
+        const settings = raw ? JSON.parse(raw) : {};
+        return (settings && settings[key] !== undefined) ? settings[key] : (defaultValue !== undefined ? defaultValue : null);
+      } catch (e) {
+        return defaultValue !== undefined ? defaultValue : null;
+      }
+    },
+
+    setSetting: function (key, value) {
+      try {
+        const raw = localStorage.getItem(this.KEYS.SETTINGS);
+        const settings = raw ? JSON.parse(raw) : {};
+        settings[key] = value;
+        localStorage.setItem(this.KEYS.SETTINGS, JSON.stringify(settings));
+        return settings;
+      } catch (e) {
+        console.error('StorageManager error setSetting:', key, e);
+      }
     }
   };
 
@@ -1307,6 +1330,7 @@
       if (paneArchives) paneArchives.style.display = 'block';
       renderArchiveDocsTable(docs);
     }
+    updateDriveUIElements();
   }
 
   function switchDocTab(tabName) {
@@ -2272,6 +2296,7 @@
     if (State.activeAdminTeacherId) {
       State.uploadTargetTeacherId = State.activeAdminTeacherId;
     }
+    updateDriveUIElements();
     openModal('modal-guru-upload-doc');
   }
 
@@ -2306,6 +2331,253 @@
     } else {
       previewTeacherDoc(id);
       showToast('Pratinjau lembar digital ditampilkan. Anda dapat mencetak/menyimpan PDF via tombol Cetak.');
+    }
+  }
+
+  // =========================================================================
+  // 7.1.5 PENGATURAN GOOGLE DRIVE WAKA KURIKULUM & INTEGRASI REPOSITORY
+  // =========================================================================
+  function getWakaDriveUrl() {
+    let url = localStorage.getItem('portal_waka_drive_url');
+    if (!url) {
+      url = StorageManager.getSetting('waka_drive_url', '');
+    }
+    return (url || '').trim();
+  }
+
+  function updateDriveModalStatusUI(url) {
+    const icon = document.getElementById('waka-drive-status-icon');
+    const title = document.getElementById('waka-drive-status-title');
+    const pill = document.getElementById('waka-drive-status-pill');
+    const desc = document.getElementById('waka-drive-status-desc');
+    const container = document.getElementById('waka-drive-status-badge-container');
+
+    if (!container) return;
+
+    if (url) {
+      container.style.background = '#F0FDF4';
+      container.style.borderColor = '#BBF7D0';
+      if (icon) icon.textContent = '🟢';
+      if (title) {
+        title.textContent = 'Status: Terhubung ke Google Drive';
+        title.style.color = '#15803D';
+      }
+      if (pill) {
+        pill.textContent = 'Aktif';
+        pill.style.background = '#DCFCE7';
+        pill.style.color = '#15803D';
+      }
+      if (desc) {
+        desc.innerHTML = 'Folder repository siap digunakan guru untuk pengumpulan berkas. Klik <strong>Uji Link</strong> untuk memastikan folder terbuka dengan benar.';
+        desc.style.color = '#166534';
+      }
+    } else {
+      container.style.background = '#FFFBEB';
+      container.style.borderColor = '#FDE68A';
+      if (icon) icon.textContent = '⚪';
+      if (title) {
+        title.textContent = 'Status: Belum Diatur (Standby)';
+        title.style.color = '#92400E';
+      }
+      if (pill) {
+        pill.textContent = 'Belum Ada';
+        pill.style.background = '#FEF3C7';
+        pill.style.color = '#B45309';
+      }
+      if (desc) {
+        desc.innerHTML = 'Link Google Drive kurikulum belum diatur. Guru saat ini tetap dapat mengunggah berkas PDF/DOCX langsung (&lt; 5MB) atau menempel tautan mandiri.';
+        desc.style.color = '#B45309';
+      }
+    }
+  }
+
+  function openDriveConfigModal() {
+    const url = getWakaDriveUrl();
+    const input = document.getElementById('input-waka-drive-url');
+    if (input) input.value = url || '';
+
+    updateDriveModalStatusUI(url);
+    openModal('modal-waka-drive-config');
+  }
+
+  function handleSaveDriveConfig(event) {
+    if (event) event.preventDefault();
+    const input = document.getElementById('input-waka-drive-url');
+    let url = input ? input.value.trim() : '';
+
+    if (url) {
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+        if (input) input.value = url;
+      }
+      if (!url.includes('drive.google.com') && !url.includes('docs.google.com')) {
+        if (!confirm('Tautan ini tidak tampak seperti URL Google Drive. Apakah Anda yakin ingin menyimpannya?')) {
+          return;
+        }
+      }
+    }
+
+    localStorage.setItem('portal_waka_drive_url', url);
+    StorageManager.setSetting('waka_drive_url', url);
+
+    if (window.FirebaseService && typeof window.FirebaseService.saveDoc === 'function') {
+      window.FirebaseService.saveDoc('settings', 'drive_config', {
+        waka_drive_url: url,
+        updated_at: new Date().toISOString()
+      });
+    }
+
+    closeModal('modal-waka-drive-config');
+    showToast(url ? '✓ Link Google Drive Kurikulum berhasil disimpan dan diaktifkan!' : 'Pengaturan link Google Drive telah diperbarui.');
+
+    updateDriveUIElements();
+  }
+
+  function testWakaDriveLink() {
+    const input = document.getElementById('input-waka-drive-url');
+    let url = input ? input.value.trim() : '';
+    if (!url) {
+      showToast('Masukkan link Google Drive terlebih dahulu untuk diuji.', 'warning');
+      if (input) input.focus();
+      return;
+    }
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://' + url;
+      if (input) input.value = url;
+    }
+    window.open(url, '_blank');
+    showToast('Membuka tautan di tab baru untuk verifikasi...', 'info');
+  }
+
+  function clearWakaDriveConfig() {
+    if (!confirm('Kosongkan tautan Google Drive Kurikulum?')) return;
+    localStorage.removeItem('portal_waka_drive_url');
+    StorageManager.setSetting('waka_drive_url', '');
+
+    const input = document.getElementById('input-waka-drive-url');
+    if (input) input.value = '';
+
+    updateDriveModalStatusUI('');
+
+    if (window.FirebaseService && typeof window.FirebaseService.saveDoc === 'function') {
+      window.FirebaseService.saveDoc('settings', 'drive_config', {
+        waka_drive_url: '',
+        updated_at: new Date().toISOString()
+      });
+    }
+
+    showToast('Link Google Drive kurikulum telah dikosongkan.', 'info');
+    updateDriveUIElements();
+  }
+
+  function openWakaDriveFolder() {
+    const url = getWakaDriveUrl();
+    if (url) {
+      window.open(url, '_blank');
+      showToast('Membuka folder Google Drive Kurikulum...', 'info');
+      return;
+    }
+
+    let session = null;
+    try {
+      const raw = localStorage.getItem('simkur_session');
+      if (raw) session = JSON.parse(raw);
+    } catch (e) {}
+
+    const roleInfo = getUserRoleInfo(session);
+    if (roleInfo.isWakaKur || roleInfo.isAdmin) {
+      showToast('Tautan Google Drive belum diatur. Membuka form pengaturan...', 'warning');
+      openDriveConfigModal();
+    } else {
+      showToast('Tautan Google Drive resmi kurikulum belum disiapkan oleh Waka Kurikulum. Silakan gunakan upload file langsung atau tautan pribadi.', 'warning');
+    }
+  }
+
+  function updateDriveUIElements() {
+    const url = getWakaDriveUrl();
+
+    // 1. Dokumen Screen Badge
+    const badgeDrive = document.getElementById('badge-waka-drive-status');
+    if (badgeDrive) {
+      if (url) {
+        badgeDrive.textContent = '🟢 Aktif';
+        badgeDrive.style.background = '#DCFCE7';
+        badgeDrive.style.color = '#15803D';
+      } else {
+        badgeDrive.textContent = 'Belum Diatur';
+        badgeDrive.style.background = '#FEF3C7';
+        badgeDrive.style.color = '#B45309';
+      }
+    }
+
+    // 2. Portal Guru Banner & Button
+    const guruBanner = document.getElementById('guru-drive-announcement-banner');
+    const guruBannerTitle = document.getElementById('guru-drive-banner-title');
+    const guruBannerDesc = document.getElementById('guru-drive-banner-desc');
+    const guruBtnBanner = document.getElementById('btn-guru-banner-drive');
+    const guruPortalBtn = document.getElementById('btn-guru-portal-open-drive');
+
+    if (guruBanner) {
+      if (url) {
+        guruBanner.style.background = '#EFF6FF';
+        guruBanner.style.border = '1px solid #BFDBFE';
+        if (guruBannerTitle) {
+          guruBannerTitle.textContent = '📁 Folder Google Drive Kurikulum Siap Digunakan';
+          guruBannerTitle.style.color = '#1E40AF';
+        }
+        if (guruBannerDesc) {
+          guruBannerDesc.textContent = 'Waka Kurikulum telah menyiapkan folder resmi penyimpanan perangkat ajar. Klik tombol di kanan untuk membuka folder.';
+          guruBannerDesc.style.color = '#2563EB';
+        }
+        if (guruBtnBanner) {
+          guruBtnBanner.style.display = 'inline-flex';
+          guruBtnBanner.textContent = 'Buka Folder Drive';
+        }
+        if (guruPortalBtn) {
+          guruPortalBtn.style.display = 'inline-flex';
+        }
+      } else {
+        guruBanner.style.background = '#FFFBEB';
+        guruBanner.style.border = '1px solid #FDE68A';
+        if (guruBannerTitle) {
+          guruBannerTitle.textContent = 'Pengumpulan Berkas Digital SIMKUR';
+          guruBannerTitle.style.color = '#92400E';
+        }
+        if (guruBannerDesc) {
+          guruBannerDesc.textContent = 'Tautan folder Google Drive resmi kurikulum belum disetel. Bapak/Ibu dapat mengunggah berkas PDF/DOCX langsung (< 5MB) atau menempel link Drive akun belajar.id Anda.';
+          guruBannerDesc.style.color = '#B45309';
+        }
+        if (guruBtnBanner) {
+          guruBtnBanner.style.display = 'none';
+        }
+      }
+    }
+
+    // 3. Modal Guru Upload Banner
+    const statusBox = document.getElementById('guru-modal-drive-status-box');
+    const statusText = document.getElementById('guru-modal-drive-status-text');
+    const btnOpenDrive = document.getElementById('btn-guru-modal-open-drive');
+
+    if (statusBox && statusText) {
+      if (url) {
+        statusBox.style.background = '#EFF6FF';
+        statusBox.style.border = '1px solid #BFDBFE';
+        statusText.style.color = '#1E40AF';
+        statusText.innerHTML = 'Folder Google Drive Kurikulum terhubung. Anda dapat langsung menyimpan berkas ke folder resmi tersebut lalu menempel tautannya di bawah.';
+        if (btnOpenDrive) {
+          btnOpenDrive.style.display = 'inline-flex';
+          btnOpenDrive.disabled = false;
+          btnOpenDrive.textContent = 'Buka Folder Drive';
+        }
+      } else {
+        statusBox.style.background = '#FFFBEB';
+        statusBox.style.border = '1px solid #FDE68A';
+        statusText.style.color = '#92400E';
+        statusText.innerHTML = 'Folder Google Drive terpusat belum disetel oleh Waka Kurikulum. Anda dapat menempel tautan Google Drive akun belajar.id pribadi Anda di bawah, atau langsung unggah file PDF/DOCX.';
+        if (btnOpenDrive) {
+          btnOpenDrive.style.display = 'none';
+        }
+      }
     }
   }
 
@@ -4216,6 +4488,7 @@
       if (paneSupervisi) paneSupervisi.style.display = 'block';
       renderGuruSupervisiPane(currentTeacherId, teacher, session);
     }
+    updateDriveUIElements();
   }
 
   function getClassesForTeacher(teacherId, showAll) {
@@ -5094,6 +5367,7 @@
 
   function openUploadGuruDocModal() {
     State.uploadTargetTeacherId = null;
+    updateDriveUIElements();
     openModal('modal-guru-upload-doc');
   }
 
@@ -7436,6 +7710,7 @@
 
     switchScreen(initialScreen);
     initOnlineOfflineStatus();
+    updateDriveUIElements();
     console.log('🚀 SIMKUR Portal siap. Akses:', isGuruOnly ? 'Guru Only → Portal Guru' : 'Full Access');
   }
 
@@ -7813,6 +8088,13 @@
     confirmGuruSupervisi: confirmGuruSupervisi,
     toggleGuruRTLStatus: toggleGuruRTLStatus,
     uploadGuruRTLBukti: uploadGuruRTLBukti,
+    getWakaDriveUrl: getWakaDriveUrl,
+    openDriveConfigModal: openDriveConfigModal,
+    handleSaveDriveConfig: handleSaveDriveConfig,
+    testWakaDriveLink: testWakaDriveLink,
+    clearWakaDriveConfig: clearWakaDriveConfig,
+    openWakaDriveFolder: openWakaDriveFolder,
+    updateDriveUIElements: updateDriveUIElements,
     refreshActiveScreen: refreshActiveScreen
   };
 
