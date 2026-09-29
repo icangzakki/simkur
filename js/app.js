@@ -893,7 +893,7 @@
     if (classSelect) {
       const currentSelected = State.dashScheduleClassFilter || 'all';
       const uniqueClasses = Array.from(new Set(daySchedules.map(function (s) { return s.class_name; }))).sort();
-      let optHtml = '<option value="all">Semua Rombel (' + uniqueClasses.length + ' Kelas)</option>';
+      let optHtml = '<option value="all">Semua Rombel (' + uniqueClasses.length + ')</option>';
       uniqueClasses.forEach(function (c) {
         optHtml += '<option value="' + c + '"' + (c === currentSelected ? ' selected' : '') + '>' + c + '</option>';
       });

@@ -7912,4 +7912,328 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
   }
 }
 
+/* ========================================================================= */
+/* RESPONSIVE LAYOUT CLEANUP (SCHEDULE, SUPERVISI, DASHBOARD, DOKUMEN)        */
+/* ========================================================================= */
+
+/* Tab Label Utilities */
+.tab-label-mobile {
+  display: none;
+}
+.tab-label-full {
+  display: inline;
+}
+
+/* 1. SCHEDULE SCREEN (.sched-*) */
+.sched-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sched-filter-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  margin-bottom: 1.25rem;
+}
+
+.sched-filter-search-row {
+  width: 100%;
+}
+
+.sched-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 0.5rem 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.sched-search-box:focus-within {
+  background: #FFFFFF;
+  border-color: #4B22B8;
+  box-shadow: 0 0 0 3px rgba(75, 34, 184, 0.08);
+}
+
+.sched-search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-size: 0.875rem;
+  color: #1E293B;
+}
+
+.sched-search-box input::placeholder {
+  color: #94A3B8;
+}
+
+.sched-filter-dropdowns-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sched-filter-select {
+  flex: 1;
+  min-width: 130px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #334155;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sched-filter-select:focus {
+  border-color: #4B22B8;
+  box-shadow: 0 0 0 3px rgba(75, 34, 184, 0.08);
+  outline: none;
+}
+
+.sched-filter-footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* 2. SUPERVISI SCREEN ACTIONS */
+.supervisi-screen-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sup-secondary-actions-grid {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 3. DASHBOARD SCHEDULE CARD HEADER & DAY PILLS */
+.dash-sched-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dash-sched-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.day-pills-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 2px 0;
+}
+
+.day-pills-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* 4. DOKUMEN SCREEN FILTER GRID */
+.doc-filter-selects-grid {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+/* MOBILE ENHANCEMENTS FOR ALL 4 SCREENS */
+@media (max-width: 768px) {
+  /* Tab labels */
+  .tab-label-mobile {
+    display: inline !important;
+  }
+  .tab-label-full {
+    display: none !important;
+  }
+
+  /* 1. Schedule Screen Mobile */
+  .sched-header-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .sched-header-actions .schedule-mode-tabs {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .sched-header-actions .schedule-mode-btn {
+    flex: 1 !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 0.5rem 0.25rem !important;
+    font-size: 0.8rem !important;
+    white-space: nowrap !important;
+  }
+
+  .sched-header-actions .sched-add-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.6rem 1rem !important;
+    border-radius: 12px !important;
+    font-size: 0.875rem !important;
+    box-shadow: 0 4px 12px rgba(75, 34, 184, 0.25) !important;
+  }
+
+  .sched-filter-card {
+    padding: 0.75rem !important;
+    gap: 8px !important;
+  }
+
+  .sched-search-box {
+    padding: 0.45rem 0.75rem !important;
+  }
+
+  .sched-search-box input {
+    font-size: 0.8125rem !important;
+  }
+
+  .sched-filter-dropdowns-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .sched-filter-select {
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 0.78rem !important;
+    padding: 0.35rem 0.5rem !important;
+    height: 38px !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .sched-filter-footer {
+    padding-top: 0 !important;
+  }
+
+  /* 2. Supervisi Screen Mobile */
+  .supervisi-screen-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .sup-btn-primary {
+    width: 100% !important;
+    padding: 0.625rem 1rem !important;
+    font-size: 0.875rem !important;
+    justify-content: center !important;
+  }
+
+  .sup-secondary-actions-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .sup-btn-secondary {
+    width: 100% !important;
+    padding: 0.5rem 0.5rem !important;
+    font-size: 0.8rem !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+  }
+
+  /* 3. Dashboard Schedule Mobile */
+  .dash-sched-card-header {
+    padding: 0.875rem 1rem !important;
+    gap: 8px !important;
+  }
+
+  .dash-sched-header-top {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+  }
+
+  .btn-karhutla-chip {
+    padding: 0.35rem 0.6rem !important;
+    font-size: 0.72rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  .day-pills-bar {
+    display: flex !important;
+    gap: 6px !important;
+    flex-wrap: nowrap !important;
+    width: max-content !important;
+  }
+
+  .day-pill-btn {
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 20px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .dash-sched-select {
+    font-size: 0.78rem !important;
+    padding: 0.35rem 0.5rem !important;
+    height: 36px !important;
+  }
+
+  .sched-view-btn {
+    padding: 5px 8px !important;
+    font-size: 0.72rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* 4. Dokumen Screen Mobile */
+  .doc-filter-selects-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .doc-filter-selects-grid select.filter-select {
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 0.78rem !important;
+    padding: 0.4rem 0.5rem !important;
+    height: 38px !important;
+    text-overflow: ellipsis !important;
+  }
+
+  #doc-teacher-mode-tabs .schedule-mode-btn {
+    font-size: 0.78rem !important;
+    padding: 0.45rem 0.65rem !important;
+  }
+}
+
+
 

@@ -555,19 +555,22 @@
           
           <!-- LEFT: Jadwal Pelajaran Hari Ini (Alokasi Karhutla) -->
           <div class="content-card dash-sched-main-card" style="margin: 0; border-radius: var(--radius-xl);">
-            <div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-              <div>
-                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                  <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-primary); margin: 0;">Jadwal Pelajaran Hari Ini</h3>
-                  <span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 800; font-size: 0.72rem; border: 1px solid #FCD34D;">🔥 Alokasi Karhutla 2026/2027</span>
+            <div class="content-card-header dash-sched-card-header" style="display: flex; flex-direction: column; gap: 10px;">
+              <div class="dash-sched-header-top" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-primary); margin: 0;">Jadwal Pelajaran Hari Ini</h3>
+                    <span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 800; font-size: 0.72rem; border: 1px solid #FCD34D;">🔥 Alokasi Karhutla 2026/2027</span>
+                  </div>
+                  <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 2px;" id="dash-current-day-label">Hari: Selasa • 114 Sesi KBM (Alokasi Karhutla)</div>
                 </div>
-                <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 2px;" id="dash-current-day-label">Hari: Selasa • 114 Sesi KBM (Alokasi Karhutla)</div>
-              </div>
-              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.openKarhutlaModal()" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; border-color: #FCD34D; color: #92400E; background: #FFFDF5; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; border-radius: 8px;" title="Lihat Tabel Alokasi Waktu Jam Mengajar Selama Karhutla">
+                <button type="button" class="btn btn-outline btn-sm btn-karhutla-chip" onclick="window.PORTAL_APP.openKarhutlaModal()" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; border-color: #FCD34D; color: #92400E; background: #FFFDF5; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; border-radius: 8px; white-space: nowrap;" title="Lihat Tabel Alokasi Waktu Jam Mengajar Selama Karhutla">
                   <span>📋 Alokasi Waktu</span>
                 </button>
-                <div class="day-pills-bar" style="display: flex; gap: 4px; flex-wrap: wrap;">
+              </div>
+
+              <div class="day-pills-scroll-wrapper" style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+                <div class="day-pills-bar" style="display: flex; gap: 6px; flex-wrap: nowrap; width: max-content;">
                   <button type="button" class="day-pill-btn active" data-day="Senin" onclick="window.PORTAL_APP.selectDashboardDay('Senin', this)">Senin</button>
                   <button type="button" class="day-pill-btn" data-day="Selasa" onclick="window.PORTAL_APP.selectDashboardDay('Selasa', this)">Selasa</button>
                   <button type="button" class="day-pill-btn" data-day="Rabu" onclick="window.PORTAL_APP.selectDashboardDay('Rabu', this)">Rabu</button>
@@ -806,29 +809,32 @@
                 <input type="text" id="doc-teacher-search" placeholder="Cari nama guru, NIP, mapel...">
               </div>
 
-              <select id="doc-teacher-dept" class="form-input filter-select">
-                <option value="all">Semua Jurusan / Rumpun</option>
-                <option value="TJKT">TJKT</option>
-                <option value="DKV">DKV</option>
-                <option value="MPLB">MPLB</option>
-                <option value="AKL">AKL</option>
-                <option value="Pemasaran">Pemasaran</option>
-                <option value="BK">BK (Bimbingan Konseling)</option>
-                <option value="Umum">Umum</option>
-              </select>
+              <div class="doc-filter-selects-grid">
+                <select id="doc-teacher-dept" class="form-input filter-select">
+                  <option value="all">Semua Jurusan / Rumpun</option>
+                  <option value="TJKT">TJKT</option>
+                  <option value="DKV">DKV</option>
+                  <option value="MPLB">MPLB</option>
+                  <option value="AKL">AKL</option>
+                  <option value="Pemasaran">Pemasaran</option>
+                  <option value="BK">BK (Bimbingan Konseling)</option>
+                  <option value="Umum">Umum</option>
+                </select>
 
-              <select id="doc-teacher-status" class="form-input filter-select">
-                <option value="all">Semua Status</option>
-                <option value="complete">Lengkap (100%)</option>
-                <option value="incomplete">Ada Pending</option>
-              </select>
+                <select id="doc-teacher-status" class="form-input filter-select">
+                  <option value="all">Semua Status</option>
+                  <option value="complete">Lengkap (100%)</option>
+                  <option value="incomplete">Ada Pending</option>
+                </select>
+              </div>
             </div>
 
             <div class="filter-row-bottom">
               <!-- View mode toggle: Kartu (Bebas Geser) vs Tabel -->
               <div class="schedule-mode-tabs" id="doc-teacher-mode-tabs" style="margin: 0;">
                 <button type="button" class="schedule-mode-btn active" id="btn-doc-mode-card" onclick="window.PORTAL_APP.setTeacherDocViewMode('card')" title="Tampilan Kartu Responsif Bebas Geser">
-                  🗂️ Kartu Bebas Geser
+                  <span class="tab-label-full">🗂️ Kartu Bebas Geser</span>
+                  <span class="tab-label-mobile">🗂️ Kartu</span>
                 </button>
                 <button type="button" class="schedule-mode-btn" id="btn-doc-mode-table" onclick="window.PORTAL_APP.setTeacherDocViewMode('table')" title="Tampilan Tabel Ringkas">
                   📋 Tabel
@@ -962,7 +968,7 @@
               Susun dan pantau jadwal pelajaran per hari, kelas, mata pelajaran, guru pengampu, dan ruang belajar.
             </p>
           </div>
-          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <div class="sched-header-actions" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <!-- Mode Switcher: Timeline, Agenda, Table (Section 8) -->
             <div class="schedule-mode-tabs" id="schedule-mode-tabs">
               <button type="button" class="schedule-mode-btn active" data-mode="table" onclick="window.PORTAL_APP.setScheduleViewMode('table', this)">
@@ -976,17 +982,24 @@
               </button>
             </div>
 
-            <button class="btn btn-primary" onclick="window.PORTAL_APP.openScheduleModal()" style="display: flex; align-items: center; gap: 6px;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Tambah Jadwal
+            <button class="btn btn-primary sched-add-btn" onclick="window.PORTAL_APP.openScheduleModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Tambah Jadwal</span>
             </button>
           </div>
         </div>
 
         <!-- Filter Toolbar (Section 8: rombel, guru, mapel, ruang, hari, TA) -->
-        <div class="filter-card">
-          <div class="filter-group">
-            <select id="sched-day-filter" class="form-input" style="width: auto; min-width: 130px;">
+        <div class="filter-card sched-filter-card">
+          <div class="sched-filter-search-row">
+            <div class="sched-search-box">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="sched-search-input" placeholder="Cari mapel, guru, kelas, ruang...">
+            </div>
+          </div>
+
+          <div class="sched-filter-dropdowns-row">
+            <select id="sched-day-filter" class="form-input sched-filter-select">
               <option value="all">Semua Hari</option>
               <option value="Senin">Senin</option>
               <option value="Selasa">Selasa</option>
@@ -996,25 +1009,22 @@
               <option value="Sabtu">Sabtu</option>
             </select>
 
-            <select id="sched-class-filter" class="form-input" style="width: auto; min-width: 160px;">
-              <option value="all">Semua Kelas (45 Rombel)</option>
+            <select id="sched-class-filter" class="form-input sched-filter-select">
+              <option value="all">Semua Kelas (45)</option>
             </select>
 
-            <select id="sched-teacher-filter" class="form-input" style="width: auto; min-width: 180px;">
-              <option value="all">Semua Guru (90 GTK)</option>
+            <select id="sched-teacher-filter" class="form-input sched-filter-select">
+              <option value="all">Semua Guru (90)</option>
             </select>
 
-            <select id="sched-room-filter" class="form-input" style="width: auto; min-width: 140px;">
+            <select id="sched-room-filter" class="form-input sched-filter-select">
               <option value="all">Semua Ruang</option>
             </select>
-
-            <div style="display: flex; align-items: center; background: #F1F5F9; border-radius: 8px; padding: 0.5rem 0.875rem; flex: 1; min-width: 200px;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7A90" stroke-width="2" style="margin-right: 8px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="text" id="sched-search-input" placeholder="Cari mapel, guru, kelas..." style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.875rem; color: var(--text-primary);">
-            </div>
           </div>
 
-          <span class="badge badge-neutral" id="sched-total-badge" style="font-weight: 700;">20 Sesi</span>
+          <div class="sched-filter-footer">
+            <span class="badge badge-neutral" id="sched-total-badge" style="font-weight: 700; font-size: 0.775rem;">503 Sesi</span>
+          </div>
         </div>
 
         <!-- 1. MODE: TABLE VIEW -->
@@ -1897,19 +1907,21 @@
               Siklus Klinis Berjenjang: Kepala Sekolah → Waka &amp; Kajur → Guru Pengampu (Kurikulum Merdeka)
             </p>
           </div>
-          <div class="screen-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-            <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.exportSupervisiRecap()" title="Unduh Rekap Nilai Supervisi (CSV/Excel)" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 0.5rem 0.875rem; border-radius: 10px; background: #FFFFFF; border: 1.5px solid #E2E8F0; color: #334155; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>Unduh Rekap CSV</span>
-            </button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.switchSupervisiTab('program')" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; padding: 0.5rem 0.875rem; border-radius: 10px; background: #EFF6FF; border: 1.5px solid #BFDBFE; color: #1D4ED8; box-shadow: 0 1px 2px rgba(37,99,235,0.06);">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              <span>Program Supervisi (SK)</span>
-            </button>
-            <button type="button" class="btn btn-primary btn-sm" onclick="window.PORTAL_APP.openScheduleSupervisiModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; padding: 0.5rem 1rem; border-radius: 10px; background: linear-gradient(135deg, #4B22B8 0%, #3B1B94 100%); color: #FFFFFF; border: none; box-shadow: 0 4px 12px rgba(75, 34, 184, 0.25);">
+          <div class="screen-actions supervisi-screen-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary btn-sm sup-btn-primary" onclick="window.PORTAL_APP.openScheduleSupervisiModal()" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; padding: 0.55rem 1rem; border-radius: 10px; background: linear-gradient(135deg, #4B22B8 0%, #3B1B94 100%); color: #FFFFFF; border: none; box-shadow: 0 4px 12px rgba(75, 34, 184, 0.25);">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>Jadwalkan Sesi Supervisi</span>
             </button>
+            <div class="sup-secondary-actions-grid" style="display: flex; gap: 8px; align-items: center;">
+              <button type="button" class="btn btn-outline btn-sm sup-btn-secondary" onclick="window.PORTAL_APP.switchSupervisiTab('program')" title="Program Supervisi (SK)" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; padding: 0.5rem 0.875rem; border-radius: 10px; background: #EFF6FF; border: 1.5px solid #BFDBFE; color: #1D4ED8; box-shadow: 0 1px 2px rgba(37,99,235,0.06);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>Program SK</span>
+              </button>
+              <button type="button" class="btn btn-outline btn-sm sup-btn-secondary" onclick="window.PORTAL_APP.exportSupervisiRecap()" title="Unduh Rekap Nilai Supervisi (CSV/Excel)" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 600; padding: 0.5rem 0.875rem; border-radius: 10px; background: #FFFFFF; border: 1.5px solid #E2E8F0; color: #334155; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Unduh CSV</span>
+              </button>
+            </div>
           </div>
         </div>
 
