@@ -528,16 +528,102 @@
   }
 
   // =========================================================================
-  // 5. NAVIGATION CONTROLLER (5 MENUS)
+  // 5. NAVIGATION CONTROLLER & ROLE-BASED ACCESS CONTROL
   // =========================================================================
+
+  function getUserRoleInfo(session) {
+    if (!session) {
+      return {
+        isWakaKur: true,
+        isAdmin: false,
+        isKepsek: false,
+        isKaprog: false,
+        isWakaNonKur: false,
+        isKaprogOrWakaNonKur: false,
+        isGuruOnly: false,
+        accessLevel: 'full'
+      };
+    }
+
+    var name = (session.name || '').toLowerCase();
+    var title = (session.title || '').toLowerCase();
+    var role = (session.role || '').toLowerCase();
+    var category = (session.category || '').toLowerCase();
+
+    // Waka Kurikulum (hanya Rusnani atau role waka dengan bidang kurikulum)
+    var isWakaKur = name.includes('rusnani') || (role === 'waka' && (title.includes('kurikulum') || category.includes('kurikulum')));
+    var isAdmin = role === 'admin';
+    var isKepsek = role === 'kepsek' || ((title.includes('kepala smk') || title.includes('kepala sekolah')) && !title.includes('wakil') && !title.includes('waka') && !title.includes('wakasek'));
+
+    // Kaprog / Kajur (Ketua Jurusan / Kepala Program Keahlian)
+    var isKaprog = role === 'kajur' || 
+                   title.includes('kajur') || 
+                   title.includes('kaprog') || 
+                   title.includes('ketua jurusan') || 
+                   title.includes('kepala program') ||
+                   category.includes('ketua jurusan');
+
+    // Waka selain Waka Kurikulum (Waka Kesiswaan, Waka Humas, Waka Sarpras, dsb.)
+    var isWakaNonKur = !isWakaKur && (
+      role === 'waka' || 
+      title.includes('waka') || 
+      title.includes('wakasek') || 
+      title.includes('wakil kepala')
+    );
+
+    var isKaprogOrWakaNonKur = isKaprog || isWakaNonKur;
+    var isGuruOnly = !isWakaKur && !isAdmin && !isKepsek && !isKaprogOrWakaNonKur;
+
+    var accessLevel = session.accessLevel || 'full';
+    if (isWakaKur || isAdmin) accessLevel = 'full';
+    else if (isKepsek) accessLevel = 'kepsek';
+    else if (isKaprogOrWakaNonKur) accessLevel = 'supervisi-guru';
+    else accessLevel = 'guru-only';
+
+    return {
+      isWakaKur: isWakaKur,
+      isAdmin: isAdmin,
+      isKepsek: isKepsek,
+      isKaprog: isKaprog,
+      isWakaNonKur: isWakaNonKur,
+      isKaprogOrWakaNonKur: isKaprogOrWakaNonKur,
+      isGuruOnly: isGuruOnly,
+      accessLevel: accessLevel
+    };
+  }
+
+  function handleBrandClick() {
+    var session = null;
+    try {
+      var rawSession = localStorage.getItem('simkur_session');
+      if (rawSession) session = JSON.parse(rawSession);
+    } catch (e) {}
+    var roleInfo = getUserRoleInfo(session);
+    if (roleInfo.isKaprogOrWakaNonKur) {
+      switchScreen('supervisi');
+    } else if (roleInfo.isGuruOnly) {
+      switchScreen('portal-guru');
+    } else {
+      switchScreen('dashboard');
+    }
+  }
+
   function switchScreen(screenName) {
-    // Access guard: guru-only sessions cannot visit restricted screens
+    // Access guard: Kaprog dan Waka selain Waka Kur HANYA BISA MEMBUKA Supervisi dan Portal Guru
     try {
       var _sess = JSON.parse(localStorage.getItem('simkur_session') || 'null');
-      if (_sess && _sess.accessLevel === 'guru-only') {
-        var _restricted = ['dashboard', 'dokumen', 'jadwal', 'data-master'];
-        if (_restricted.indexOf(screenName) !== -1) {
-          screenName = 'portal-guru';
+      if (_sess) {
+        var roleInfo = getUserRoleInfo(_sess);
+        if (roleInfo.isKaprogOrWakaNonKur) {
+          var allowed = ['supervisi', 'portal-guru'];
+          if (allowed.indexOf(screenName) === -1) {
+            screenName = 'supervisi';
+          }
+        } else if (roleInfo.isGuruOnly) {
+          var _restricted = ['dashboard', 'dokumen', 'jadwal', 'data-master', 'supervisi'];
+          if (_restricted.indexOf(screenName) !== -1) {
+            screenName = 'portal-guru';
+          }
         }
       }
     } catch (e) { /* ignore */ }
@@ -5963,7 +6049,9 @@
       if (rawSession) session = JSON.parse(rawSession);
     } catch (err) { /* ignore corrupt session */ }
 
-    var isGuruOnly = session && session.accessLevel === 'guru-only';
+    var roleInfo = getUserRoleInfo(session);
+    var isGuruOnly = roleInfo.isGuruOnly;
+    var isKaprogOrWakaNonKur = roleInfo.isKaprogOrWakaNonKur;
 
     // Update topbar user chip from session
     if (session) {
@@ -5971,32 +6059,108 @@
       var chipRole = document.querySelector('.topbar-user-chip [style*="0.6875rem"]');
       var chipAvatar = document.querySelector('.topbar-user-chip img');
       if (chipName) chipName.textContent = session.name;
-      if (chipRole) chipRole.textContent = session.title || (session.role === 'waka' ? 'Waka Kurikulum' : 'Guru Pengampu');
+      if (chipRole) {
+        var roleTitle = session.title;
+        if (!roleTitle) {
+          if (roleInfo.isWakaKur) roleTitle = 'Waka Kurikulum';
+          else if (roleInfo.isKaprog) roleTitle = 'Kajur / Kaprog ' + (session.department || 'Kejuruan');
+          else if (roleInfo.isWakaNonKur) roleTitle = 'Pimpinan Waka';
+          else roleTitle = 'Guru Pengampu';
+        }
+        chipRole.textContent = roleTitle;
+      }
       if (chipAvatar && session.avatar) chipAvatar.src = session.avatar;
     }
 
-    // If guru-only: hide Dashboard, Dokumen, Jadwal, Data Master nav items
-    if (isGuruOnly) {
-      var restrictedScreens = ['dashboard', 'dokumen', 'jadwal', 'data-master'];
-      restrictedScreens.forEach(function (screen) {
-        var navLink = document.querySelector('.nav-item-link[data-screen="' + screen + '"]');
-        if (navLink) {
-          var li = navLink.closest('li');
-          if (li) li.style.display = 'none';
-        }
+    // ── ROLE ACCESS CONTROL (Kaprog & Waka Non-Kur: HANYA Supervisi & Portal Guru) ──
+    if (isKaprogOrWakaNonKur) {
+      // Sembunyikan Group 1 (Dashboard), Group 2 (Dokumen), Group 3 (Jadwal & Data Master)
+      ['nav-group-1', 'nav-list-1', 'nav-group-2', 'nav-list-2', 'nav-group-3', 'nav-list-3'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
       });
 
-      // Update sidebar nav section label
-      var navGroupTitle = document.querySelector('.nav-group-title');
-      if (navGroupTitle) navGroupTitle.textContent = 'Menu Guru';
+      // Tampilkan Group 4 (Supervisi Klinis & Portal Guru)
+      var g4Title = document.getElementById('nav-group-4');
+      if (g4Title) g4Title.textContent = roleInfo.isKaprog ? 'Menu Kaprog & KBM' : 'Menu Pimpinan Waka';
 
-      // Hide topbar search bar (not useful for guru-only)
+      var navSup = document.getElementById('nav-item-supervisi');
+      if (navSup) navSup.style.display = 'block';
+      var navGur = document.getElementById('nav-item-portal-guru');
+      if (navGur) navGur.style.display = 'block';
+
+      // Mobile Bottom Nav: Hanya Supervisi, Portal Guru & Menu
+      ['bottom-nav-dashboard', 'bottom-nav-dokumen', 'bottom-nav-jadwal'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      var bSup = document.getElementById('bottom-nav-supervisi');
+      if (bSup) bSup.style.display = 'flex';
+      var bGur = document.getElementById('bottom-nav-portal-guru');
+      if (bGur) bGur.style.display = 'flex';
+
+      // Modal mobile menu
+      var mMaster = document.getElementById('mobile-menu-data-master');
+      if (mMaster) mMaster.style.display = 'none';
+      var mSup = document.getElementById('mobile-menu-supervisi');
+      if (mSup) mSup.style.display = 'flex';
+
+      // Sembunyikan search bar topbar
       var searchPill = document.querySelector('.topbar-search-pill');
       if (searchPill) searchPill.style.display = 'none';
 
-      // Hide compliance badge to free up topbar space
+      // Pre-filter jurusan pada Subtab Sesi jika Kaprog
+      if (roleInfo.isKaprog && session.department) {
+        var d = session.department.toUpperCase();
+        if (d.includes('TJKT') || d.includes('TKJ')) State.supervisiDeptFilter = 'TJKT';
+        else if (d.includes('DKV') || d.includes('MM')) State.supervisiDeptFilter = 'DKV';
+        else if (d.includes('AKL') || d.includes('AKUNTANSI')) State.supervisiDeptFilter = 'AKL';
+        else if (d.includes('MPLB') || d.includes('OTKP')) State.supervisiDeptFilter = 'MPLB';
+        else if (d.includes('PM') || d.includes('PEMASARAN')) State.supervisiDeptFilter = 'Pemasaran';
+      }
+    } else if (isGuruOnly) {
+      // Guru Biasa: HANYA Portal Guru
+      ['nav-group-1', 'nav-list-1', 'nav-group-2', 'nav-list-2', 'nav-group-3', 'nav-list-3'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+
+      var g4TitleGuru = document.getElementById('nav-group-4');
+      if (g4TitleGuru) g4TitleGuru.textContent = 'Menu Guru';
+
+      var navSupGuru = document.getElementById('nav-item-supervisi');
+      if (navSupGuru) navSupGuru.style.display = 'none';
+      var navGurGuru = document.getElementById('nav-item-portal-guru');
+      if (navGurGuru) navGurGuru.style.display = 'block';
+
+      // Mobile Bottom Nav: Hanya Portal Guru & Menu
+      ['bottom-nav-dashboard', 'bottom-nav-dokumen', 'bottom-nav-jadwal', 'bottom-nav-supervisi'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      var bGurOnly = document.getElementById('bottom-nav-portal-guru');
+      if (bGurOnly) bGurOnly.style.display = 'flex';
+
+      var mMaster2 = document.getElementById('mobile-menu-data-master');
+      if (mMaster2) mMaster2.style.display = 'none';
+      var mSup2 = document.getElementById('mobile-menu-supervisi');
+      if (mSup2) mSup2.style.display = 'none';
+
+      var searchPillGuru = document.querySelector('.topbar-search-pill');
+      if (searchPillGuru) searchPillGuru.style.display = 'none';
+
       var complianceBadge = document.querySelector('.topbar-right .badge');
       if (complianceBadge) complianceBadge.style.display = 'none';
+    } else {
+      // Waka Kurikulum, Admin, Kepsek: FULL ACCESS
+      ['nav-group-1', 'nav-list-1', 'nav-group-2', 'nav-list-2', 'nav-group-3', 'nav-list-3', 'nav-group-4', 'nav-list-4'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = '';
+      });
+      var navSupFull = document.getElementById('nav-item-supervisi');
+      if (navSupFull) navSupFull.style.display = 'block';
+      var navGurFull = document.getElementById('nav-item-portal-guru');
+      if (navGurFull) navGurFull.style.display = 'block';
     }
 
     // Pre-select the logged-in teacher in Portal Guru
@@ -6048,10 +6212,16 @@
     // ── END ACCESS CONTROL ───────────────────────────────────────────────
 
     const params = new URLSearchParams(window.location.search);
-    var initialScreen = params.get('screen') || (isGuruOnly ? 'portal-guru' : 'dashboard');
+    var initialScreen = params.get('screen') || (isGuruOnly ? 'portal-guru' : (isKaprogOrWakaNonKur ? 'supervisi' : 'dashboard'));
 
     // Force guru-only users to portal-guru regardless of URL param
     if (isGuruOnly) initialScreen = 'portal-guru';
+    // Force Kaprog & Waka non-Kur to only supervisi or portal-guru
+    if (isKaprogOrWakaNonKur) {
+      if (initialScreen !== 'supervisi' && initialScreen !== 'portal-guru') {
+        initialScreen = 'supervisi';
+      }
+    }
 
     const initialDocTab = params.get('tab');
     if (initialDocTab) {
@@ -6225,6 +6395,7 @@
 
   // Expose global methods for inline HTML onclick handlers
   window.PORTAL_APP = {
+    handleBrandClick: handleBrandClick,
     openChangePasswordModal: openChangePasswordModal,
     saveChangePassword: saveChangePassword,
     togglePwdVisibility: togglePwdVisibility,

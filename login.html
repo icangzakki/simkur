@@ -1410,8 +1410,34 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<div class="spinner"></div><span>Memverifikasi Akses...</span>';
 
-      const isFullAccess = (currentUser.name === 'Rusnani' || currentUser.role === 'waka' || currentUser.role === 'kepsek' || currentUser.role === 'admin');
-      const targetScreen = isFullAccess ? (currentUser.targetScreen || 'dashboard') : 'portal-guru';
+      const uName = (currentUser.name || '').toLowerCase();
+      const uTitle = (currentUser.title || '').toLowerCase();
+      const uRole = (currentUser.role || 'guru').toLowerCase();
+      const uCat = (currentUser.category || '').toLowerCase();
+
+      const isWakaKur = uName.includes('rusnani') || (uRole === 'waka' && (uTitle.includes('kurikulum') || uCat.includes('kurikulum')));
+      const isAdmin = uRole === 'admin';
+      const isKepsek = uRole === 'kepsek' || ((uTitle.includes('kepala smk') || uTitle.includes('kepala sekolah')) && !uTitle.includes('wakil') && !uTitle.includes('waka') && !uTitle.includes('wakasek'));
+      const isKaprog = uRole === 'kajur' || uTitle.includes('kajur') || uTitle.includes('kaprog') || uTitle.includes('ketua jurusan') || uCat.includes('ketua jurusan');
+      const isWakaNonKur = (uRole === 'waka' || uTitle.includes('waka') || uTitle.includes('wakasek')) && !isWakaKur;
+
+      let accessLevel = 'guru-only';
+      let targetScreen = 'portal-guru';
+
+      if (isWakaKur || isAdmin) {
+        accessLevel = 'full';
+        targetScreen = 'dashboard';
+      } else if (isKepsek) {
+        accessLevel = 'kepsek';
+        targetScreen = 'supervisi';
+      } else if (isKaprog || isWakaNonKur) {
+        // Kaprog & Waka selain Waka Kur hanya membuka Supervisi dan Portal Guru
+        accessLevel = 'supervisi-guru';
+        targetScreen = 'supervisi';
+      } else {
+        accessLevel = 'guru-only';
+        targetScreen = 'portal-guru';
+      }
 
       const authSession = {
         role: currentUser.role || 'guru',
@@ -1421,7 +1447,7 @@
         department: currentUser.department || 'Kejuruan',
         subject: currentUser.subject || 'Produktif Kejuruan',
         avatar: currentUser.avatar || 'assets/teacher_avatar.jpg',
-        accessLevel: isFullAccess ? 'full' : 'guru-only',
+        accessLevel: accessLevel,
         loginAt: new Date().toISOString(),
         token: 'SIMKUR-JWT-' + Math.random().toString(36).substring(2, 10).toUpperCase()
       };
@@ -1442,7 +1468,34 @@
       showToast('🔗 Menghubungkan ke SSO Belajar.id...');
       setTimeout(() => {
         const user = currentUser || availableUsers[0];
-        const isFullAccess = (user.name === 'Rusnani' || user.role === 'waka' || user.role === 'kepsek' || user.role === 'admin');
+        const uName = (user.name || '').toLowerCase();
+        const uTitle = (user.title || '').toLowerCase();
+        const uRole = (user.role || 'guru').toLowerCase();
+        const uCat = (user.category || '').toLowerCase();
+
+        const isWakaKur = uName.includes('rusnani') || (uRole === 'waka' && (uTitle.includes('kurikulum') || uCat.includes('kurikulum')));
+        const isAdmin = uRole === 'admin';
+        const isKepsek = uRole === 'kepsek' || ((uTitle.includes('kepala smk') || uTitle.includes('kepala sekolah')) && !uTitle.includes('wakil') && !uTitle.includes('waka') && !uTitle.includes('wakasek'));
+        const isKaprog = uRole === 'kajur' || uTitle.includes('kajur') || uTitle.includes('kaprog') || uTitle.includes('ketua jurusan') || uCat.includes('ketua jurusan');
+        const isWakaNonKur = (uRole === 'waka' || uTitle.includes('waka') || uTitle.includes('wakasek')) && !isWakaKur;
+
+        let accessLevel = 'guru-only';
+        let targetScreen = 'portal-guru';
+
+        if (isWakaKur || isAdmin) {
+          accessLevel = 'full';
+          targetScreen = 'dashboard';
+        } else if (isKepsek) {
+          accessLevel = 'kepsek';
+          targetScreen = 'supervisi';
+        } else if (isKaprog || isWakaNonKur) {
+          accessLevel = 'supervisi-guru';
+          targetScreen = 'supervisi';
+        } else {
+          accessLevel = 'guru-only';
+          targetScreen = 'portal-guru';
+        }
+
         const authSession = {
           role: user.role || 'guru',
           name: user.name,
@@ -1450,13 +1503,12 @@
           nip: user.nip,
           department: user.department,
           avatar: user.avatar,
-          accessLevel: isFullAccess ? 'full' : 'guru-only',
+          accessLevel: accessLevel,
           loginAt: new Date().toISOString(),
           token: 'BELAJAR-ID-SSO-' + Math.random().toString(36).substring(2, 10).toUpperCase()
         };
         localStorage.setItem('simkur_session', JSON.stringify(authSession));
         localStorage.setItem('simkur_role', authSession.role);
-        const targetScreen = isFullAccess ? 'dashboard' : 'portal-guru';
         showToast(`✅ SSO Terverifikasi: ${user.name}`);
         setTimeout(() => {
           window.location.href = `index.html?role=${authSession.role}&screen=${targetScreen}`;

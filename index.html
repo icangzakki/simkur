@@ -266,7 +266,7 @@
   <!-- SIDEBAR NAVIGATION (Design Specification Section 6) -->
   <aside class="app-sidebar">
     <div class="sidebar-brand">
-      <a href="#dashboard" style="display: flex; align-items: center; text-decoration: none;">
+      <a href="javascript:void(0)" onclick="if(window.PORTAL_APP && window.PORTAL_APP.handleBrandClick){window.PORTAL_APP.handleBrandClick();}else{window.PORTAL_APP.switchScreen('dashboard');}" style="display: flex; align-items: center; text-decoration: none;">
         <img src="assets/logo-white.svg" alt="SIMKUR" class="sidebar-logo" style="height: 52px;">
       </a>
       <button class="btn-close-mobile-sidebar" id="btn-close-sidebar" aria-label="Tutup Menu">
@@ -277,8 +277,8 @@
     <div class="sidebar-menu-wrapper" style="padding-top: 1rem;">
       
       <!-- Group 1: Ringkasan -->
-      <div class="nav-group-title">1. Ringkasan</div>
-      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
+      <div class="nav-group-title" id="nav-group-1">1. Ringkasan</div>
+      <ul class="sidebar-nav-list" id="nav-list-1" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
         <li style="margin-bottom: 4px;">
           <a class="nav-item-link active" data-screen="dashboard" href="#dashboard">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -290,8 +290,8 @@
       </ul>
 
       <!-- Group 2: Administrasi Kurikulum -->
-      <div class="nav-group-title">2. Administrasi Kurikulum</div>
-      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
+      <div class="nav-group-title" id="nav-group-2">2. Administrasi Kurikulum</div>
+      <ul class="sidebar-nav-list" id="nav-list-2" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
         <li style="margin-bottom: 4px;">
           <a class="nav-item-link" data-screen="dokumen" href="#dokumen">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -303,8 +303,8 @@
       </ul>
 
       <!-- Group 3: Operasional Sekolah -->
-      <div class="nav-group-title">3. Operasional Sekolah</div>
-      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
+      <div class="nav-group-title" id="nav-group-3">3. Operasional Sekolah</div>
+      <ul class="sidebar-nav-list" id="nav-list-3" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
         <li style="margin-bottom: 4px;">
           <a class="nav-item-link" data-screen="jadwal" href="#jadwal">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -324,8 +324,8 @@
       </ul>
 
       <!-- Group 4: Pembelajaran & Supervisi -->
-      <div class="nav-group-title">4. Pembelajaran & Supervisi</div>
-      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
+      <div class="nav-group-title" id="nav-group-4">4. Pembelajaran & Supervisi</div>
+      <ul class="sidebar-nav-list" id="nav-list-4" style="list-style: none; padding: 0 0.75rem; margin: 0 0 1rem 0;">
         <li style="margin-bottom: 4px;" id="nav-item-supervisi">
           <a class="nav-item-link" data-screen="supervisi" href="#supervisi">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -350,8 +350,8 @@
       </ul>
 
       <!-- Group 5: Pengaturan -->
-      <div class="nav-group-title">5. Pengaturan</div>
-      <ul class="sidebar-nav-list" style="list-style: none; padding: 0 0.75rem; margin: 0;">
+      <div class="nav-group-title" id="nav-group-5">5. Pengaturan</div>
+      <ul class="sidebar-nav-list" id="nav-list-5" style="list-style: none; padding: 0 0.75rem; margin: 0;">
         <li style="margin-bottom: 4px;">
           <a class="nav-item-link" href="javascript:void(0)" onclick="window.PORTAL_APP.openChangePasswordModal()">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3323,18 +3323,25 @@
       <button type="button" class="btn btn-ghost btn-sm" onclick="window.PORTAL_APP.closeModal('modal-mobile-menu')">✕</button>
     </div>
     <div style="padding: 0.75rem; display: flex; flex-direction: column; gap: 6px;">
-      <a href="#data-master" class="quick-action-item" onclick="window.PORTAL_APP.switchScreen('data-master'); window.PORTAL_APP.closeModal('modal-mobile-menu');">
-        <div class="quick-action-icon">🏛️</div>
+      <a href="#supervisi" class="quick-action-item" id="mobile-menu-supervisi" onclick="window.PORTAL_APP.switchScreen('supervisi'); window.PORTAL_APP.closeModal('modal-mobile-menu');">
+        <div class="quick-action-icon">🔍</div>
         <div>
-          <div class="quick-action-title">Data Master</div>
-          <div class="quick-action-sub">Guru, Kelas, Mapel, Ruang</div>
+          <div class="quick-action-title">Supervisi Klinis</div>
+          <div class="quick-action-sub">Siklus Klinis & Manajerial</div>
         </div>
       </a>
-      <a href="#portal-guru" class="quick-action-item" onclick="window.PORTAL_APP.switchScreen('portal-guru'); window.PORTAL_APP.closeModal('modal-mobile-menu');">
+      <a href="#portal-guru" class="quick-action-item" id="mobile-menu-portal-guru" onclick="window.PORTAL_APP.switchScreen('portal-guru'); window.PORTAL_APP.closeModal('modal-mobile-menu');">
         <div class="quick-action-icon">🎓</div>
         <div>
           <div class="quick-action-title">Portal Guru KBM</div>
           <div class="quick-action-sub">Jurnal, Presensi & Berkas</div>
+        </div>
+      </a>
+      <a href="#data-master" class="quick-action-item" id="mobile-menu-data-master" onclick="window.PORTAL_APP.switchScreen('data-master'); window.PORTAL_APP.closeModal('modal-mobile-menu');">
+        <div class="quick-action-icon">🏛️</div>
+        <div>
+          <div class="quick-action-title">Data Master</div>
+          <div class="quick-action-sub">Guru, Kelas, Mapel, Ruang</div>
         </div>
       </a>
       <a href="javascript:void(0)" class="quick-action-item" onclick="window.PORTAL_APP.openChangePasswordModal(); window.PORTAL_APP.closeModal('modal-mobile-menu');">
@@ -3359,15 +3366,23 @@
 <!-- MOBILE BOTTOM NAVIGATION (Design Specification Section 6) -->
 <!-- =================================================================== -->
 <nav class="mobile-bottom-nav" aria-label="Navigasi Utama Mobile">
-  <button type="button" class="bottom-nav-item active" data-screen="dashboard" onclick="window.PORTAL_APP.switchScreen('dashboard')">
+  <button type="button" class="bottom-nav-item active" id="bottom-nav-dashboard" data-screen="dashboard" onclick="window.PORTAL_APP.switchScreen('dashboard')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
     <span>Dashboard</span>
   </button>
-  <button type="button" class="bottom-nav-item" data-screen="dokumen" onclick="window.PORTAL_APP.switchScreen('dokumen')">
+  <button type="button" class="bottom-nav-item" id="bottom-nav-dokumen" data-screen="dokumen" onclick="window.PORTAL_APP.switchScreen('dokumen')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
     <span>Dokumen</span>
   </button>
-  <button type="button" class="bottom-nav-item" data-screen="jadwal" onclick="window.PORTAL_APP.switchScreen('jadwal')">
+  <button type="button" class="bottom-nav-item" id="bottom-nav-supervisi" data-screen="supervisi" onclick="window.PORTAL_APP.switchScreen('supervisi')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    <span>Supervisi</span>
+  </button>
+  <button type="button" class="bottom-nav-item" id="bottom-nav-portal-guru" data-screen="portal-guru" onclick="window.PORTAL_APP.switchScreen('portal-guru')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    <span>Portal Guru</span>
+  </button>
+  <button type="button" class="bottom-nav-item" id="bottom-nav-jadwal" data-screen="jadwal" onclick="window.PORTAL_APP.switchScreen('jadwal')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     <span>Jadwal</span>
   </button>
