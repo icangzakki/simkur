@@ -389,10 +389,10 @@
           <span>TA 2026/2027</span>
         </div>
 
-        <!-- Sync Status Badge (Section 5) -->
-        <div class="sync-status-badge" title="Status Sinkronisasi Sistem">
-          <span class="pulse-dot"></span>
-          <span>Tersinkron</span>
+        <!-- Sync Status Badge (Section 5 & Firebase Cloud) -->
+        <div class="sync-status-badge" id="firebase-sync-status-badge" onclick="window.PORTAL_APP.openFirebaseModal()" title="Status Database Firebase Cloud (Klik untuk info & sinkronisasi)">
+          <span class="pulse-dot" id="firebase-pulse-dot"></span>
+          <span id="firebase-status-text">Cloud Firebase</span>
         </div>
 
         <!-- Notification Bell (Section 5) -->
@@ -2235,6 +2235,77 @@
 </div>
 
 <!-- =================================================================== -->
+<!-- MODAL: FIREBASE CLOUD DATABASE STATUS & SINKRONISASI -->
+<!-- =================================================================== -->
+<div class="modal-overlay" id="modal-firebase-sync">
+  <div class="modal-dialog" style="max-width: 580px; border-radius: var(--radius-xl); overflow: hidden;">
+    <div class="modal-header" style="background: linear-gradient(135deg, #123B66 0%, #1A4D80 100%); color: #ffffff; padding: 1.25rem 1.5rem;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 1.4rem;">🔥</span>
+        <div>
+          <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #ffffff;">Database Firebase Cloud</h3>
+          <p style="margin: 0; font-size: 0.75rem; color: #E0EBF7;">Integrasi Google Cloud Firestore & Sinkronisasi Multi-Device</p>
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" style="color: #ffffff; font-size: 1.1rem;" onclick="window.PORTAL_APP.closeModal('modal-firebase-sync')">✕</button>
+    </div>
+
+    <div class="modal-body" style="padding: 1.5rem; max-height: calc(90vh - 140px); overflow-y: auto;">
+      <!-- Status Box -->
+      <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.15rem; margin-bottom: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span style="font-size: 0.775rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Status Koneksi</span>
+          <div id="fb-modal-status-text">
+            <span style="color: var(--color-warning); font-weight: 700;">● Memeriksa...</span>
+          </div>
+        </div>
+        <div style="font-size: 0.8125rem; color: var(--text-primary); line-height: 1.45;" id="fb-modal-details">
+          Project ID: <strong>simkur</strong> • Domain: <strong>simkur.firebaseapp.com</strong>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
+        <div style="display: flex; gap: 10px;">
+          <button type="button" class="btn btn-outline" style="flex: 1;" onclick="window.PORTAL_APP.checkFirebaseConnection()">
+            🔄 Tes Koneksi Ulang
+          </button>
+          <button type="button" class="btn btn-primary" id="btn-fb-seed" style="flex: 1.4;" onclick="window.PORTAL_APP.seedFirebaseData()">
+            ☁️ Unggah Data ke Firebase
+          </button>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" style="color: var(--simkur-blue); font-weight: 700;" onclick="window.PORTAL_APP.syncFromFirebase()">
+          ⬇️ Tarik & Perbarui Data dari Cloud Firestore
+        </button>
+      </div>
+
+      <!-- Progress Indicator -->
+      <div id="fb-sync-progress" style="display: none; background: var(--soft-blue); border: 1px solid var(--soft-blue-border); color: var(--simkur-navy); font-size: 0.8rem; font-weight: 600; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem;"></div>
+
+      <!-- Setup Instructions Alert -->
+      <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-md); padding: 1rem; font-size: 0.775rem; color: #92400E; line-height: 1.5;">
+        <div style="font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+          <span>ℹ️</span> Panduan Aktivasi Cloud Firestore (Jika Belum Dibuat):
+        </div>
+        <ol style="margin-left: 1.2rem; margin-top: 4px;">
+          <li>Buka <a href="https://console.firebase.google.com/project/simkur/firestore" target="_blank" style="color: #B45309; font-weight: 700; text-decoration: underline;">Firebase Console: Firestore Database</a>.</li>
+          <li>Klik tombol <strong>"Create Database"</strong> (Pilih lokasi: <em>asia-southeast1</em> atau terdekat).</li>
+          <li>Pada tab <strong>Rules</strong>, gunakan aturan uji coba:
+            <code style="background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 4px; display: block; margin: 4px 0; font-family: monospace; font-size: 0.75rem;">allow read, write: if true;</code>
+          </li>
+          <li>Setelah database dibuat di Firebase Console, klik tombol <strong>"Unggah Data ke Firebase"</strong> di atas.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="modal-footer" style="padding: 0.875rem 1.5rem; background: #F8FAFC; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border);">
+      <span style="font-size: 0.725rem; color: var(--text-secondary);">Firebase SDK v10.13.0 (Cloud Firestore)</span>
+      <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.closeModal('modal-firebase-sync')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- =================================================================== -->
 <!-- MODAL: MOBILE MENU SHEET (Section 6: Secondary menu on mobile) -->
 <!-- =================================================================== -->
 <div class="modal-overlay" id="modal-mobile-menu">
@@ -2310,6 +2381,7 @@
 <script src="js/data.js?v=8.4.0"></script>
 <script src="js/auth_users.js?v=8.4.0"></script>
 <script src="js/app.js?v=8.4.0"></script>
+<script type="module" src="js/firebase-service.js?v=8.4.0"></script>
 
 </body>
 </html>

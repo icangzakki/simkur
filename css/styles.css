@@ -2389,7 +2389,8 @@ a:hover {
    MODAL & SLIDE-OVER DRAWER (Review & Blast WAHA)
    ========================================================================== */
 
-.modal-backdrop {
+.modal-backdrop,
+.modal-overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(15, 23, 42, 0.6);
@@ -2402,7 +2403,8 @@ a:hover {
   box-sizing: border-box;
 }
 
-.modal-backdrop.active {
+.modal-backdrop.active,
+.modal-overlay.active {
   display: flex !important;
 }
 
@@ -3648,6 +3650,38 @@ td.table-empty-cell {
   border-radius: var(--radius-pill);
   font-size: 0.725rem;
   font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+  user-select: none;
+}
+
+.sync-status-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.sync-status-badge.sync-status-connected {
+  background: var(--color-success-bg);
+  border-color: var(--color-success-border);
+  color: var(--color-success-text);
+}
+
+.sync-status-badge.sync-status-connecting {
+  background: #FEF3C7;
+  border-color: #FCD34D;
+  color: #B45309;
+}
+
+.sync-status-badge.sync-status-offline {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #475569;
+}
+
+.sync-status-badge.sync-status-local {
+  background: #FFFBEB;
+  border-color: #FDE68A;
+  color: #D97706;
 }
 
 .pulse-dot {
@@ -3659,10 +3693,40 @@ td.table-empty-cell {
   animation: pulse-ring 2s infinite;
 }
 
+.pulse-dot.pulse-dot-active {
+  background: var(--color-success) !important;
+  box-shadow: 0 0 0 0 rgba(31, 157, 104, 0.7);
+  animation: pulse-ring 2s infinite !important;
+}
+
+.pulse-dot.pulse-dot-connecting {
+  background: #F59E0B !important;
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+  animation: pulse-ring-warning 1.2s infinite !important;
+}
+
+.pulse-dot.pulse-dot-warning {
+  background: #F59E0B !important;
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+  animation: none !important;
+}
+
+.pulse-dot.pulse-dot-offline {
+  background: #94A3B8 !important;
+  box-shadow: none !important;
+  animation: none !important;
+}
+
 @keyframes pulse-ring {
   0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(31, 157, 104, 0.7); }
   70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(31, 157, 104, 0); }
   100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(31, 157, 104, 0); }
+}
+
+@keyframes pulse-ring-warning {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
 }
 
 /* 3. Quick Actions Grid (Section 5) */

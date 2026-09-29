@@ -232,6 +232,9 @@
       const items = this.get(key);
       items.unshift(item);
       this.set(key, items);
+      if (window.FirebaseService && typeof window.FirebaseService.saveDoc === 'function') {
+        window.FirebaseService.saveDoc(key, item.id || item.teacher_id, item);
+      }
       return items;
     },
 
@@ -243,6 +246,9 @@
       if (index !== -1) {
         items[index] = Object.assign({}, items[index], updatedFields);
         this.set(key, items);
+        if (window.FirebaseService && typeof window.FirebaseService.saveDoc === 'function') {
+          window.FirebaseService.saveDoc(key, id, items[index]);
+        }
       }
       return items;
     },
@@ -253,9 +259,15 @@
         return String(i.id || i.teacher_id) !== String(id);
       });
       this.set(key, items);
+      if (window.FirebaseService && typeof window.FirebaseService.deleteDoc === 'function') {
+        window.FirebaseService.deleteDoc(key, id);
+      }
       return items;
     }
   };
+
+  // Expose StorageManager for Firebase integration
+  window.PORTAL_STORAGE = StorageManager;
 
   // =========================================================================
   // 2. STATE & CONFIGURATION
@@ -3544,8 +3556,151 @@
     getClassesForTeacher: getClassesForTeacher,
     stepHadirCount: stepHadirCount,
     syncJurnalAttendanceBadge: syncJurnalAttendanceBadge,
-    insertQuickText: insertQuickText
+    insertQuickText: insertQuickText,
+    // Firebase Cloud Methods
+    openFirebaseModal: function () {
+      openModal('modal-firebase-sync');
+      const fb = window.FirebaseService;
+      if (fb) {
+        updateFirebaseUIStatus({
+          status: fb.status,
+          errorMessage: fb.errorMessage,
+          lastSync: fb.lastSyncTime,
+          projectId: 'simkur'
+        });
+      }
+    },
+    checkFirebaseConnection: async function () {
+      const fb = window.FirebaseService;
+      if (!fb) return;
+      showToast('Memeriksa koneksi Firebase Cloud...', 'info');
+      await fb.verifyConnection();
+      if (fb.status === 'CONNECTED') {
+        showToast('✅ Berhasil terhubung ke Firebase Firestore!', 'success');
+      } else {
+        showToast('⚠️ ' + (fb.errorMessage || 'Belum terhubung ke Firestore.'), 'warning');
+      }
+    },
+    seedFirebaseData: async function () {
+      const fb = window.FirebaseService;
+      if (!fb) return;
+      const btn = document.getElementById('btn-fb-seed');
+      const progressEl = document.getElementById('fb-sync-progress');
+      if (btn) btn.disabled = true;
+      if (progressEl) {
+        progressEl.style.display = 'block';
+        progressEl.textContent = 'Memulai migrasi data ke Firebase...';
+      }
+
+      try {
+        showToast('Mengunggah data master, jadwal & dokumen ke Firebase...', 'info');
+        await fb.seedAllToFirestore(function (p) {
+          if (progressEl) {
+            progressEl.textContent = 'Mengunggah ' + p.currentKey + ' (' + p.processed + '/' + p.total + ' item - ' + p.percent + '%)...';
+          }
+        });
+        if (progressEl) {
+          progressEl.textContent = '✅ Berhasil! Seluruh data tersimpan di Firebase Firestore.';
+        }
+        showToast('🎉 Seluruh data SIMKUR berhasil diunggah ke Firebase Cloud!', 'success');
+      } catch (err) {
+        if (progressEl) {
+          progressEl.textContent = '❌ Gagal: ' + err.message;
+        }
+        showToast('Gagal migrasi: ' + err.message, 'error');
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    },
+    syncFromFirebase: async function () {
+      const fb = window.FirebaseService;
+      if (!fb) return;
+      const progressEl = document.getElementById('fb-sync-progress');
+      if (progressEl) {
+        progressEl.style.display = 'block';
+        progressEl.textContent = 'Mengunduh data dari Firebase Cloud...';
+      }
+      try {
+        const res = await fb.syncFromFirestore(function (p) {
+          if (progressEl) {
+            progressEl.textContent = 'Sinkronisasi ' + p.currentKey + '...';
+          }
+        });
+        if (progressEl) {
+          progressEl.textContent = '✅ Berhasil menyinkronkan ' + res.count + ' dokumen dari cloud.';
+        }
+        refreshActiveScreen();
+        showToast('✅ Sinkronisasi dari Firebase selesai!', 'success');
+      } catch (err) {
+        if (progressEl) {
+          progressEl.textContent = '❌ Gagal: ' + err.message;
+        }
+        showToast('Gagal sinkronisasi: ' + err.message, 'error');
+      }
+    },
+    refreshActiveScreen: refreshActiveScreen
   };
+
+  function refreshActiveScreen() {
+    if (State.currentScreen === 'dashboard') renderDashboard();
+    else if (State.currentScreen === 'dokumen') renderDocuments();
+    else if (State.currentScreen === 'jadwal') renderSchedules();
+    else if (State.currentScreen === 'data-master') renderDataMaster();
+    else if (State.currentScreen === 'portal-guru') renderPortalGuru();
+  }
+
+  function updateFirebaseUIStatus(detail) {
+    const badge = document.getElementById('firebase-sync-status-badge');
+    const textEl = document.getElementById('firebase-status-text');
+    const dot = document.getElementById('firebase-pulse-dot');
+    const modalStatus = document.getElementById('fb-modal-status-text');
+    const modalDetails = document.getElementById('fb-modal-details');
+
+    if (!badge || !textEl || !dot) return;
+
+    if (detail.status === 'CONNECTED') {
+      badge.className = 'sync-status-badge sync-status-connected';
+      textEl.textContent = 'Cloud Firebase';
+      dot.className = 'pulse-dot pulse-dot-active';
+      if (modalStatus) {
+        modalStatus.innerHTML = '<span style="color: var(--color-success); font-weight: 700;">● Terhubung ke Cloud Firestore</span>';
+      }
+      if (modalDetails) {
+        modalDetails.textContent = 'Data tersinkron otomatis ke Google Firebase Cloud (Project: ' + detail.projectId + ').';
+      }
+    } else if (detail.status === 'CONNECTING') {
+      badge.className = 'sync-status-badge sync-status-connecting';
+      textEl.textContent = 'Menghubungkan...';
+      dot.className = 'pulse-dot pulse-dot-connecting';
+      if (modalStatus) {
+        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">● Menghubungkan ke Firebase...</span>';
+      }
+    } else if (detail.status === 'OFFLINE') {
+      badge.className = 'sync-status-badge sync-status-offline';
+      textEl.textContent = 'Mode Offline';
+      dot.className = 'pulse-dot pulse-dot-offline';
+      if (modalStatus) {
+        modalStatus.innerHTML = '<span style="color: #64748B; font-weight: 700;">● Offline (Cache Lokal)</span>';
+      }
+      if (modalDetails) {
+        modalDetails.textContent = detail.errorMessage || 'Koneksi internet tidak tersedia. Sistem menggunakan penyimpanan lokal.';
+      }
+    } else {
+      badge.className = 'sync-status-badge sync-status-local';
+      textEl.textContent = 'Lokal Fallback';
+      dot.className = 'pulse-dot pulse-dot-warning';
+      if (modalStatus) {
+        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">● Mode Lokal (Firestore Belum Aktif)</span>';
+      }
+      if (modalDetails) {
+        modalDetails.textContent = detail.errorMessage || 'Firestore API belum diaktifkan di Firebase Console. Gunakan panduan di bawah.';
+      }
+    }
+  }
+
+  window.addEventListener('simkur-firebase-status', function (e) {
+    if (e.detail) updateFirebaseUIStatus(e.detail);
+  });
 
   // Backwards compatibility alias
   window.SIMKUR_APP = window.PORTAL_APP;
