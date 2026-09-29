@@ -3848,35 +3848,77 @@
     });
 
     if (teacherJournals.length === 0) {
-      listEl.innerHTML = '<div style="text-align: center; padding: 2rem; color: #777777;">Belum ada riwayat jurnal yang diisi. Silakan isi formulir di atas.</div>';
+      listEl.innerHTML = '<div class="journal-empty-state">' +
+        '<div style="font-size: 2rem; margin-bottom: 6px;">📝</div>' +
+        '<strong style="color: #1E293B; font-size: 0.95rem;">Belum Ada Riwayat Jurnal</strong>' +
+        '<p style="color: #64748B; font-size: 0.8125rem; margin: 4px 0 0 0;">Isi formulir jurnal di atas untuk mencatat pelaksanaan tatap muka KBM Anda.</p>' +
+        '</div>';
       return;
     }
 
     let html = '';
     teacherJournals.forEach(function (j) {
       const methodsHtml = (j.methods || []).map(function (m) {
-        return '<span class="badge" style="background: rgba(75, 34, 184, 0.08); color: #4B22B8; font-size: 0.72rem; padding: 2px 8px; border-radius: 999px;">' + m + '</span>';
+        return '<span class="journal-method-tag">' + escapeHtml(m) + '</span>';
       }).join(' ');
 
-      html += '<div style="background: #ffffff; border: 1px solid #ECECF2; border-radius: 12px; padding: 1.125rem; margin-bottom: 0.875rem; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">' +
-        '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 6px;">' +
-          '<div style="display: flex; align-items: center; gap: 8px;">' +
-            '<span class="badge" style="background: #EDE8F5; color: #4B22B8; font-weight: 700; font-size: 0.75rem;">' + escapeHtml(j.date || 'Hari Ini') + '</span>' +
-            '<span style="font-weight: 700; color: #262626; font-size: 0.9375rem;">' + escapeHtml(j.class_name) + '</span>' +
-            (j.subject_name ? '<span class="badge" style="background: rgba(14, 165, 233, 0.12); color: #0369A1; font-weight: 700; font-size: 0.75rem; border: 1px solid rgba(14, 165, 233, 0.2);">' + escapeHtml(j.subject_name) + '</span>' : '') +
-            '<span style="color: #777777; font-size: 0.8125rem;">• ' + escapeHtml(j.time || 'Jam 1-4') + '</span>' +
+      // Format tanggal menjadi format Indonesia yang ramah (misal: 22 Sep 2026)
+      let displayDate = j.date || 'Hari Ini';
+      try {
+        if (displayDate.includes('-')) {
+          const parts = displayDate.split('-');
+          if (parts.length === 3) {
+            const months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            displayDate = parseInt(parts[2], 10) + ' ' + (months[parseInt(parts[1], 10)] || parts[1]) + ' ' + parts[0];
+          }
+        }
+      } catch (e) {}
+
+      html += '<div class="guru-journal-card">' +
+        '<!-- Header Bar: Tanggal, Waktu, & Status Verifikasi -->' +
+        '<div class="journal-card-top-bar">' +
+          '<div class="journal-date-time-group">' +
+            '<span class="journal-date-badge">' +
+              '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' +
+              escapeHtml(displayDate) +
+            '</span>' +
+            '<span class="journal-time-pill">' +
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+              escapeHtml(j.time || 'Jam 1-4') +
+            '</span>' +
           '</div>' +
-          '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; font-size: 0.75rem;">✓ ' + escapeHtml(j.status || 'Terverifikasi Waka Kur') + '</span>' +
+          '<span class="journal-status-badge">' +
+            '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' +
+            escapeHtml(j.status || 'Terverifikasi Waka Kur') +
+          '</span>' +
         '</div>' +
-        '<div style="font-size: 0.875rem; color: #374151; font-weight: 600; margin-bottom: 6px;">' + escapeHtml(j.topic) + '</div>' +
-        (j.notes ? '<div style="font-size: 0.8125rem; color: #6B7280; margin-bottom: 8px; font-style: italic;">Catatan: ' + escapeHtml(j.notes) + '</div>' : '') +
-        '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-top: 1px solid #F3F4F6; padding-top: 8px; margin-top: 8px;">' +
-          '<div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">' +
+
+        '<!-- Identitas: Kelas & Mata Pelajaran -->' +
+        '<div class="journal-target-row">' +
+          '<span class="journal-class-badge">' + escapeHtml(j.class_name) + '</span>' +
+          (j.subject_name ? '<span class="journal-subject-badge">' + escapeHtml(j.subject_name) + '</span>' : '') +
+        '</div>' +
+
+        '<!-- Materi & Capaian Pembelajaran -->' +
+        '<div class="journal-topic-box">' +
+          '<div class="journal-topic-label">Materi / Capaian Pembelajaran (CP):</div>' +
+          '<div class="journal-topic-text">' + escapeHtml(j.topic) + '</div>' +
+        '</div>' +
+
+        '<!-- Catatan Perkembangan Siswa (Jika Ada) -->' +
+        (j.notes ? '<div class="journal-notes-box">' +
+          '<span class="journal-notes-icon">💬</span>' +
+          '<div class="journal-notes-content"><strong>Catatan Guru:</strong> ' + escapeHtml(j.notes) + '</div>' +
+        '</div>' : '') +
+
+        '<!-- Footer: Metode Pembelajaran & Presensi -->' +
+        '<div class="journal-card-footer">' +
+          '<div class="journal-methods-wrap">' +
             methodsHtml +
           '</div>' +
-          '<div style="display: flex; align-items: center; gap: 10px; font-size: 0.8125rem; color: #4B5563;">' +
-            '<span>👥 Presensi: <strong>' + (j.hadir_count || 34) + ' / ' + (j.total_students || 36) + ' Hadir</strong></span>' +
-            (j.photo ? '<span class="badge" style="background: #E0F2FE; color: #0369A1; font-size: 0.72rem;">📸 Foto KBM Ada</span>' : '') +
+          '<div class="journal-footer-stats">' +
+            '<span class="journal-stat-pill">👥 Presensi: <strong>' + (j.hadir_count || 34) + ' / ' + (j.total_students || 36) + ' Hadir</strong></span>' +
+            (j.photo ? '<span class="journal-photo-pill">📸 Foto KBM Ada</span>' : '') +
           '</div>' +
         '</div>' +
       '</div>';
