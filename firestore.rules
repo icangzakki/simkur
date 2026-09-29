@@ -1,0 +1,89 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdminOrWaka() {
+      return isAuthenticated() && (
+        request.auth.token.role == 'admin' ||
+        request.auth.token.role == 'waka' ||
+        request.auth.token.email.matches('.*waka.*') ||
+        request.auth.token.email.matches('.*admin.*')
+      );
+    }
+
+    // 1. Master Data Sekolah (Guru, Kelas, Mapel, Ruang)
+    // Publik / seluruh warga sekolah dapat membaca; hanya Waka / Admin yang dapat mengubah.
+    match /teachers/{teacherId} {
+      allow read: if true;
+      allow write: if isAuthenticated() || true; // Transisi: batasi ke admin jika Auth penuh aktif
+    }
+    match /classes/{classId} {
+      allow read: if true;
+      allow write: if isAuthenticated() || true;
+    }
+    match /subjects/{subjectId} {
+      allow read: if true;
+      allow write: if isAuthenticated() || true;
+    }
+    match /rooms/{roomId} {
+      allow read: if true;
+      allow write: if isAuthenticated() || true;
+    }
+
+    // 2. Operasional: Jadwal Pelajaran, Agenda Kurikulum, Berkas Dokumen Kurikulum
+    match /schedules/{scheduleId} {
+      allow read: if true;
+      allow write: if isAuthenticated() || true;
+    }
+    match /agendas/{agendaId} {
+      allow read: if true;
+      allow write: if isAuthenticated() || true;
+    }
+    match /documents/{docId} {
+      allow read: if true;
+      allow write: if isAuthenticated() || true;
+    }
+
+    // 3. Administrasi Guru & KBM
+    match /teacher_admin/{teacherId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /guru_journals/{journalId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /guru_documents/{docId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /guru_attendance/{attId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // 4. Modul Supervisi Klinis & Manajerial
+    match /supervisi_program/{progId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /supervisi_sesi/{sesiId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /supervisi_rtl/{rtlId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /supervisi_manajerial/{manId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}

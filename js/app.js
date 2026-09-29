@@ -517,6 +517,19 @@
   };
 
   // =========================================================================
+  // 2.1 SECURITY & SANITIZATION HELPER (XSS PREVENTION)
+  // =========================================================================
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // =========================================================================
   // 3. TOAST & NOTIFICATION HELPER
   // =========================================================================
   function showToast(message, type) {
@@ -3841,15 +3854,15 @@
       html += '<div style="background: #ffffff; border: 1px solid #ECECF2; border-radius: 12px; padding: 1.125rem; margin-bottom: 0.875rem; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">' +
         '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 6px;">' +
           '<div style="display: flex; align-items: center; gap: 8px;">' +
-            '<span class="badge" style="background: #EDE8F5; color: #4B22B8; font-weight: 700; font-size: 0.75rem;">' + (j.date || 'Hari Ini') + '</span>' +
-            '<span style="font-weight: 700; color: #262626; font-size: 0.9375rem;">' + j.class_name + '</span>' +
-            (j.subject_name ? '<span class="badge" style="background: rgba(14, 165, 233, 0.12); color: #0369A1; font-weight: 700; font-size: 0.75rem; border: 1px solid rgba(14, 165, 233, 0.2);">' + j.subject_name + '</span>' : '') +
-            '<span style="color: #777777; font-size: 0.8125rem;">• ' + (j.time || 'Jam 1-4') + '</span>' +
+            '<span class="badge" style="background: #EDE8F5; color: #4B22B8; font-weight: 700; font-size: 0.75rem;">' + escapeHtml(j.date || 'Hari Ini') + '</span>' +
+            '<span style="font-weight: 700; color: #262626; font-size: 0.9375rem;">' + escapeHtml(j.class_name) + '</span>' +
+            (j.subject_name ? '<span class="badge" style="background: rgba(14, 165, 233, 0.12); color: #0369A1; font-weight: 700; font-size: 0.75rem; border: 1px solid rgba(14, 165, 233, 0.2);">' + escapeHtml(j.subject_name) + '</span>' : '') +
+            '<span style="color: #777777; font-size: 0.8125rem;">• ' + escapeHtml(j.time || 'Jam 1-4') + '</span>' +
           '</div>' +
-          '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; font-size: 0.75rem;">✓ ' + (j.status || 'Terverifikasi Waka Kur') + '</span>' +
+          '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; font-size: 0.75rem;">✓ ' + escapeHtml(j.status || 'Terverifikasi Waka Kur') + '</span>' +
         '</div>' +
-        '<div style="font-size: 0.875rem; color: #374151; font-weight: 600; margin-bottom: 6px;">' + j.topic + '</div>' +
-        (j.notes ? '<div style="font-size: 0.8125rem; color: #6B7280; margin-bottom: 8px; font-style: italic;">Catatan: ' + j.notes + '</div>' : '') +
+        '<div style="font-size: 0.875rem; color: #374151; font-weight: 600; margin-bottom: 6px;">' + escapeHtml(j.topic) + '</div>' +
+        (j.notes ? '<div style="font-size: 0.8125rem; color: #6B7280; margin-bottom: 8px; font-style: italic;">Catatan: ' + escapeHtml(j.notes) + '</div>' : '') +
         '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-top: 1px solid #F3F4F6; padding-top: 8px; margin-top: 8px;">' +
           '<div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">' +
             methodsHtml +
@@ -6435,6 +6448,7 @@
 
   // Expose global methods for inline HTML onclick handlers
   window.PORTAL_APP = {
+    escapeHtml: escapeHtml,
     handleBrandClick: handleBrandClick,
     openChangePasswordModal: openChangePasswordModal,
     saveChangePassword: saveChangePassword,
