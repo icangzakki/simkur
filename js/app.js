@@ -489,6 +489,7 @@
     docTeacherSearchQuery: '',
     docTeacherDeptFilter: 'all',
     docTeacherStatusFilter: 'all',
+    docTeacherViewMode: 'card', // 'card' (bebas geser) | 'table'
     scheduleViewMode: 'table', // 'table' | 'timeline' | 'agenda'
     scheduleDayFilter: 'all',
     scheduleClassFilter: 'all',
@@ -1294,11 +1295,52 @@
     renderDocuments();
   }
 
-  // 7.1 TAB MONITORING KELENGKAPAN GURU (90 GURU)
+  // 7.1 TAB MONITORING KELENGKAPAN GURU (90 GURU) - RESPONSIVE BEBAS GESER
+  function setTeacherDocViewMode(mode) {
+    State.docTeacherViewMode = mode;
+    const cardCont = document.getElementById('teacher-admin-cards-container');
+    const tableCont = document.getElementById('teacher-admin-table-container');
+    const btnCard = document.getElementById('btn-doc-mode-card');
+    const btnTable = document.getElementById('btn-doc-mode-table');
+
+    if (btnCard) btnCard.classList.toggle('active', mode === 'card');
+    if (btnTable) btnTable.classList.toggle('active', mode === 'table');
+
+    if (cardCont) cardCont.style.display = (mode === 'card') ? 'flex' : 'none';
+    if (tableCont) tableCont.style.display = (mode === 'table') ? 'block' : 'none';
+  }
+
+  function getTeacherInitials(name) {
+    if (!name) return 'GTK';
+    var clean = name.replace(/^(Drs\.|Dra\.|Ir\.|H\.|Hj\.)\s+/i, '').replace(/,\s*.*$/, '').trim();
+    var parts = clean.split(/\s+/).filter(Boolean);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    } else if (parts.length === 1 && parts[0].length >= 2) {
+      return parts[0].substring(0, 2).toUpperCase();
+    }
+    return 'GTK';
+  }
+
+  function getDeptClass(dept) {
+    if (!dept) return 'umum';
+    var d = dept.toLowerCase().trim();
+    if (d.indexOf('tjkt') !== -1) return 'tjkt';
+    if (d.indexOf('dkv') !== -1) return 'dkv';
+    if (d.indexOf('mplb') !== -1) return 'mplb';
+    if (d.indexOf('akl') !== -1) return 'akl';
+    if (d.indexOf('pemasaran') !== -1 || d === 'pm') return 'pemasaran';
+    if (d.indexOf('bk') !== -1) return 'bk';
+    if (d.indexOf('manajemen') !== -1) return 'manajemen';
+    if (d.indexOf('tata usaha') !== -1 || d.indexOf('tu') !== -1) return 'tu';
+    return 'umum';
+  }
+
   function renderTeacherAdminTable(monitoring) {
     const tbody = document.getElementById('teacher-admin-tbody');
+    const cardsContainer = document.getElementById('teacher-admin-cards-container');
     const badgeTotal = document.getElementById('doc-teacher-total-badge');
-    if (!tbody) return;
+    if (!tbody && !cardsContainer) return;
 
     const q = (State.docTeacherSearchQuery || '').toLowerCase();
     const deptFilter = State.docTeacherDeptFilter || 'all';
@@ -1325,18 +1367,29 @@
     if (badgeTotal) badgeTotal.textContent = filtered.length + ' / ' + monitoring.length + ' Guru Ditampilkan';
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: #888888;">' +
-        '<strong>Tidak ada data guru yang sesuai dengan filter pencarian</strong>' +
-        '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau bersihkan kolom pencarian.</p>' +
-        '</td></tr>';
+      if (cardsContainer) {
+        cardsContainer.innerHTML = '<div style="text-align: center; padding: 3rem 1.5rem; background: #FFFFFF; border-radius: 16px; border: 1.5px dashed #CBD5E1; color: #64748B;">' +
+          '<div style="font-size: 2.25rem; margin-bottom: 0.5rem;">🔍</div>' +
+          '<h4 style="font-weight: 700; color: #1E293B; margin-bottom: 4px;">Tidak Ada Data Guru yang Sesuai</h4>' +
+          '<p style="font-size: 0.8125rem; color: #94A3B8; margin: 0;">Ubah filter jurusan/status atau bersihkan kata kunci pencarian.</p>' +
+          '</div>';
+      }
+      if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 2.5rem; color: #888888;">' +
+          '<strong>Tidak ada data guru yang sesuai dengan filter pencarian</strong>' +
+          '<p style="font-size: 0.8125rem; color: #999; margin-top: 4px;">Ubah filter atau bersihkan kolom pencarian.</p>' +
+          '</td></tr>';
+      }
       return;
     }
 
-    const allGuruDocs = StorageManager.get('guru_documents');
-    const allGuruJournals = StorageManager.get('guru_journals');
-    const allSupervisiSesi = StorageManager.get('supervisi_sesi');
+    const allGuruDocs = StorageManager.get('guru_documents') || [];
+    const allGuruJournals = StorageManager.get('guru_journals') || [];
+    const allSupervisiSesi = StorageManager.get('supervisi_sesi') || [];
 
-    let html = '';
+    let cardsHtml = '';
+    let tableHtml = '';
+
     filtered.forEach(function (m, idx) {
       const teacherDocs = allGuruDocs.filter(function (d) { return String(d.teacher_id) === String(m.teacher_id); });
       const teacherJournals = allGuruJournals.filter(function (j) { return String(j.teacher_id) === String(m.teacher_id); });
@@ -1406,11 +1459,14 @@
       // Overall Status
       const isAllDone = m.rpp_status === 'Lengkap' && m.jurnal_status === 'Sudah' && m.silabus_status === 'Lengkap';
       const isNoneDone = (!m.rpp_status || m.rpp_status === 'Belum') && (!m.jurnal_status || m.jurnal_status === 'Belum') && (!m.silabus_status || m.silabus_status === 'Belum') && teacherDocs.length === 0;
-      let statusPill = '<span class="badge" style="background: #F1F5F9; color: #64748B; font-weight: 700; font-size: 0.75rem;">Belum Ada</span>';
+      let statusPill = '<span class="teacher-overall-badge badge-empty">⚪ Belum Ada</span>';
+      let tableStatusPill = '<span class="badge" style="background: #F1F5F9; color: #64748B; font-weight: 700; font-size: 0.75rem;">Belum Ada</span>';
       if (isAllDone) {
-        statusPill = '<span class="badge" style="background: #E8FAF3; color: #20C985; font-weight: 700; font-size: 0.75rem;">Lengkap</span>';
+        statusPill = '<span class="teacher-overall-badge badge-complete">✅ Lengkap (100%)</span>';
+        tableStatusPill = '<span class="badge" style="background: #E8FAF3; color: #20C985; font-weight: 700; font-size: 0.75rem;">Lengkap</span>';
       } else if (teacherDocs.length > 0 || !isNoneDone) {
-        statusPill = '<span class="badge" style="background: #FEF3C7; color: #D97706; font-weight: 700; font-size: 0.75rem;">Ada Berkas (' + teacherDocs.length + ')</span>';
+        statusPill = '<span class="teacher-overall-badge badge-partial">🟡 Ada Berkas (' + teacherDocs.length + ')</span>';
+        tableStatusPill = '<span class="badge" style="background: #FEF3C7; color: #D97706; font-weight: 700; font-size: 0.75rem;">Ada Berkas (' + teacherDocs.length + ')</span>';
       }
 
       // Supervisi Column (PRD FR-18)
@@ -1446,7 +1502,71 @@
           '</button>';
       }
 
-      html += '<tr>' +
+      var initials = getTeacherInitials(m.name);
+      var deptClass = getDeptClass(m.department);
+
+      // 1. RESPONSIVE CARD HTML (ZERO HORIZONTAL SCROLL)
+      cardsHtml += '<div class="teacher-admin-card" id="teacher-card-' + m.teacher_id + '">' +
+        '  <div class="teacher-card-main-row">' +
+        '    <div class="teacher-card-profile-section">' +
+        '      <div class="teacher-card-num">#' + (idx + 1) + '</div>' +
+        '      <div class="teacher-card-avatar avatar-' + deptClass + '">' + initials + '</div>' +
+        '      <div class="teacher-card-info">' +
+        '        <div class="teacher-card-title-line">' +
+        '          <h4 class="teacher-card-name">' + m.name + '</h4>' +
+        '          <span class="dept-badge badge-' + deptClass + '">' + (m.department || 'Umum') + '</span>' +
+        '        </div>' +
+        '        <div class="teacher-card-meta-line">' +
+        '          <span class="teacher-card-nip">NIP. ' + (m.nip || '-') + '</span>' +
+        '          <span class="meta-separator">•</span>' +
+        '          <span class="teacher-card-subject">' + (m.subject || '-') + '</span>' +
+        '        </div>' +
+        '      </div>' +
+        '    </div>' +
+        '    <div class="teacher-card-header-actions">' +
+        '      <div class="teacher-card-status-badge">' + statusPill + '</div>' +
+        '      <div class="teacher-card-quick-actions">' +
+        '        <button type="button" class="btn btn-primary btn-sm teacher-action-btn" onclick="window.PORTAL_APP.openTeacherAdminFilesModal(\'' + m.teacher_id + '\')" title="Lihat Berkas Administrasi & Jurnal Guru">' +
+        '          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
+        '          <span>Berkas (' + teacherDocs.length + ')</span>' +
+        '        </button>' +
+        '        <button type="button" class="btn btn-outline btn-sm teacher-action-btn" onclick="window.PORTAL_APP.openTeacherAdminModal(\'' + m.teacher_id + '\')" title="Update Status Kelengkapan Administrasi">' +
+        '          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' +
+        '          <span>Status</span>' +
+        '        </button>' +
+        '        <button type="button" class="btn btn-wa-action btn-sm teacher-action-btn" onclick="window.PORTAL_APP.notifyTeacherWA(\'' + m.teacher_id + '\')" title="Kirim Pesan Pengingat WhatsApp ke Guru">' +
+        '          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>' +
+        '          <span>WA</span>' +
+        '        </button>' +
+        '      </div>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="teacher-card-pillars-deck">' +
+        '    <div class="teacher-pillar-item">' +
+        '      <div class="pillar-label">RPP / Modul</div>' +
+        '      <div class="pillar-pill-wrap">' + rppBadge + '</div>' +
+        '    </div>' +
+        '    <div class="teacher-pillar-item">' +
+        '      <div class="pillar-label">Jurnal KBM</div>' +
+        '      <div class="pillar-pill-wrap">' + jurnalBadge + '</div>' +
+        '    </div>' +
+        '    <div class="teacher-pillar-item">' +
+        '      <div class="pillar-label">Silabus & ATP</div>' +
+        '      <div class="pillar-pill-wrap">' + silabusBadge + '</div>' +
+        '    </div>' +
+        '    <div class="teacher-pillar-item">' +
+        '      <div class="pillar-label">Instrumen Asesmen</div>' +
+        '      <div class="pillar-pill-wrap">' + asesmenBadge + '</div>' +
+        '    </div>' +
+        '    <div class="teacher-pillar-item">' +
+        '      <div class="pillar-label">Supervisi Klinis</div>' +
+        '      <div class="pillar-pill-wrap">' + supervisiBadge + '</div>' +
+        '    </div>' +
+        '  </div>' +
+        '</div>';
+
+      // 2. COMPACT TABLE HTML
+      tableHtml += '<tr>' +
         '<td style="text-align: center; color: #888; font-size: 0.8125rem;">' + (idx + 1) + '</td>' +
         '<td>' +
         '<div style="font-weight: 700; color: #262626;">' + m.name + '</div>' +
@@ -1460,7 +1580,7 @@
         '<td>' + jurnalBadge + '</td>' +
         '<td>' + silabusBadge + '</td>' +
         '<td>' + asesmenBadge + '</td>' +
-        '<td>' + statusPill + '</td>' +
+        '<td>' + tableStatusPill + '</td>' +
         '<td>' + supervisiBadge + '</td>' +
         '<td>' +
         '<div style="display: flex; gap: 4px; align-items: center;">' +
@@ -1478,7 +1598,11 @@
         '</tr>';
     });
 
-    tbody.innerHTML = html;
+    if (cardsContainer) cardsContainer.innerHTML = cardsHtml;
+    if (tbody) tbody.innerHTML = tableHtml;
+
+    // Sync view mode visibility
+    setTeacherDocViewMode(State.docTeacherViewMode || 'card');
   }
 
   function openTeacherAdminModal(teacherId) {
@@ -6939,6 +7063,7 @@
     openAddAgendaModal: openAddAgendaModal,
     deleteAgenda: deleteAgenda,
     switchDocTab: switchDocTab,
+    setTeacherDocViewMode: setTeacherDocViewMode,
     openTeacherAdminModal: openTeacherAdminModal,
     openTeacherAdminFilesModal: openTeacherAdminFilesModal,
     filterTeacherDocs: filterTeacherDocs,

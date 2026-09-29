@@ -801,7 +801,17 @@
               </select>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <!-- View mode toggle: Kartu (Bebas Geser) vs Tabel -->
+              <div class="schedule-mode-tabs" id="doc-teacher-mode-tabs" style="margin: 0;">
+                <button type="button" class="schedule-mode-btn active" id="btn-doc-mode-card" onclick="window.PORTAL_APP.setTeacherDocViewMode('card')" title="Tampilan Kartu Responsif Bebas Geser">
+                  🗂️ Kartu Bebas Geser
+                </button>
+                <button type="button" class="schedule-mode-btn" id="btn-doc-mode-table" onclick="window.PORTAL_APP.setTeacherDocViewMode('table')" title="Tampilan Tabel Ringkas">
+                  📋 Tabel
+                </button>
+              </div>
+
               <span class="badge badge-neutral" id="doc-teacher-total-badge" style="font-weight: 700;">90 Guru Ditampilkan</span>
               <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.resetTeacherAdminToZero()" title="Reset seluruh status administrasi guru ke belum mengumpulkan (0%)" style="font-size: 0.725rem; padding: 0.25rem 0.65rem;">
                 🔄 Reset ke 0
@@ -809,7 +819,13 @@
             </div>
           </div>
 
-          <div class="content-card" style="margin: 0;">
+          <!-- CONTAINER 1: RESPONSIVE CARDS (DEFAULT: BEBAS GESER / 0 HORIZONTAL SCROLL) -->
+          <div id="teacher-admin-cards-container" class="teacher-admin-cards-list" style="display: flex; flex-direction: column; gap: 0.875rem;">
+            <!-- Rendered via app.js -->
+          </div>
+
+          <!-- CONTAINER 2: COMPACT TABLE (OPTIONAL TOGGLE) -->
+          <div id="teacher-admin-table-container" class="content-card" style="margin: 0; display: none;">
             <div class="content-card-body table-responsive" style="padding: 0;">
               <table class="data-table">
                 <thead>
