@@ -2626,6 +2626,181 @@ textarea.form-input {
   flex-wrap: wrap;
 }
 
+/* Modern Structured Filter Card (Clean 2-Tier Toolbar) */
+.filter-card-structured {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 14px !important;
+  padding: 1rem 1.25rem !important;
+  margin-bottom: 1.25rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.02) !important;
+  transition: all 0.2s ease !important;
+}
+
+.filter-card-structured .filter-row-top {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  flex-wrap: wrap !important;
+}
+
+.filter-card-structured .filter-row-bottom {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  border-top: 1px solid #F1F5F9 !important;
+  padding-top: 0.75rem !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+}
+
+.filter-card-structured .filter-search-box {
+  display: flex !important;
+  align-items: center !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  border-radius: 10px !important;
+  padding: 0 0.875rem !important;
+  height: 42px !important;
+  flex: 2 !important;
+  min-width: 240px !important;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
+  box-sizing: border-box !important;
+}
+
+.filter-card-structured .filter-search-box:focus-within {
+  border-color: #4B22B8 !important;
+  box-shadow: 0 0 0 3px rgba(75, 34, 184, 0.12) !important;
+}
+
+.filter-card-structured .filter-search-box svg {
+  margin-right: 10px !important;
+  color: #64748B !important;
+  flex-shrink: 0 !important;
+  transition: color 0.18s ease !important;
+}
+
+.filter-card-structured .filter-search-box:focus-within svg {
+  color: #4B22B8 !important;
+}
+
+.filter-card-structured .filter-search-box input {
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  width: 100% !important;
+  font-size: 0.875rem !important;
+  color: #0F172A !important;
+  font-weight: 500 !important;
+  font-family: inherit !important;
+}
+
+.filter-card-structured .filter-search-box input::placeholder {
+  color: #94A3B8 !important;
+  font-weight: 400 !important;
+}
+
+.filter-card-structured select.filter-select {
+  height: 42px !important;
+  border: 1.5px solid #CBD5E1 !important;
+  border-radius: 10px !important;
+  background-color: #FFFFFF !important;
+  padding: 0 2rem 0 0.875rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #0F172A !important;
+  cursor: pointer !important;
+  flex: 1 !important;
+  min-width: 170px !important;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
+  box-sizing: border-box !important;
+}
+
+.filter-card-structured select.filter-select:focus {
+  border-color: #4B22B8 !important;
+  box-shadow: 0 0 0 3px rgba(75, 34, 184, 0.12) !important;
+  outline: none !important;
+}
+
+.filter-card-structured .filter-actions-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+.filter-card-structured .filter-count-badge {
+  font-weight: 700 !important;
+  font-size: 0.8125rem !important;
+  padding: 0.35rem 0.75rem !important;
+  border-radius: 8px !important;
+  background: #F1F5F9 !important;
+  color: #334155 !important;
+  border: 1px solid #E2E8F0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 34px !important;
+  box-sizing: border-box !important;
+}
+
+.filter-card-structured .filter-reset-btn {
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  padding: 0.35rem 0.75rem !important;
+  border-radius: 8px !important;
+  border: 1.5px solid #CBD5E1 !important;
+  background: #FFFFFF !important;
+  color: #475569 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+  height: 34px !important;
+  box-sizing: border-box !important;
+}
+
+.filter-card-structured .filter-reset-btn:hover {
+  background: #FEF2F2 !important;
+  border-color: #FCA5A5 !important;
+  color: #DC2626 !important;
+  box-shadow: 0 1px 4px rgba(220, 38, 38, 0.08) !important;
+}
+
+@media (max-width: 768px) {
+  .filter-card-structured {
+    padding: 0.875rem !important;
+    gap: 10px !important;
+  }
+  .filter-card-structured .filter-row-top {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+  .filter-card-structured .filter-search-box {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .filter-card-structured select.filter-select {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .filter-card-structured .filter-row-bottom {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+  .filter-card-structured .filter-actions-right {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+}
+
 /* Responsive Media Queries */
 @media (max-width: 1240px) {
   .dashboard-2col-layout {

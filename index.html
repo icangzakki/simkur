@@ -776,14 +776,14 @@
 
         <!-- PANE 1: MONITORING KELENGKAPAN PER GURU -->
         <div id="doc-pane-teachers">
-          <div class="filter-card">
-            <div class="filter-group">
-              <div style="display: flex; align-items: center; background: #EEEEF1; border-radius: 8px; padding: 0.5rem 0.875rem; flex: 1; min-width: 260px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777777" stroke-width="2" style="margin-right: 8px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="doc-teacher-search" placeholder="Cari nama guru, NIP, mapel..." style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.875rem; color: #262626;">
+          <div class="filter-card filter-card-structured">
+            <div class="filter-row-top">
+              <div class="filter-search-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="doc-teacher-search" placeholder="Cari nama guru, NIP, mapel...">
               </div>
 
-              <select id="doc-teacher-dept" class="form-input" style="width: auto; min-width: 170px;">
+              <select id="doc-teacher-dept" class="form-input filter-select">
                 <option value="all">Semua Jurusan / Rumpun</option>
                 <option value="TJKT">TJKT</option>
                 <option value="DKV">DKV</option>
@@ -794,14 +794,14 @@
                 <option value="Umum">Umum</option>
               </select>
 
-              <select id="doc-teacher-status" class="form-input" style="width: auto; min-width: 160px;">
+              <select id="doc-teacher-status" class="form-input filter-select">
                 <option value="all">Semua Status</option>
                 <option value="complete">Lengkap (100%)</option>
                 <option value="incomplete">Ada Pending</option>
               </select>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <div class="filter-row-bottom">
               <!-- View mode toggle: Kartu (Bebas Geser) vs Tabel -->
               <div class="schedule-mode-tabs" id="doc-teacher-mode-tabs" style="margin: 0;">
                 <button type="button" class="schedule-mode-btn active" id="btn-doc-mode-card" onclick="window.PORTAL_APP.setTeacherDocViewMode('card')" title="Tampilan Kartu Responsif Bebas Geser">
@@ -812,10 +812,12 @@
                 </button>
               </div>
 
-              <span class="badge badge-neutral" id="doc-teacher-total-badge" style="font-weight: 700;">90 Guru Ditampilkan</span>
-              <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.resetTeacherAdminToZero()" title="Reset seluruh status administrasi guru ke belum mengumpulkan (0%)" style="font-size: 0.725rem; padding: 0.25rem 0.65rem;">
-                🔄 Reset ke 0
-              </button>
+              <div class="filter-actions-right">
+                <span class="badge filter-count-badge" id="doc-teacher-total-badge">90 Guru Ditampilkan</span>
+                <button type="button" class="filter-reset-btn" onclick="window.PORTAL_APP.resetTeacherAdminToZero()" title="Reset seluruh status administrasi guru ke belum mengumpulkan (0%)">
+                  🔄 Reset ke 0
+                </button>
+              </div>
             </div>
           </div>
 
@@ -852,14 +854,14 @@
 
         <!-- PANE 2: ARSIP DOKUMEN SEKOLAH -->
         <div id="doc-pane-archives" style="display: none;">
-          <div class="filter-card">
-            <div class="filter-group">
-              <div style="display: flex; align-items: center; background: #EEEEF1; border-radius: 8px; padding: 0.5rem 0.875rem; flex: 1; min-width: 240px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777777" stroke-width="2" style="margin-right: 8px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="doc-search-input" placeholder="Cari nama dokumen atau deskripsi..." style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.875rem; color: #262626;">
+          <div class="filter-card filter-card-structured">
+            <div class="filter-row-top">
+              <div class="filter-search-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="doc-search-input" placeholder="Cari nama dokumen atau deskripsi...">
               </div>
 
-              <select id="doc-category-filter" class="form-input" style="width: auto; min-width: 170px;">
+              <select id="doc-category-filter" class="form-input filter-select">
                 <option value="all">Semua Kategori</option>
                 <option value="KSP">KSP</option>
                 <option value="Modul Ajar">Modul Ajar</option>
@@ -869,14 +871,14 @@
                 <option value="Lainnya">Lainnya</option>
               </select>
 
-              <select id="doc-year-filter" class="form-input" style="width: auto; min-width: 150px;">
+              <select id="doc-year-filter" class="form-input filter-select">
                 <option value="all">Semua Tahun</option>
                 <option value="2026/2027">TA 2026/2027</option>
                 <option value="2025/2026">TA 2025/2026</option>
               </select>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <div class="filter-row-bottom">
               <!-- View mode toggle: Kartu (Bebas Geser) vs Tabel -->
               <div class="schedule-mode-tabs" id="doc-archive-mode-tabs" style="margin: 0;">
                 <button type="button" class="schedule-mode-btn active" id="btn-doc-archive-card" onclick="window.PORTAL_APP.setArchiveDocViewMode('card')" title="Tampilan Kartu Bebas Geser">
@@ -887,7 +889,9 @@
                 </button>
               </div>
 
-              <span class="badge badge-neutral" id="doc-total-badge" style="font-weight: 700;">11 Dokumen</span>
+              <div class="filter-actions-right">
+                <span class="badge filter-count-badge" id="doc-total-badge">11 Dokumen</span>
+              </div>
             </div>
           </div>
 
@@ -1977,14 +1981,14 @@
 
         <!-- PANE 2: JADWAL & SESI SUPERVISI GURU (90 GURU) -->
         <div id="sup-pane-sesi" style="display: none;">
-          <div class="filter-card">
-            <div class="filter-group">
-              <div style="display: flex; align-items: center; background: #EEEEF1; border-radius: 8px; padding: 0.5rem 0.875rem; flex: 1; min-width: 250px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777777" stroke-width="2" style="margin-right: 8px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="sup-search-guru" placeholder="Cari nama guru, NIP, pengawas..." style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.875rem; color: #262626;">
+          <div class="filter-card filter-card-structured">
+            <div class="filter-row-top">
+              <div class="filter-search-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="sup-search-guru" placeholder="Cari nama guru, NIP, pengawas...">
               </div>
 
-              <select id="sup-filter-dept" class="form-input" style="width: auto; min-width: 160px;">
+              <select id="sup-filter-dept" class="form-input filter-select">
                 <option value="all">Semua Jurusan</option>
                 <option value="TJKT">TJKT</option>
                 <option value="DKV">DKV</option>
@@ -1994,7 +1998,7 @@
                 <option value="Umum">Umum / Muatan Nasional</option>
               </select>
 
-              <select id="sup-filter-status" class="form-input" style="width: auto; min-width: 170px;">
+              <select id="sup-filter-status" class="form-input filter-select">
                 <option value="all">Semua Status</option>
                 <option value="Dijadwalkan">📅 Dijadwalkan</option>
                 <option value="Pra-observasi">📝 Pra-observasi</option>
@@ -2004,7 +2008,7 @@
                 <option value="Selesai">✅ Selesai</option>
               </select>
 
-              <select id="sup-filter-supervisor" class="form-input" style="width: auto; min-width: 200px;">
+              <select id="sup-filter-supervisor" class="form-input filter-select">
                 <option value="all">Semua Supervisor</option>
                 <option value="Rusnani">Rusnani, S.Pd., M.T (Waka)</option>
                 <option value="Muhammad Ihsan">Muhammad Ihsan (Kajur TJKT)</option>
@@ -2013,19 +2017,22 @@
                 <option value="Akhmad Hanafi">Akhmad Hanafi (Kajur MPLB)</option>
                 <option value="Futri Indri">Futri Indri (Kajur Pemasaran)</option>
               </select>
+            </div>
 
-              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-left: auto;">
-                <div class="schedule-mode-tabs" id="sup-sesi-mode-tabs" style="margin: 0;">
-                  <button type="button" class="schedule-mode-btn active" id="btn-sup-sesi-card" onclick="window.PORTAL_APP.setSupSesiViewMode('card')" title="Tampilan Kartu Bebas Geser">
-                    🗂️ Kartu Bebas Geser
-                  </button>
-                  <button type="button" class="schedule-mode-btn" id="btn-sup-sesi-table" onclick="window.PORTAL_APP.setSupSesiViewMode('table')" title="Tampilan Tabel">
-                    📋 Tabel
-                  </button>
-                </div>
-                <div style="font-size: 0.8125rem; color: #666666; font-weight: 600; white-space: nowrap;">
+            <div class="filter-row-bottom">
+              <div class="schedule-mode-tabs" id="sup-sesi-mode-tabs" style="margin: 0;">
+                <button type="button" class="schedule-mode-btn active" id="btn-sup-sesi-card" onclick="window.PORTAL_APP.setSupSesiViewMode('card')" title="Tampilan Kartu Bebas Geser">
+                  🗂️ Kartu Bebas Geser
+                </button>
+                <button type="button" class="schedule-mode-btn" id="btn-sup-sesi-table" onclick="window.PORTAL_APP.setSupSesiViewMode('table')" title="Tampilan Tabel">
+                  📋 Tabel
+                </button>
+              </div>
+
+              <div class="filter-actions-right">
+                <span class="badge filter-count-badge">
                   <span id="sup-count-filtered">90</span> Sesi Ditampilkan
-                </div>
+                </span>
               </div>
             </div>
           </div>
