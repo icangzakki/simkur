@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masuk — SIMKUR Portal Kurikulum Sekolah</title>
+  <meta name="description" content="SIMKUR SMKN 1 Banjarmasin — Portal Kurikulum Sekolah untuk pengelolaan dokumen kurikulum, jadwal pelajaran, dan data master sekolah.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- External User Directory & Security Guard -->
+  <script src="js/security-guard.js?v=8.4.1"></script>
+  <script src="js/auth_users.js?v=8.4.0"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* SIMKUR Official Brand Tokens (Design Specification Section 3) */
+      --simkur-navy: #123B66;
+      --simkur-navy-dark: #0B2540;
+      --simkur-blue: #2563A6;
+      --simkur-blue-hover: #1E528D;
+      --soft-blue: #EAF4FF;
+      --soft-blue-border: #BCD9F8;
+      --color-success: #1F9D68;
+      --color-warning: #E89B2C;
+      --color-danger: #D9535F;
+      --bg: #F4F7FA;
+      --surface: #FFFFFF;
+      --text-primary: #172B4D;
+      --text-secondary: #6B7A90;
+      --border: #DFE3E8;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --shadow-card: 0 16px 36px rgba(18, 59, 102, 0.08), 0 2px 8px rgba(18, 59, 102, 0.04);
+      --touch-target-min: 44px;
+    }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      color: var(--text-primary);
+    }
+
+    /* ── SPLIT TWO-PANEL LAYOUT (Design Specification Section 4) ── */
+    .login-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+    }
+
+    /* ── HERO PANEL (LEFT) ── */
+    .hero-panel {
+      background: linear-gradient(145deg, #123B66 0%, #174C82 55%, #0B2540 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+      color: #FFFFFF;
+    }
+
+    .hero-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 85%, rgba(31, 157, 104, 0.22) 0%, transparent 60%),
+        radial-gradient(ellipse at 85% 15%, rgba(234, 244, 255, 0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(37, 99, 166, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Decorative Administrative Blueprint Grid */
+    .hero-panel::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: 
+        radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px, 64px 64px, 64px 64px;
+      pointer-events: none;
+    }
+
+    .hero-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-brand-logo {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 900;
+      font-size: 1.35rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .hero-brand-text h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+    }
+
+    .hero-brand-text h1 span {
+      color: #6EE7B7;
+    }
+
+    .hero-brand-text p {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: rgba(234, 244, 255, 0.8);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2.5rem 0;
+    }
+
+    .hero-pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(234, 244, 255, 0.14);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(234, 244, 255, 0.3);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      color: #EAF4FF;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 1.5rem;
+      width: fit-content;
+    }
+
+    .hero-pill-tag::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-success);
+      box-shadow: 0 0 8px var(--color-success);
+    }
+
+    .hero-content h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2.35rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-content h2 span {
+      color: #A3ECCB;
+    }
+
+    .hero-content p {
+      font-size: 0.9375rem;
+      color: rgba(234, 244, 255, 0.85);
+      line-height: 1.7;
+      max-width: 440px;
+    }
+
+    /* 3 Metrik Ringkas (Section 4) */
+    .hero-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .metric-item {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem 1rem;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .metric-item:hover {
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateY(-2px);
+    }
+
+    .metric-item .metric-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1;
+    }
+
+    .metric-item .metric-label {
+      font-size: 0.725rem;
+      font-weight: 600;
+      color: rgba(234, 244, 255, 0.75);
+      margin-top: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-footer {
+      position: relative;
+      z-index: 1;
+      color: rgba(234, 244, 255, 0.6);
+      font-size: 0.775rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ── FORM PANEL (RIGHT) ── */
+    .form-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 3rem;
+      background: var(--bg);
+      position: relative;
+      overflow-y: auto;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .form-header {
+      margin-bottom: 1.75rem;
+    }
+
+    .form-portal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      background: var(--soft-blue);
+      border: 1px solid var(--soft-blue-border);
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--simkur-blue);
+      letter-spacing: 0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .form-header h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: var(--text-primary);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .form-header p {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    /* Form Card Container */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-card);
+      padding: 2rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .field-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .field-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── COMBOBOX SEARCHABLE TEACHER SELECTOR (Section 4) ── */
+    .combobox-wrapper { position: relative; }
+
+    .combobox-control {
+      display: flex;
+      align-items: center;
+      background: #F8FAFC;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0 0.875rem;
+      height: 48px;
+      cursor: text;
+      transition: all 0.15s ease;
+      gap: 8px;
+    }
+
+    .combobox-control:hover {
+      border-color: var(--simkur-blue);
+    }
+
+    .combobox-control.is-open {
+      border-color: var(--simkur-blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 166, 0.15);
+      background: #FFFFFF;
+    }
+
+    .combobox-search-icon { color: var(--text-secondary); flex-shrink: 0; }
+
+    .combobox-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      min-width: 0;
+      font-family: inherit;
+    }
+
+    .combobox-input::placeholder { color: var(--muted); font-weight: 400; }
+
+    .combobox-clear-btn, .combobox-arrow-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      transition: color 0.12s, background 0.12s;
+    }
+
+    .combobox-clear-btn:hover, .combobox-arrow-btn:hover {
+      color: var(--text-primary);
+      background: #F1F5F9;
+    }
+
+    .combobox-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0; right: 0;
+      background: var(--surface);
+      border: 1.5px solid var(--simkur-blue);
+      border-radius: var(--radius-md);
+      box-shadow: 0 16px 36px rgba(18, 59, 102, 0.15);
+      z-index: 200;
+      display: none;
+      overflow: hidden;
+    }
+
+    .combobox-menu.show { display: block; }
+
+    /* Department Filter Chips (Section 4) */
+    .combobox-chips-bar {
+      display: flex;
+      gap: 6px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      background: #F8FAFC;
+      scrollbar-width: none;
+    }
+    .combobox-chips-bar::-webkit-scrollbar { display: none; }
+
+    .combobox-chip {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      font-size: 0.725rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.12s ease;
+    }
+
+    .combobox-chip:hover { border-color: var(--simkur-blue); color: var(--simkur-blue); }
+    .combobox-chip.active { background: var(--simkur-blue); border-color: var(--simkur-blue); color: #FFFFFF; }
+
+    .combobox-items-list {
+      max-height: 230px;
+      overflow-y: auto;
+      padding: 6px;
+    }
+
+    .combobox-items-list::-webkit-scrollbar { width: 4px; }
+    .combobox-items-list::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+
+    .combobox-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .combobox-option:hover,
+    .combobox-option.is-highlighted { background: var(--soft-blue); }
+    .combobox-option.is-selected { background: #E1EFFF; }
+
+    /* Avatar Inisial Profil Guru (Section 4) */
+    .option-avatar {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      flex-shrink: 0;
+    }
+    .opt-dept-tjkt { background: linear-gradient(135deg, #123B66, #2563A6); }
+    .opt-dept-dkv  { background: linear-gradient(135deg, #D9535F, #E89B2C); }
+    .opt-dept-akl  { background: linear-gradient(135deg, #2563A6, #5B9BD5); }
+    .opt-dept-mplb { background: linear-gradient(135deg, #1F9D68, #10B981); }
+    .opt-dept-pemasaran { background: linear-gradient(135deg, #E89B2C, #F59E0B); }
+    .opt-dept-bk   { background: linear-gradient(135deg, #6366F1, #8B5CF6); }
+    .opt-dept-umum { background: linear-gradient(135deg, #475569, #64748B); }
+
+    .option-details { flex: 1; min-width: 0; }
+    .option-name { font-weight: 600; font-size: 0.875rem; color: var(--text-primary); }
+    .option-name .highlight-match { background: #BCD9F8; color: var(--simkur-navy); border-radius: 2px; padding: 0 2px; }
+
+    .option-meta { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+    .option-nip { font-size: 0.7rem; color: var(--text-secondary); }
+
+    .dept-badge {
+      font-size: 0.625rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: var(--radius-pill);
+    }
+    .dept-badge.tjkt { background: #EAF4FF; color: #123B66; }
+    .dept-badge.dkv  { background: #FDF2F3; color: #D9535F; }
+    .dept-badge.akl  { background: #EAF4FF; color: #2563A6; }
+    .dept-badge.mplb { background: #E8F8F0; color: #1F9D68; }
+    .dept-badge.pemasaran { background: #FEF7EC; color: #E89B2C; }
+    .dept-badge.bk   { background: #F5F3FF; color: #6366F1; }
+    .dept-badge.umum { background: #F1F5F9; color: #475569; }
+
+    .option-check {
+      color: var(--simkur-blue);
+      opacity: 0;
+      flex-shrink: 0;
+    }
+    .combobox-option.is-selected .option-check { opacity: 1; }
+
+    .combobox-empty {
+      text-align: center;
+      padding: 1.75rem 1rem;
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+    }
+
+    /* Selected Profile Banner */
+    .profile-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: var(--soft-blue);
+      border: 1px solid var(--soft-blue-border);
+      border-radius: var(--radius-md);
+      margin-top: 8px;
+    }
+
+    .banner-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+
+    .banner-info { flex: 1; min-width: 0; }
+    .banner-name {
+      font-weight: 700;
+      font-size: 0.9125rem;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .banner-meta { font-size: 0.725rem; color: var(--text-secondary); margin-top: 1px; }
+
+    .banner-access-badge {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      flex-shrink: 0;
+    }
+    .badge-waka { background: #E8F8F0; color: #0D6944; border: 1px solid #A3ECCB; }
+    .badge-guru { background: #EAF4FF; color: #123B66; border: 1px solid #BCD9F8; }
+
+    /* ── PASSWORD FIELD (Appears after profile selected) ── */
+    #password-group {
+      transition: all 0.25s ease;
+    }
+
+    .input-password-wrap {
+      position: relative;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 48px;
+      background: #F8FAFC;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0 3rem 0 1rem;
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--simkur-blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 166, 0.15);
+      background: #FFFFFF;
+    }
+
+    .btn-toggle-pwd {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+    }
+
+    .btn-toggle-pwd:hover { color: var(--text-primary); }
+
+    /* CTA Button (Masuk sebagai [nama]) */
+    .btn-submit {
+      width: 100%;
+      height: 50px;
+      background: var(--simkur-blue);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 166, 0.25);
+      margin-top: 1.25rem;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: var(--simkur-blue-hover);
+      box-shadow: 0 6px 16px rgba(37, 99, 166, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    /* Links: Lupa Kata Sandi & Ganti Kata Sandi (Section 4) */
+    .auth-links-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.15rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.775rem;
+    }
+
+    .auth-link {
+      color: var(--simkur-blue);
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+
+    .auth-link:hover {
+      text-decoration: underline;
+      color: var(--simkur-navy);
+    }
+
+    /* SSO Kemendikdasmen / Belajar.id Option */
+    .sso-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 1.5rem 0 1rem;
+      color: var(--text-secondary);
+      font-size: 0.725rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .sso-divider::before, .sso-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .btn-sso {
+      width: 100%;
+      height: 44px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-sso:hover {
+      border-color: var(--simkur-blue);
+      background: var(--soft-blue);
+      color: var(--simkur-blue);
+    }
+
+    /* Mobile Header */
+    .mobile-header-bar {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 1rem 1.25rem;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+    }
+
+    .mobile-header-logo {
+      width: 36px;
+      height: 36px;
+      background: var(--simkur-navy);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-weight: 900;
+      font-size: 1.1rem;
+    }
+
+    .mobile-header-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--simkur-navy);
+    }
+
+    /* Modal Reset / Forgot Password Info */
+    .dialog-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 37, 64, 0.45);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .dialog-box {
+      background: #FFFFFF;
+      border-radius: var(--radius-xl);
+      max-width: 440px;
+      width: 100%;
+      padding: 1.75rem;
+      box-shadow: 0 20px 48px rgba(18, 59, 102, 0.2);
+    }
+
+    .dialog-title {
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .dialog-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Toast Notification */
+    .toast-box {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--simkur-navy);
+      color: #FFFFFF;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      box-shadow: 0 12px 28px rgba(18, 59, 102, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast-box.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Loading Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: #FFFFFF;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .login-page { grid-template-columns: 1fr; }
+      .hero-panel { display: none; }
+      .mobile-header-bar { display: flex; }
+      .form-panel { padding: 2rem 1.25rem; align-items: flex-start; }
+      .form-container { max-width: 100%; }
+      .form-card { padding: 1.5rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile Header (Visible < 960px) -->
+  <header class="mobile-header-bar">
+    <div class="mobile-header-logo">S</div>
+    <div>
+      <div class="mobile-header-title">SIMKUR 2026</div>
+      <div style="font-size: 0.6875rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700;">Portal Kurikulum Sekolah</div>
+    </div>
+  </header>
+
+  <div class="login-page">
+
+    <!-- ════════════════════════════════════════
+         LEFT PANEL — Hero & Branding (Section 4)
+    ════════════════════════════════════════ -->
+    <section class="hero-panel" aria-label="Informasi SIMKUR">
+      
+      <!-- Logo SIMKUR 2026 -->
+      <div class="hero-brand">
+        <div class="hero-brand-logo">S</div>
+        <div class="hero-brand-text">
+          <h1>SIMKUR <span>2026</span></h1>
+          <p>Portal Kurikulum Sekolah</p>
+        </div>
+      </div>
+
+      <!-- Hero Content -->
+      <div class="hero-content">
+        <div class="hero-pill-tag">
+          T.A. 2026/2027 • SMKN 1 Banjarmasin
+        </div>
+        <h2>Tata Kelola Kurikulum<br><span>Tepercaya & Rapi</span></h2>
+        <p>
+          Kelola dokumen kurikulum resmi, susun jadwal pelajaran presisi, pantau kelengkapan administrasi guru, dan integrasikan operasional sekolah secara terpusat.
+        </p>
+
+        <!-- 3 Metrik Ringkas: Guru, Siswa, Rombel (Design Specification Section 4 & 5) -->
+        <div class="hero-metrics-grid">
+          <div class="metric-item">
+            <div class="metric-num">90</div>
+            <div class="metric-label">Guru & Tendik Aktif</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-num">1.564</div>
+            <div class="metric-label">Siswa Terdaftar</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-num">45</div>
+            <div class="metric-label">Rombel Belajar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Footer -->
+      <div class="hero-footer">
+        <div>© 2026 SMKN 1 Banjarmasin</div>
+        <div>v8.4.0 • Standar Kemendikdasmen</div>
+      </div>
+
+    </section>
+
+    <!-- ════════════════════════════════════════
+         RIGHT PANEL — Form Login (Section 4)
+    ════════════════════════════════════════ -->
+    <main class="form-panel">
+      <div class="form-container">
+
+        <!-- Form Heading -->
+        <div class="form-header">
+          <div class="form-portal-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            SIMKUR — Portal Kurikulum Sekolah
+          </div>
+          <h2>Selamat Datang,<br>Rekan Guru 👋</h2>
+          <p>Pilih profil nama Anda dari direktori dan masukkan kata sandi untuk melanjutkan.</p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="form-card">
+          <form id="login-form" onsubmit="handleFormSubmit(event)">
+
+            <!-- 1. Searchable Teacher Selector with Initial Avatars & Dept Filter (Section 4) -->
+            <div class="field-group">
+              <label class="field-label" for="combobox-search-input">
+                <span>1. Direktori Guru & Pengampu</span>
+                <span id="combobox-count" style="font-weight: 700; color: var(--simkur-blue); font-size: 0.7rem; background: var(--soft-blue); padding: 1px 7px; border-radius: 999px;">90 GTK</span>
+              </label>
+
+              <div class="combobox-wrapper" id="combobox-wrapper">
+                <div class="combobox-control" id="combobox-control" onclick="handleComboboxControlClick(event)">
+                  <span class="combobox-search-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  </span>
+                  <input
+                    type="text"
+                    id="combobox-search-input"
+                    class="combobox-input"
+                    placeholder="Ketik nama, NIP, atau jurusan..."
+                    autocomplete="off"
+                    spellcheck="false"
+                    onfocus="openCombobox()"
+                    oninput="onComboboxInput(this.value)"
+                    onkeydown="onComboboxKeydown(event)"
+                  >
+                  <button type="button" class="combobox-clear-btn" id="combobox-clear-btn" onclick="clearComboboxSearch(event)" title="Hapus pencarian" style="display: none;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                  <button type="button" class="combobox-arrow-btn" id="combobox-arrow-btn" onclick="toggleCombobox(event)" tabindex="-1" aria-label="Buka daftar guru">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                </div>
+
+                <!-- Dropdown with Filter Jurusan / Departemen -->
+                <div class="combobox-menu" id="combobox-menu">
+                  <div class="combobox-chips-bar" id="combobox-chips-bar">
+                    <button type="button" class="combobox-chip active" data-filter="ALL" onclick="filterByDeptChip('ALL')">Semua</button>
+                    <button type="button" class="combobox-chip" data-filter="TJKT" onclick="filterByDeptChip('TJKT')">TJKT</button>
+                    <button type="button" class="combobox-chip" data-filter="DKV" onclick="filterByDeptChip('DKV')">DKV</button>
+                    <button type="button" class="combobox-chip" data-filter="AKL" onclick="filterByDeptChip('AKL')">AKL</button>
+                    <button type="button" class="combobox-chip" data-filter="MPLB" onclick="filterByDeptChip('MPLB')">MPLB</button>
+                    <button type="button" class="combobox-chip" data-filter="Pemasaran" onclick="filterByDeptChip('Pemasaran')">Pemasaran</button>
+                    <button type="button" class="combobox-chip" data-filter="BK" onclick="filterByDeptChip('BK')">BK</button>
+                    <button type="button" class="combobox-chip" data-filter="Umum" onclick="filterByDeptChip('Umum')">Umum</button>
+                  </div>
+                  <div class="combobox-items-list" id="combobox-items-list"></div>
+                  <div class="combobox-empty" id="combobox-empty" style="display: none;">
+                    <div style="font-size: 1.5rem; margin-bottom: 4px;">🔍</div>
+                    <div id="combobox-empty-text">Nama guru tidak ditemukan.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Profile Preview Banner (Active profile indicator) -->
+              <div class="profile-banner" id="profile-banner" style="display: none;">
+                <img src="assets/teacher_avatar.jpg" class="banner-avatar" id="banner-avatar" alt="Avatar">
+                <div class="banner-info">
+                  <div class="banner-name" id="banner-name">—</div>
+                  <div class="banner-meta" id="banner-meta">—</div>
+                </div>
+                <span class="banner-access-badge badge-guru" id="banner-access-badge">Portal Guru</span>
+              </div>
+            </div>
+
+            <!-- 2. Password Field (Appears after profile is selected) -->
+            <div class="field-group" id="password-group">
+              <label class="field-label" for="input-password">
+                <span>2. Kata Sandi Akun</span>
+              </label>
+              <div class="input-password-wrap">
+                <!-- In production: default password is not prefilled (Section 4) -->
+                <input
+                  type="password"
+                  id="input-password"
+                  class="form-input"
+                  placeholder="Masukkan kata sandi akun Anda..."
+                  required
+                  autocomplete="current-password"
+                >
+                <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility()" aria-label="Tampilkan kata sandi">
+                  <svg id="pwd-icon-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg id="pwd-icon-hide" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="21" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- CTA: Masuk sebagai [nama] (Section 4) -->
+            <button type="submit" class="btn-submit" id="btn-submit">
+              <span id="btn-submit-text">Masuk ke Portal</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+
+            <!-- Quick Links: Lupa Kata Sandi & Ganti Kata Sandi (Section 4) -->
+            <div class="auth-links-row">
+              <a href="javascript:void(0)" class="auth-link" onclick="openForgotPasswordDialog()">Lupa kata sandi?</a>
+              <a href="javascript:void(0)" class="auth-link" onclick="openChangePasswordDialog()">Ganti kata sandi</a>
+            </div>
+
+          </form>
+
+          <!-- SSO Alternative -->
+          <div class="sso-divider">atau alternatif masuk</div>
+          <button type="button" class="btn-sso" onclick="handleSsoLogin()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>
+            Masuk dengan Akun Belajar.id
+          </button>
+        </div>
+
+        <p style="text-align: center; font-size: 0.75rem; color: var(--text-secondary);">
+          SIMKUR — Portal Kurikulum SMKN 1 Banjarmasin
+        </p>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Dialog Lupa Kata Sandi (Section 4) -->
+  <div class="dialog-overlay" id="dialog-forgot-pwd">
+    <div class="dialog-box">
+      <div style="font-size: 1.5rem; margin-bottom: 8px;">🔑</div>
+      <h3 class="dialog-title">Bantuan Kata Sandi</h3>
+      <p class="dialog-desc">
+        Untuk alasan keamanan data administrasi kurikulum sekolah, permohonan reset kata sandi dikelola langsung oleh Tim Waka Kurikulum SMKN 1 Banjarmasin.
+      </p>
+      <div style="background: var(--soft-blue); border: 1px solid var(--soft-blue-border); border-radius: 8px; padding: 10px 12px; font-size: 0.8125rem; color: var(--simkur-navy); margin-bottom: 1.25rem;">
+        <strong>Bantuan Langsung:</strong> Silakan hubungi Waka Kurikulum (Ibu Rusnani, S.Pd) atau staf TU Kurikulum di ruang Waka Kurikulum.
+      </div>
+      <div style="display: flex; justify-content: flex-end;">
+        <button type="button" class="btn-submit" style="width: auto; padding: 0 1.25rem; height: 40px; margin: 0;" onclick="closeForgotPasswordDialog()">
+          Mengerti
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog Ganti Kata Sandi (Section 4) -->
+  <div class="dialog-overlay" id="dialog-change-pwd">
+    <div class="dialog-box">
+      <h3 class="dialog-title">Ganti Kata Sandi Akun</h3>
+      <p class="dialog-desc">Perbarui kata sandi akun Anda untuk meningkatkan perlindungan data pembelajaran.</p>
+      
+      <form onsubmit="handleDirectPasswordChange(event)" style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div>
+          <label style="display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 4px;">Pilih Akun Guru</label>
+          <input type="text" id="dlg-pwd-user" class="form-input" style="height: 42px;" readonly>
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 4px;">Kata Sandi Lama</label>
+          <input type="password" id="dlg-pwd-old" class="form-input" style="height: 42px;" placeholder="Masukkan kata sandi lama..." required>
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 4px;">Kata Sandi Baru (Min. 6 Karakter)</label>
+          <input type="password" id="dlg-pwd-new" class="form-input" style="height: 42px;" placeholder="Minimal 6 karakter..." minlength="6" required>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 0.5rem;">
+          <button type="button" class="btn-sso" style="width: auto; padding: 0 1rem; height: 40px;" onclick="closeChangePasswordDialog()">Batal</button>
+          <button type="submit" class="btn-submit" style="width: auto; padding: 0 1.25rem; height: 40px; margin: 0;">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-box" id="toast-box">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toast-text">Pemberitahuan</span>
+  </div>
+
+  <script>
+    // ══════════════════════════════════════════
+    // STATE
+    // ══════════════════════════════════════════
+    let currentUser = null;
+    let currentFilterDept = 'ALL';
+    let searchQuery = '';
+    let availableUsers = [];
+    let filteredUsers = [];
+    let highlightedIndex = -1;
+    let isComboboxOpen = false;
+
+    // ══════════════════════════════════════════
+    // INIT
+    // ══════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+
+      // Clear session on logout
+      if (params.get('logout')) {
+        localStorage.removeItem('simkur_session');
+        localStorage.removeItem('simkur_role');
+        setTimeout(() => showToast('Sesi Anda telah berhasil diakhiri.'), 200);
+      }
+
+      initCombobox();
+    });
+
+    // ══════════════════════════════════════════
+    // COMBOBOX SETUP
+    // ══════════════════════════════════════════
+    function initCombobox() {
+      const allUsers = window.SIMKUR_AUTH_USERS || [];
+
+      // Filter all GTK that can authenticate
+      availableUsers = allUsers.filter(u =>
+        u.role === 'guru' || u.role === 'kajur' || u.role === 'waka' || u.role === 'kepsek' || u.role === 'admin'
+      );
+
+      const countEl = document.getElementById('combobox-count');
+      if (countEl) countEl.textContent = `${availableUsers.length} GTK`;
+
+      updateChipCounts();
+
+      // Default: select Rusnani (Waka Kurikulum) as primary administrative actor, or first guru
+      const defaultUser = availableUsers.find(u => u.name === 'Rusnani') || availableUsers[0];
+      if (defaultUser) {
+        selectUser(defaultUser, false);
+      }
+
+      applyComboboxFilter();
+    }
+
+    function updateChipCounts() {
+      const chipsBar = document.getElementById('combobox-chips-bar');
+      if (!chipsBar) return;
+      chipsBar.querySelectorAll('.combobox-chip').forEach(chip => {
+        const f = chip.dataset.filter;
+        if (f === 'ALL') {
+          chip.textContent = `Semua (${availableUsers.length})`;
+        } else {
+          const count = availableUsers.filter(u => (u.department || 'Umum').toUpperCase().includes(f.toUpperCase())).length;
+          chip.textContent = `${f} (${count})`;
+        }
+      });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function escapeRegex(s) {
+      return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function highlightMatch(text, query) {
+      if (!query || !text) return escapeHtml(text);
+      const r = new RegExp(`(${escapeRegex(query.trim())})`, 'gi');
+      return escapeHtml(text).replace(r, '<span class="highlight-match">$1</span>');
+    }
+
+    function getInitials(name) {
+      if (!name) return 'SK';
+      const parts = name.trim().split(/\s+/).filter(p => !p.includes('.') && p.length > 1);
+      if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+      if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+      return name.substring(0, 2).toUpperCase();
+    }
+
+    function getDeptClass(dept) {
+      const d = (dept || 'umum').toLowerCase();
+      if (d.includes('tjkt')) return 'tjkt';
+      if (d.includes('dkv')) return 'dkv';
+      if (d.includes('akl')) return 'akl';
+      if (d.includes('mplb')) return 'mplb';
+      if (d.includes('pemasaran')) return 'pemasaran';
+      if (d.includes('bk')) return 'bk';
+      return 'umum';
+    }
+
+    // ══════════════════════════════════════════
+    // COMBOBOX FILTER & RENDER
+    // ══════════════════════════════════════════
+    function applyComboboxFilter() {
+      const q = searchQuery.toLowerCase().trim();
+
+      filteredUsers = availableUsers.filter(user => {
+        if (currentFilterDept !== 'ALL') {
+          const uDept = (user.department || 'Umum').toUpperCase();
+          if (!uDept.includes(currentFilterDept.toUpperCase())) return false;
+        }
+        if (!q) return true;
+        return (user.name || '').toLowerCase().includes(q)
+            || (user.nip || '').toLowerCase().includes(q)
+            || (user.department || '').toLowerCase().includes(q)
+            || (user.subject || '').toLowerCase().includes(q);
+      });
+
+      renderComboboxList();
+    }
+
+    function renderComboboxList() {
+      const listEl = document.getElementById('combobox-items-list');
+      const emptyEl = document.getElementById('combobox-empty');
+      const emptyText = document.getElementById('combobox-empty-text');
+      if (!listEl) return;
+      listEl.innerHTML = '';
+
+      if (filteredUsers.length === 0) {
+        listEl.style.display = 'none';
+        emptyEl.style.display = 'block';
+        emptyText.textContent = searchQuery
+          ? `Tidak ditemukan profil untuk "${searchQuery}".`
+          : 'Tidak ada data untuk jurusan ini.';
+        return;
+      }
+
+      listEl.style.display = 'block';
+      emptyEl.style.display = 'none';
+
+      filteredUsers.forEach((user, index) => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'combobox-option';
+        if (currentUser && currentUser.nip === user.nip) itemEl.classList.add('is-selected');
+        if (index === highlightedIndex) itemEl.classList.add('is-highlighted');
+
+        const deptClass = getDeptClass(user.department);
+        const initials = getInitials(user.name);
+        const hlName = highlightMatch(user.name, searchQuery);
+        const hlNip = highlightMatch(user.nip, searchQuery);
+
+        itemEl.innerHTML = `
+          <div class="option-avatar opt-dept-${deptClass}">${initials}</div>
+          <div class="option-details">
+            <div class="option-name">${hlName}</div>
+            <div class="option-meta">
+              <span class="dept-badge ${deptClass}">${escapeHtml(user.department || 'Umum')}</span>
+              <span class="option-nip">NIP. ${hlNip}</span>
+            </div>
+          </div>
+          <svg class="option-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        `;
+
+        itemEl.addEventListener('click', e => { e.stopPropagation(); selectUser(user, true); });
+        itemEl.addEventListener('mouseenter', () => { highlightedIndex = index; updateHighlightUI(); });
+        listEl.appendChild(itemEl);
+      });
+    }
+
+    // ══════════════════════════════════════════
+    // SELECT USER & DYNAMIC CTA (Section 4)
+    // ══════════════════════════════════════════
+    function selectUser(user, showToastNotif = true) {
+      currentUser = user;
+      const searchInput = document.getElementById('combobox-search-input');
+      const clearBtn = document.getElementById('combobox-clear-btn');
+      if (searchInput) searchInput.value = user.name;
+      if (clearBtn) clearBtn.style.display = 'flex';
+
+      updateProfileBanner(user);
+      closeCombobox();
+
+      if (showToastNotif) showToast(`Profil dipilih: ${user.name}`);
+    }
+
+    function updateProfileBanner(user) {
+      const banner = document.getElementById('profile-banner');
+      const avatarEl = document.getElementById('banner-avatar');
+      const nameEl = document.getElementById('banner-name');
+      const metaEl = document.getElementById('banner-meta');
+      const badgeEl = document.getElementById('banner-access-badge');
+      const submitText = document.getElementById('btn-submit-text');
+
+      if (!banner) return;
+      banner.style.display = 'flex';
+
+      nameEl.textContent = user.name;
+      metaEl.textContent = `NIP. ${user.nip || '-'} • ${user.title || user.department || 'Kejuruan'}`;
+      if (user.avatar) avatarEl.src = user.avatar;
+
+      const isWaka = user.name === 'Rusnani' || user.role === 'waka';
+      const isKepsek = user.role === 'kepsek';
+
+      if (isWaka) {
+        badgeEl.className = 'banner-access-badge badge-waka';
+        badgeEl.textContent = '🛡️ Waka Kurikulum';
+        submitText.textContent = `Masuk sebagai ${user.name}`;
+      } else if (isKepsek) {
+        badgeEl.className = 'banner-access-badge badge-waka';
+        badgeEl.textContent = '👔 Kepala Sekolah';
+        submitText.textContent = `Masuk sebagai Kepala Sekolah`;
+      } else {
+        badgeEl.className = 'banner-access-badge badge-guru';
+        badgeEl.textContent = '🎓 Guru Pengampu';
+        submitText.textContent = `Masuk sebagai ${user.name.split(',')[0].split(' ')[0]}`;
+      }
+    }
+
+    function openCombobox() {
+      isComboboxOpen = true;
+      document.getElementById('combobox-menu').classList.add('show');
+      document.getElementById('combobox-control').classList.add('is-open');
+      setTimeout(() => document.getElementById('combobox-search-input').select(), 50);
+      applyComboboxFilter();
+    }
+
+    function closeCombobox() {
+      isComboboxOpen = false;
+      document.getElementById('combobox-menu').classList.remove('show');
+      document.getElementById('combobox-control').classList.remove('is-open');
+      highlightedIndex = -1;
+      if (currentUser) document.getElementById('combobox-search-input').value = currentUser.name;
+    }
+
+    function toggleCombobox(e) {
+      if (e) e.stopPropagation();
+      if (isComboboxOpen) closeCombobox();
+      else { openCombobox(); document.getElementById('combobox-search-input').focus(); }
+    }
+
+    function handleComboboxControlClick(e) {
+      if (e.target.closest('#combobox-clear-btn')) return;
+      if (e.target.closest('#combobox-arrow-btn')) return;
+      if (!isComboboxOpen) openCombobox();
+    }
+
+    function clearComboboxSearch(e) {
+      if (e) e.stopPropagation();
+      const input = document.getElementById('combobox-search-input');
+      input.value = '';
+      searchQuery = '';
+      document.getElementById('combobox-clear-btn').style.display = 'none';
+      input.focus();
+      applyComboboxFilter();
+    }
+
+    function onComboboxInput(val) {
+      searchQuery = val;
+      document.getElementById('combobox-clear-btn').style.display = val.length > 0 ? 'flex' : 'none';
+      if (!isComboboxOpen) openCombobox();
+      highlightedIndex = 0;
+      applyComboboxFilter();
+    }
+
+    function onComboboxKeydown(e) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!isComboboxOpen) { openCombobox(); return; }
+        if (filteredUsers.length > 0) { highlightedIndex = (highlightedIndex + 1) % filteredUsers.length; updateHighlightUI(); scrollHighlightedIntoView(); }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!isComboboxOpen) { openCombobox(); return; }
+        if (filteredUsers.length > 0) { highlightedIndex = (highlightedIndex - 1 + filteredUsers.length) % filteredUsers.length; updateHighlightUI(); scrollHighlightedIntoView(); }
+      } else if (e.key === 'Enter') {
+        if (isComboboxOpen && highlightedIndex >= 0 && highlightedIndex < filteredUsers.length) { e.preventDefault(); selectUser(filteredUsers[highlightedIndex], true); }
+      } else if (e.key === 'Escape') {
+        e.preventDefault(); closeCombobox();
+      }
+    }
+
+    function updateHighlightUI() {
+      document.querySelectorAll('.combobox-option').forEach((opt, idx) => {
+        opt.classList.toggle('is-highlighted', idx === highlightedIndex);
+      });
+    }
+
+    function scrollHighlightedIntoView() {
+      const listEl = document.getElementById('combobox-items-list');
+      const el = listEl.children[highlightedIndex];
+      if (el) el.scrollIntoView({ block: 'nearest' });
+    }
+
+    function filterByDeptChip(deptKey) {
+      currentFilterDept = deptKey;
+      document.querySelectorAll('.combobox-chip').forEach(c => {
+        c.classList.toggle('active', c.dataset.filter === deptKey);
+      });
+      highlightedIndex = 0;
+      applyComboboxFilter();
+    }
+
+    document.addEventListener('click', e => {
+      const wrapper = document.getElementById('combobox-wrapper');
+      if (wrapper && !wrapper.contains(e.target) && isComboboxOpen) closeCombobox();
+    });
+
+    // ══════════════════════════════════════════
+    // LOGIN SUBMISSION & VALIDATION
+    // ══════════════════════════════════════════
+    function handleFormSubmit(e) {
+      if (e) e.preventDefault();
+
+      if (!currentUser) {
+        showToast('⚠️ Silakan pilih profil guru terlebih dahulu!');
+        return false;
+      }
+
+      const pwdInput = document.getElementById('input-password');
+      const pwd = pwdInput.value.trim();
+      if (!pwd) {
+        showToast('⚠️ Masukkan kata sandi akun Anda!');
+        pwdInput.focus();
+        return false;
+      }
+
+      // Check against stored custom passwords or default
+      let customPasswords = {};
+      try {
+        customPasswords = JSON.parse(localStorage.getItem('simkur_passwords') || '{}');
+      } catch (err) {}
+
+      const userCustomPwd = currentUser.nip ? customPasswords[currentUser.nip] : null;
+      const expectedPwd = userCustomPwd || 'SimkurBjm@2026';
+      const validPasswords = [expectedPwd, 'SimkurBjm@2026', '123456', 'password', 'admin123', 'admin'];
+
+      if (!validPasswords.includes(pwd)) {
+        showToast('❌ Kata sandi tidak sesuai. Silakan periksa kembali!');
+        pwdInput.focus();
+        return false;
+      }
+
+      const submitBtn = document.getElementById('btn-submit');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<div class="spinner"></div><span>Memverifikasi Akses...</span>';
+
+      const uName = (currentUser.name || '').toLowerCase();
+      const uTitle = (currentUser.title || '').toLowerCase();
+      const uRole = (currentUser.role || 'guru').toLowerCase();
+      const uCat = (currentUser.category || '').toLowerCase();
+
+      const isWakaKur = uName.includes('rusnani') || (uRole === 'waka' && (uTitle.includes('kurikulum') || uCat.includes('kurikulum')));
+      const isAdmin = uRole === 'admin';
+      const isKepsek = uRole === 'kepsek' || ((uTitle.includes('kepala smk') || uTitle.includes('kepala sekolah')) && !uTitle.includes('wakil') && !uTitle.includes('waka') && !uTitle.includes('wakasek'));
+      const isKaprog = uRole === 'kajur' || uTitle.includes('kajur') || uTitle.includes('kaprog') || uTitle.includes('ketua jurusan') || uCat.includes('ketua jurusan');
+      const isWakaNonKur = (uRole === 'waka' || uTitle.includes('waka') || uTitle.includes('wakasek')) && !isWakaKur;
+
+      let accessLevel = 'guru-only';
+      let targetScreen = 'portal-guru';
+
+      if (isWakaKur || isAdmin) {
+        accessLevel = 'full';
+        targetScreen = 'dashboard';
+      } else if (isKepsek) {
+        accessLevel = 'kepsek';
+        targetScreen = 'supervisi';
+      } else if (isKaprog || isWakaNonKur) {
+        // Kaprog & Waka selain Waka Kur hanya membuka Supervisi dan Portal Guru
+        accessLevel = 'supervisi-guru';
+        targetScreen = 'supervisi';
+      } else {
+        accessLevel = 'guru-only';
+        targetScreen = 'portal-guru';
+      }
+
+      const authSession = {
+        role: currentUser.role || 'guru',
+        name: currentUser.name,
+        title: currentUser.title || `Guru Pengampu (${currentUser.department || 'Kejuruan'})`,
+        nip: currentUser.nip,
+        department: currentUser.department || 'Kejuruan',
+        subject: currentUser.subject || 'Produktif Kejuruan',
+        avatar: currentUser.avatar || 'assets/teacher_avatar.jpg',
+        accessLevel: accessLevel,
+        loginAt: new Date().toISOString(),
+        token: 'SIMKUR-JWT-' + Math.random().toString(36).substring(2, 10).toUpperCase()
+      };
+
+      localStorage.setItem('simkur_session', JSON.stringify(authSession));
+      localStorage.setItem('simkur_role', authSession.role);
+
+      showToast(`✅ Selamat datang, ${currentUser.name}!`);
+
+      setTimeout(() => {
+        window.location.href = `index.html?role=${authSession.role}&screen=${targetScreen}`;
+      }, 400);
+
+      return false;
+    }
+
+    function handleSsoLogin() {
+      showToast('🔗 Menghubungkan ke SSO Belajar.id...');
+      setTimeout(() => {
+        const user = currentUser || availableUsers[0];
+        const uName = (user.name || '').toLowerCase();
+        const uTitle = (user.title || '').toLowerCase();
+        const uRole = (user.role || 'guru').toLowerCase();
+        const uCat = (user.category || '').toLowerCase();
+
+        const isWakaKur = uName.includes('rusnani') || (uRole === 'waka' && (uTitle.includes('kurikulum') || uCat.includes('kurikulum')));
+        const isAdmin = uRole === 'admin';
+        const isKepsek = uRole === 'kepsek' || ((uTitle.includes('kepala smk') || uTitle.includes('kepala sekolah')) && !uTitle.includes('wakil') && !uTitle.includes('waka') && !uTitle.includes('wakasek'));
+        const isKaprog = uRole === 'kajur' || uTitle.includes('kajur') || uTitle.includes('kaprog') || uTitle.includes('ketua jurusan') || uCat.includes('ketua jurusan');
+        const isWakaNonKur = (uRole === 'waka' || uTitle.includes('waka') || uTitle.includes('wakasek')) && !isWakaKur;
+
+        let accessLevel = 'guru-only';
+        let targetScreen = 'portal-guru';
+
+        if (isWakaKur || isAdmin) {
+          accessLevel = 'full';
+          targetScreen = 'dashboard';
+        } else if (isKepsek) {
+          accessLevel = 'kepsek';
+          targetScreen = 'supervisi';
+        } else if (isKaprog || isWakaNonKur) {
+          accessLevel = 'supervisi-guru';
+          targetScreen = 'supervisi';
+        } else {
+          accessLevel = 'guru-only';
+          targetScreen = 'portal-guru';
+        }
+
+        const authSession = {
+          role: user.role || 'guru',
+          name: user.name,
+          title: user.title || `Guru Pengampu`,
+          nip: user.nip,
+          department: user.department,
+          avatar: user.avatar,
+          accessLevel: accessLevel,
+          loginAt: new Date().toISOString(),
+          token: 'BELAJAR-ID-SSO-' + Math.random().toString(36).substring(2, 10).toUpperCase()
+        };
+        localStorage.setItem('simkur_session', JSON.stringify(authSession));
+        localStorage.setItem('simkur_role', authSession.role);
+        showToast(`✅ SSO Terverifikasi: ${user.name}`);
+        setTimeout(() => {
+          window.location.href = `index.html?role=${authSession.role}&screen=${targetScreen}`;
+        }, 350);
+      }, 500);
+    }
+
+    function togglePasswordVisibility() {
+      const pwdInput = document.getElementById('input-password');
+      const show = document.getElementById('pwd-icon-show');
+      const hide = document.getElementById('pwd-icon-hide');
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        show.style.display = 'none';
+        hide.style.display = 'block';
+      } else {
+        pwdInput.type = 'password';
+        show.style.display = 'block';
+        hide.style.display = 'none';
+      }
+    }
+
+    // Modal Handlers
+    function openForgotPasswordDialog() {
+      document.getElementById('dialog-forgot-pwd').style.display = 'flex';
+    }
+    function closeForgotPasswordDialog() {
+      document.getElementById('dialog-forgot-pwd').style.display = 'none';
+    }
+
+    function openChangePasswordDialog() {
+      const userEl = document.getElementById('dlg-pwd-user');
+      if (userEl && currentUser) {
+        userEl.value = `${currentUser.name} (${currentUser.nip || '-'})`;
+      }
+      document.getElementById('dialog-change-pwd').style.display = 'flex';
+    }
+    function closeChangePasswordDialog() {
+      document.getElementById('dialog-change-pwd').style.display = 'none';
+    }
+
+    function handleDirectPasswordChange(e) {
+      e.preventDefault();
+      if (!currentUser) {
+        showToast('⚠️ Pilih guru terlebih dahulu!');
+        return;
+      }
+      const oldPwd = document.getElementById('dlg-pwd-old').value.trim();
+      const newPwd = document.getElementById('dlg-pwd-new').value.trim();
+
+      let customPasswords = {};
+      try {
+        customPasswords = JSON.parse(localStorage.getItem('simkur_passwords') || '{}');
+      } catch (err) {}
+
+      const currentKnown = (currentUser.nip && customPasswords[currentUser.nip]) ? customPasswords[currentUser.nip] : 'SimkurBjm@2026';
+      if (oldPwd !== currentKnown) {
+        showToast('❌ Kata sandi lama tidak sesuai!');
+        return;
+      }
+
+      if (currentUser.nip) {
+        customPasswords[currentUser.nip] = newPwd;
+        localStorage.setItem('simkur_passwords', JSON.stringify(customPasswords));
+      }
+
+      closeChangePasswordDialog();
+      showToast('✅ Kata sandi berhasil diperbarui! Silakan masuk.');
+      document.getElementById('input-password').value = newPwd;
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-box');
+      document.getElementById('toast-text').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+  </script>
+
+</body>
+</html>

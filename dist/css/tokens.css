@@ -1,0 +1,154 @@
+/* ==========================================================================
+   SIMKUR — PORTAL KURIKULUM SEKOLAH
+   DESIGN TOKENS & SYSTEM SPECIFICATION
+   Aligned directly to Design Specification — SIMKUR.md
+   ========================================================================== */
+
+:root {
+  /* --------------------------------------------------------------------------
+     1. BRAND PALETTE (Design Specification Section 3)
+     -------------------------------------------------------------------------- */
+  --simkur-navy: #123B66;   /* Logo, sidebar, header */
+  --simkur-blue: #2563A6;   /* CTA, link, active state */
+  --soft-blue: #EAF4FF;     /* Selected card, informasi */
+  
+  --simkur-navy-dark: #0B2540;
+  --simkur-navy-light: #1A4D80;
+  --simkur-blue-hover: #1E528D;
+  --simkur-blue-active: #173E6B;
+  --soft-blue-border: #BCD9F8;
+
+  /* Primary System Aliases for Component Consistency */
+  --primary: var(--simkur-navy);
+  --primary-dark: var(--simkur-navy-dark);
+  --primary-light: var(--soft-blue);
+  --primary-hover: var(--simkur-blue-hover);
+  --primary-active: var(--simkur-blue-active);
+  --on-primary: #FFFFFF;
+
+  --secondary: var(--simkur-blue);
+  --secondary-hover: var(--simkur-blue-hover);
+  --secondary-light: var(--soft-blue);
+  --secondary-surface: #F0F6FD;
+  --on-secondary: #FFFFFF;
+
+  /* --------------------------------------------------------------------------
+     2. FUNCTIONAL & SEMANTIC STATUS COLORS (Section 3)
+     -------------------------------------------------------------------------- */
+  --color-success: #1F9D68;        /* Lengkap, aktif, tersinkron */
+  --color-success-bg: #E8F8F0;
+  --color-success-border: #A3ECCB;
+  --color-success-text: #0D6944;
+
+  --color-warning: #E89B2C;        /* Perlu review, deadline dekat */
+  --color-warning-bg: #FEF7EC;
+  --color-warning-border: #FADBB3;
+  --color-warning-text: #965B0B;
+
+  --color-danger: #D9535F;         /* Error, terlambat, nonaktif */
+  --color-danger-bg: #FDF2F3;
+  --color-danger-border: #F7C2C7;
+  --color-danger-text: #9B222E;
+
+  --color-info: #2563A6;           /* Informasi, netral interaktif */
+  --color-info-bg: #EAF4FF;
+  --color-info-border: #BCD9F8;
+  --color-info-text: #123B66;
+
+  /* Statistic Colors for KPI Grids */
+  --stat-navy: #123B66;
+  --stat-navy-light: #EAF4FF;
+  --stat-navy-bg: rgba(18, 59, 102, 0.08);
+
+  --stat-blue: #2563A6;
+  --stat-blue-light: #EAF4FF;
+  --stat-blue-bg: rgba(37, 99, 166, 0.10);
+
+  --stat-green: #1F9D68;
+  --stat-green-light: #E8F8F0;
+  --stat-green-bg: rgba(31, 157, 104, 0.10);
+
+  --stat-amber: #E89B2C;
+  --stat-amber-light: #FEF7EC;
+  --stat-amber-bg: rgba(232, 155, 44, 0.12);
+
+  /* --------------------------------------------------------------------------
+     3. NEUTRAL & SURFACE PALETTE (Section 3)
+     -------------------------------------------------------------------------- */
+  --background: #F4F7FA;           /* Background halaman */
+  --surface: #FFFFFF;              /* Card, tabel, modal */
+  --surface-dim: #EDF2F7;
+  --surface-container-low: #F8FAFC;
+  --surface-container: #F1F5F9;
+  --surface-container-high: #E2E8F0;
+  --surface-container-highest: #CBD5E1;
+
+  --text-primary: #172B4D;         /* Heading dan body */
+  --text-secondary: #6B7A90;       /* Metadata dan helper text */
+  --on-surface: #172B4D;
+  --on-surface-variant: #505F79;
+  --border: #DFE3E8;
+  --outline-light: #EBECF0;
+  --outline-variant: #DFE1E6;
+  --outline: #C1C7D0;
+  --muted: #97A0AF;
+
+  /* --------------------------------------------------------------------------
+     4. TYPOGRAPHY (Section 3: Inter, SF Pro, atau sans-serif modern)
+     -------------------------------------------------------------------------- */
+  --font-headline: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, Menlo, Monaco, monospace;
+
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.8125rem;  /* 13px */
+  --text-base: 0.875rem; /* 14px */
+  --text-md: 1rem;       /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+
+  /* --------------------------------------------------------------------------
+     5. GEOMETRY & RADIUS (Section 3: Radius card 16–20 px, touch target min 44x44)
+     -------------------------------------------------------------------------- */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;     /* Card standard radius (16px) */
+  --radius-xl: 20px;     /* Prominent card radius (20px) */
+  --radius-2xl: 24px;
+  --radius-pill: 999px;
+  --radius-full: 9999px;
+
+  --touch-target-min: 44px;
+
+  /* --------------------------------------------------------------------------
+     6. ELEVATION & SHADOWS
+     -------------------------------------------------------------------------- */
+  --shadow-xs: 0 1px 3px rgba(18, 59, 102, 0.05);
+  --shadow-sm: 0 2px 8px rgba(18, 59, 102, 0.06), 0 1px 2px rgba(18, 59, 102, 0.04);
+  --shadow-md: 0 6px 18px rgba(18, 59, 102, 0.08), 0 2px 6px rgba(18, 59, 102, 0.04);
+  --shadow-lg: 0 12px 32px rgba(18, 59, 102, 0.12), 0 4px 12px rgba(18, 59, 102, 0.06);
+  --shadow-flyout: 0 18px 42px -6px rgba(18, 59, 102, 0.18), 0 0 0 1px rgba(18, 59, 102, 0.08);
+
+  /* --------------------------------------------------------------------------
+     7. SPACING RHYTHM (Section 3: Kelipatan 4 px, Padding mobile 20–24 px)
+     -------------------------------------------------------------------------- */
+  --space-2xs: 0.25rem;  /* 4px */
+  --space-xs: 0.5rem;    /* 8px */
+  --space-sm: 0.75rem;   /* 12px */
+  --space-md: 1rem;      /* 16px */
+  --space-gutter: 1.25rem; /* 20px (Mobile standard) */
+  --space-lg: 1.5rem;    /* 24px (Mobile standard) */
+  --space-xl: 2rem;      /* 32px */
+  --space-2xl: 2.5rem;   /* 40px */
+
+  /* --------------------------------------------------------------------------
+     8. SHELL LAYOUT DIMENSIONS
+     -------------------------------------------------------------------------- */
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 76px;
+  --topbar-height: 70px;
+  --bottom-nav-height: 64px;
+}
