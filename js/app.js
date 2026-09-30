@@ -831,6 +831,24 @@
   // 6. SCREEN 1: DASHBOARD
   // =========================================================================
   function renderDashboard() {
+    // 0. Update welcome banner sesuai sesi user yang sedang login
+    try {
+      var rawSess = localStorage.getItem('simkur_session');
+      if (rawSess) {
+        var sess = JSON.parse(rawSess);
+        var rInfo = getUserRoleInfo(sess);
+        var wHead = document.getElementById('dashboard-welcome-heading') || document.querySelector('#screen-dashboard .welcome-banner h2');
+        var wBadge = document.getElementById('dashboard-welcome-role-badge') || document.querySelector('#screen-dashboard .welcome-banner .badge');
+        var topRole = document.getElementById('topbar-user-role-label');
+        if (wHead && sess.name) wHead.textContent = 'Selamat Datang, ' + sess.name + ' 👋';
+        if (wBadge) {
+          var rLbl = rInfo.isKepsek ? 'Kepala Sekolah' : (rInfo.isWakaKur ? 'Waka Kurikulum' : (rInfo.isKaprog ? 'Kajur / Kaprog' : (rInfo.isAdmin ? 'Admin SIMKUR' : 'Dewan Guru')));
+          wBadge.textContent = rLbl;
+        }
+        if (topRole && wBadge) topRole.textContent = wBadge.textContent;
+      }
+    } catch (e) {}
+
     const teachers = StorageManager.get('teachers');
     const classes = StorageManager.get('classes');
     const docs = StorageManager.get('documents');
@@ -7519,8 +7537,11 @@
     } catch (err) { /* ignore corrupt session */ }
 
     var roleInfo = getUserRoleInfo(session);
+    var isWakaKur = roleInfo.isWakaKur;
     var isGuruOnly = roleInfo.isGuruOnly;
     var isKaprogOrWakaNonKur = roleInfo.isKaprogOrWakaNonKur;
+    var isKepsek = roleInfo.isKepsek;
+    var isAdmin = roleInfo.isAdmin;
 
     // Update topbar user chip from session
     if (session) {
@@ -7532,13 +7553,38 @@
         var roleTitle = session.title;
         if (!roleTitle) {
           if (roleInfo.isWakaKur) roleTitle = 'Waka Kurikulum';
+          else if (roleInfo.isKepsek) roleTitle = 'Kepala Sekolah';
           else if (roleInfo.isKaprog) roleTitle = 'Kajur / Kaprog ' + (session.department || 'Kejuruan');
           else if (roleInfo.isWakaNonKur) roleTitle = 'Pimpinan Waka';
+          else if (roleInfo.isAdmin) roleTitle = 'Admin SIMKUR';
           else roleTitle = 'Guru Pengampu';
         }
         chipRole.textContent = roleTitle;
       }
       if (chipAvatar && session.avatar) chipAvatar.src = session.avatar;
+
+      // Update Dashboard welcome banner heading & badge
+      var welcomeHeading = document.getElementById('dashboard-welcome-heading') || document.querySelector('#screen-dashboard .welcome-banner h2');
+      var welcomeBadge = document.getElementById('dashboard-welcome-role-badge') || document.querySelector('#screen-dashboard .welcome-banner .badge');
+      var topbarRoleLabel = document.getElementById('topbar-user-role-label');
+
+      var roleLabel = 'Waka Kurikulum';
+      if (roleInfo.isKepsek) roleLabel = 'Kepala Sekolah';
+      else if (roleInfo.isWakaKur) roleLabel = 'Waka Kurikulum';
+      else if (roleInfo.isKaprog) roleLabel = 'Kajur / Kaprog ' + (session.department || '');
+      else if (roleInfo.isWakaNonKur) roleLabel = 'Wakil Kepala Sekolah';
+      else if (roleInfo.isAdmin) roleLabel = 'Admin SIMKUR';
+      else if (roleInfo.isGuruOnly) roleLabel = 'Dewan Guru';
+
+      if (welcomeHeading) {
+        welcomeHeading.textContent = 'Selamat Datang, ' + (session.name || 'Bapak/Ibu Guru') + ' 👋';
+      }
+      if (welcomeBadge) {
+        welcomeBadge.textContent = roleLabel;
+      }
+      if (topbarRoleLabel) {
+        topbarRoleLabel.textContent = roleLabel;
+      }
     }
 
     // ── ROLE ACCESS CONTROL (Kaprog & Waka Non-Kur: HANYA Supervisi & Portal Guru) ──

@@ -389,7 +389,7 @@
           <div class="header-school-context" style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
             <span class="header-school-name" style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">SMKN 1 Banjarmasin</span>
             <span style="color: #CBD5E1;">•</span>
-            <span style="font-size: 0.7rem; color: var(--simkur-blue); font-weight: 700;">Waka Kurikulum</span>
+            <span id="topbar-user-role-label" style="font-size: 0.7rem; color: var(--simkur-blue); font-weight: 700;">Waka Kurikulum</span>
           </div>
         </div>
       </div>
@@ -452,8 +452,8 @@
         <div class="welcome-banner" style="background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
           <div>
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-              <h2 style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); margin: 0;">Selamat Datang, Rusnani 👋</h2>
-              <span class="badge" style="background: var(--soft-blue); color: var(--simkur-blue); font-weight: 700; font-size: 0.725rem;">Waka Kurikulum</span>
+              <h2 id="dashboard-welcome-heading" style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); margin: 0;">Selamat Datang 👋</h2>
+              <span id="dashboard-welcome-role-badge" class="badge" style="background: var(--soft-blue); color: var(--simkur-blue); font-weight: 700; font-size: 0.725rem;">Waka Kurikulum</span>
             </div>
             <p style="font-size: 0.875rem; color: var(--text-secondary); margin: 0;">
               SIMKUR SMKN 1 Banjarmasin — Pengelolaan dokumen kurikulum, jadwal pelajaran, data master, dan monitoring administrasi guru.
@@ -3963,11 +3963,11 @@
 <script src="js/auth_users.js?v=8.4.0"></script>
 <script src="js/app.js?v=8.4.3"></script>
 <!-- 
-  ⚠️ DEPLOYMENT MODE: Vercel / Firebase Static
+  ⚠️ DEPLOYMENT MODE: Pi4 Local API
   Ganti ke firebase-service.js jika deploy ke Vercel/Firebase hosting
   Ganti ke api-service.js untuk deploy ke Raspberry Pi 4 + MySQL
 -->
-<script src="js/firebase-service.js?v=20260930-175945"></script>
+<script type="module" src="js/api-service.js?v=1.0.0"></script>
 
 </body>
 </html>
