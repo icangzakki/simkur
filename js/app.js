@@ -134,14 +134,39 @@
         }
       } catch (e) {}
 
-      // Inisialisasi Riwayat Jurnal Guru: KOSONG (0 Jurnal)
+      // Inisialisasi Riwayat Jurnal Guru: KOSONG (0 Jurnal) & Bersihkan Data Dummy Lama
       if (!localStorage.getItem(this.KEYS.GURU_JOURNALS)) {
         localStorage.setItem(this.KEYS.GURU_JOURNALS, JSON.stringify([]));
+      } else {
+        try {
+          var existJ = JSON.parse(localStorage.getItem(this.KEYS.GURU_JOURNALS) || '[]');
+          var cleanJ = existJ.filter(function (j) {
+            return !(j && j.topic && (j.topic.indexOf('Pendalaman Materi & Praktik Mandiri') >= 0 || j.topic.indexOf('Asesmen Formatif & Diskusi Reflektif') >= 0));
+          });
+          if (cleanJ.length !== existJ.length) {
+            localStorage.setItem(this.KEYS.GURU_JOURNALS, JSON.stringify(cleanJ));
+          }
+        } catch (e) {}
       }
 
-      // Inisialisasi Dokumen Perangkat Ajar Guru: KOSONG (0 Dokumen)
+      // Inisialisasi Dokumen Perangkat Ajar Guru: KOSONG (0 Dokumen) & Bersihkan Data Dummy Lama
       if (!localStorage.getItem(this.KEYS.GURU_DOCUMENTS)) {
         localStorage.setItem(this.KEYS.GURU_DOCUMENTS, JSON.stringify([]));
+      } else {
+        try {
+          var existD = JSON.parse(localStorage.getItem(this.KEYS.GURU_DOCUMENTS) || '[]');
+          var cleanD = existD.filter(function (d) {
+            return !(d && d.id && String(d.id).indexOf('GDOC-') === 0 && (
+              (d.title && d.title.indexOf('Modul Ajar (RPP)') >= 0) ||
+              (d.title && d.title.indexOf('Alur Tujuan Pembelajaran (ATP)') >= 0) ||
+              (d.title && d.title.indexOf('Program Tahunan & Semester') >= 0) ||
+              (d.title && d.title.indexOf('Kisi-kisi & Rubrik') >= 0)
+            ));
+          });
+          if (cleanD.length !== existD.length) {
+            localStorage.setItem(this.KEYS.GURU_DOCUMENTS, JSON.stringify(cleanD));
+          }
+        } catch (e) {}
       }
 
       // Inisialisasi Presensi Siswa Guru: KOSONG
@@ -4262,122 +4287,16 @@
     if (elBadge) elBadge.textContent = badgeText;
     if (elAvatar) elAvatar.src = displayAvatar;
 
-    // 3. Pastikan Dokumen & Jurnal guru ini terinisialisasi secara mandiri (privat)
+    // 3. Ambil Dokumen & Jurnal guru ini secara privat (mulai dari 0 / kosong jika belum ada)
     let allGuruDocs = StorageManager.get('guru_documents') || [];
     let teacherDocs = allGuruDocs.filter(function (d) {
       return String(d.teacher_id) === String(currentTeacherId);
     });
 
-    if (teacherDocs.length === 0) {
-      const defaultDocs = [
-        {
-          id: 'GDOC-' + currentTeacherId + '-1',
-          teacher_id: currentTeacherId,
-          title: 'Modul Ajar (RPP) ' + displaySubject + ' Fase E/F',
-          category: 'Modul Ajar',
-          school_year: '2026/2027',
-          file_name: 'Modul_Ajar_' + (displaySubject.replace(/[^a-zA-Z0-9]/g, '_')) + '.pdf',
-          file_size: '2.1 MB',
-          status: 'Disetujui Waka Kur',
-          score: 98,
-          notes: 'Sesuai Standar Proses Kurikulum Merdeka & SK Pembagian Tugas 2026.',
-          uploaded_at: '2026-07-15'
-        },
-        {
-          id: 'GDOC-' + currentTeacherId + '-2',
-          teacher_id: currentTeacherId,
-          title: 'Alur Tujuan Pembelajaran (ATP) ' + displaySubject,
-          category: 'Silabus & ATP',
-          school_year: '2026/2027',
-          file_name: 'ATP_' + (displaySubject.replace(/[^a-zA-Z0-9]/g, '_')) + '.pdf',
-          file_size: '1.4 MB',
-          status: 'Disetujui Waka Kur',
-          score: 96,
-          notes: 'Pemetaan capaian pembelajaran semester ganjil lengkap.',
-          uploaded_at: '2026-07-16'
-        },
-        {
-          id: 'GDOC-' + currentTeacherId + '-3',
-          teacher_id: currentTeacherId,
-          title: 'Program Tahunan & Semester (Prota & Promes) 2026/2027',
-          category: 'Program Tahunan / Semester',
-          school_year: '2026/2027',
-          file_name: 'Prota_Promes_2026_2027.xlsx',
-          file_size: '850 KB',
-          status: 'Disetujui Waka Kur',
-          score: 97,
-          notes: 'Alokasi pekan efektif dan jam tatap muka sesuai kalender akademik.',
-          uploaded_at: '2026-07-18'
-        },
-        {
-          id: 'GDOC-' + currentTeacherId + '-4',
-          teacher_id: currentTeacherId,
-          title: 'Kisi-kisi & Rubrik Instrumen Asesmen ' + displayDept,
-          category: 'Instrumen Asesmen',
-          school_year: '2026/2027',
-          file_name: 'Instrumen_Asesmen_2026.pdf',
-          file_size: '1.3 MB',
-          status: 'Disetujui Waka Kur',
-          score: 95,
-          notes: 'Instrumen asesmen formatif & sumatif terstandar industri.',
-          uploaded_at: '2026-07-20'
-        }
-      ];
-      defaultDocs.forEach(function (doc) {
-        StorageManager.add('guru_documents', doc);
-      });
-      teacherDocs = defaultDocs;
-    }
-
     let allGuruJournals = StorageManager.get('guru_journals') || [];
     let teacherJournals = allGuruJournals.filter(function (j) {
       return String(j.teacher_id) === String(currentTeacherId);
     });
-
-    if (teacherJournals.length === 0) {
-      const classInfo = getClassesForTeacher(currentTeacherId, false);
-      const defaultClassName = (classInfo.teacherClasses[0] && classInfo.teacherClasses[0].className) || 'XI A-' + (displayDept || 'TJKT');
-      const sampleJournals = [
-        {
-          id: 'JRN-' + currentTeacherId + '-1',
-          teacher_id: currentTeacherId,
-          teacher_name: displayName,
-          class_name: defaultClassName,
-          subject_name: displaySubject,
-          date: '2026-09-22',
-          time: 'Jam 1-4 (07:15 - 10:15 WITA)',
-          topic: 'Pendalaman Materi & Praktik Mandiri: ' + displaySubject,
-          methods: ['Project Based Learning (PjBL)', 'Praktikum Lab Bengkel'],
-          notes: 'Seluruh siswa aktif mengikuti praktikum dan menyelesaikan modul dengan baik.',
-          hadir_count: 35,
-          total_students: 36,
-          photo: 'assets/teacher_avatar.jpg',
-          status: 'Terverifikasi Waka Kur',
-          created_at: '2026-09-22 10:20'
-        },
-        {
-          id: 'JRN-' + currentTeacherId + '-2',
-          teacher_id: currentTeacherId,
-          teacher_name: displayName,
-          class_name: defaultClassName,
-          subject_name: displaySubject,
-          date: '2026-09-25',
-          time: 'Jam 5-8 (10:30 - 13:30 WITA)',
-          topic: 'Asesmen Formatif & Diskusi Reflektif Capaian Pembelajaran',
-          methods: ['Problem Based Learning', 'Diskusi Reflektif'],
-          notes: 'Asesmen formatif terlaksana tertib, pemahaman materi siswa mencapai rata-rata 88.5.',
-          hadir_count: 36,
-          total_students: 36,
-          photo: '',
-          status: 'Terverifikasi Waka Kur',
-          created_at: '2026-09-25 13:40'
-        }
-      ];
-      sampleJournals.forEach(function (jrn) {
-        StorageManager.add('guru_journals', jrn);
-      });
-      teacherJournals = sampleJournals;
-    }
 
     // 4. Update KPI Cards Guru yang sedang login
     const schedules = StorageManager.get('schedules') || [];
