@@ -20,7 +20,7 @@ INSERT INTO `teachers` (`id`, `name`, `nip`, `department`, `subject`, `is_active
 ('T-011', 'Noor Kumala Dewi, S.Pd', '197701192005012010', 'AKL', 'Matematika', 1),
 ('T-012', 'Nirmala Sari, S.Pd', '197112272005012005', 'Pemasaran', 'Dasar-Dasar Pemasaran', 1),
 ('T-013', 'Nurfitriana, S.Pd', '198004232006042024', 'BK', 'Bimbingan Konseling, Koordinator BK', 1),
-('T-014', 'Rusnani, SPd.,MM', '197308022000122003', 'AKL', 'Komputer Akuntansi, Waka Kurikulum', 1),
+('T-014', 'Rusnani, S.Pd., M.M', '197308022000122003', 'AKL', 'Komputer Akuntansi, Waka Kurikulum', 1),
 ('T-015', 'Lasmaria Verawati, S.Pd', '198303042006042017', 'AKL', 'Komputer Akuntansi, Praktikum Ak Pers Jasa, Dagang, dan Manufaktur, Akuntansi Keuangan', 1),
 ('T-016', 'Taibah, S.Pd', '197207082006042006', 'TJKT', 'Bhs Inggris dan Bhs Asing Lainnya', 1),
 ('T-017', 'Rahmiana, S.Pd', '198003092007012012', 'MPLB', 'Matematika', 1),

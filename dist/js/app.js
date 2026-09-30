@@ -197,7 +197,7 @@
         
         teachersList.forEach(function (t, idx) {
           var dept = (t.department || 'Umum').toUpperCase();
-          var supervisor = { id: 'T-001', name: 'Rusnani, S.Pd., M.T', role: 'Waka Kurikulum' };
+          var supervisor = { id: 'T-001', name: 'Rusnani, S.Pd., M.M', role: 'Waka Kurikulum' };
           
           if (dept.includes('TJKT') || dept.includes('TKJ')) {
             supervisor = { id: 'K-TJKT', name: 'Muhammad Ihsan, S.Kom', role: 'Kajur TJKT' };
@@ -308,7 +308,7 @@
         var manajerialData = [
           {
             id: 'M-001',
-            pimpinan_name: 'Rusnani, S.Pd., M.T',
+            pimpinan_name: 'Rusnani, S.Pd., M.M',
             nip: '197308022000122003',
             jabatan: 'Waka Kurikulum',
             fokus: 'Kurikulum Merdeka, Jadwal KBM, Verifikasi Perangkat Guru, SIMKUR',
@@ -6110,7 +6110,7 @@
       { code: 'AKL', name: 'Akuntansi & Keuangan Lembaga', kajur: 'Oky Wulan Maulina, S.Pd' },
       { code: 'MPLB', name: 'Manajemen Perkantoran & Layanan Bisnis', kajur: 'Akhmad Hanafi Maulana, S.E' },
       { code: 'Pemasaran', name: 'Pemasaran / Bisnis Daring', kajur: 'Futri Indri Septiani, S.Pd' },
-      { code: 'Umum', name: 'Muatan Umum & Pilihan', kajur: 'Rusnani, S.Pd., M.T (Waka)' }
+      { code: 'Umum', name: 'Muatan Umum & Pilihan', kajur: 'Rusnani, S.Pd., M.M (Waka)' }
     ];
 
     let gridHtml = '';
@@ -6545,7 +6545,7 @@
       { code: 'AKL', name: 'Akuntansi & Keuangan Lembaga', kajur: 'Oky Wulan Maulina, S.Pd' },
       { code: 'MPLB', name: 'Manajemen Perkantoran & Layanan Bisnis', kajur: 'Akhmad Hanafi Maulana, S.E' },
       { code: 'Pemasaran', name: 'Pemasaran / Bisnis Daring', kajur: 'Futri Indri Septiani, S.Pd' },
-      { code: 'Umum', name: 'Muatan Umum & Pilihan', kajur: 'Rusnani, S.Pd., M.T (Waka)' }
+      { code: 'Umum', name: 'Muatan Umum & Pilihan', kajur: 'Rusnani, S.Pd., M.M (Waka)' }
     ];
 
     let tableHtml = '';
@@ -6661,7 +6661,7 @@
         subject: teacher.subject || 'Mata Pelajaran',
         class_name: 'XI ' + (teacher.department || 'TJKT') + ' 1',
         supervisor_id: 'T-001',
-        supervisor_name: 'Rusnani, S.Pd., M.T',
+        supervisor_name: 'Rusnani, S.Pd., M.M',
         supervisor_role: 'Waka Kurikulum',
         status: 'Pra-observasi',
         tgl_observasi: new Date().toISOString().split('T')[0],
@@ -7352,7 +7352,7 @@
       '<div style="width: 40%;">' +
       '<div>Koordinator Supervisi (Waka Kurikulum),</div>' +
       '<div style="height: 50px;"></div>' +
-      '<div style="font-weight: bold; text-decoration: underline;">Rusnani, S.Pd., M.T</div>' +
+      '<div style="font-weight: bold; text-decoration: underline;">Rusnani, S.Pd., M.M</div>' +
       '<div>NIP. 197308022000122003</div>' +
       '</div>' +
       '<div style="width: 40%;">' +
@@ -7469,14 +7469,14 @@
     const teacher = teachers.find(function (t) { return String(t.id) === String(guruId); });
 
     const pengawasMap = {
-      'T-001': { name: 'Rusnani, S.Pd., M.T', role: 'Waka Kurikulum' },
+      'T-001': { name: 'Rusnani, S.Pd., M.M', role: 'Waka Kurikulum' },
       'K-TJKT': { name: 'Muhammad Ihsan, S.Kom', role: 'Kajur TJKT' },
       'K-DKV': { name: 'Hendra Surya Pratama, S.Kom', role: 'Kajur DKV' },
       'K-AKL': { name: 'Oky Wulan Maulina, S.Pd', role: 'Kajur AKL' },
       'K-MPLB': { name: 'Akhmad Hanafi Maulana, S.E', role: 'Kajur MPLB' },
       'K-PM': { name: 'Futri Indri Septiani, S.Pd', role: 'Kajur Pemasaran' }
     };
-    const pInfo = pengawasMap[pengawasId] || { name: 'Rusnani, S.Pd., M.T', role: 'Waka Kurikulum' };
+    const pInfo = pengawasMap[pengawasId] || { name: 'Rusnani, S.Pd., M.M', role: 'Waka Kurikulum' };
 
     const newSesi = {
       id: 'SESI-' + Date.now().toString().slice(-4),

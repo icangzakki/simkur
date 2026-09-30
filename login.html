@@ -1023,7 +1023,7 @@
         Untuk alasan keamanan data administrasi kurikulum sekolah, permohonan reset kata sandi dikelola langsung oleh Tim Waka Kurikulum SMKN 1 Banjarmasin.
       </p>
       <div style="background: var(--soft-blue); border: 1px solid var(--soft-blue-border); border-radius: 8px; padding: 10px 12px; font-size: 0.8125rem; color: var(--simkur-navy); margin-bottom: 1.25rem;">
-        <strong>Bantuan Langsung:</strong> Silakan hubungi Waka Kurikulum (Ibu Rusnani, S.Pd) atau staf TU Kurikulum di ruang Waka Kurikulum.
+        <strong>Bantuan Langsung:</strong> Silakan hubungi Waka Kurikulum (Ibu Rusnani, S.Pd., M.M) atau staf TU Kurikulum di ruang Waka Kurikulum.
       </div>
       <div style="display: flex; justify-content: flex-end;">
         <button type="button" class="btn-submit" style="width: auto; padding: 0 1.25rem; height: 40px; margin: 0;" onclick="closeForgotPasswordDialog()">
@@ -1111,7 +1111,7 @@
       updateChipCounts();
 
       // Default: select Rusnani (Waka Kurikulum) as primary administrative actor, or first guru
-      const defaultUser = availableUsers.find(u => u.name === 'Rusnani') || availableUsers[0];
+      const defaultUser = availableUsers.find(u => u.nip === '197308022000122003' || (u.name && u.name.includes('Rusnani') && u.role === 'waka')) || availableUsers[0];
       if (defaultUser) {
         selectUser(defaultUser, false);
       }

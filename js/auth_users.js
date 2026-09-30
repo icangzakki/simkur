@@ -3,7 +3,7 @@
  * Generated: 2026-10-01 dari Lampiran 1 2 3 ganjil 2026
  */
 window.SIMKUR_AUTH_USERS = [
-  {"nip": "197308022000122003", "name": "Rusnani, S.Pd., M.T", "role": "waka", "title": "Wakil Kepala Sekolah Bidang Kurikulum", "department": "AKL", "subject": "Komputer Akuntansi", "targetScreen": "dashboard", "avatar": "assets/teacher_avatar.jpg", "category": "Pimpinan & Tim Pengembang Kurikulum"},
+  {"nip": "197308022000122003", "name": "Rusnani, S.Pd., M.M", "role": "waka", "title": "Wakil Kepala Sekolah Bidang Kurikulum", "department": "AKL", "subject": "Komputer Akuntansi", "targetScreen": "dashboard", "avatar": "assets/teacher_avatar.jpg", "category": "Pimpinan & Tim Pengembang Kurikulum"},
   {"nip": "8554762663130202", "name": "Andry Dharmawan", "role": "admin", "title": "Admin Kurikulum | Operator TU", "department": "Tata Usaha", "subject": "Sinkronisasi Dapodik & Layanan Akademik", "targetScreen": "admin", "avatar": "assets/teacher_avatar.jpg", "category": "Tata Usaha"},
   {"nip": "ASESOR-DUDI-882190", "name": "Ir. Hendri Gunawan", "role": "asesor", "title": "Asesor Industri DUDI (PT Telkom)", "department": "TJKT", "subject": "Asesor Penguji LSP-P1 BNSP & Mitra Industri", "targetScreen": "ukk", "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&q=80", "category": "Mitra Industri"},
   {"nip": "197208211998032007", "name": "Agustin Purnomosari, S.Pd., M.Pd", "role": "kepsek", "title": "Kepala SMKN 1 Banjarmasin • SMKN 1 Banjarmasin", "department": "Manajemen", "subject": "Kepala Sekolah", "targetScreen": "laporan", "avatar": "assets/teacher_avatar.jpg", "category": "Pimpinan Sekolah"},

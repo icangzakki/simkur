@@ -46,7 +46,7 @@ window.SIMKUR_DATA = {
     {"id": "T-011", "name": "Noor Kumala Dewi, S.Pd", "nip": "197701192005012010", "department": "AKL", "subject": "Matematika", "is_active": true},
     {"id": "T-012", "name": "Nirmala Sari, S.Pd", "nip": "197112272005012005", "department": "Pemasaran", "subject": "Dasar-Dasar Pemasaran", "is_active": true},
     {"id": "T-013", "name": "Nurfitriana, S.Pd", "nip": "198004232006042024", "department": "BK", "subject": "Bimbingan Konseling, Koordinator BK", "is_active": true},
-    {"id": "T-014", "name": "Rusnani, SPd.,MM", "nip": "197308022000122003", "department": "AKL", "subject": "Komputer Akuntansi, Waka Kurikulum", "is_active": true},
+    {"id": "T-014", "name": "Rusnani, S.Pd., M.M", "nip": "197308022000122003", "department": "AKL", "subject": "Komputer Akuntansi, Waka Kurikulum", "is_active": true},
     {"id": "T-015", "name": "Lasmaria Verawati, S.Pd", "nip": "198303042006042017", "department": "AKL", "subject": "Komputer Akuntansi, Praktikum Ak Pers Jasa, Dagang, dan Manufaktur, Akuntansi Keuangan", "is_active": true},
     {"id": "T-016", "name": "Taibah, S.Pd", "nip": "197207082006042006", "department": "TJKT", "subject": "Bhs Inggris dan Bhs Asing Lainnya", "is_active": true},
     {"id": "T-017", "name": "Rahmiana, S.Pd", "nip": "198003092007012012", "department": "MPLB", "subject": "Matematika", "is_active": true},
