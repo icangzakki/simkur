@@ -49,7 +49,7 @@ $teacherId = $_POST['teacher_id'] ?? '';
 $date      = $_POST['date']       ?? date('Y-m-d');
 
 // Whitelist type folder
-$allowedTypes = ['jurnal', 'dokumen', 'supervisi', 'agenda', 'misc'];
+$allowedTypes = ['jurnal', 'dokumen', 'supervisi', 'agenda', 'misc', 'avatar'];
 if (!in_array($type, $allowedTypes, true)) {
     $type = 'misc';
 }

@@ -7561,7 +7561,13 @@
         }
         chipRole.textContent = roleTitle;
       }
-      if (chipAvatar && session.avatar) chipAvatar.src = session.avatar;
+      var customAvatars = {};
+      try { customAvatars = JSON.parse(localStorage.getItem('simkur_user_avatars') || '{}'); } catch(e){}
+      var resolvedAvatar = (session && session.nip && customAvatars[session.nip]) || (session && session.id && customAvatars[session.id]) || (session && session.name && customAvatars[session.name]) || session.avatar;
+      if (resolvedAvatar) {
+        session.avatar = resolvedAvatar;
+        if (chipAvatar) chipAvatar.src = resolvedAvatar;
+      }
 
       // Update Dashboard welcome banner heading & badge
       var welcomeHeading = document.getElementById('dashboard-welcome-heading') || document.querySelector('#screen-dashboard .welcome-banner h2');
@@ -7821,8 +7827,50 @@
     showToast('ℹ️ Status sinkronisasi: Sistem SIMKUR tersinkron 100% dengan Dapodik.');
   }
 
-  // ── CHANGE PASSWORD METHODS ──────────────────────────────────────────
-  function openChangePasswordModal() {
+  // ── ACCOUNT & PROFILE SETTINGS METHODS ────────────────────────────────
+  var pendingProfileAvatarDataUrl = null;
+  var pendingProfileAvatarFile = null;
+
+  function switchAccountTab(tab) {
+    var tabPhotoBtn = document.getElementById('tab-btn-profile-photo');
+    var tabPwdBtn = document.getElementById('tab-btn-security-pwd');
+    var panelPhoto = document.getElementById('tab-panel-profile-photo');
+    var panelPwd = document.getElementById('tab-panel-security-pwd');
+
+    if (tab === 'photo') {
+      if (panelPhoto) panelPhoto.style.display = 'flex';
+      if (panelPwd) panelPwd.style.display = 'none';
+      if (tabPhotoBtn) {
+        tabPhotoBtn.style.background = '#ffffff';
+        tabPhotoBtn.style.color = '#4B22B8';
+        tabPhotoBtn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)';
+        tabPhotoBtn.style.fontWeight = '700';
+      }
+      if (tabPwdBtn) {
+        tabPwdBtn.style.background = 'transparent';
+        tabPwdBtn.style.color = '#64748B';
+        tabPwdBtn.style.boxShadow = 'none';
+        tabPwdBtn.style.fontWeight = '600';
+      }
+    } else {
+      if (panelPhoto) panelPhoto.style.display = 'none';
+      if (panelPwd) panelPwd.style.display = 'block';
+      if (tabPwdBtn) {
+        tabPwdBtn.style.background = '#ffffff';
+        tabPwdBtn.style.color = '#4B22B8';
+        tabPwdBtn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)';
+        tabPwdBtn.style.fontWeight = '700';
+      }
+      if (tabPhotoBtn) {
+        tabPhotoBtn.style.background = 'transparent';
+        tabPhotoBtn.style.color = '#64748B';
+        tabPhotoBtn.style.boxShadow = 'none';
+        tabPhotoBtn.style.fontWeight = '600';
+      }
+    }
+  }
+
+  function openChangePasswordModal(initialTab) {
     var session = null;
     try {
       var raw = localStorage.getItem('simkur_session');
@@ -7831,11 +7879,14 @@
 
     var activeTeacher = null;
     if (session) {
+      var customAvatars = {};
+      try { customAvatars = JSON.parse(localStorage.getItem('simkur_user_avatars') || '{}'); } catch(e){}
+      var userAv = customAvatars[session.nip] || customAvatars[session.id] || customAvatars[session.name] || session.avatar || 'assets/teacher_avatar.jpg';
       activeTeacher = {
         name: session.name,
         nip: session.nip,
         title: session.title || (session.role === 'waka' ? 'Waka Kurikulum' : 'Guru'),
-        avatar: session.avatar || 'assets/teacher_avatar.jpg'
+        avatar: userAv
       };
     } else if (window.SIMKUR_DATA && window.SIMKUR_DATA.currentUser) {
       activeTeacher = window.SIMKUR_DATA.currentUser;
@@ -7844,13 +7895,32 @@
     var nameEl = document.getElementById('pwd-modal-name');
     var metaEl = document.getElementById('pwd-modal-meta');
     var avatarEl = document.getElementById('pwd-modal-avatar');
+    var badgeEl = document.getElementById('pwd-modal-role-badge');
 
     if (nameEl && activeTeacher) nameEl.textContent = activeTeacher.name;
     if (metaEl && activeTeacher) {
       metaEl.textContent = 'NIP. ' + (activeTeacher.nip || '-') + ' • ' + (activeTeacher.title || 'Guru Pengampu');
     }
+    if (badgeEl && activeTeacher) {
+      badgeEl.textContent = activeTeacher.title ? activeTeacher.title.split('|')[0].trim() : 'Guru Pengampu';
+    }
     if (avatarEl && activeTeacher && activeTeacher.avatar) {
       avatarEl.src = activeTeacher.avatar;
+    }
+
+    // Reset file upload state
+    pendingProfileAvatarDataUrl = null;
+    pendingProfileAvatarFile = null;
+    var fileInput = document.getElementById('input-profile-avatar');
+    if (fileInput) fileInput.value = '';
+
+    var statusText = document.getElementById('profile-avatar-status-text');
+    var statusBox = document.getElementById('profile-avatar-status-box');
+    if (statusText) statusText.textContent = 'Format didukung: JPG, PNG, WEBP. Maks 5MB. Foto otomatis disesuaikan secara proporsional.';
+    if (statusBox) {
+      statusBox.style.background = '#F8FAFC';
+      statusBox.style.borderColor = '#CBD5E1';
+      statusBox.style.color = '#64748B';
     }
 
     var curInput = document.getElementById('input-pwd-current');
@@ -7860,7 +7930,169 @@
     if (newInput) newInput.value = '';
     if (confInput) confInput.value = '';
 
+    switchAccountTab(initialTab === 'password' ? 'password' : 'photo');
     openModal('modal-change-password');
+  }
+
+  function handleProfileAvatarSelected(event) {
+    var input = event.target;
+    if (!input.files || !input.files[0]) return;
+    var file = input.files[0];
+
+    if (file.size > 8 * 1024 * 1024) {
+      showToast('⚠️ Ukuran file maksimal 8MB!');
+      input.value = '';
+      return;
+    }
+
+    if (!file.type.match(/^image\//)) {
+      showToast('⚠️ Hanya file gambar (JPG, PNG, WEBP) yang diperbolehkan!');
+      input.value = '';
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var dataUrl = e.target.result;
+      pendingProfileAvatarDataUrl = dataUrl;
+      pendingProfileAvatarFile = file;
+
+      var avatarEl = document.getElementById('pwd-modal-avatar');
+      if (avatarEl) avatarEl.src = dataUrl;
+
+      var statusText = document.getElementById('profile-avatar-status-text');
+      var statusBox = document.getElementById('profile-avatar-status-box');
+      if (statusText) {
+        statusText.textContent = '✨ Foto baru dipilih (' + Math.round(file.size / 1024) + ' KB). Klik "Simpan Foto Profil" untuk menerapkan.';
+      }
+      if (statusBox) {
+        statusBox.style.background = '#F5F3FF';
+        statusBox.style.borderColor = '#DDD6FE';
+        statusBox.style.color = '#4B22B8';
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function resetProfileAvatarToDefault() {
+    pendingProfileAvatarDataUrl = 'assets/teacher_avatar.jpg';
+    pendingProfileAvatarFile = null;
+
+    var avatarEl = document.getElementById('pwd-modal-avatar');
+    if (avatarEl) avatarEl.src = 'assets/teacher_avatar.jpg';
+
+    var statusText = document.getElementById('profile-avatar-status-text');
+    var statusBox = document.getElementById('profile-avatar-status-box');
+    if (statusText) {
+      statusText.textContent = '🔄 Foto akan direset ke gambar default. Klik "Simpan Foto Profil" untuk menerapkan.';
+    }
+    if (statusBox) {
+      statusBox.style.background = '#FFFBEB';
+      statusBox.style.borderColor = '#FDE68A';
+      statusBox.style.color = '#B45309';
+    }
+  }
+
+  function saveProfileAvatar() {
+    var targetAvatarUrl = pendingProfileAvatarDataUrl;
+    if (!targetAvatarUrl) {
+      showToast('ℹ️ Pilih foto baru terlebih dahulu atau foto tidak berubah.');
+      return;
+    }
+
+    var btn = document.getElementById('btn-save-profile-avatar');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menyimpan...';
+    }
+
+    function finalizeAvatarSave(savedUrl) {
+      var session = null;
+      try {
+        var raw = localStorage.getItem('simkur_session');
+        if (raw) session = JSON.parse(raw);
+      } catch (e) {}
+
+      if (session) {
+        session.avatar = savedUrl;
+        localStorage.setItem('simkur_session', JSON.stringify(session));
+      }
+
+      // Simpan juga ke map simkur_user_avatars agar login berikutnya tetap ingat
+      try {
+        var customAvatars = JSON.parse(localStorage.getItem('simkur_user_avatars') || '{}');
+        if (session && session.nip) customAvatars[session.nip] = savedUrl;
+        if (session && session.id) customAvatars[session.id] = savedUrl;
+        if (session && session.name) customAvatars[session.name] = savedUrl;
+        localStorage.setItem('simkur_user_avatars', JSON.stringify(customAvatars));
+      } catch (e) {}
+
+      // Perbarui tampilan avatar di seluruh layar
+      var topbarImg = document.querySelector('.topbar-user-chip img');
+      if (topbarImg) topbarImg.src = savedUrl;
+
+      var portalGuruAvatar = document.getElementById('portal-guru-avatar');
+      if (portalGuruAvatar) portalGuruAvatar.src = savedUrl;
+
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Simpan Foto Profil';
+      }
+
+      closeModal('modal-change-password');
+      showToast('✅ Foto profil berhasil diperbarui!', 'success');
+    }
+
+    // Jika reset ke default
+    if (targetAvatarUrl === 'assets/teacher_avatar.jpg') {
+      finalizeAvatarSave('assets/teacher_avatar.jpg');
+      return;
+    }
+
+    // Kompres gambar dengan canvas agar ukuran hemat dan performa cepat
+    var img = new Image();
+    img.onload = function() {
+      var maxDim = 360;
+      var w = img.width;
+      var h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) {
+          h = Math.round((h * maxDim) / w);
+          w = maxDim;
+        } else {
+          w = Math.round((w * maxDim) / h);
+          h = maxDim;
+        }
+      }
+      var canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      var compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+      // Upload ke server jika online
+      var session = null;
+      try { session = JSON.parse(localStorage.getItem('simkur_session') || 'null'); } catch(e){}
+      var teacherId = session ? (session.nip || session.id || 'guru') : 'guru';
+
+      if (pendingProfileAvatarFile && typeof apiService !== 'undefined' && apiService && typeof apiService.uploadFile === 'function' && apiService.status === 'CONNECTED') {
+        apiService.uploadFile(pendingProfileAvatarFile, 'avatar', String(teacherId))
+          .then(function(res) {
+            finalizeAvatarSave(res.url || compressedDataUrl);
+          })
+          .catch(function(err) {
+            console.warn('Upload avatar ke server gagal, menggunakan penyimpanan lokal:', err);
+            finalizeAvatarSave(compressedDataUrl);
+          });
+      } else {
+        finalizeAvatarSave(compressedDataUrl);
+      }
+    };
+    img.onerror = function() {
+      finalizeAvatarSave(targetAvatarUrl);
+    };
+    img.src = targetAvatarUrl;
   }
 
   function saveChangePassword(event) {
@@ -7925,6 +8157,10 @@
     openChangePasswordModal: openChangePasswordModal,
     saveChangePassword: saveChangePassword,
     togglePwdVisibility: togglePwdVisibility,
+    switchAccountTab: switchAccountTab,
+    handleProfileAvatarSelected: handleProfileAvatarSelected,
+    resetProfileAvatarToDefault: resetProfileAvatarToDefault,
+    saveProfileAvatar: saveProfileAvatar,
     switchScreen: switchScreen,
     openModal: openModal,
     closeModal: closeModal,

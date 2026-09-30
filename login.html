@@ -1265,7 +1265,10 @@
 
       nameEl.textContent = user.name;
       metaEl.textContent = `NIP. ${user.nip || '-'} • ${user.title || user.department || 'Kejuruan'}`;
-      if (user.avatar) avatarEl.src = user.avatar;
+      let customAvatars = {};
+      try { customAvatars = JSON.parse(localStorage.getItem('simkur_user_avatars') || '{}'); } catch(e){}
+      const userAvatar = customAvatars[user.nip] || customAvatars[user.id] || customAvatars[user.name] || user.avatar || 'assets/teacher_avatar.jpg';
+      avatarEl.src = userAvatar;
 
       const isWaka = user.name === 'Rusnani' || user.role === 'waka';
       const isKepsek = user.role === 'kepsek';
@@ -1441,6 +1444,10 @@
         targetScreen = 'portal-guru';
       }
 
+      let customAvatars = {};
+      try { customAvatars = JSON.parse(localStorage.getItem('simkur_user_avatars') || '{}'); } catch(e){}
+      const userAvatar = customAvatars[currentUser.nip] || customAvatars[currentUser.id] || customAvatars[currentUser.name] || currentUser.avatar || 'assets/teacher_avatar.jpg';
+
       const authSession = {
         role: currentUser.role || 'guru',
         name: currentUser.name,
@@ -1448,7 +1455,7 @@
         nip: currentUser.nip,
         department: currentUser.department || 'Kejuruan',
         subject: currentUser.subject || 'Produktif Kejuruan',
-        avatar: currentUser.avatar || 'assets/teacher_avatar.jpg',
+        avatar: userAvatar,
         accessLevel: accessLevel,
         loginAt: new Date().toISOString(),
         token: 'SIMKUR-JWT-' + Math.random().toString(36).substring(2, 10).toUpperCase()
