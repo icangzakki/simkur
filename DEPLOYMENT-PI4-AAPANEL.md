@@ -532,47 +532,58 @@ https://domain-sekolah.sch.id/api/health.php
 
 ## Cara Update Versi Baru
 
-Setiap ada perubahan fitur, perbaikan bug, atau update data guru.
+Setiap ada perubahan fitur, perbaikan bug, atau pembaruan kode, Anda dapat melakukan update dengan sangat mudah.
 
-### Langkah di Laptop (Anda)
+---
 
+### 🌟 METODE 1: Update via Git (Paling Cepat & Praktis — Direkomendasikan ⭐)
+
+Karena server Pi 4 sudah terhubung langsung ke repository GitHub SIMKUR, alur update hanya butuh 2 langkah sederhana:
+
+#### 1. Di Laptop Anda (setelah selesai edit kode):
+Buka terminal di folder project lalu jalankan:
 ```bash
-# 1. Lakukan perubahan kode / update data
-# 2. Build ZIP baru
+cd /Users/icangzakki/GAWIANKU/SIMKUR
+git add .
+git commit -m "Deskripsi perubahan/fitur baru"
+git push origin main
+```
+
+#### 2. Di Raspberry Pi 4 (Terminal aaPanel atau SSH):
+Buka terminal aaPanel lalu cukup jalankan:
+```bash
+cd /www/wwwroot/simkur
+git pull
+```
+> Selesai! Semua file kode terbaru langsung diterapkan di server dalam hitungan detik.
+
+#### 🛡️ Mengapa Metode Git Aman?
+- **Password DB Aman:** File `api/config.php` sudah diset `assume-unchanged` di Pi 4, sehingga kredensial database lokal tidak akan pernah tertimpa oleh GitHub.
+- **File Upload Aman:** Folder `uploads/` (foto KBM guru, file RPP, PDF modul) tidak terpengaruh oleh Git.
+- **Database MySQL Aman:** Data absensi, jurnal, agenda, dan administrasi guru tersimpan di MariaDB/MySQL dan tidak tersentuh.
+
+---
+
+### 📦 METODE 2: Update via ZIP & Script Otomatis (Alternatif Offline/Manual)
+
+Jika tidak ingin menggunakan Git pull di server:
+
+#### 1. Di Laptop:
+```bash
+cd /Users/icangzakki/GAWIANKU/SIMKUR
 bash scripts/build-deploy.sh
-# → menghasilkan simkur-deploy-TANGGALBARU.zip
-
-# 3. Kirim ZIP baru ke admin VPS
+# Menghasilkan file: simkur-deploy-YYYYMMDD-HHMMSS.zip
 ```
 
-### Langkah di Pi4 (via aaPanel)
-
-1. File Manager aaPanel → upload ZIP baru ke `/www/wwwroot/simkur/`
-2. Extract ZIP baru
-3. **Jangan timpa** `api/config.php` — saat extract ada konfirmasi "overwrite?", pilih **No** untuk file ini
-4. Hapus ZIP setelah selesai
-5. Hard refresh browser: **Ctrl+Shift+R**
-
-### Langkah di VPS (Admin Web) — Script Otomatis
-
-Script `update-simkur.sh` sudah ada di dalam ZIP dan melindungi `config.php` & `uploads/` secara otomatis:
-
-```bash
-# Upload ZIP baru ke VPS (via SCP atau panel)
-scp simkur-deploy-BARU.zip admin@IP-VPS:/var/www/simkur/
-
-# SSH ke VPS
-ssh admin@IP-VPS
-
-# Jalankan script update (sudah ada dari deploy pertama)
-bash /var/www/simkur/scripts/update-simkur.sh simkur-deploy-BARU.zip
-```
-
-Script otomatis melakukan:
-
-| Langkah | Tindakan |
-|---------|----------|
-| ① | Backup `api/config.php` (password DB aman) |
+#### 2. Di Pi 4 (via aaPanel):
+1. Buka aaPanel → menu **Files** → buka `/www/wwwroot/simkur/`.
+2. Klik **Upload** → upload file ZIP hasil build tadi.
+3. Buka menu **Terminal** di aaPanel, lalu jalankan:
+   ```bash
+   cd /www/wwwroot/simkur
+   bash scripts/update-simkur.sh simkur-deploy-*.zip
+   ```
+4. Ketik `y` untuk konfirmasi. Script akan mengekstrak file baru, melindungi `uploads/`, memulihkan `config.php`, dan merapikan izin akses file secara otomatis.
 | ② | Ekstrak ZIP baru ke folder sementara |
 | ③ | **Hapus** `config.php` & `uploads/` dari ekstrak |
 | ④ | Salin file baru ke web root |
