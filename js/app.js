@@ -1797,7 +1797,7 @@
       } else if (['jpg','jpeg','png','webp','gif'].includes(ext)) {
         bodyEl.innerHTML = '<div style="text-align: center; padding: 1rem;"><img src="' + fullUrl + '" style="max-width: 100%; max-height: 75vh; border-radius: 8px; box-shadow: var(--shadow-md);"></div>';
       } else {
-        bodyEl.innerHTML = '<div style="text-align:center;padding:2rem;"><p style="font-size:1rem;color:#555;">📄 File tersimpan di server Pi4.</p>' +
+        bodyEl.innerHTML = '<div style="text-align:center;padding:2rem;"><p style="font-size:1rem;color:#555;">📄 File tersimpan di Local Home Server.</p>' +
           '<a href="' + fullUrl + '" download class="btn btn-primary" style="margin-top:1rem;display:inline-flex;align-items:center;gap:8px;">⬇️ Download File</a></div>';
       }
     } else if (doc.file_data && doc.file_data.startsWith('data:application/pdf')) {
@@ -2143,7 +2143,7 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      showToast('⬇️ Mengunduh dari server Pi4...', 'info');
+      showToast('⬇️ Mengunduh dari Local Home Server...', 'info');
       return;
     }
 
@@ -5171,13 +5171,13 @@
         file_data: uploadedUrl ? null : (fileDataUrl || null), // ← base64 hanya jika offline
         status: 'Disetujui Waka Kur',
         score: 96,
-        notes: notes || (uploadedUrl ? 'Dokumen tersimpan di server Pi4.' : (fileLink ? 'Perangkat ajar terlampir via Google Drive akun belajar.id.' : 'Perangkat ajar diunggah melalui SIMKUR.')),
+        notes: notes || (uploadedUrl ? 'Dokumen tersimpan di Local Home Server.' : (fileLink ? 'Perangkat ajar terlampir via Google Drive akun belajar.id.' : 'Perangkat ajar diunggah melalui SIMKUR.')),
         uploaded_at: new Date().toISOString().split('T')[0]
       };
 
       StorageManager.add('guru_documents', newDoc);
 
-      // Sync ke MySQL Pi4
+      // Sync ke MySQL Local Home Server
       if (window.FirebaseService && typeof window.FirebaseService.saveDoc === 'function') {
         window.FirebaseService.saveDoc('guru_documents', newDoc.id, newDoc);
       }
@@ -5208,19 +5208,19 @@
     }
 
     if (file) {
-      // ── Coba upload ke Pi4 terlebih dahulu ──────────────────────────
+      // ── Coba upload ke Local Home Server terlebih dahulu ────────────
       const apiService = window.FirebaseService;
       if (apiService && typeof apiService.uploadFile === 'function' && apiService.status === 'CONNECTED') {
-        showToast('⬆️ Mengupload dokumen ke server Pi4...', 'info');
+        showToast('⬆️ Mengupload dokumen ke Local Home Server...', 'info');
         apiService.uploadFile(file, 'dokumen', String(targetTeacherId))
           .then(function(result) {
-            // Berhasil upload ke Pi4
-            showToast('✅ Dokumen berhasil disimpan di server Pi4 (' + result.size_kb + ' KB)!', 'success');
+            // Berhasil upload ke Home Server
+            showToast('✅ Dokumen berhasil disimpan di Local Home Server (' + result.size_kb + ' KB)!', 'success');
             commitDoc(null, result.url);
           })
           .catch(function(err) {
-            // Gagal upload ke Pi4 — fallback baca sebagai base64 lokal
-            console.warn('[Upload Dokumen] Gagal ke Pi4, fallback base64:', err.message);
+            // Gagal upload ke Home Server — fallback baca sebagai base64 lokal
+            console.warn('[Upload Dokumen] Gagal ke Home Server, fallback base64:', err.message);
             showToast('⚠️ Server tidak tersedia, dokumen disimpan lokal.', 'warning');
             if (file.size <= 10 * 1024 * 1024) {
               const reader = new FileReader();
@@ -5228,7 +5228,7 @@
               reader.onerror = function() { commitDoc(null, null); };
               reader.readAsDataURL(file);
             } else {
-              showToast('File terlalu besar untuk disimpan offline. Hubungkan ke server Pi4.', 'error');
+              showToast('File terlalu besar untuk disimpan offline. Hubungkan ke Local Home Server.', 'error');
             }
           });
       } else {
@@ -5239,7 +5239,7 @@
           reader.onerror = function() { commitDoc(null, null); };
           reader.readAsDataURL(file);
         } else {
-          showToast('File terlalu besar (' + (file.size/1024/1024).toFixed(1) + 'MB). Gunakan Google Drive link atau hubungkan ke server Pi4.', 'warning');
+          showToast('File terlalu besar (' + (file.size/1024/1024).toFixed(1) + 'MB). Gunakan Google Drive link atau hubungkan ke Local Home Server.', 'warning');
         }
       }
     } else {
@@ -8078,18 +8078,18 @@
           status: fb.status,
           errorMessage: fb.errorMessage,
           lastSync: fb.lastSyncTime,
-          projectId: fb.projectId || (fb.isPi4 ? 'pi4-local' : 'simkur')
+          projectId: fb.projectId || (fb.isPi4 ? 'home-server' : 'simkur')
         });
       }
     },
     checkFirebaseConnection: async function () {
       const fb = window.FirebaseService;
       if (!fb) return;
-      const isPi4 = (fb.projectId === 'pi4-local') || fb.isPi4;
-      showToast('Memeriksa koneksi ' + (isPi4 ? 'Database Server Pi4...' : 'Firebase Cloud...'), 'info');
+      const isHomeServer = !window.location.hostname.includes('vercel.app');
+      showToast('Memeriksa koneksi ' + (isHomeServer ? 'Database Local Home Server...' : 'Firebase Cloud...'), 'info');
       await fb.verifyConnection();
       if (fb.status === 'CONNECTED') {
-        showToast('✅ Berhasil terhubung ke ' + (isPi4 ? 'MySQL Server Pi4!' : 'Firebase Firestore!'), 'success');
+        showToast('✅ Berhasil terhubung ke ' + (isHomeServer ? 'MySQL Local Home Server!' : 'Firebase Firestore!'), 'success');
       } else {
         showToast('⚠️ ' + (fb.errorMessage || 'Belum terhubung ke database.'), 'warning');
       }
@@ -8097,25 +8097,26 @@
     seedFirebaseData: async function () {
       const fb = window.FirebaseService;
       if (!fb) return;
+      const isHomeServer = !window.location.hostname.includes('vercel.app');
       const btn = document.getElementById('btn-fb-seed');
       const progressEl = document.getElementById('fb-sync-progress');
       if (btn) btn.disabled = true;
       if (progressEl) {
         progressEl.style.display = 'block';
-        progressEl.textContent = 'Memulai migrasi data ke Firebase...';
+        progressEl.textContent = isHomeServer ? 'Memulai migrasi data ke Local Home Server...' : 'Memulai migrasi data ke Firebase...';
       }
 
       try {
-        showToast('Mengunggah data master, jadwal & dokumen ke Firebase...', 'info');
+        showToast(isHomeServer ? 'Mengunggah data master, jadwal & dokumen ke Home Server...' : 'Mengunggah data master, jadwal & dokumen ke Firebase...', 'info');
         await fb.seedAllToFirestore(function (p) {
           if (progressEl) {
             progressEl.textContent = 'Mengunggah ' + p.currentKey + ' (' + p.processed + '/' + p.total + ' item - ' + p.percent + '%)...';
           }
         });
         if (progressEl) {
-          progressEl.textContent = '✅ Berhasil! Seluruh data tersimpan di Firebase Firestore.';
+          progressEl.textContent = isHomeServer ? '✅ Berhasil! Seluruh data tersimpan di Local Home Server (MySQL).' : '✅ Berhasil! Seluruh data tersimpan di Firebase Firestore.';
         }
-        showToast('🎉 Seluruh data SIMKUR berhasil diunggah ke Firebase Cloud!', 'success');
+        showToast(isHomeServer ? '🎉 Seluruh data SIMKUR berhasil diunggah ke Local Home Server!' : '🎉 Seluruh data SIMKUR berhasil diunggah ke Firebase Cloud!', 'success');
       } catch (err) {
         if (progressEl) {
           progressEl.textContent = '❌ Gagal: ' + err.message;
@@ -8128,10 +8129,11 @@
     syncFromFirebase: async function () {
       const fb = window.FirebaseService;
       if (!fb) return;
+      const isHomeServer = !window.location.hostname.includes('vercel.app');
       const progressEl = document.getElementById('fb-sync-progress');
       if (progressEl) {
         progressEl.style.display = 'block';
-        progressEl.textContent = 'Mengunduh data dari Firebase Cloud...';
+        progressEl.textContent = isHomeServer ? 'Mengunduh data dari Local Home Server...' : 'Mengunduh data dari Firebase Cloud...';
       }
       try {
         const res = await fb.syncFromFirestore(function (p) {
@@ -8140,10 +8142,10 @@
           }
         });
         if (progressEl) {
-          progressEl.textContent = '✅ Berhasil menyinkronkan ' + res.count + ' dokumen dari cloud.';
+          progressEl.textContent = '✅ Berhasil menyinkronkan ' + res.count + ' data dari ' + (isHomeServer ? 'Home Server.' : 'cloud.');
         }
         refreshActiveScreen();
-        showToast('✅ Sinkronisasi dari Firebase selesai!', 'success');
+        showToast('✅ Sinkronisasi dari ' + (isHomeServer ? 'Home Server' : 'Firebase') + ' selesai!', 'success');
       } catch (err) {
         if (progressEl) {
           progressEl.textContent = '❌ Gagal: ' + err.message;
@@ -8255,16 +8257,28 @@
 
     if (isPi4) {
       if (modalTitle) modalTitle.textContent = 'Database Local Home Server';
-      if (modalSubtitle) modalSubtitle.textContent = 'Penyimpanan Lokal MySQL & Sinkronisasi Jaringan Sekolah';
+      if (modalSubtitle) modalSubtitle.textContent = 'Penyimpanan Lokal MySQL (Home Server) & Sinkronisasi Jaringan Sekolah';
       if (modalIcon) modalIcon.textContent = '🏠';
       if (modalFooter) modalFooter.textContent = 'SIMKUR Database Engine · Local Home Server';
-      if (setupGuide) setupGuide.style.display = 'none';
+      if (setupGuide) {
+        setupGuide.style.display = 'block';
+        setupGuide.style.background = '#F0FDF4';
+        setupGuide.style.borderColor = '#BBF7D0';
+        setupGuide.style.color = '#166534';
+        setupGuide.innerHTML = '<div style="font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;"><span>🔒</span> Server Lokal Mandiri (Offline Ready):</div><div style="margin-top: 4px;">Semua data guru, jurnal KBM, foto pembelajaran, dan jadwal tersimpan langsung di <strong>Local Home Server (aaPanel / MariaDB)</strong> sekolah. Tidak memerlukan koneksi internet luar.</div>';
+      }
     } else {
       if (modalTitle) modalTitle.textContent = 'Database Firebase Cloud';
       if (modalSubtitle) modalSubtitle.textContent = 'Integrasi Google Cloud Firestore & Sinkronisasi Multi-Device';
       if (modalIcon) modalIcon.textContent = '🔥';
       if (modalFooter) modalFooter.textContent = 'Firebase SDK v10.13.0 (Cloud Firestore)';
-      if (setupGuide) setupGuide.style.display = 'block';
+      if (setupGuide) {
+        setupGuide.style.display = 'block';
+        setupGuide.style.background = '#EFF6FF';
+        setupGuide.style.borderColor = '#BFDBFE';
+        setupGuide.style.color = '#1E40AF';
+        setupGuide.innerHTML = '<div style="font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;"><span>🔥</span> Integrasi Google Cloud Firestore:</div><div style="margin-top: 4px;">Data tersinkron otomatis ke Google Firebase Cloud (Project: ' + (detail.projectId || 'simkur') + ').</div>';
+      }
     }
 
     if (detail.status === 'SYNCING') {

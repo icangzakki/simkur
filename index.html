@@ -422,10 +422,10 @@
           <span>TA 2026/2027</span>
         </div>
 
-        <!-- Sync Status Badge (Section 5 & Firebase Cloud) -->
-        <div class="sync-status-badge" id="firebase-sync-status-badge" onclick="window.PORTAL_APP.openFirebaseModal()" title="Status Database Firebase Cloud (Klik untuk info & sinkronisasi)">
+        <!-- Sync Status Badge (Local Home Server / Cloud Sync) -->
+        <div class="sync-status-badge" id="firebase-sync-status-badge" onclick="window.PORTAL_APP.openFirebaseModal()" title="Status Database Local Home Server (Klik untuk info &amp; sinkronisasi)">
           <span class="pulse-dot" id="firebase-pulse-dot"></span>
-          <span id="firebase-status-text">Cloud Firebase</span>
+          <span id="firebase-status-text">Home Server</span>
         </div>
 
         <!-- Notification Bell (Section 5) -->
@@ -4126,13 +4126,13 @@
 
 <script src="js/data.js?v=8.4.0"></script>
 <script src="js/auth_users.js?v=8.4.0"></script>
-<script src="js/app.js?v=8.5.0"></script>
+<script src="js/app.js?v=8.5.1"></script>
 <!-- 
   ⚠️ DEPLOYMENT MODE: Pi4 Local API
   Ganti ke firebase-service.js jika deploy ke Vercel/Firebase hosting
   Ganti ke api-service.js untuk deploy ke Raspberry Pi 4 + MySQL
 -->
-<script type="module" src="js/api-service.js?v=8.5.0"></script>
+<script type="module" src="js/api-service.js?v=8.5.1"></script>
 
 </body>
 </html>

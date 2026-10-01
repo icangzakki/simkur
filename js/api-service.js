@@ -53,12 +53,12 @@ class ApiService {
     this._pollInterval = null;
     this._isSyncing = false;
     this.isPi4 = true;
-    this.projectId = 'pi4-local';
+    this.projectId = 'home-server';
 
     // Dengarkan saat PC kembali online agar otomatis auto-sync
     if (typeof window !== 'undefined') {
       window.addEventListener('online', () => {
-        console.log('🌐 [API] Koneksi kembali online, memverifikasi server Pi4...');
+        console.log('🌐 [API] Koneksi kembali online, memverifikasi Local Home Server...');
         this.verifyConnection();
       });
     }
@@ -95,21 +95,21 @@ class ApiService {
         this.status = 'CONNECTED';
         this.errorMessage = '';
         this.lastSyncTime = new Date();
-        console.log('✅ [API] Terhubung ke server Pi4. Tables:', res.data?.tables?.join(', '));
+        console.log('✅ [API] Terhubung ke Local Home Server. Tables:', res.data?.tables?.join(', '));
         this.notifyStatus();
 
         // ═════════════════════════════════════════════════════════════
         // AUTO-SYNC ON STARTUP:
-        // Cek data di database server Pi4
+        // Cek data di database Local Home Server
         // ═════════════════════════════════════════════════════════════
         const recordCounts = res.data?.record_counts || {};
         const totalServerRecords = Object.values(recordCounts).reduce((a, b) => a + Number(b || 0), 0);
 
         if (totalServerRecords > 0) {
-          // Segera tarik data dari MySQL Pi4 ke browser PC ini secara otomatis
+          // Segera tarik data dari MySQL Local Home Server ke browser PC ini secara otomatis
           this.autoSync(recordCounts);
         } else {
-          console.log('ℹ️ [API] Database Pi4 masih kosong (0 records). Menunggu input data.');
+          console.log('ℹ️ [API] Database Local Home Server masih kosong (0 records). Menunggu input data.');
         }
 
         // Mulai polling otomatis setiap 30 detik untuk sync real-time antar PC
@@ -135,12 +135,12 @@ class ApiService {
         status: 'SYNCING',
         errorMessage: '',
         lastSync: this.lastSyncTime,
-        projectId: 'pi4-local'
+        projectId: 'home-server'
       }
     }));
 
     try {
-      console.log('🔄 [API Auto-Sync] Mengunduh data terbaru dari database server Pi4...');
+      console.log('🔄 [API Auto-Sync] Mengunduh data terbaru dari database Local Home Server...');
       const res = await this.syncFromFirestore();
 
       if (res && res.count > 0) {
@@ -159,7 +159,7 @@ class ApiService {
         if (!lastNotice || (now - Number(lastNotice)) > 180000) {
           localStorage.setItem(noticeKey, String(now));
           if (window.PORTAL_APP && typeof window.PORTAL_APP.showToast === 'function') {
-            window.PORTAL_APP.showToast(`⚡ Sinkronisasi otomatis: ${res.count} data dimuat dari database Pi4`, 'success', 3500);
+            window.PORTAL_APP.showToast(`⚡ Sinkronisasi otomatis: ${res.count} data dimuat dari database Local Home Server`, 'success', 3500);
           }
         }
       }
@@ -178,7 +178,7 @@ class ApiService {
 
     if (!navigator.onLine || msg.includes('Failed to fetch') || msg.includes('NetworkError')) {
       this.status = 'OFFLINE';
-      this.errorMessage = 'Tidak bisa terhubung ke server Pi4. Menggunakan cache lokal.';
+      this.errorMessage = 'Tidak bisa terhubung ke Local Home Server. Menggunakan cache lokal.';
     } else if (msg.includes('404')) {
       this.errorMessage = 'API tidak ditemukan. Pastikan file api/ sudah di-upload ke server.';
     } else {
@@ -195,7 +195,7 @@ class ApiService {
         status: this.status,
         errorMessage: this.errorMessage,
         lastSync: this.lastSyncTime,
-        projectId: 'pi4-local'
+        projectId: 'home-server'
       }
     }));
   }
@@ -334,12 +334,12 @@ class ApiService {
   }
 
   /**
-   * Upload semua data lokal ke database Pi4
+   * Upload semua data lokal ke database Local Home Server
    * (Sama dengan seedAllToFirestore di firebase-service.js)
    */
   async seedAllToFirestore(onProgress) {
     if (this.status !== 'CONNECTED') {
-      throw new Error('Tidak terhubung ke server Pi4.');
+      throw new Error('Tidak terhubung ke Local Home Server.');
     }
 
     const sm = window.PORTAL_STORAGE;
@@ -378,12 +378,12 @@ class ApiService {
   }
 
   /**
-   * Download data dari Pi4 ke localStorage
+   * Download data dari Local Home Server ke localStorage
    * (Sama dengan syncFromFirestore di firebase-service.js)
    */
   async syncFromFirestore(onProgress) {
     if (this.status !== 'CONNECTED') {
-      throw new Error('Tidak terhubung ke server Pi4.');
+      throw new Error('Tidak terhubung ke Local Home Server.');
     }
 
     const sm = window.PORTAL_STORAGE;
@@ -414,7 +414,7 @@ class ApiService {
   }
 
   /**
-   * Reset status administrasi guru di database Pi4
+   * Reset status administrasi guru di database Local Home Server
    * (Sama dengan resetAdministrationInFirestore)
    */
   async resetAdministrationInFirestore() {
@@ -440,7 +440,7 @@ class ApiService {
         }
       }
 
-      console.log('✅ [API] Teacher administration reset di database Pi4.');
+      console.log('✅ [API] Teacher administration reset di database Local Home Server.');
     } catch (err) {
       console.warn('⚠️ [API] Reset error:', err.message);
     }
@@ -510,7 +510,7 @@ class ApiService {
     if (!file) return null;
 
     if (this.status !== 'CONNECTED') {
-      throw new Error('Tidak terhubung ke server Pi4. Coba lagi saat online.');
+      throw new Error('Tidak terhubung ke Local Home Server. Coba lagi saat online.');
     }
 
     try {
