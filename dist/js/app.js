@@ -1797,7 +1797,7 @@
       } else if (['jpg','jpeg','png','webp','gif'].includes(ext)) {
         bodyEl.innerHTML = '<div style="text-align: center; padding: 1rem;"><img src="' + fullUrl + '" style="max-width: 100%; max-height: 75vh; border-radius: 8px; box-shadow: var(--shadow-md);"></div>';
       } else {
-        bodyEl.innerHTML = '<div style="text-align:center;padding:2rem;"><p style="font-size:1rem;color:#555;">📄 File tersimpan di server Pi4.</p>' +
+        bodyEl.innerHTML = '<div style="text-align:center;padding:2rem;"><p style="font-size:1rem;color:#555;">📄 File tersimpan di Local Home Server.</p>' +
           '<a href="' + fullUrl + '" download class="btn btn-primary" style="margin-top:1rem;display:inline-flex;align-items:center;gap:8px;">⬇️ Download File</a></div>';
       }
     } else if (doc.file_data && doc.file_data.startsWith('data:application/pdf')) {
@@ -2143,7 +2143,7 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      showToast('⬇️ Mengunduh dari server Pi4...', 'info');
+      showToast('⬇️ Mengunduh dari Local Home Server...', 'info');
       return;
     }
 
@@ -5066,12 +5066,81 @@
 
   function renderGuruDocuments() {
     const tbody = document.getElementById('guru-docs-tbody');
+    const scoreGrid = document.getElementById('guru-doc-score-grid');
+    const totalBadge = document.getElementById('guru-doc-total-badge');
     if (!tbody) return;
 
     const allDocs = StorageManager.get('guru_documents') || [];
+    const currentId = State.currentGuruId || State.activeAdminTeacherId;
     const teacherDocs = allDocs.filter(function (d) {
-      return String(d.teacher_id) === String(State.currentGuruId);
+      return String(d.teacher_id) === String(currentId);
     });
+
+    // Cari dokumen per 4 kategori wajib
+    const findDoc = function (keywords) {
+      return teacherDocs.find(function (d) {
+        const cat = (d.category || '').toLowerCase();
+        return keywords.some(function (k) { return cat.indexOf(k.toLowerCase()) >= 0; });
+      });
+    };
+
+    const docModul = findDoc(['Modul Ajar', 'RPP']);
+    const docSilabus = findDoc(['Silabus', 'ATP']);
+    const docProta = findDoc(['Program Tahunan', 'Prota', 'Prosem', 'Semester']);
+    const docAsesmen = findDoc(['Asesmen', 'Instrumen', 'Penilaian']);
+
+    const categories = [
+      { key: 'modul', name: 'Modul Ajar', icon: '📘', border: '#5135D8', doc: docModul },
+      { key: 'silabus', name: 'Silabus & ATP', icon: '📗', border: '#45A9E8', doc: docSilabus },
+      { key: 'prota', name: 'Prota & Prosem', icon: '📅', border: '#20C985', doc: docProta },
+      { key: 'asesmen', name: 'Asesmen', icon: '📋', border: '#8BCB3D', doc: docAsesmen }
+    ];
+
+    if (scoreGrid) {
+      let gridHtml = '';
+      categories.forEach(function (c) {
+        if (c.doc) {
+          const score = c.doc.score || 95;
+          const status = c.doc.status || 'Disetujui Waka';
+          const isApproved = status.toLowerCase().indexOf('setuju') >= 0 || status.toLowerCase().indexOf('verif') >= 0;
+          gridHtml +=
+            '<div class="guru-doc-score-card" style="border-top: 3px solid ' + c.border + ';">' +
+              '<div class="guru-doc-score-label">' + c.icon + ' ' + c.name + '</div>' +
+              '<div class="guru-doc-score-value">' + score + '<span class="guru-doc-score-max">/100</span></div>' +
+              '<span class="guru-doc-score-badge ' + (isApproved ? 'badge-ok' : 'badge-pending') + '">' +
+                (isApproved ? '✓ ' : '⏳ ') + status +
+              '</span>' +
+            '</div>';
+        } else {
+          gridHtml +=
+            '<div class="guru-doc-score-card" style="border-top: 3px solid #CBD5E1; opacity: 0.85;">' +
+              '<div class="guru-doc-score-label" style="color: #64748B;">' + c.icon + ' ' + c.name + '</div>' +
+              '<div class="guru-doc-score-value" style="color: #94A3B8;">0<span class="guru-doc-score-max">/100</span></div>' +
+              '<span class="guru-doc-score-badge badge-empty">' +
+                '⏳ Belum Diunggah' +
+              '</span>' +
+            '</div>';
+        }
+      });
+      scoreGrid.innerHTML = gridHtml;
+    }
+
+    if (totalBadge) {
+      const count = teacherDocs.length;
+      if (count === 0) {
+        totalBadge.style.background = '#F1F5F9';
+        totalBadge.style.color = '#64748B';
+        totalBadge.textContent = '0 / 4 Belum Ada Berkas';
+      } else if (count >= 4) {
+        totalBadge.style.background = '#DEF7EC';
+        totalBadge.style.color = '#03543F';
+        totalBadge.textContent = count + ' / 4 Lengkap';
+      } else {
+        totalBadge.style.background = '#EFF6FF';
+        totalBadge.style.color = '#1D4ED8';
+        totalBadge.textContent = count + ' / 4 Terkumpul';
+      }
+    }
 
     if (teacherDocs.length === 0) {
       tbody.innerHTML =
@@ -5107,8 +5176,8 @@
           '<div class="guru-doc-card-body">' +
             '<div class="guru-doc-title">' + d.title + '</div>' +
             '<div class="guru-doc-filename">' +
-              (d.file_link ? '🌐 <a href="' + d.file_link + '" target="_blank" rel="noopener noreferrer" style="color: #4B22B8; font-weight: 700; text-decoration: underline;">Tautan Google Drive (Belajar.id)</a>' : ('📎 ' + (d.file_name || 'dokumen.pdf'))) +
-              ' &nbsp;·&nbsp; ' + (d.file_size || (d.file_link ? 'Cloud Link' : '1.2 MB')) +
+              (d.file_link ? '🏠 <a href="' + d.file_link + '" target="_blank" rel="noopener noreferrer" style="color: #4B22B8; font-weight: 700; text-decoration: underline;">Berkas Local Home Server</a>' : ('📎 ' + (d.file_name || 'dokumen.pdf'))) +
+              ' &nbsp;·&nbsp; ' + (d.file_size || '1.2 MB') +
             '</div>' +
             '<div class="guru-doc-meta-row">' +
               '<span class="guru-doc-cat-badge" style="background:' + cat.bg + ';color:' + cat.color + ';">' + d.category + '</span>' +
@@ -5149,14 +5218,14 @@
 
     const file = fileInput && fileInput.files && fileInput.files[0];
 
-    // Must provide either a file or a Google Drive link
+    // Dokumen wajib memilih file untuk disimpan ke Home Server
     if (!file && !fileLink) {
-      showToast('Harap tempelkan tautan Google Drive atau pilih berkas dokumen untuk diunggah.', 'warning');
+      showToast('Harap pilih berkas dokumen (PDF, DOCX, XLSX) untuk diunggah ke Home Server.', 'warning');
       return;
     }
 
-    const fileName = file ? file.name : (fileLink ? 'Tautan Google Drive (Akun Belajar.id)' : (title.replace(/\s+/g, '_') + '.pdf'));
-    const fileSize = file ? (file.size / 1024 / 1024).toFixed(1) + ' MB' : 'Cloud Link';
+    const fileName = file ? file.name : (fileLink ? 'Tautan Eksternal' : (title.replace(/\s+/g, '_') + '.pdf'));
+    const fileSize = file ? (file.size / 1024 / 1024).toFixed(1) + ' MB' : 'Server File';
 
     function commitDoc(fileDataUrl, uploadedUrl) {
       const newDoc = {
@@ -5171,13 +5240,13 @@
         file_data: uploadedUrl ? null : (fileDataUrl || null), // ← base64 hanya jika offline
         status: 'Disetujui Waka Kur',
         score: 96,
-        notes: notes || (uploadedUrl ? 'Dokumen tersimpan di server Pi4.' : (fileLink ? 'Perangkat ajar terlampir via Google Drive akun belajar.id.' : 'Perangkat ajar diunggah melalui SIMKUR.')),
+        notes: notes || (uploadedUrl ? 'Dokumen tersimpan di Local Home Server.' : (fileLink ? 'Perangkat ajar terlampir via Google Drive akun belajar.id.' : 'Perangkat ajar diunggah melalui SIMKUR.')),
         uploaded_at: new Date().toISOString().split('T')[0]
       };
 
       StorageManager.add('guru_documents', newDoc);
 
-      // Sync ke MySQL Pi4
+      // Sync ke MySQL Local Home Server
       if (window.FirebaseService && typeof window.FirebaseService.saveDoc === 'function') {
         window.FirebaseService.saveDoc('guru_documents', newDoc.id, newDoc);
       }
@@ -5208,19 +5277,19 @@
     }
 
     if (file) {
-      // ── Coba upload ke Pi4 terlebih dahulu ──────────────────────────
+      // ── Coba upload ke Local Home Server terlebih dahulu ────────────
       const apiService = window.FirebaseService;
       if (apiService && typeof apiService.uploadFile === 'function' && apiService.status === 'CONNECTED') {
-        showToast('⬆️ Mengupload dokumen ke server Pi4...', 'info');
+        showToast('⬆️ Mengupload dokumen ke Local Home Server...', 'info');
         apiService.uploadFile(file, 'dokumen', String(targetTeacherId))
           .then(function(result) {
-            // Berhasil upload ke Pi4
-            showToast('✅ Dokumen berhasil disimpan di server Pi4 (' + result.size_kb + ' KB)!', 'success');
+            // Berhasil upload ke Home Server
+            showToast('✅ Dokumen berhasil disimpan di Local Home Server (' + result.size_kb + ' KB)!', 'success');
             commitDoc(null, result.url);
           })
           .catch(function(err) {
-            // Gagal upload ke Pi4 — fallback baca sebagai base64 lokal
-            console.warn('[Upload Dokumen] Gagal ke Pi4, fallback base64:', err.message);
+            // Gagal upload ke Home Server — fallback baca sebagai base64 lokal
+            console.warn('[Upload Dokumen] Gagal ke Home Server, fallback base64:', err.message);
             showToast('⚠️ Server tidak tersedia, dokumen disimpan lokal.', 'warning');
             if (file.size <= 10 * 1024 * 1024) {
               const reader = new FileReader();
@@ -5228,7 +5297,7 @@
               reader.onerror = function() { commitDoc(null, null); };
               reader.readAsDataURL(file);
             } else {
-              showToast('File terlalu besar untuk disimpan offline. Hubungkan ke server Pi4.', 'error');
+              showToast('File terlalu besar untuk disimpan offline. Hubungkan ke Local Home Server.', 'error');
             }
           });
       } else {
@@ -5239,7 +5308,7 @@
           reader.onerror = function() { commitDoc(null, null); };
           reader.readAsDataURL(file);
         } else {
-          showToast('File terlalu besar (' + (file.size/1024/1024).toFixed(1) + 'MB). Gunakan Google Drive link atau hubungkan ke server Pi4.', 'warning');
+          showToast('File terlalu besar (' + (file.size/1024/1024).toFixed(1) + 'MB). Gunakan Google Drive link atau hubungkan ke Local Home Server.', 'warning');
         }
       }
     } else {
@@ -5289,69 +5358,87 @@
       return false;
     });
 
+    const hasActiveSession = !!sData;
+
     if (!sData) {
-      sData = allSessions[0] || {
-        id: 'SESI-DEMO',
+      sData = {
+        id: null,
         teacher_id: teacherId,
         teacher_name: targetName || 'Guru Pengampu',
         nip: targetNip || '-',
-        department: (teacher && teacher.department) || 'TJKT',
-        subject: (teacher && teacher.subject) || 'Mata Pelajaran Produktif',
-        supervisor_name: 'Muhammad Ihsan, S.Kom (Kajur TJKT)',
-        status: 'Selesai',
-        tgl_observasi: '2026-08-20',
-        wkt_observasi: '08.00 - 09.30 WITA',
-        class_name: 'XI A-TJKT',
-        room: 'Lab Jaringan & Komputer',
-        skor_b: 50,
-        nilai_b: 89.3,
-        skor_c: 64,
-        nilai_c: 88.9,
-        nilai_akhir: 89.1,
-        predikat: 'Baik',
+        department: (teacher && teacher.department) || 'Umum',
+        subject: (teacher && teacher.subject) || 'Mata Pelajaran',
+        supervisor_name: 'Belum Ditentukan',
+        status: 'Belum Dijadwalkan',
+        tgl_observasi: null,
+        wkt_observasi: null,
+        class_name: '-',
+        room: '-',
+        skor_b: 0,
+        nilai_b: 0,
+        skor_c: 0,
+        nilai_c: 0,
+        nilai_akhir: 0,
+        predikat: 'Belum Disupervisi',
         guru_konfirmasi: false
       };
     }
 
     // Ambil RTL untuk guru / sesi ini
     const allRtl = StorageManager.get('supervisi_rtl') || [];
-    const myRtl = allRtl.filter(function (r) {
-      return String(r.sesi_id) === String(sData.id) ||
+    const myRtl = hasActiveSession ? allRtl.filter(function (r) {
+      return (sData.id && String(r.sesi_id) === String(sData.id)) ||
              (r.teacher_name && cleanStr(r.teacher_name) === cleanStr(sData.teacher_name));
-    });
+    }) : [];
 
     // Kalkulasi Predikat dan Badge
-    var predikatBadgeClass = 'predikat-baik';
-    var predikatLabel = sData.predikat || 'Baik';
-    if (sData.nilai_akhir >= 91) {
-      predikatBadgeClass = 'predikat-amat-baik';
+    var predikatBadgeHtml = '';
+    var predikatLabel = 'Belum Disupervisi';
+    if (!hasActiveSession || !sData.nilai_akhir || sData.nilai_akhir <= 0) {
+      predikatBadgeHtml = '<span class="badge" style="background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1; font-weight: 700; padding: 4px 10px; border-radius: 20px;">⏳ BELUM DISUPERVISI</span>';
+    } else if (sData.nilai_akhir >= 91) {
       predikatLabel = 'Amat Baik';
+      predikatBadgeHtml = '<span class="badge predikat-amat-baik guru-supervisi-predikat-badge">⭐ AMAT BAIK</span>';
     } else if (sData.nilai_akhir >= 76) {
-      predikatBadgeClass = 'predikat-baik';
       predikatLabel = 'Baik';
+      predikatBadgeHtml = '<span class="badge predikat-baik guru-supervisi-predikat-badge">⭐ BAIK</span>';
     } else if (sData.nilai_akhir >= 61) {
-      predikatBadgeClass = 'predikat-cukup';
       predikatLabel = 'Cukup';
-    } else if (sData.nilai_akhir > 0) {
-      predikatBadgeClass = 'predikat-kurang';
+      predikatBadgeHtml = '<span class="badge predikat-cukup guru-supervisi-predikat-badge">⭐ CUKUP</span>';
+    } else {
       predikatLabel = 'Kurang';
+      predikatBadgeHtml = '<span class="badge predikat-kurang guru-supervisi-predikat-badge">⭐ KURANG</span>';
     }
 
-    var statusBadgeStyle = 'background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE;';
+    var statusBadgeStyle = 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;';
     if (sData.status === 'Selesai') {
       statusBadgeStyle = 'background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0;';
     } else if (sData.status === 'Pasca-observasi') {
       statusBadgeStyle = 'background: #FFFBEB; color: #B45309; border: 1px solid #FDE68A;';
     } else if (sData.status === 'Observasi') {
       statusBadgeStyle = 'background: #F3E8FF; color: #7E22CE; border: 1px solid #E9D5FF;';
+    } else if (sData.status === 'Pra-observasi') {
+      statusBadgeStyle = 'background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE;';
     }
 
     var isConfirmed = sData.guru_konfirmasi === true;
 
     // Timeline Siklus Klinis
-    var step1Done = ['Pra-observasi', 'Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
-    var step2Done = ['Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
-    var step3Done = ['Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+    var step1Done = hasActiveSession && ['Pra-observasi', 'Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+    var step2Done = hasActiveSession && ['Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+    var step3Done = hasActiveSession && ['Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+
+    var scheduleText = sData.tgl_observasi 
+      ? (sData.tgl_observasi + (sData.wkt_observasi ? ' (' + sData.wkt_observasi + ')' : ''))
+      : 'Belum Dijadwalkan';
+    var supervisorText = sData.supervisor_name || 'Belum Ditentukan';
+    var classText = (sData.class_name && sData.class_name !== '-') ? sData.class_name : '-';
+
+    var nilaiBDisplay = (sData.nilai_b && sData.nilai_b > 0) ? sData.nilai_b.toFixed(1) : '0';
+    var nilaiCDisplay = (sData.nilai_c && sData.nilai_c > 0) ? sData.nilai_c.toFixed(1) : '0';
+    var nilaiAkhirDisplay = (sData.nilai_akhir && sData.nilai_akhir > 0) ? sData.nilai_akhir.toFixed(1) : '0';
+    var nilaiAkhirClass = (sData.nilai_akhir && sData.nilai_akhir > 0) ? 'text-success' : '';
+    var nilaiAkhirStyle = (sData.nilai_akhir && sData.nilai_akhir > 0) ? 'color: #047857;' : 'color: #64748B;';
 
     // RTL Cards HTML (Card List - Tidak Ada Scroll Horizontal)
     var rtlCardsHtml = '';
@@ -5428,19 +5515,25 @@
           '<div class="guru-supervisi-header-info">' +
             '<div class="guru-supervisi-title-wrap">' +
               '<h3 class="guru-supervisi-main-title">Siklus Supervisi Akademik Klinis Guru</h3>' +
-              '<span class="badge" style="' + statusBadgeStyle + ' font-weight: 700; font-size: 0.78125rem; border-radius: 20px; padding: 3px 10px;">' + sData.status + '</span>' +
+              '<span class="badge" style="' + statusBadgeStyle + ' font-weight: 700; font-size: 0.78125rem; border-radius: 20px; padding: 3px 10px;">' + escapeHtml(sData.status) + '</span>' +
             '</div>' +
             '<p class="guru-supervisi-meta-desc">' +
-              'Supervisor: <strong>' + (sData.supervisor_name || 'Ketua Jurusan') + '</strong> • Jadwal: <strong>' + (sData.tgl_observasi || 'Terjadwal') + ' (' + (sData.wkt_observasi || '08.00 - 09.30 WITA') + ')</strong> • Kelas: <strong>' + (sData.class_name || 'XI KBM') + '</strong>' +
+              'Supervisor: <strong>' + escapeHtml(supervisorText) + '</strong> • Jadwal: <strong>' + escapeHtml(scheduleText) + '</strong> • Kelas: <strong>' + escapeHtml(classText) + '</strong>' +
             '</p>' +
           '</div>' +
           '<div class="guru-supervisi-header-actions">' +
-            '<button type="button" class="btn btn-outline guru-supervisi-act-btn" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + sData.id + '\')">' +
-              '<span>👁️ Detail Rubrik A, B, C</span>' +
-            '</button>' +
-            '<button type="button" class="btn btn-primary guru-supervisi-act-btn" onclick="window.PORTAL_APP.printSupervisiReport(\'' + sData.id + '\')">' +
-              '<span>🖨️ Cetak Lembar Hasil PDF</span>' +
-            '</button>' +
+            (hasActiveSession && sData.id ? (
+              '<button type="button" class="btn btn-outline guru-supervisi-act-btn" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + sData.id + '\')">' +
+                '<span>👁️ Detail Rubrik A, B, C</span>' +
+              '</button>' +
+              '<button type="button" class="btn btn-primary guru-supervisi-act-btn" onclick="window.PORTAL_APP.printSupervisiReport(\'' + sData.id + '\')">' +
+                '<span>🖨️ Cetak Lembar Hasil PDF</span>' +
+              '</button>'
+            ) : (
+              '<span class="badge" style="background: #F8FAFC; color: #64748B; border: 1px dashed #CBD5E1; padding: 7px 14px; font-size: 0.8125rem; font-weight: 600;">' +
+                '⏳ Belum Ada Jadwal Supervisi' +
+              '</span>'
+            )) +
           '</div>' +
         '</div>' +
       '</div>' +
@@ -5450,26 +5543,26 @@
         
         '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #6366F1;">' +
           '<span class="guru-supervisi-kpi-label">1. Telaah Perangkat (40%)</span>' +
-          '<div class="guru-supervisi-kpi-val">' + (sData.nilai_b > 0 ? sData.nilai_b.toFixed(1) : '-') + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
+          '<div class="guru-supervisi-kpi-val">' + nilaiBDisplay + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
           '<div class="guru-supervisi-kpi-sub">Skor: ' + (sData.skor_b || 0) + ' / 56 (Instrumen B)</div>' +
         '</div>' +
 
         '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #0EA5E9;">' +
           '<span class="guru-supervisi-kpi-label">2. Observasi KBM (60%)</span>' +
-          '<div class="guru-supervisi-kpi-val">' + (sData.nilai_c > 0 ? sData.nilai_c.toFixed(1) : '-') + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
+          '<div class="guru-supervisi-kpi-val">' + nilaiCDisplay + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
           '<div class="guru-supervisi-kpi-sub">Skor: ' + (sData.skor_c || 0) + ' / 72 (Instrumen C)</div>' +
         '</div>' +
 
         '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #10B981;">' +
           '<span class="guru-supervisi-kpi-label">Nilai Akhir Supervisi</span>' +
-          '<div class="guru-supervisi-kpi-val text-success" style="color: #047857;">' + (sData.nilai_akhir > 0 ? sData.nilai_akhir.toFixed(1) : '-') + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
-          '<div class="guru-supervisi-kpi-sub text-success" style="color: #059669; font-weight: 600;">Bobot: 40% B + 60% C</div>' +
+          '<div class="guru-supervisi-kpi-val ' + nilaiAkhirClass + '" style="' + nilaiAkhirStyle + '">' + nilaiAkhirDisplay + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
+          '<div class="guru-supervisi-kpi-sub ' + ((sData.nilai_akhir && sData.nilai_akhir > 0) ? 'text-success' : '') + '" style="' + ((sData.nilai_akhir && sData.nilai_akhir > 0) ? 'color: #059669; font-weight: 600;' : 'color: #94A3B8;') + '">Bobot: 40% B + 60% C</div>' +
         '</div>' +
 
         '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #F59E0B;">' +
           '<span class="guru-supervisi-kpi-label">Predikat Mutu</span>' +
           '<div style="margin: 4px 0;">' +
-            '<span class="badge ' + predikatBadgeClass + ' guru-supervisi-predikat-badge">⭐ ' + predikatLabel.toUpperCase() + '</span>' +
+            predikatBadgeHtml +
           '</div>' +
           '<div class="guru-supervisi-kpi-sub">Standar SMKN 1 Banjarmasin</div>' +
         '</div>' +
@@ -5523,29 +5616,37 @@
             '<p style="font-size: 0.75rem; color: #6B7280; margin: 0;">Konfirmasi penerimaan umpan balik dan catatan refleksi perbaikan diri</p>' +
           '</div>' +
           '<div>' +
-            (isConfirmed 
-              ? '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; border-radius: 20px; padding: 4px 12px;">✓ Sudah Dikonfirmasi Guru</span>'
-              : '<span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 700; border-radius: 20px; padding: 4px 12px;">⏳ Menunggu Konfirmasi Guru</span>') +
+            (!hasActiveSession 
+              ? '<span class="badge" style="background: #F1F5F9; color: #64748B; font-weight: 700; border-radius: 20px; padding: 4px 12px; border: 1px solid #CBD5E1;">Belum Ada Sesi</span>'
+              : (isConfirmed 
+                  ? '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; border-radius: 20px; padding: 4px 12px;">✓ Sudah Dikonfirmasi Guru</span>'
+                  : '<span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 700; border-radius: 20px; padding: 4px 12px;">⏳ Menunggu Konfirmasi Guru</span>')) +
           '</div>' +
         '</div>' +
         '<div class="content-card-body" style="padding: 1.25rem;">' +
-          (isConfirmed 
-            ? '<div class="guru-supervisi-confirmed-box" style="background: #F0FDF4; border: 1.5px solid #BBF7D0; border-radius: 14px; padding: 1.125rem;">' +
-                '<div style="font-weight: 800; color: #166534; font-size: 0.9375rem; margin-bottom: 4px;">✓ Anda telah membaca dan mengonfirmasi hasil umpan balik supervisi ini.</div>' +
-                '<div style="font-size: 0.8125rem; color: #15803D; margin-bottom: 6px;">Waktu Konfirmasi: <strong>' + (sData.guru_konfirmasi_at || 'Terverifikasi') + '</strong></div>' +
-                (sData.guru_refleksi ? '<div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #86EFAC; font-size: 0.8125rem; color: #14532D; line-height: 1.45;"><strong>Catatan Refleksi Mandiri Anda:</strong> ' + escapeHtml(sData.guru_refleksi) + '</div>' : '') +
+          (!hasActiveSession
+            ? '<div style="text-align: center; padding: 1.25rem 1rem; color: #64748B;">' +
+                '<div style="font-size: 1.75rem; margin-bottom: 0.35rem;">📝</div>' +
+                '<div style="font-weight: 700; font-size: 0.9375rem; color: #374151; margin-bottom: 4px;">Belum Ada Sesi Supervisi Terjadwal</div>' +
+                '<div style="font-size: 0.8125rem; color: #64748B;">Form refleksi dan umpan balik supervisi akan aktif setelah sesi observasi pembelajaran Anda dilaksanakan oleh supervisor.</div>' +
               '</div>'
-            : '<div style="margin-bottom: 0.5rem;">' +
-                '<label class="form-label" style="font-weight: 700; color: #374151; font-size: 0.8125rem; margin-bottom: 6px; display: block;">' +
-                  'Catatan Refleksi Mandiri Guru (Opsional):' +
-                '</label>' +
-                '<textarea id="input-guru-refleksi-text" class="form-input" rows="3" placeholder="Tuliskan refleksi mandiri Anda mengenai proses pembelajaran yang telah disupervisi dan komitmen tindak lanjut..." style="width: 100%; box-sizing: border-box; border-radius: 10px; padding: 10px; font-size: 0.875rem; line-height: 1.4; border: 1.5px solid #E2E8F0;"></textarea>' +
-                '<div class="guru-supervisi-confirm-wrap" style="margin-top: 12px;">' +
-                  '<button type="button" class="btn btn-primary guru-supervisi-confirm-btn" onclick="window.PORTAL_APP.confirmGuruSupervisi(\'' + sData.id + '\')">' +
-                    '<span>✓ Konfirmasi Sudah Membaca Umpan Balik (PRD FR-11)</span>' +
-                  '</button>' +
-                '</div>' +
-              '</div>') +
+            : (isConfirmed 
+                ? '<div class="guru-supervisi-confirmed-box" style="background: #F0FDF4; border: 1.5px solid #BBF7D0; border-radius: 14px; padding: 1.125rem;">' +
+                    '<div style="font-weight: 800; color: #166534; font-size: 0.9375rem; margin-bottom: 4px;">✓ Anda telah membaca dan mengonfirmasi hasil umpan balik supervisi ini.</div>' +
+                    '<div style="font-size: 0.8125rem; color: #15803D; margin-bottom: 6px;">Waktu Konfirmasi: <strong>' + (sData.guru_konfirmasi_at || 'Terverifikasi') + '</strong></div>' +
+                    (sData.guru_refleksi ? '<div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #86EFAC; font-size: 0.8125rem; color: #14532D; line-height: 1.45;"><strong>Catatan Refleksi Mandiri Anda:</strong> ' + escapeHtml(sData.guru_refleksi) + '</div>' : '') +
+                  '</div>'
+                : '<div style="margin-bottom: 0.5rem;">' +
+                    '<label class="form-label" style="font-weight: 700; color: #374151; font-size: 0.8125rem; margin-bottom: 6px; display: block;">' +
+                      'Catatan Refleksi Mandiri Guru (Opsional):' +
+                    '</label>' +
+                    '<textarea id="input-guru-refleksi-text" class="form-input" rows="3" placeholder="Tuliskan refleksi mandiri Anda mengenai proses pembelajaran yang telah disupervisi dan komitmen tindak lanjut..." style="width: 100%; box-sizing: border-box; border-radius: 10px; padding: 10px; font-size: 0.875rem; line-height: 1.4; border: 1.5px solid #E2E8F0;"></textarea>' +
+                    '<div class="guru-supervisi-confirm-wrap" style="margin-top: 12px;">' +
+                      '<button type="button" class="btn btn-primary guru-supervisi-confirm-btn" onclick="window.PORTAL_APP.confirmGuruSupervisi(\'' + sData.id + '\')">' +
+                        '<span>✓ Konfirmasi Sudah Membaca Umpan Balik (PRD FR-11)</span>' +
+                      '</button>' +
+                    '</div>' +
+                  '</div>')) +
         '</div>' +
       '</div>' +
 
@@ -8069,7 +8170,7 @@
     stepHadirCount: stepHadirCount,
     syncJurnalAttendanceBadge: syncJurnalAttendanceBadge,
     insertQuickText: insertQuickText,
-    // Firebase Cloud Methods
+    // Database / Sync Modal Methods
     openFirebaseModal: function () {
       openModal('modal-firebase-sync');
       const fb = window.FirebaseService;
@@ -8078,43 +8179,45 @@
           status: fb.status,
           errorMessage: fb.errorMessage,
           lastSync: fb.lastSyncTime,
-          projectId: 'simkur'
+          projectId: fb.projectId || (fb.isPi4 ? 'home-server' : 'simkur')
         });
       }
     },
     checkFirebaseConnection: async function () {
       const fb = window.FirebaseService;
       if (!fb) return;
-      showToast('Memeriksa koneksi Firebase Cloud...', 'info');
+      const isHomeServer = !window.location.hostname.includes('vercel.app');
+      showToast('Memeriksa koneksi ' + (isHomeServer ? 'Database Local Home Server...' : 'Firebase Cloud...'), 'info');
       await fb.verifyConnection();
       if (fb.status === 'CONNECTED') {
-        showToast('✅ Berhasil terhubung ke Firebase Firestore!', 'success');
+        showToast('✅ Berhasil terhubung ke ' + (isHomeServer ? 'MySQL Local Home Server!' : 'Firebase Firestore!'), 'success');
       } else {
-        showToast('⚠️ ' + (fb.errorMessage || 'Belum terhubung ke Firestore.'), 'warning');
+        showToast('⚠️ ' + (fb.errorMessage || 'Belum terhubung ke database.'), 'warning');
       }
     },
     seedFirebaseData: async function () {
       const fb = window.FirebaseService;
       if (!fb) return;
+      const isHomeServer = !window.location.hostname.includes('vercel.app');
       const btn = document.getElementById('btn-fb-seed');
       const progressEl = document.getElementById('fb-sync-progress');
       if (btn) btn.disabled = true;
       if (progressEl) {
         progressEl.style.display = 'block';
-        progressEl.textContent = 'Memulai migrasi data ke Firebase...';
+        progressEl.textContent = isHomeServer ? 'Memulai migrasi data ke Local Home Server...' : 'Memulai migrasi data ke Firebase...';
       }
 
       try {
-        showToast('Mengunggah data master, jadwal & dokumen ke Firebase...', 'info');
+        showToast(isHomeServer ? 'Mengunggah data master, jadwal & dokumen ke Home Server...' : 'Mengunggah data master, jadwal & dokumen ke Firebase...', 'info');
         await fb.seedAllToFirestore(function (p) {
           if (progressEl) {
             progressEl.textContent = 'Mengunggah ' + p.currentKey + ' (' + p.processed + '/' + p.total + ' item - ' + p.percent + '%)...';
           }
         });
         if (progressEl) {
-          progressEl.textContent = '✅ Berhasil! Seluruh data tersimpan di Firebase Firestore.';
+          progressEl.textContent = isHomeServer ? '✅ Berhasil! Seluruh data tersimpan di Local Home Server (MySQL).' : '✅ Berhasil! Seluruh data tersimpan di Firebase Firestore.';
         }
-        showToast('🎉 Seluruh data SIMKUR berhasil diunggah ke Firebase Cloud!', 'success');
+        showToast(isHomeServer ? '🎉 Seluruh data SIMKUR berhasil diunggah ke Local Home Server!' : '🎉 Seluruh data SIMKUR berhasil diunggah ke Firebase Cloud!', 'success');
       } catch (err) {
         if (progressEl) {
           progressEl.textContent = '❌ Gagal: ' + err.message;
@@ -8127,10 +8230,11 @@
     syncFromFirebase: async function () {
       const fb = window.FirebaseService;
       if (!fb) return;
+      const isHomeServer = !window.location.hostname.includes('vercel.app');
       const progressEl = document.getElementById('fb-sync-progress');
       if (progressEl) {
         progressEl.style.display = 'block';
-        progressEl.textContent = 'Mengunduh data dari Firebase Cloud...';
+        progressEl.textContent = isHomeServer ? 'Mengunduh data dari Local Home Server...' : 'Mengunduh data dari Firebase Cloud...';
       }
       try {
         const res = await fb.syncFromFirestore(function (p) {
@@ -8139,10 +8243,10 @@
           }
         });
         if (progressEl) {
-          progressEl.textContent = '✅ Berhasil menyinkronkan ' + res.count + ' dokumen dari cloud.';
+          progressEl.textContent = '✅ Berhasil menyinkronkan ' + res.count + ' data dari ' + (isHomeServer ? 'Home Server.' : 'cloud.');
         }
         refreshActiveScreen();
-        showToast('✅ Sinkronisasi dari Firebase selesai!', 'success');
+        showToast('✅ Sinkronisasi dari ' + (isHomeServer ? 'Home Server' : 'Firebase') + ' selesai!', 'success');
       } catch (err) {
         if (progressEl) {
           progressEl.textContent = '❌ Gagal: ' + err.message;
@@ -8150,11 +8254,13 @@
         showToast('Gagal sinkronisasi: ' + err.message, 'error');
       }
     },
-    resetTeacherAdminToZero: function () {
-      if (!confirm('Apakah Anda yakin ingin mereset seluruh status administrasi guru ke status awal (0% / belum ada yang mengumpulkan)? Data jurnal dan dokumen guru juga akan dikosongkan.')) {
+    resetTeacherAdminToZero: async function () {
+      if (!confirm('Apakah Anda yakin ingin mereset seluruh status administrasi guru ke status awal (0% / belum ada yang mengumpulkan)?\n\nSeluruh data dokumen berkas guru, jurnal mengajar, dan absensi akan dikosongkan baik di browser ini maupun di database server.')) {
         return;
       }
-      const teachers = StorageManager.get('teachers');
+      showToast('🔄 Mereset seluruh administrasi & berkas guru...', 'info');
+
+      const teachers = StorageManager.get('teachers') || [];
       const zeroMonitoring = teachers.map(function (t) {
         return {
           teacher_id: t.id,
@@ -8177,11 +8283,15 @@
       StorageManager.set('guru_attendance', []);
 
       if (window.FirebaseService && typeof window.FirebaseService.resetAdministrationInFirestore === 'function') {
-        window.FirebaseService.resetAdministrationInFirestore();
+        try {
+          await window.FirebaseService.resetAdministrationInFirestore();
+        } catch (e) {
+          console.warn('Reset error:', e);
+        }
       }
 
       refreshActiveScreen();
-      showToast('🎉 Seluruh administrasi guru telah direset ke 0 (Belum ada yang mengumpulkan).', 'success');
+      showToast('🎉 Seluruh berkas & administrasi guru berhasil direset ke status awal (0%).', 'success', 4000);
     },
     // Supervisi Akademik & Manajerial Methods (PRD SMKN 1 Banjarmasin)
     renderSupervisi: renderSupervisi,
@@ -8242,7 +8352,41 @@
 
     if (!badge || !textEl || !dot) return;
 
-    const isPi4 = detail.projectId === 'pi4-local';
+    // Mode Home Server jika bukan berjalan di domain vercel.app
+    const isPi4 = !window.location.hostname.includes('vercel.app');
+
+    // Adaptasi elemen modal untuk server Pi4 vs Firebase
+    const modalTitle = document.querySelector('#modal-firebase-sync .modal-header h3');
+    const modalSubtitle = document.querySelector('#modal-firebase-sync .modal-header p');
+    const modalIcon = document.querySelector('#modal-firebase-sync .modal-header span');
+    const modalFooter = document.querySelector('#modal-firebase-sync .modal-footer span');
+    const setupGuide = document.getElementById('fb-setup-guide');
+
+    if (isPi4) {
+      if (modalTitle) modalTitle.textContent = 'Database Local Home Server';
+      if (modalSubtitle) modalSubtitle.textContent = 'Penyimpanan Lokal MySQL (Home Server) & Sinkronisasi Jaringan Sekolah';
+      if (modalIcon) modalIcon.textContent = '🏠';
+      if (modalFooter) modalFooter.textContent = 'SIMKUR Database Engine · Local Home Server';
+      if (setupGuide) {
+        setupGuide.style.display = 'block';
+        setupGuide.style.background = '#F0FDF4';
+        setupGuide.style.borderColor = '#BBF7D0';
+        setupGuide.style.color = '#166534';
+        setupGuide.innerHTML = '<div style="font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;"><span>🔒</span> Server Lokal Mandiri (Offline Ready):</div><div style="margin-top: 4px;">Semua data guru, jurnal KBM, foto pembelajaran, dan jadwal tersimpan langsung di <strong>Local Home Server (aaPanel / MariaDB)</strong> sekolah. Tidak memerlukan koneksi internet luar.</div>';
+      }
+    } else {
+      if (modalTitle) modalTitle.textContent = 'Database Firebase Cloud';
+      if (modalSubtitle) modalSubtitle.textContent = 'Integrasi Google Cloud Firestore & Sinkronisasi Multi-Device';
+      if (modalIcon) modalIcon.textContent = '🔥';
+      if (modalFooter) modalFooter.textContent = 'Firebase SDK v10.13.0 (Cloud Firestore)';
+      if (setupGuide) {
+        setupGuide.style.display = 'block';
+        setupGuide.style.background = '#EFF6FF';
+        setupGuide.style.borderColor = '#BFDBFE';
+        setupGuide.style.color = '#1E40AF';
+        setupGuide.innerHTML = '<div style="font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;"><span>🔥</span> Integrasi Google Cloud Firestore:</div><div style="margin-top: 4px;">Data tersinkron otomatis ke Google Firebase Cloud (Project: ' + (detail.projectId || 'simkur') + ').</div>';
+      }
+    }
 
     if (detail.status === 'SYNCING') {
       badge.className = 'sync-status-badge sync-status-connecting';
@@ -8253,21 +8397,21 @@
       }
       if (modalDetails) {
         modalDetails.textContent = isPi4
-          ? 'Mengunduh dan memperbarui data otomatis dari database MySQL Pi4.'
+          ? 'Mengunduh dan memperbarui data otomatis dari database MySQL Home Server.'
           : 'Mengunduh dan memperbarui data dari Google Firebase Cloud.';
       }
     } else if (detail.status === 'CONNECTED') {
       badge.className = 'sync-status-badge sync-status-connected';
-      textEl.textContent = isPi4 ? 'Pi4 Terhubung' : 'Cloud Firebase';
+      textEl.textContent = isPi4 ? 'Home Server' : 'Cloud Firebase';
       dot.className = 'pulse-dot pulse-dot-active';
       if (modalStatus) {
         modalStatus.innerHTML = isPi4
-          ? '<span style="color: var(--color-success); font-weight: 700;">● Terhubung ke MySQL Pi4 (Auto-Sync Aktif)</span>'
+          ? '<span style="color: var(--color-success); font-weight: 700;">● Terhubung ke MySQL (Local Home Server)</span>'
           : '<span style="color: var(--color-success); font-weight: 700;">● Terhubung ke Cloud Firestore</span>';
       }
       if (modalDetails) {
         modalDetails.textContent = isPi4
-          ? 'Data tersinkronisasi otomatis dengan server MySQL Raspberry Pi 4 lokal (Auto-Sync aktif).'
+          ? 'Data tersinkronisasi otomatis dengan database MySQL Local Home Server sekolah (Auto-Sync aktif).'
           : 'Data tersinkron otomatis ke Google Firebase Cloud (Project: ' + detail.projectId + ').';
       }
     } else if (detail.status === 'CONNECTING') {
@@ -8275,7 +8419,7 @@
       textEl.textContent = 'Menghubungkan...';
       dot.className = 'pulse-dot pulse-dot-connecting';
       if (modalStatus) {
-        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">● Menghubungkan ke ' + (isPi4 ? 'Server Pi4' : 'Firebase') + '...</span>';
+        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">● Menghubungkan ke ' + (isPi4 ? 'Home Server' : 'Firebase') + '...</span>';
       }
     } else if (detail.status === 'OFFLINE') {
       badge.className = 'sync-status-badge sync-status-offline';
@@ -8292,7 +8436,7 @@
       textEl.textContent = 'Lokal Fallback';
       dot.className = 'pulse-dot pulse-dot-warning';
       if (modalStatus) {
-        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">● Mode Lokal (' + (isPi4 ? 'Server Pi4 Belum Aktif' : 'Firestore Belum Aktif') + ')</span>';
+        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">● Mode Lokal (' + (isPi4 ? 'Home Server Belum Aktif' : 'Firestore Belum Aktif') + ')</span>';
       }
       if (modalDetails) {
         modalDetails.textContent = detail.errorMessage || 'Belum terhubung ke database. Sistem berjalan dengan data lokal.';

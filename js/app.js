@@ -5358,69 +5358,87 @@
       return false;
     });
 
+    const hasActiveSession = !!sData;
+
     if (!sData) {
-      sData = allSessions[0] || {
-        id: 'SESI-DEMO',
+      sData = {
+        id: null,
         teacher_id: teacherId,
         teacher_name: targetName || 'Guru Pengampu',
         nip: targetNip || '-',
-        department: (teacher && teacher.department) || 'TJKT',
-        subject: (teacher && teacher.subject) || 'Mata Pelajaran Produktif',
-        supervisor_name: 'Muhammad Ihsan, S.Kom (Kajur TJKT)',
-        status: 'Selesai',
-        tgl_observasi: '2026-08-20',
-        wkt_observasi: '08.00 - 09.30 WITA',
-        class_name: 'XI A-TJKT',
-        room: 'Lab Jaringan & Komputer',
-        skor_b: 50,
-        nilai_b: 89.3,
-        skor_c: 64,
-        nilai_c: 88.9,
-        nilai_akhir: 89.1,
-        predikat: 'Baik',
+        department: (teacher && teacher.department) || 'Umum',
+        subject: (teacher && teacher.subject) || 'Mata Pelajaran',
+        supervisor_name: 'Belum Ditentukan',
+        status: 'Belum Dijadwalkan',
+        tgl_observasi: null,
+        wkt_observasi: null,
+        class_name: '-',
+        room: '-',
+        skor_b: 0,
+        nilai_b: 0,
+        skor_c: 0,
+        nilai_c: 0,
+        nilai_akhir: 0,
+        predikat: 'Belum Disupervisi',
         guru_konfirmasi: false
       };
     }
 
     // Ambil RTL untuk guru / sesi ini
     const allRtl = StorageManager.get('supervisi_rtl') || [];
-    const myRtl = allRtl.filter(function (r) {
-      return String(r.sesi_id) === String(sData.id) ||
+    const myRtl = hasActiveSession ? allRtl.filter(function (r) {
+      return (sData.id && String(r.sesi_id) === String(sData.id)) ||
              (r.teacher_name && cleanStr(r.teacher_name) === cleanStr(sData.teacher_name));
-    });
+    }) : [];
 
     // Kalkulasi Predikat dan Badge
-    var predikatBadgeClass = 'predikat-baik';
-    var predikatLabel = sData.predikat || 'Baik';
-    if (sData.nilai_akhir >= 91) {
-      predikatBadgeClass = 'predikat-amat-baik';
+    var predikatBadgeHtml = '';
+    var predikatLabel = 'Belum Disupervisi';
+    if (!hasActiveSession || !sData.nilai_akhir || sData.nilai_akhir <= 0) {
+      predikatBadgeHtml = '<span class="badge" style="background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1; font-weight: 700; padding: 4px 10px; border-radius: 20px;">⏳ BELUM DISUPERVISI</span>';
+    } else if (sData.nilai_akhir >= 91) {
       predikatLabel = 'Amat Baik';
+      predikatBadgeHtml = '<span class="badge predikat-amat-baik guru-supervisi-predikat-badge">⭐ AMAT BAIK</span>';
     } else if (sData.nilai_akhir >= 76) {
-      predikatBadgeClass = 'predikat-baik';
       predikatLabel = 'Baik';
+      predikatBadgeHtml = '<span class="badge predikat-baik guru-supervisi-predikat-badge">⭐ BAIK</span>';
     } else if (sData.nilai_akhir >= 61) {
-      predikatBadgeClass = 'predikat-cukup';
       predikatLabel = 'Cukup';
-    } else if (sData.nilai_akhir > 0) {
-      predikatBadgeClass = 'predikat-kurang';
+      predikatBadgeHtml = '<span class="badge predikat-cukup guru-supervisi-predikat-badge">⭐ CUKUP</span>';
+    } else {
       predikatLabel = 'Kurang';
+      predikatBadgeHtml = '<span class="badge predikat-kurang guru-supervisi-predikat-badge">⭐ KURANG</span>';
     }
 
-    var statusBadgeStyle = 'background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE;';
+    var statusBadgeStyle = 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;';
     if (sData.status === 'Selesai') {
       statusBadgeStyle = 'background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0;';
     } else if (sData.status === 'Pasca-observasi') {
       statusBadgeStyle = 'background: #FFFBEB; color: #B45309; border: 1px solid #FDE68A;';
     } else if (sData.status === 'Observasi') {
       statusBadgeStyle = 'background: #F3E8FF; color: #7E22CE; border: 1px solid #E9D5FF;';
+    } else if (sData.status === 'Pra-observasi') {
+      statusBadgeStyle = 'background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE;';
     }
 
     var isConfirmed = sData.guru_konfirmasi === true;
 
     // Timeline Siklus Klinis
-    var step1Done = ['Pra-observasi', 'Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
-    var step2Done = ['Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
-    var step3Done = ['Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+    var step1Done = hasActiveSession && ['Pra-observasi', 'Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+    var step2Done = hasActiveSession && ['Observasi', 'Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+    var step3Done = hasActiveSession && ['Pasca-observasi', 'Selesai'].indexOf(sData.status) !== -1;
+
+    var scheduleText = sData.tgl_observasi 
+      ? (sData.tgl_observasi + (sData.wkt_observasi ? ' (' + sData.wkt_observasi + ')' : ''))
+      : 'Belum Dijadwalkan';
+    var supervisorText = sData.supervisor_name || 'Belum Ditentukan';
+    var classText = (sData.class_name && sData.class_name !== '-') ? sData.class_name : '-';
+
+    var nilaiBDisplay = (sData.nilai_b && sData.nilai_b > 0) ? sData.nilai_b.toFixed(1) : '0';
+    var nilaiCDisplay = (sData.nilai_c && sData.nilai_c > 0) ? sData.nilai_c.toFixed(1) : '0';
+    var nilaiAkhirDisplay = (sData.nilai_akhir && sData.nilai_akhir > 0) ? sData.nilai_akhir.toFixed(1) : '0';
+    var nilaiAkhirClass = (sData.nilai_akhir && sData.nilai_akhir > 0) ? 'text-success' : '';
+    var nilaiAkhirStyle = (sData.nilai_akhir && sData.nilai_akhir > 0) ? 'color: #047857;' : 'color: #64748B;';
 
     // RTL Cards HTML (Card List - Tidak Ada Scroll Horizontal)
     var rtlCardsHtml = '';
@@ -5497,19 +5515,25 @@
           '<div class="guru-supervisi-header-info">' +
             '<div class="guru-supervisi-title-wrap">' +
               '<h3 class="guru-supervisi-main-title">Siklus Supervisi Akademik Klinis Guru</h3>' +
-              '<span class="badge" style="' + statusBadgeStyle + ' font-weight: 700; font-size: 0.78125rem; border-radius: 20px; padding: 3px 10px;">' + sData.status + '</span>' +
+              '<span class="badge" style="' + statusBadgeStyle + ' font-weight: 700; font-size: 0.78125rem; border-radius: 20px; padding: 3px 10px;">' + escapeHtml(sData.status) + '</span>' +
             '</div>' +
             '<p class="guru-supervisi-meta-desc">' +
-              'Supervisor: <strong>' + (sData.supervisor_name || 'Ketua Jurusan') + '</strong> • Jadwal: <strong>' + (sData.tgl_observasi || 'Terjadwal') + ' (' + (sData.wkt_observasi || '08.00 - 09.30 WITA') + ')</strong> • Kelas: <strong>' + (sData.class_name || 'XI KBM') + '</strong>' +
+              'Supervisor: <strong>' + escapeHtml(supervisorText) + '</strong> • Jadwal: <strong>' + escapeHtml(scheduleText) + '</strong> • Kelas: <strong>' + escapeHtml(classText) + '</strong>' +
             '</p>' +
           '</div>' +
           '<div class="guru-supervisi-header-actions">' +
-            '<button type="button" class="btn btn-outline guru-supervisi-act-btn" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + sData.id + '\')">' +
-              '<span>👁️ Detail Rubrik A, B, C</span>' +
-            '</button>' +
-            '<button type="button" class="btn btn-primary guru-supervisi-act-btn" onclick="window.PORTAL_APP.printSupervisiReport(\'' + sData.id + '\')">' +
-              '<span>🖨️ Cetak Lembar Hasil PDF</span>' +
-            '</button>' +
+            (hasActiveSession && sData.id ? (
+              '<button type="button" class="btn btn-outline guru-supervisi-act-btn" onclick="window.PORTAL_APP.openSupervisiKlinisModal(\'' + sData.id + '\')">' +
+                '<span>👁️ Detail Rubrik A, B, C</span>' +
+              '</button>' +
+              '<button type="button" class="btn btn-primary guru-supervisi-act-btn" onclick="window.PORTAL_APP.printSupervisiReport(\'' + sData.id + '\')">' +
+                '<span>🖨️ Cetak Lembar Hasil PDF</span>' +
+              '</button>'
+            ) : (
+              '<span class="badge" style="background: #F8FAFC; color: #64748B; border: 1px dashed #CBD5E1; padding: 7px 14px; font-size: 0.8125rem; font-weight: 600;">' +
+                '⏳ Belum Ada Jadwal Supervisi' +
+              '</span>'
+            )) +
           '</div>' +
         '</div>' +
       '</div>' +
@@ -5519,26 +5543,26 @@
         
         '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #6366F1;">' +
           '<span class="guru-supervisi-kpi-label">1. Telaah Perangkat (40%)</span>' +
-          '<div class="guru-supervisi-kpi-val">' + (sData.nilai_b > 0 ? sData.nilai_b.toFixed(1) : '-') + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
+          '<div class="guru-supervisi-kpi-val">' + nilaiBDisplay + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
           '<div class="guru-supervisi-kpi-sub">Skor: ' + (sData.skor_b || 0) + ' / 56 (Instrumen B)</div>' +
         '</div>' +
 
         '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #0EA5E9;">' +
           '<span class="guru-supervisi-kpi-label">2. Observasi KBM (60%)</span>' +
-          '<div class="guru-supervisi-kpi-val">' + (sData.nilai_c > 0 ? sData.nilai_c.toFixed(1) : '-') + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
+          '<div class="guru-supervisi-kpi-val">' + nilaiCDisplay + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
           '<div class="guru-supervisi-kpi-sub">Skor: ' + (sData.skor_c || 0) + ' / 72 (Instrumen C)</div>' +
         '</div>' +
 
         '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #10B981;">' +
           '<span class="guru-supervisi-kpi-label">Nilai Akhir Supervisi</span>' +
-          '<div class="guru-supervisi-kpi-val text-success" style="color: #047857;">' + (sData.nilai_akhir > 0 ? sData.nilai_akhir.toFixed(1) : '-') + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
-          '<div class="guru-supervisi-kpi-sub text-success" style="color: #059669; font-weight: 600;">Bobot: 40% B + 60% C</div>' +
+          '<div class="guru-supervisi-kpi-val ' + nilaiAkhirClass + '" style="' + nilaiAkhirStyle + '">' + nilaiAkhirDisplay + ' <span class="guru-supervisi-kpi-max">/ 100</span></div>' +
+          '<div class="guru-supervisi-kpi-sub ' + ((sData.nilai_akhir && sData.nilai_akhir > 0) ? 'text-success' : '') + '" style="' + ((sData.nilai_akhir && sData.nilai_akhir > 0) ? 'color: #059669; font-weight: 600;' : 'color: #94A3B8;') + '">Bobot: 40% B + 60% C</div>' +
         '</div>' +
 
         '<div class="content-card kpi-card guru-supervisi-kpi-card" style="border-top: 3.5px solid #F59E0B;">' +
           '<span class="guru-supervisi-kpi-label">Predikat Mutu</span>' +
           '<div style="margin: 4px 0;">' +
-            '<span class="badge ' + predikatBadgeClass + ' guru-supervisi-predikat-badge">⭐ ' + predikatLabel.toUpperCase() + '</span>' +
+            predikatBadgeHtml +
           '</div>' +
           '<div class="guru-supervisi-kpi-sub">Standar SMKN 1 Banjarmasin</div>' +
         '</div>' +
@@ -5592,29 +5616,37 @@
             '<p style="font-size: 0.75rem; color: #6B7280; margin: 0;">Konfirmasi penerimaan umpan balik dan catatan refleksi perbaikan diri</p>' +
           '</div>' +
           '<div>' +
-            (isConfirmed 
-              ? '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; border-radius: 20px; padding: 4px 12px;">✓ Sudah Dikonfirmasi Guru</span>'
-              : '<span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 700; border-radius: 20px; padding: 4px 12px;">⏳ Menunggu Konfirmasi Guru</span>') +
+            (!hasActiveSession 
+              ? '<span class="badge" style="background: #F1F5F9; color: #64748B; font-weight: 700; border-radius: 20px; padding: 4px 12px; border: 1px solid #CBD5E1;">Belum Ada Sesi</span>'
+              : (isConfirmed 
+                  ? '<span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700; border-radius: 20px; padding: 4px 12px;">✓ Sudah Dikonfirmasi Guru</span>'
+                  : '<span class="badge" style="background: #FEF3C7; color: #92400E; font-weight: 700; border-radius: 20px; padding: 4px 12px;">⏳ Menunggu Konfirmasi Guru</span>')) +
           '</div>' +
         '</div>' +
         '<div class="content-card-body" style="padding: 1.25rem;">' +
-          (isConfirmed 
-            ? '<div class="guru-supervisi-confirmed-box" style="background: #F0FDF4; border: 1.5px solid #BBF7D0; border-radius: 14px; padding: 1.125rem;">' +
-                '<div style="font-weight: 800; color: #166534; font-size: 0.9375rem; margin-bottom: 4px;">✓ Anda telah membaca dan mengonfirmasi hasil umpan balik supervisi ini.</div>' +
-                '<div style="font-size: 0.8125rem; color: #15803D; margin-bottom: 6px;">Waktu Konfirmasi: <strong>' + (sData.guru_konfirmasi_at || 'Terverifikasi') + '</strong></div>' +
-                (sData.guru_refleksi ? '<div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #86EFAC; font-size: 0.8125rem; color: #14532D; line-height: 1.45;"><strong>Catatan Refleksi Mandiri Anda:</strong> ' + escapeHtml(sData.guru_refleksi) + '</div>' : '') +
+          (!hasActiveSession
+            ? '<div style="text-align: center; padding: 1.25rem 1rem; color: #64748B;">' +
+                '<div style="font-size: 1.75rem; margin-bottom: 0.35rem;">📝</div>' +
+                '<div style="font-weight: 700; font-size: 0.9375rem; color: #374151; margin-bottom: 4px;">Belum Ada Sesi Supervisi Terjadwal</div>' +
+                '<div style="font-size: 0.8125rem; color: #64748B;">Form refleksi dan umpan balik supervisi akan aktif setelah sesi observasi pembelajaran Anda dilaksanakan oleh supervisor.</div>' +
               '</div>'
-            : '<div style="margin-bottom: 0.5rem;">' +
-                '<label class="form-label" style="font-weight: 700; color: #374151; font-size: 0.8125rem; margin-bottom: 6px; display: block;">' +
-                  'Catatan Refleksi Mandiri Guru (Opsional):' +
-                '</label>' +
-                '<textarea id="input-guru-refleksi-text" class="form-input" rows="3" placeholder="Tuliskan refleksi mandiri Anda mengenai proses pembelajaran yang telah disupervisi dan komitmen tindak lanjut..." style="width: 100%; box-sizing: border-box; border-radius: 10px; padding: 10px; font-size: 0.875rem; line-height: 1.4; border: 1.5px solid #E2E8F0;"></textarea>' +
-                '<div class="guru-supervisi-confirm-wrap" style="margin-top: 12px;">' +
-                  '<button type="button" class="btn btn-primary guru-supervisi-confirm-btn" onclick="window.PORTAL_APP.confirmGuruSupervisi(\'' + sData.id + '\')">' +
-                    '<span>✓ Konfirmasi Sudah Membaca Umpan Balik (PRD FR-11)</span>' +
-                  '</button>' +
-                '</div>' +
-              '</div>') +
+            : (isConfirmed 
+                ? '<div class="guru-supervisi-confirmed-box" style="background: #F0FDF4; border: 1.5px solid #BBF7D0; border-radius: 14px; padding: 1.125rem;">' +
+                    '<div style="font-weight: 800; color: #166534; font-size: 0.9375rem; margin-bottom: 4px;">✓ Anda telah membaca dan mengonfirmasi hasil umpan balik supervisi ini.</div>' +
+                    '<div style="font-size: 0.8125rem; color: #15803D; margin-bottom: 6px;">Waktu Konfirmasi: <strong>' + (sData.guru_konfirmasi_at || 'Terverifikasi') + '</strong></div>' +
+                    (sData.guru_refleksi ? '<div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #86EFAC; font-size: 0.8125rem; color: #14532D; line-height: 1.45;"><strong>Catatan Refleksi Mandiri Anda:</strong> ' + escapeHtml(sData.guru_refleksi) + '</div>' : '') +
+                  '</div>'
+                : '<div style="margin-bottom: 0.5rem;">' +
+                    '<label class="form-label" style="font-weight: 700; color: #374151; font-size: 0.8125rem; margin-bottom: 6px; display: block;">' +
+                      'Catatan Refleksi Mandiri Guru (Opsional):' +
+                    '</label>' +
+                    '<textarea id="input-guru-refleksi-text" class="form-input" rows="3" placeholder="Tuliskan refleksi mandiri Anda mengenai proses pembelajaran yang telah disupervisi dan komitmen tindak lanjut..." style="width: 100%; box-sizing: border-box; border-radius: 10px; padding: 10px; font-size: 0.875rem; line-height: 1.4; border: 1.5px solid #E2E8F0;"></textarea>' +
+                    '<div class="guru-supervisi-confirm-wrap" style="margin-top: 12px;">' +
+                      '<button type="button" class="btn btn-primary guru-supervisi-confirm-btn" onclick="window.PORTAL_APP.confirmGuruSupervisi(\'' + sData.id + '\')">' +
+                        '<span>✓ Konfirmasi Sudah Membaca Umpan Balik (PRD FR-11)</span>' +
+                      '</button>' +
+                    '</div>' +
+                  '</div>')) +
         '</div>' +
       '</div>' +
 
