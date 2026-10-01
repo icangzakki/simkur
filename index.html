@@ -2014,8 +2014,11 @@
           <!-- Progress per Jurusan Grid -->
           <div style="margin-bottom: 1.5rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.875rem;">
-              <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #1E293B;">Progres & Nilai Rata-Rata per Program Keahlian (Kajur)</h3>
-              <span style="font-size: 0.8125rem; color: #64748B;">Supervisi Akademik Semester Ganjil 2026/2027</span>
+              <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #1E293B;">Progres &amp; Nilai Rata-Rata per Program Keahlian (Kajur)</h3>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 0.8125rem; color: #64748B;">Supervisi Akademik Semester Ganjil 2026/2027</span>
+                <button class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.resetSupervisiData()" style="font-size: 0.725rem; color: #EF4444; border-color: #EF4444; padding: 0.2rem 0.6rem;" title="Hapus semua data supervisi dan mulai dari awal">🗑️ Reset</button>
+              </div>
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;" id="sup-jurusan-grid">
               <!-- Dynamically populated via app.js -->
@@ -3880,16 +3883,16 @@
 </div>
 
 <!-- =================================================================== -->
-<!-- MODAL: FIREBASE CLOUD DATABASE STATUS & SINKRONISASI -->
+<!-- MODAL: LOCAL HOME SERVER DATABASE STATUS & SINKRONISASI -->
 <!-- =================================================================== -->
 <div class="modal-overlay" id="modal-firebase-sync">
   <div class="modal-dialog" style="max-width: 580px; border-radius: var(--radius-xl); overflow: hidden;">
     <div class="modal-header" style="background: linear-gradient(135deg, #123B66 0%, #1A4D80 100%); color: #ffffff; padding: 1.25rem 1.5rem;">
       <div style="display: flex; align-items: center; gap: 10px;">
-        <span style="font-size: 1.4rem;">🔥</span>
+        <span style="font-size: 1.4rem;">🏠</span>
         <div>
-          <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #ffffff;">Database Firebase Cloud</h3>
-          <p style="margin: 0; font-size: 0.75rem; color: #E0EBF7;">Integrasi Google Cloud Firestore & Sinkronisasi Multi-Device</p>
+          <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #ffffff;">Database Local Home Server</h3>
+          <p style="margin: 0; font-size: 0.75rem; color: #E0EBF7;">Penyimpanan Lokal MySQL (Home Server) &amp; Sinkronisasi Jaringan Sekolah</p>
         </div>
       </div>
       <button type="button" class="btn btn-ghost btn-sm" style="color: #ffffff; font-size: 1.1rem;" onclick="window.PORTAL_APP.closeModal('modal-firebase-sync')">✕</button>
@@ -3901,11 +3904,11 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
           <span style="font-size: 0.775rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Status Koneksi</span>
           <div id="fb-modal-status-text">
-            <span style="color: var(--color-warning); font-weight: 700;">● Memeriksa...</span>
+            <span style="color: var(--color-success); font-weight: 700;">● Terhubung ke MySQL (Local Home Server)</span>
           </div>
         </div>
         <div style="font-size: 0.8125rem; color: var(--text-primary); line-height: 1.45;" id="fb-modal-details">
-          Project ID: <strong>simkur</strong> • Domain: <strong>simkur.firebaseapp.com</strong>
+          Server: <strong>Local Home Server</strong> • Database: <strong>simkur_db (MySQL)</strong>
         </div>
       </div>
 
@@ -3913,15 +3916,18 @@
       <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
         <div style="display: flex; gap: 10px;">
           <button type="button" class="btn btn-outline" style="flex: 1;" onclick="window.PORTAL_APP.checkFirebaseConnection()">
-            🔄 Tes Koneksi Ulang
+            🔄 Tes Koneksi Database
           </button>
-          <button type="button" class="btn btn-primary" id="btn-fb-seed" style="flex: 1.4;" onclick="window.PORTAL_APP.seedFirebaseData()">
-            ☁️ Unggah Data ke Firebase
+          <button type="button" class="btn btn-primary" id="btn-fb-seed" style="flex: 1.4;" onclick="window.PORTAL_APP.seedFirebaseData()" title="Unggah data lokal ke database MySQL Home Server">
+            💾 Unggah Data ke Home Server
           </button>
         </div>
         <button type="button" class="btn btn-ghost btn-sm" style="color: var(--simkur-blue); font-weight: 700;" onclick="window.PORTAL_APP.syncFromFirebase()">
-          ⬇️ Tarik & Perbarui Data dari Cloud Firestore
+          ⬇️ Tarik / Sinkronkan Data dari Server Sekarang
         </button>
+        <div style="font-size: 0.75rem; color: #10B981; font-weight: 600; text-align: center; margin-top: -2px;">
+          ⚡ Auto-Sync Aktif: Data otomatis tersinkron saat web dibuka dan setiap 30 detik.
+        </div>
         <button type="button" class="btn btn-ghost btn-sm" style="color: #DC2626; font-weight: 700; border: 1px dashed rgba(220, 38, 38, 0.35); background: #FEF2F2; padding: 0.5rem;" onclick="window.PORTAL_APP.resetTeacherAdminToZero()">
           🧹 Reset Administrasi Guru ke Nol (0%)
         </button>
@@ -3930,24 +3936,19 @@
       <!-- Progress Indicator -->
       <div id="fb-sync-progress" style="display: none; background: var(--soft-blue); border: 1px solid var(--soft-blue-border); color: var(--simkur-navy); font-size: 0.8rem; font-weight: 600; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem;"></div>
 
-      <!-- Setup Instructions Alert -->
-      <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-md); padding: 1rem; font-size: 0.775rem; color: #92400E; line-height: 1.5;">
+      <!-- Info Server Alert -->
+      <div id="fb-setup-guide" style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: var(--radius-md); padding: 1rem; font-size: 0.775rem; color: #166534; line-height: 1.5;">
         <div style="font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
-          <span>ℹ️</span> Panduan Aktivasi Cloud Firestore (Jika Belum Dibuat):
+          <span>🔒</span> Server Lokal Mandiri (Offline Ready):
         </div>
-        <ol style="margin-left: 1.2rem; margin-top: 4px;">
-          <li>Buka <a href="https://console.firebase.google.com/project/simkur/firestore" target="_blank" style="color: #B45309; font-weight: 700; text-decoration: underline;">Firebase Console: Firestore Database</a>.</li>
-          <li>Klik tombol <strong>"Create Database"</strong> (Pilih lokasi: <em>asia-southeast1</em> atau terdekat).</li>
-          <li>Pada tab <strong>Rules</strong>, gunakan aturan uji coba:
-            <code style="background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 4px; display: block; margin: 4px 0; font-family: monospace; font-size: 0.75rem;">allow read, write: if true;</code>
-          </li>
-          <li>Setelah database dibuat di Firebase Console, klik tombol <strong>"Unggah Data ke Firebase"</strong> di atas.</li>
-        </ol>
+        <div style="margin-top: 4px;">
+          Semua data guru, jurnal KBM, foto pembelajaran, dan jadwal tersimpan langsung di <strong>Local Home Server (aaPanel / MariaDB)</strong> sekolah. Tidak memerlukan koneksi internet luar.
+        </div>
       </div>
     </div>
 
     <div class="modal-footer" style="padding: 0.875rem 1.5rem; background: #F8FAFC; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border);">
-      <span style="font-size: 0.725rem; color: var(--text-secondary);">Firebase SDK v10.13.0 (Cloud Firestore)</span>
+      <span style="font-size: 0.725rem; color: var(--text-secondary);">SIMKUR Database Engine · Local Home Server</span>
       <button type="button" class="btn btn-outline btn-sm" onclick="window.PORTAL_APP.closeModal('modal-firebase-sync')">Tutup</button>
     </div>
   </div>
@@ -4047,16 +4048,91 @@
 <!-- TOAST CONTAINER -->
 <div class="toast-container" id="toast-container" style="position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 99999; display: flex; flex-direction: column; gap: 8px;"></div>
 
-<!-- SCRIPTS -->
+<!-- ============================================================ -->
+<!-- MODAL: KONFIRMASI RESET DATA SUPERVISI                        -->
+<!-- ============================================================ -->
+<div id="modal-reset-supervisi" style="
+  display: none; position: fixed; inset: 0; z-index: 99990;
+  background: rgba(15,23,42,0.75); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center;">
+  <div style="
+    background: #fff; border-radius: 20px; width: 100%; max-width: 440px;
+    margin: 1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+    animation: modalSlideIn 0.25s ease; overflow: hidden;">
+
+    <!-- Header merah -->
+    <div style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%); padding: 1.5rem 1.75rem; position: relative;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0;">⚠️</div>
+        <div>
+          <div style="color: rgba(255,255,255,0.75); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px;">Tindakan Berbahaya</div>
+          <div style="color: #fff; font-size: 1.1rem; font-weight: 800;">Reset Data Supervisi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div style="padding: 1.5rem 1.75rem;">
+      <p style="color: #374151; font-size: 0.875rem; line-height: 1.65; margin: 0 0 1rem 0;">
+        Tindakan ini akan <strong style="color: #EF4444;">menghapus permanen</strong> seluruh data supervisi yang telah diinput, termasuk:
+      </p>
+      <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 10px; padding: 0.875rem 1rem; margin-bottom: 1.25rem;">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: #991B1B; margin-bottom: 6px; font-weight: 600;">🗂️ Semua sesi supervisi akademik guru</div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: #991B1B; margin-bottom: 6px; font-weight: 600;">📋 Semua data supervisi manajerial</div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: #991B1B; font-weight: 600;">📌 Semua catatan RTL (Rencana Tindak Lanjut)</div>
+      </div>
+
+      <!-- Konfirmasi ketik RESET -->
+      <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
+        <label style="font-size: 0.8rem; font-weight: 700; color: #374151; display: block; margin-bottom: 8px;">
+          Ketik <code style="background:#FEE2E2; color:#EF4444; padding: 1px 6px; border-radius:4px; font-weight:800;">RESET</code> untuk mengkonfirmasi:
+        </label>
+        <input
+          type="text"
+          id="reset-confirm-input"
+          placeholder="Ketik RESET di sini..."
+          autocomplete="off"
+          oninput="window.PORTAL_APP.onResetInputChange()"
+          style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.875rem; border: 1.5px solid #E2E8F0; border-radius: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.05em; outline: none; transition: border-color 0.2s; font-family: monospace;">
+      </div>
+
+      <!-- Tombol aksi -->
+      <div style="display: flex; gap: 10px;">
+        <button
+          onclick="window.PORTAL_APP.closeResetSupervisiModal()"
+          style="flex: 1; padding: 0.7rem; border: 1.5px solid #E2E8F0; background: #fff; border-radius: 10px; font-size: 0.875rem; font-weight: 700; color: #374151; cursor: pointer; transition: all 0.2s;"
+          onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='#fff'">
+          Batal
+        </button>
+        <button
+          id="btn-reset-confirm-exec"
+          onclick="window.PORTAL_APP.execResetSupervisi()"
+          disabled
+          style="flex: 1; padding: 0.7rem; background: #E2E8F0; border: none; border-radius: 10px; font-size: 0.875rem; font-weight: 700; color: #94A3B8; cursor: not-allowed; transition: all 0.3s;">
+          🗑️ Hapus Semua Data
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes modalSlideIn {
+  from { opacity: 0; transform: scale(0.92) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+</style>
+
+
 <script src="js/data.js?v=8.4.0"></script>
 <script src="js/auth_users.js?v=8.4.0"></script>
-<script src="js/app.js?v=8.4.3"></script>
+<script src="js/app.js?v=8.5.0"></script>
 <!-- 
   ⚠️ DEPLOYMENT MODE: Pi4 Local API
   Ganti ke firebase-service.js jika deploy ke Vercel/Firebase hosting
   Ganti ke api-service.js untuk deploy ke Raspberry Pi 4 + MySQL
 -->
-<script type="module" src="js/api-service.js?v=1.0.0"></script>
+<script type="module" src="js/api-service.js?v=8.5.0"></script>
 
 </body>
 </html>

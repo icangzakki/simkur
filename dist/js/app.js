@@ -189,256 +189,19 @@
         localStorage.setItem(this.KEYS.SUPERVISI_PROGRAM, JSON.stringify(defaultProg));
       }
 
-      // Inisialisasi Sesi Supervisi Akademik (90 Guru) Terpetakan ke Kajur Terkait
+      // Inisialisasi Sesi Supervisi Akademik — kosong, diisi oleh Waka/Kajur secara nyata
       if (!localStorage.getItem(this.KEYS.SUPERVISI_SESI)) {
-        var teachersList = this.get('teachers');
-        var sessions = [];
-        var statusOptions = ['Selesai', 'Pasca-observasi', 'Observasi', 'Pra-observasi', 'Dijadwalkan'];
-        
-        teachersList.forEach(function (t, idx) {
-          var dept = (t.department || 'Umum').toUpperCase();
-          var supervisor = { id: 'T-001', name: 'Rusnani, S.Pd., M.M', role: 'Waka Kurikulum' };
-          
-          if (dept.includes('TJKT') || dept.includes('TKJ')) {
-            supervisor = { id: 'K-TJKT', name: 'Muhammad Ihsan, S.Kom', role: 'Kajur TJKT' };
-          } else if (dept.includes('DKV') || dept.includes('MM')) {
-            supervisor = { id: 'K-DKV', name: 'Hendra Surya Pratama, S.Kom', role: 'Kajur DKV' };
-          } else if (dept.includes('AKL') || dept.includes('AKUNTANSI')) {
-            supervisor = { id: 'K-AKL', name: 'Oky Wulan Maulina, S.Pd', role: 'Kajur AKL' };
-          } else if (dept.includes('MPLB') || dept.includes('OTKP') || dept.includes('PERKANTORAN')) {
-            supervisor = { id: 'K-MPLB', name: 'Akhmad Hanafi Maulana, S.E', role: 'Kajur MPLB' };
-          } else if (dept.includes('PM') || dept.includes('PEMASARAN') || dept.includes('BD')) {
-            supervisor = { id: 'K-PM', name: 'Futri Indri Septiani, S.Pd', role: 'Kajur Pemasaran' };
-          }
-
-          // Seeding realistik: 24 Selesai (26.7%), 10 Pasca-obs, 15 Observasi, 15 Pra-obs, 26 Dijadwalkan
-          var status = 'Dijadwalkan';
-          var skor_b = 0;
-          var skor_c = 0;
-          var nilai_b = 0;
-          var nilai_c = 0;
-          var nilai_akhir = 0;
-          var predikat = '-';
-          var tgl_observasi = '2026-10-' + String(10 + (idx % 20)).padStart(2, '0');
-          var wkt_observasi = '08.00 - 09.30 WITA';
-          var room = 'R. TeFa / Lab Komputer';
-
-          if (idx < 24) {
-            status = 'Selesai';
-            // Variasi nilai 82 - 96
-            var rawB = 46 + (idx % 9); // max 56
-            var rawC = 60 + (idx % 11); // max 72
-            skor_b = rawB;
-            skor_c = rawC;
-            nilai_b = Math.round((rawB / 56) * 100 * 10) / 10;
-            nilai_c = Math.round((rawC / 72) * 100 * 10) / 10;
-            nilai_akhir = Math.round(((nilai_b * 0.40) + (nilai_c * 0.60)) * 10) / 10;
-            predikat = nilai_akhir >= 91 ? 'Amat Baik' : 'Baik';
-            tgl_observasi = '2026-08-' + String(10 + (idx % 18)).padStart(2, '0');
-          } else if (idx < 34) {
-            status = 'Pasca-observasi';
-            var rawB2 = 45 + (idx % 7);
-            var rawC2 = 58 + (idx % 8);
-            skor_b = rawB2;
-            skor_c = rawC2;
-            nilai_b = Math.round((rawB2 / 56) * 100 * 10) / 10;
-            nilai_c = Math.round((rawC2 / 72) * 100 * 10) / 10;
-            nilai_akhir = Math.round(((nilai_b * 0.40) + (nilai_c * 0.60)) * 10) / 10;
-            predikat = nilai_akhir >= 91 ? 'Amat Baik' : 'Baik';
-            tgl_observasi = '2026-09-15';
-          } else if (idx < 49) {
-            status = 'Observasi';
-            var rawB3 = 44 + (idx % 8);
-            skor_b = rawB3;
-            nilai_b = Math.round((rawB3 / 56) * 100 * 10) / 10;
-            tgl_observasi = '2026-09-29';
-          } else if (idx < 64) {
-            status = 'Pra-observasi';
-            tgl_observasi = '2026-10-05';
-          }
-
-          sessions.push({
-            id: 'SESI-' + String(idx + 1).padStart(3, '0'),
-            program_id: 'PROG-2026-GANJIL',
-            teacher_id: t.id,
-            teacher_name: t.name,
-            nip: t.nip || '-',
-            department: t.department || 'Umum',
-            subject: t.subject || 'Mata Pelajaran',
-            class_name: 'XI ' + (t.department || 'TJKT') + ' 1',
-            supervisor_id: supervisor.id,
-            supervisor_name: supervisor.name,
-            supervisor_role: supervisor.role,
-            status: status,
-            tgl_observasi: tgl_observasi,
-            wkt_observasi: wkt_observasi,
-            room: room,
-            fokus: 'Pembelajaran Berdiferensiasi & Penerapan K3 Lab',
-            skor_b: skor_b,
-            nilai_b: nilai_b,
-            skor_c: skor_c,
-            nilai_c: nilai_c,
-            nilai_akhir: nilai_akhir,
-            predikat: predikat,
-            wawancara_a: {
-              1: 'Mapel: ' + (t.subject || 'Produktif') + ', materi: Penerapan SOP Industri.',
-              2: 'Model Pembelajaran Project Based Learning (PjBL) terpadu Teaching Factory.',
-              3: 'Peserta didik memiliki gaya belajar kinestetik dan visual praktikum.',
-              4: 'Asesmen unjuk kerja proses dan rubrik jobsheet portofolio.',
-              5: 'Tool set, jobsheet digital, APD, dan safety checklist K3 lab.',
-              6: 'Beberapa siswa perlu penguatan literasi teknis dan kedisiplinan 5R.',
-              7: 'Fokus pengamatan: penerapan diferensiasi bimbingan praktikum.',
-              8: 'Disepakati observasi sesuai jadwal dan refleksi H+1.'
-            },
-            refleksi_d: {
-              refleksi_1: 'Pembelajaran interaktif dan jobsheet berhasil diselesaikan oleh sebagian besar kelompok.',
-              refleksi_2: 'Akan meningkatkan variasi scaffolding untuk kelompok yang lebih lambat.',
-              kekuatan: 'Penguasaan materi sangat baik, komunikasi interaktif, kepatuhan K3 lab tinggi.',
-              area_pengembangan: 'Perlu penguatan diferensiasi konten bagi siswa dengan ritme belajar berbeda.',
-              guru_confirmed: status === 'Selesai'
-            }
-          });
-        });
-
-        localStorage.setItem(this.KEYS.SUPERVISI_SESI, JSON.stringify(sessions));
+        localStorage.setItem(this.KEYS.SUPERVISI_SESI, JSON.stringify([]));
       }
 
-      // Inisialisasi Supervisi Manajerial (Waka & 5 Kajur oleh Kepala Sekolah)
+      // Inisialisasi Supervisi Manajerial — kosong, diisi oleh Kepala Sekolah secara nyata
       if (!localStorage.getItem(this.KEYS.SUPERVISI_MANAJERIAL)) {
-        var manajerialData = [
-          {
-            id: 'M-001',
-            pimpinan_name: 'Rusnani, S.Pd., M.M',
-            nip: '197308022000122003',
-            jabatan: 'Waka Kurikulum',
-            fokus: 'Kurikulum Merdeka, Jadwal KBM, Verifikasi Perangkat Guru, SIMKUR',
-            status_dokumen: 'Lengkap (KSP, Kalender, SK PBM)',
-            skor_total: 56, // out of 60
-            nilai: 93.3,
-            predikat: 'Amat Baik',
-            catatan_kepsek: 'Pengelolaan kurikulum dan digitalisasi SIMKUR berjalan sangat tertib dan presisi.'
-          },
-          {
-            id: 'M-002',
-            pimpinan_name: 'Muhammad Ihsan, S.Kom',
-            nip: '198801102022211001',
-            jabatan: 'Ketua Jurusan TJKT',
-            fokus: 'Program Kerja TJKT, Teaching Factory Mikrotik/Cisco, Laboratorium Jaringan',
-            status_dokumen: 'Lengkap (Program Kerja & MoU DUDI)',
-            skor_total: 54,
-            nilai: 90.0,
-            predikat: 'Baik',
-            catatan_kepsek: 'Kemitraan DUDI dan pengelolaan lab jaringan sangat aktif. Terus tingkatkan penyerapan lulusan.'
-          },
-          {
-            id: 'M-003',
-            pimpinan_name: 'Hendra Surya Pratama, S.Kom',
-            nip: '199305162022211001',
-            jabatan: 'Ketua Jurusan DKV',
-            fokus: 'Studio Kreatif DKV, Produksi Konten TeFa, Portofolio Siswa',
-            status_dokumen: 'Lengkap (SOP Studio & Portofolio)',
-            skor_total: 52,
-            nilai: 86.7,
-            predikat: 'Baik',
-            catatan_kepsek: 'Hasil karya studio kreatif sangat membanggakan. Perlu penguatan standarisasi K3 studio.'
-          },
-          {
-            id: 'M-004',
-            pimpinan_name: 'Oky Wulan Maulina, S.Pd',
-            nip: '198910262015032002',
-            jabatan: 'Ketua Jurusan AKL',
-            fokus: 'Lab Komputer Akuntansi, Bank Mini Sekolah, Sertifikasi LSP-P1',
-            status_dokumen: 'Lengkap (SOP Bank Mini & LSP)',
-            skor_total: 55,
-            nilai: 91.7,
-            predikat: 'Amat Baik',
-            catatan_kepsek: 'Operasional Bank Mini dan sertifikasi kompetensi akuntansi tertata sangat rapi dan akuntabel.'
-          },
-          {
-            id: 'M-005',
-            pimpinan_name: 'Akhmad Hanafi Maulana, S.E',
-            nip: '198912152024211025',
-            jabatan: 'Ketua Jurusan MPLB',
-            fokus: 'Laboratorium Perkantoran Modern, Kearsipan Digital, Simulasi Bisnis',
-            status_dokumen: 'Lengkap (Modul Praktik & SOP Lab)',
-            skor_total: 51,
-            nilai: 85.0,
-            predikat: 'Baik',
-            catatan_kepsek: 'Simulasi bisnis perkantoran berjalan aktif. Maksimalkan integrasi arsip digital berbasis cloud.'
-          },
-          {
-            id: 'M-006',
-            pimpinan_name: 'Futri Indri Septiani, S.Pd',
-            nip: '198809172014022001',
-            jabatan: 'Ketua Jurusan Pemasaran',
-            fokus: 'Business Center / Retail Mart Sekolah, Digital Marketing, E-Commerce',
-            status_dokumen: 'Lengkap (SOP Retail & Laporan Keuangan TeFa)',
-            skor_total: 53,
-            nilai: 88.3,
-            predikat: 'Baik',
-            catatan_kepsek: 'Retail Mart sekolah memberikan omzet yang konsisten. Pertahankan disiplin kasir dan stok barang.'
-          }
-        ];
-        localStorage.setItem(this.KEYS.SUPERVISI_MANAJERIAL, JSON.stringify(manajerialData));
+        localStorage.setItem(this.KEYS.SUPERVISI_MANAJERIAL, JSON.stringify([]));
       }
 
-      // Inisialisasi Pelacak RTL (4 Butir Tindak Lanjut Aktif)
+      // Inisialisasi RTL — kosong, terisi otomatis saat sesi supervisi diselesaikan
       if (!localStorage.getItem(this.KEYS.SUPERVISI_RTL)) {
-        var rtlInitial = [
-          {
-            id: 'RTL-001',
-            sesi_id: 'SESI-025',
-            guru_name: 'Wahyu Ramadhan, S.Pd',
-            department: 'TJKT',
-            subject: 'Dasar Jaringan Komputer',
-            tindakan: 'Penyesuaian diferensiasi proses pada jobsheet konfigurasi routing dinamis.',
-            pendampingan: 'Diskusi Teman Sejawat (Komunitas Belajar TJKT)',
-            tenggat: '2026-10-15',
-            bukti: 'Modul Ajar Revisi & Rubrik Penilaian',
-            status: 'Terbuka',
-            verified_by: null
-          },
-          {
-            id: 'RTL-002',
-            sesi_id: 'SESI-026',
-            guru_name: 'Aulia Rahmah, S.Sn',
-            department: 'DKV',
-            subject: 'Desain Grafis Percetakan',
-            tindakan: 'Penyempurnaan rubrik asesmen formatif unjuk kerja pre-press dan packaging.',
-            pendampingan: 'Pelatihan Mandiri Platform Merdeka Mengajar (PMM)',
-            tenggat: '2026-10-20',
-            bukti: 'Aksi Nyata PMM & Format Rubrik Baru',
-            status: 'Terbuka',
-            verified_by: null
-          },
-          {
-            id: 'RTL-003',
-            sesi_id: 'SESI-027',
-            guru_name: 'Riza Anshari, S.E',
-            department: 'AKL',
-            subject: 'Praktikum Akuntansi Lembaga',
-            tindakan: 'Penerapan checklist SOP K3 dan pembiasaan budaya kerja 5R di lab komputer.',
-            pendampingan: 'Observasi Ulang oleh Ketua Jurusan AKL',
-            tenggat: '2026-10-25',
-            bukti: 'Lembar Checklist 5R Harian',
-            status: 'Terbuka',
-            verified_by: null
-          },
-          {
-            id: 'RTL-004',
-            sesi_id: 'SESI-028',
-            guru_name: 'Siti Nurhaliza, S.Pd',
-            department: 'Pemasaran',
-            subject: 'Penataan Produk / Merchandising',
-            tindakan: 'Penyusunan modul ajar proyek kolaboratif berbasis Teaching Factory Retail Mart.',
-            pendampingan: 'Pendampingan Guru Penggerak / Kajur PM',
-            tenggat: '2026-10-30',
-            bukti: 'Modul TeFa & Lembar Evaluasi DUDI',
-            status: 'Terbuka',
-            verified_by: null
-          }
-        ];
-        localStorage.setItem(this.KEYS.SUPERVISI_RTL, JSON.stringify(rtlInitial));
+        localStorage.setItem(this.KEYS.SUPERVISI_RTL, JSON.stringify([]));
       }
     },
 
@@ -7366,6 +7129,61 @@
     openModal('modal-laporan-supervisi-pdf');
   }
 
+  // Buka modal konfirmasi reset supervisi (custom, menggantikan window.confirm)
+  function resetSupervisiData() {
+    var modal = document.getElementById('modal-reset-supervisi');
+    var input = document.getElementById('reset-confirm-input');
+    var btn   = document.getElementById('btn-reset-confirm-exec');
+    if (!modal) return;
+    if (input) { input.value = ''; input.style.borderColor = '#E2E8F0'; }
+    if (btn)   { btn.disabled = true; btn.style.background = '#E2E8F0'; btn.style.color = '#94A3B8'; btn.style.cursor = 'not-allowed'; }
+    modal.style.display = 'flex';
+    setTimeout(function () { if (input) input.focus(); }, 100);
+  }
+
+  // Pantau input: aktifkan tombol hanya jika user ketik "RESET"
+  function onResetInputChange() {
+    var input = document.getElementById('reset-confirm-input');
+    var btn   = document.getElementById('btn-reset-confirm-exec');
+    if (!input || !btn) return;
+    var val = input.value.trim().toUpperCase();
+    if (val === 'RESET') {
+      btn.disabled = false;
+      btn.style.background = 'linear-gradient(135deg, #EF4444 0%, #B91C1C 100%)';
+      btn.style.color = '#fff';
+      btn.style.cursor = 'pointer';
+      btn.style.boxShadow = '0 4px 14px rgba(239,68,68,0.4)';
+      input.style.borderColor = '#EF4444';
+    } else {
+      btn.disabled = true;
+      btn.style.background = '#E2E8F0';
+      btn.style.color = '#94A3B8';
+      btn.style.cursor = 'not-allowed';
+      btn.style.boxShadow = 'none';
+      input.style.borderColor = val.length > 0 ? '#FCA5A5' : '#E2E8F0';
+    }
+  }
+
+  // Tutup modal reset tanpa hapus data
+  function closeResetSupervisiModal() {
+    var modal = document.getElementById('modal-reset-supervisi');
+    if (modal) modal.style.display = 'none';
+  }
+
+  // Eksekusi hapus data setelah user konfirmasi dengan ketik RESET
+  function execResetSupervisi() {
+    var btn = document.getElementById('btn-reset-confirm-exec');
+    if (btn && btn.disabled) return;
+
+    localStorage.removeItem('portal_supervisi_sesi_v1');
+    localStorage.removeItem('portal_supervisi_manajerial_v1');
+    localStorage.removeItem('portal_supervisi_rtl_v1');
+
+    closeResetSupervisiModal();
+    showToast('✅ Data supervisi berhasil direset. Halaman akan dimuat ulang...', 'success');
+    setTimeout(function () { location.reload(); }, 1500);
+  }
+
   function exportSupervisiRecap() {
     const sessions = StorageManager.get('supervisi_sesi');
     let csv = 'No,ID Sesi,Nama Guru,NIP,Jurusan,Mata Pelajaran,Pengawas,Tanggal Observasi,Status,Skor B,Nilai B,Skor C,Nilai C,Nilai Akhir,Predikat\n';
@@ -8383,6 +8201,10 @@
     triggerSupervisiPrint: triggerSupervisiPrint,
     printSekolahSupervisiReport: printSekolahSupervisiReport,
     exportSupervisiRecap: exportSupervisiRecap,
+    resetSupervisiData: resetSupervisiData,
+    onResetInputChange: onResetInputChange,
+    closeResetSupervisiModal: closeResetSupervisiModal,
+    execResetSupervisi: execResetSupervisi,
     generateMassalSupervisiSchedules: generateMassalSupervisiSchedules,
     openScheduleSupervisiModal: openScheduleSupervisiModal,
     onSupervisiGuruSelectChange: onSupervisiGuruSelectChange,
@@ -8420,22 +8242,40 @@
 
     if (!badge || !textEl || !dot) return;
 
-    if (detail.status === 'CONNECTED') {
-      badge.className = 'sync-status-badge sync-status-connected';
-      textEl.textContent = 'Cloud Firebase';
-      dot.className = 'pulse-dot pulse-dot-active';
+    const isPi4 = detail.projectId === 'pi4-local';
+
+    if (detail.status === 'SYNCING') {
+      badge.className = 'sync-status-badge sync-status-connecting';
+      textEl.textContent = 'Menyinkronkan...';
+      dot.className = 'pulse-dot pulse-dot-connecting';
       if (modalStatus) {
-        modalStatus.innerHTML = '<span style="color: var(--color-success); font-weight: 700;">● Terhubung ke Cloud Firestore</span>';
+        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">🔄 Sedang menyinkronkan data dari database...</span>';
       }
       if (modalDetails) {
-        modalDetails.textContent = 'Data tersinkron otomatis ke Google Firebase Cloud (Project: ' + detail.projectId + ').';
+        modalDetails.textContent = isPi4
+          ? 'Mengunduh dan memperbarui data otomatis dari database MySQL Pi4.'
+          : 'Mengunduh dan memperbarui data dari Google Firebase Cloud.';
+      }
+    } else if (detail.status === 'CONNECTED') {
+      badge.className = 'sync-status-badge sync-status-connected';
+      textEl.textContent = isPi4 ? 'Pi4 Terhubung' : 'Cloud Firebase';
+      dot.className = 'pulse-dot pulse-dot-active';
+      if (modalStatus) {
+        modalStatus.innerHTML = isPi4
+          ? '<span style="color: var(--color-success); font-weight: 700;">● Terhubung ke MySQL Pi4 (Auto-Sync Aktif)</span>'
+          : '<span style="color: var(--color-success); font-weight: 700;">● Terhubung ke Cloud Firestore</span>';
+      }
+      if (modalDetails) {
+        modalDetails.textContent = isPi4
+          ? 'Data tersinkronisasi otomatis dengan server MySQL Raspberry Pi 4 lokal (Auto-Sync aktif).'
+          : 'Data tersinkron otomatis ke Google Firebase Cloud (Project: ' + detail.projectId + ').';
       }
     } else if (detail.status === 'CONNECTING') {
       badge.className = 'sync-status-badge sync-status-connecting';
       textEl.textContent = 'Menghubungkan...';
       dot.className = 'pulse-dot pulse-dot-connecting';
       if (modalStatus) {
-        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">● Menghubungkan ke Firebase...</span>';
+        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">● Menghubungkan ke ' + (isPi4 ? 'Server Pi4' : 'Firebase') + '...</span>';
       }
     } else if (detail.status === 'OFFLINE') {
       badge.className = 'sync-status-badge sync-status-offline';
@@ -8445,17 +8285,17 @@
         modalStatus.innerHTML = '<span style="color: #64748B; font-weight: 700;">● Offline (Cache Lokal)</span>';
       }
       if (modalDetails) {
-        modalDetails.textContent = detail.errorMessage || 'Koneksi internet tidak tersedia. Sistem menggunakan penyimpanan lokal.';
+        modalDetails.textContent = detail.errorMessage || 'Koneksi ke server tidak tersedia. Sistem menggunakan penyimpanan lokal.';
       }
     } else {
       badge.className = 'sync-status-badge sync-status-local';
       textEl.textContent = 'Lokal Fallback';
       dot.className = 'pulse-dot pulse-dot-warning';
       if (modalStatus) {
-        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">● Mode Lokal (Firestore Belum Aktif)</span>';
+        modalStatus.innerHTML = '<span style="color: var(--color-warning); font-weight: 700;">● Mode Lokal (' + (isPi4 ? 'Server Pi4 Belum Aktif' : 'Firestore Belum Aktif') + ')</span>';
       }
       if (modalDetails) {
-        modalDetails.textContent = detail.errorMessage || 'Firestore API belum diaktifkan di Firebase Console. Gunakan panduan di bawah.';
+        modalDetails.textContent = detail.errorMessage || 'Belum terhubung ke database. Sistem berjalan dengan data lokal.';
       }
     }
   }

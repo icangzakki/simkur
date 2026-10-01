@@ -353,6 +353,7 @@ File ZIP tersimpan di: `/Users/icangzakki/GAWIANKU/SIMKUR/`
 | Masalah | Penyebab | Solusi |
 |---------|----------|--------|
 | `health.php` → `"database": "error"` | Password salah di `config.php` | Edit `api/config.php`, sesuaikan `DB_PASS` |
+| `SQLSTATE[HY000] [2002] No such file or directory` | PHP mencari Unix socket di `/var/run/mysqld/mysqld.sock`, sedangkan MySQL aaPanel ada di `/tmp/mysql.sock` atau `DB_HOST` masih `localhost` | **Solusi 1:** Edit `api/config.php` ubah `DB_HOST` dari `'localhost'` jadi `'127.0.0.1'`<br>**Solusi 2:** Di Terminal aaPanel ketik: `ln -sf /tmp/mysql.sock /var/run/mysqld/mysqld.sock` |
 | Halaman 403 Forbidden | Permission salah | Terminal aaPanel: `chmod -R 755 /www/wwwroot/simkur/` |
 | Halaman kosong / PHP error | PHP belum install atau versi salah | aaPanel App Store → install PHP 8.x, lalu set ke website |
 | CSS/JS tidak load (404) | File tidak ter-ekstrak dengan benar | Cek di File Manager, pastikan `css/` dan `js/` ada langsung di root `simkur/` |

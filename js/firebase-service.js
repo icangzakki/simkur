@@ -97,6 +97,9 @@ class FirebaseService {
       console.log(`✅ [Firebase Cloud] Terhubung ke Firestore (Project: ${firebaseConfig.projectId}). Docs count in agendas: ${snap.size}`);
       this.notifyStatus();
 
+      // Auto-sync initial data from cloud on startup
+      this.autoSync();
+
       // Start real-time listeners for live updates
       this.setupRealtimeListeners();
     } catch (err) {
@@ -288,6 +291,32 @@ class FirebaseService {
   }
 
   /**
+   * Auto-sync dari Firebase ke browser lokal secara mulus
+   */
+  async autoSync() {
+    if (this._isSyncing || this.status !== 'CONNECTED' || !this.db) return;
+    this._isSyncing = true;
+
+    try {
+      console.log('🔄 [Firebase Auto-Sync] Mengunduh data terbaru dari Cloud Firestore...');
+      const res = await this.syncFromFirestore();
+
+      if (res && res.count > 0) {
+        console.log(`✅ [Firebase Auto-Sync] Selesai! ${res.count} dokumen disinkronkan ke peramban.`);
+        if (window.PORTAL_APP && typeof window.PORTAL_APP.refreshActiveScreen === 'function') {
+          window.PORTAL_APP.refreshActiveScreen();
+        }
+      }
+    } catch (err) {
+      console.warn('⚠️ [Firebase Auto-Sync] Gagal:', err.message);
+    } finally {
+      this._isSyncing = false;
+      this.status = 'CONNECTED';
+      this.notifyStatus();
+    }
+  }
+
+  /**
    * Download and sync cloud data into local StorageManager
    */
   async syncFromFirestore(onProgress) {
@@ -300,35 +329,28 @@ class FirebaseService {
       throw new Error('StorageManager lokal tidak ditemukan.');
     }
 
-    const collectionsToSync = [
-      'agendas',
-      'documents',
-      'teachers',
-      'classes',
-      'subjects',
-      'rooms',
-      'teacher_admin',
-      'guru_journals',
-      'guru_documents',
-      'schedules'
-    ];
+    const collectionsToSync = Object.keys(COLLECTION_MAP);
 
     let count = 0;
     for (const key of collectionsToSync) {
-      const colName = this.getCollectionName(key);
-      const colRef = collection(this.db, colName);
-      const snapshot = await getDocs(colRef);
-      
-      if (!snapshot.empty) {
-        const cloudItems = [];
-        snapshot.forEach(docSnap => {
-          cloudItems.push(docSnap.data());
-        });
-        sm.set(key, cloudItems);
-        count += cloudItems.length;
-      }
-      if (typeof onProgress === 'function') {
-        onProgress({ currentKey: key, syncedCount: count });
+      try {
+        const colName = this.getCollectionName(key);
+        const colRef = collection(this.db, colName);
+        const snapshot = await getDocs(colRef);
+        
+        if (!snapshot.empty) {
+          const cloudItems = [];
+          snapshot.forEach(docSnap => {
+            cloudItems.push(docSnap.data());
+          });
+          sm.set(key, cloudItems);
+          count += cloudItems.length;
+        }
+        if (typeof onProgress === 'function') {
+          onProgress({ currentKey: key, syncedCount: count });
+        }
+      } catch (e) {
+        console.warn(`[Firebase] Sync error (${key}):`, e.message);
       }
     }
 

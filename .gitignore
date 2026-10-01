@@ -24,3 +24,7 @@ stitch_*metadata.json
 .vercel
 
 .env*
+
+# Uploaded files (foto & dokumen guru di server)
+uploads/*
+!uploads/README.md

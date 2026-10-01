@@ -52,21 +52,30 @@ try {
                 if (!$row) {
                     sendError("Data dengan id '$id' tidak ditemukan.", 404);
                 }
-                // Decode data_json jika ada
-                if (isset($row['data_json'])) {
-                    $row['data_json'] = json_decode($row['data_json'], true);
+                // Decode dan merge data_json jika ada
+                if (!empty($row['data_json'])) {
+                    $extra = is_string($row['data_json']) ? json_decode($row['data_json'], true) : $row['data_json'];
+                    if (is_array($extra)) {
+                        unset($row['data_json']);
+                        $row = array_merge($extra, $row);
+                    }
                 }
                 sendSuccess($row);
             } else {
                 // Ambil semua dokumen
                 $stmt = $db->query("SELECT * FROM `$collection` ORDER BY `updated_at` DESC");
                 $rows = $stmt->fetchAll();
-                // Decode data_json untuk setiap baris
+                // Decode dan merge data_json untuk setiap baris
                 foreach ($rows as &$row) {
-                    if (isset($row['data_json'])) {
-                        $row['data_json'] = json_decode($row['data_json'], true);
+                    if (!empty($row['data_json'])) {
+                        $extra = is_string($row['data_json']) ? json_decode($row['data_json'], true) : $row['data_json'];
+                        if (is_array($extra)) {
+                            unset($row['data_json']);
+                            $row = array_merge($extra, $row);
+                        }
                     }
                 }
+                unset($row);
                 sendSuccess($rows, 'OK', 200);
             }
             break;
