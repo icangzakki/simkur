@@ -1834,31 +1834,31 @@
             </div>
           </div>
 
-          <!-- 4 Skor Perangkat -->
-          <div class="guru-doc-score-grid">
+          <!-- 4 Skor Perangkat (Dinamis sesuai berkas riil guru) -->
+          <div class="guru-doc-score-grid" id="guru-doc-score-grid">
 
             <div class="guru-doc-score-card" style="border-top: 3px solid #5135D8;">
               <div class="guru-doc-score-label">📘 Modul Ajar</div>
-              <div class="guru-doc-score-value">98<span class="guru-doc-score-max">/100</span></div>
-              <span class="guru-doc-score-badge badge-ok">✓ Disetujui Waka</span>
+              <div class="guru-doc-score-value" style="color: #94A3B8;">0<span class="guru-doc-score-max">/100</span></div>
+              <span class="guru-doc-score-badge badge-empty">⏳ Belum Diunggah</span>
             </div>
 
             <div class="guru-doc-score-card" style="border-top: 3px solid #45A9E8;">
               <div class="guru-doc-score-label">📗 Silabus &amp; ATP</div>
-              <div class="guru-doc-score-value">95<span class="guru-doc-score-max">/100</span></div>
-              <span class="guru-doc-score-badge badge-ok">✓ Disetujui Waka</span>
+              <div class="guru-doc-score-value" style="color: #94A3B8;">0<span class="guru-doc-score-max">/100</span></div>
+              <span class="guru-doc-score-badge badge-empty">⏳ Belum Diunggah</span>
             </div>
 
             <div class="guru-doc-score-card" style="border-top: 3px solid #20C985;">
               <div class="guru-doc-score-label">📅 Prota &amp; Prosem</div>
-              <div class="guru-doc-score-value">94<span class="guru-doc-score-max">/100</span></div>
-              <span class="guru-doc-score-badge badge-ok">✓ Disetujui Waka</span>
+              <div class="guru-doc-score-value" style="color: #94A3B8;">0<span class="guru-doc-score-max">/100</span></div>
+              <span class="guru-doc-score-badge badge-empty">⏳ Belum Diunggah</span>
             </div>
 
             <div class="guru-doc-score-card" style="border-top: 3px solid #8BCB3D;">
               <div class="guru-doc-score-label">📋 Asesmen</div>
-              <div class="guru-doc-score-value">96<span class="guru-doc-score-max">/100</span></div>
-              <span class="guru-doc-score-badge badge-ok">✓ Disetujui Waka</span>
+              <div class="guru-doc-score-value" style="color: #94A3B8;">0<span class="guru-doc-score-max">/100</span></div>
+              <span class="guru-doc-score-badge badge-empty">⏳ Belum Diunggah</span>
             </div>
 
           </div>
@@ -1867,7 +1867,7 @@
           <div class="guru-doc-list-card">
             <div class="guru-doc-list-header">
               <h3 class="guru-doc-list-title">Daftar Berkas yang Diunggah</h3>
-              <span class="badge" style="background: #DEF7EC; color: #03543F; font-weight: 700;">4 / 4 Lengkap</span>
+              <span class="badge" id="guru-doc-total-badge" style="background: #F1F5F9; color: #64748B; font-weight: 700;">0 / 4 Belum Ada Berkas</span>
             </div>
             <div id="guru-docs-tbody">
               <!-- Populated via renderGuruDocuments() — card list, bukan table -->
@@ -4100,13 +4100,13 @@
 
 <script src="js/data.js?v=8.4.0"></script>
 <script src="js/auth_users.js?v=8.4.0"></script>
-<script src="js/app.js?v=8.5.2"></script>
+<script src="js/app.js?v=8.5.3"></script>
 <!-- 
   ⚠️ DEPLOYMENT MODE: Pi4 Local API
   Ganti ke firebase-service.js jika deploy ke Vercel/Firebase hosting
   Ganti ke api-service.js untuk deploy ke Raspberry Pi 4 + MySQL
 -->
-<script type="module" src="js/api-service.js?v=8.5.2"></script>
+<script type="module" src="js/api-service.js?v=8.5.3"></script>
 
 </body>
 </html>

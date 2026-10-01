@@ -5964,6 +5964,7 @@ button, select, input, .nav-item-link, .day-pill-btn, .quick-action-item {
 }
 .guru-doc-score-badge.badge-ok  { background: #DEF7EC; color: #03543F; }
 .guru-doc-score-badge.badge-pending { background: #FEF3C7; color: #92400E; }
+.guru-doc-score-badge.badge-empty { background: #F1F5F9; color: #64748B; border: 1px dashed #CBD5E1; }
 
 /* 3. Card List Container */
 .guru-doc-list-card {

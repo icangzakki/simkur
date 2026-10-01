@@ -5066,12 +5066,81 @@
 
   function renderGuruDocuments() {
     const tbody = document.getElementById('guru-docs-tbody');
+    const scoreGrid = document.getElementById('guru-doc-score-grid');
+    const totalBadge = document.getElementById('guru-doc-total-badge');
     if (!tbody) return;
 
     const allDocs = StorageManager.get('guru_documents') || [];
+    const currentId = State.currentGuruId || State.activeAdminTeacherId;
     const teacherDocs = allDocs.filter(function (d) {
-      return String(d.teacher_id) === String(State.currentGuruId);
+      return String(d.teacher_id) === String(currentId);
     });
+
+    // Cari dokumen per 4 kategori wajib
+    const findDoc = function (keywords) {
+      return teacherDocs.find(function (d) {
+        const cat = (d.category || '').toLowerCase();
+        return keywords.some(function (k) { return cat.indexOf(k.toLowerCase()) >= 0; });
+      });
+    };
+
+    const docModul = findDoc(['Modul Ajar', 'RPP']);
+    const docSilabus = findDoc(['Silabus', 'ATP']);
+    const docProta = findDoc(['Program Tahunan', 'Prota', 'Prosem', 'Semester']);
+    const docAsesmen = findDoc(['Asesmen', 'Instrumen', 'Penilaian']);
+
+    const categories = [
+      { key: 'modul', name: 'Modul Ajar', icon: '📘', border: '#5135D8', doc: docModul },
+      { key: 'silabus', name: 'Silabus & ATP', icon: '📗', border: '#45A9E8', doc: docSilabus },
+      { key: 'prota', name: 'Prota & Prosem', icon: '📅', border: '#20C985', doc: docProta },
+      { key: 'asesmen', name: 'Asesmen', icon: '📋', border: '#8BCB3D', doc: docAsesmen }
+    ];
+
+    if (scoreGrid) {
+      let gridHtml = '';
+      categories.forEach(function (c) {
+        if (c.doc) {
+          const score = c.doc.score || 95;
+          const status = c.doc.status || 'Disetujui Waka';
+          const isApproved = status.toLowerCase().indexOf('setuju') >= 0 || status.toLowerCase().indexOf('verif') >= 0;
+          gridHtml +=
+            '<div class="guru-doc-score-card" style="border-top: 3px solid ' + c.border + ';">' +
+              '<div class="guru-doc-score-label">' + c.icon + ' ' + c.name + '</div>' +
+              '<div class="guru-doc-score-value">' + score + '<span class="guru-doc-score-max">/100</span></div>' +
+              '<span class="guru-doc-score-badge ' + (isApproved ? 'badge-ok' : 'badge-pending') + '">' +
+                (isApproved ? '✓ ' : '⏳ ') + status +
+              '</span>' +
+            '</div>';
+        } else {
+          gridHtml +=
+            '<div class="guru-doc-score-card" style="border-top: 3px solid #CBD5E1; opacity: 0.85;">' +
+              '<div class="guru-doc-score-label" style="color: #64748B;">' + c.icon + ' ' + c.name + '</div>' +
+              '<div class="guru-doc-score-value" style="color: #94A3B8;">0<span class="guru-doc-score-max">/100</span></div>' +
+              '<span class="guru-doc-score-badge badge-empty">' +
+                '⏳ Belum Diunggah' +
+              '</span>' +
+            '</div>';
+        }
+      });
+      scoreGrid.innerHTML = gridHtml;
+    }
+
+    if (totalBadge) {
+      const count = teacherDocs.length;
+      if (count === 0) {
+        totalBadge.style.background = '#F1F5F9';
+        totalBadge.style.color = '#64748B';
+        totalBadge.textContent = '0 / 4 Belum Ada Berkas';
+      } else if (count >= 4) {
+        totalBadge.style.background = '#DEF7EC';
+        totalBadge.style.color = '#03543F';
+        totalBadge.textContent = count + ' / 4 Lengkap';
+      } else {
+        totalBadge.style.background = '#EFF6FF';
+        totalBadge.style.color = '#1D4ED8';
+        totalBadge.textContent = count + ' / 4 Terkumpul';
+      }
+    }
 
     if (teacherDocs.length === 0) {
       tbody.innerHTML =
@@ -5107,8 +5176,8 @@
           '<div class="guru-doc-card-body">' +
             '<div class="guru-doc-title">' + d.title + '</div>' +
             '<div class="guru-doc-filename">' +
-              (d.file_link ? '🌐 <a href="' + d.file_link + '" target="_blank" rel="noopener noreferrer" style="color: #4B22B8; font-weight: 700; text-decoration: underline;">Tautan Google Drive (Belajar.id)</a>' : ('📎 ' + (d.file_name || 'dokumen.pdf'))) +
-              ' &nbsp;·&nbsp; ' + (d.file_size || (d.file_link ? 'Cloud Link' : '1.2 MB')) +
+              (d.file_link ? '🏠 <a href="' + d.file_link + '" target="_blank" rel="noopener noreferrer" style="color: #4B22B8; font-weight: 700; text-decoration: underline;">Berkas Local Home Server</a>' : ('📎 ' + (d.file_name || 'dokumen.pdf'))) +
+              ' &nbsp;·&nbsp; ' + (d.file_size || '1.2 MB') +
             '</div>' +
             '<div class="guru-doc-meta-row">' +
               '<span class="guru-doc-cat-badge" style="background:' + cat.bg + ';color:' + cat.color + ';">' + d.category + '</span>' +
