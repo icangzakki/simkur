@@ -4093,11 +4093,70 @@
     const elJp = document.getElementById('kpi-guru-jp');
     if (elJp) elJp.textContent = totalJp + ' / 24 JP';
 
+    const elJpSub = document.getElementById('kpi-guru-jp-sub');
+    if (elJpSub) {
+      if (totalJp >= 24) {
+        elJpSub.innerHTML = '<span style="color: #10B981; font-weight: 600;">✓ Memenuhi Syarat TPG 24 JP</span>';
+      } else {
+        elJpSub.innerHTML = '<span style="color: #F59E0B; font-weight: 600;">Kurang ' + (24 - totalJp) + ' JP dari syarat TPG</span>';
+      }
+    }
+
     const elJurnalCount = document.getElementById('kpi-guru-jurnal-count');
     if (elJurnalCount) elJurnalCount.textContent = teacherJournals.length + ' Sesi';
 
+    const elJurnalSub = document.getElementById('kpi-guru-jurnal-sub');
+    if (elJurnalSub) {
+      if (teacherJournals.length === 0) {
+        elJurnalSub.innerHTML = '<span style="color: #64748B;">Belum ada sesi tatap muka</span>';
+      } else {
+        elJurnalSub.innerHTML = '<span style="color: #10B981; font-weight: 600;">✓ Rutin Terisi (' + teacherJournals.length + ' Sesi)</span>';
+      }
+    }
+
+    // Presensi records (from guru_attendance)
+    const presensiList = StorageManager.get('guru_attendance') || [];
+    const teacherPresensi = presensiList.filter(function (p) {
+      return String(p.teacher_id) === String(currentTeacherId) || (p.teacher_name && cleanStr(p.teacher_name) === cleanStr(displayName));
+    });
+
+    const elPresensiPct = document.getElementById('kpi-guru-presensi-pct');
+    const elPresensiSub = document.getElementById('kpi-guru-presensi-sub');
+    if (elPresensiPct) {
+      if (teacherPresensi.length === 0) {
+        elPresensiPct.textContent = '-';
+        if (elPresensiSub) elPresensiSub.textContent = 'Belum ada sesi presensi';
+      } else {
+        let totalStudents = 0;
+        let totalHadir = 0;
+        teacherPresensi.forEach(function (rec) {
+          if (rec.students && Array.isArray(rec.students)) {
+            totalStudents += rec.students.length;
+            totalHadir += rec.students.filter(function (st) { return st.status === 'Hadir' || st.status === 'H'; }).length;
+          } else if (rec.total_students) {
+            totalStudents += Number(rec.total_students);
+            totalHadir += Number(rec.hadir_count || rec.total_students);
+          }
+        });
+        const pct = totalStudents > 0 ? ((totalHadir / totalStudents) * 100).toFixed(1) + '%' : '100%';
+        elPresensiPct.textContent = pct;
+        if (elPresensiSub) elPresensiSub.textContent = teacherPresensi.length + ' sesi presensi terekam';
+      }
+    }
+
     const elDocCount = document.getElementById('kpi-guru-doc-count');
     if (elDocCount) elDocCount.textContent = teacherDocs.length + ' / 4 Berkas';
+
+    const elDocSub = document.getElementById('kpi-guru-doc-sub');
+    if (elDocSub) {
+      if (teacherDocs.length === 0) {
+        elDocSub.innerHTML = '<span style="color: #64748B; font-weight: 600;">⏳ Belum Mengunggah Berkas</span>';
+      } else if (teacherDocs.length < 4) {
+        elDocSub.innerHTML = '<span style="color: #D97706; font-weight: 600;">⏳ ' + teacherDocs.length + ' dari 4 Berkas Terunggah</span>';
+      } else {
+        elDocSub.innerHTML = '<span style="color: #10B981; font-weight: 600;">✓ Lengkap & Disetujui Waka</span>';
+      }
+    }
 
     // 5. Populate Class Options in Jurnal & Presensi Forms (Filtered by Teacher)
     populateTeacherClassSelects(currentTeacherId);
@@ -4115,37 +4174,67 @@
     // 6. Update Hub Card Badges
     const hubBadgeJurnal = document.getElementById('hub-badge-jurnal');
     if (hubBadgeJurnal) {
-      hubBadgeJurnal.textContent = '📝 ' + teacherJournals.length + ' Sesi Terisi';
+      if (teacherJournals.length === 0) {
+        hubBadgeJurnal.textContent = '📝 0 Sesi Terisi';
+        hubBadgeJurnal.style.background = '#F1F5F9';
+        hubBadgeJurnal.style.color = '#64748B';
+      } else {
+        hubBadgeJurnal.textContent = '📝 ' + teacherJournals.length + ' Sesi Terisi';
+        hubBadgeJurnal.style.background = '#EDE8F5';
+        hubBadgeJurnal.style.color = '#4B22B8';
+      }
     }
 
     const hubBadgeDokumen = document.getElementById('hub-badge-dokumen');
     if (hubBadgeDokumen) {
-      hubBadgeDokumen.textContent = '📁 ' + teacherDocs.length + '/4 Berkas Lengkap';
+      if (teacherDocs.length === 0) {
+        hubBadgeDokumen.textContent = '📁 Belum Ada Berkas (0/4)';
+        hubBadgeDokumen.style.background = '#F1F5F9';
+        hubBadgeDokumen.style.color = '#64748B';
+      } else if (teacherDocs.length < 4) {
+        hubBadgeDokumen.textContent = '📁 ' + teacherDocs.length + '/4 Berkas Terunggah';
+        hubBadgeDokumen.style.background = '#FEF3C7';
+        hubBadgeDokumen.style.color = '#B45309';
+      } else {
+        hubBadgeDokumen.textContent = '📁 4/4 Berkas Lengkap';
+        hubBadgeDokumen.style.background = '#E0F2FE';
+        hubBadgeDokumen.style.color = '#0369A1';
+      }
     }
 
     const hubBadgePresensi = document.getElementById('hub-badge-presensi');
     if (hubBadgePresensi) {
-      const presensiList = StorageManager.get('presensi_records') || [];
-      const teacherPresensi = presensiList.filter(function (p) {
-        return String(p.teacher_id) === String(currentTeacherId);
-      });
       if (teacherPresensi.length > 0) {
         hubBadgePresensi.textContent = '👥 ' + teacherPresensi.length + ' Sesi Terekam';
+        hubBadgePresensi.style.background = '#DEF7EC';
+        hubBadgePresensi.style.color = '#03543F';
       } else {
-        hubBadgePresensi.textContent = '👥 Siap Input Presensi';
+        hubBadgePresensi.textContent = '👥 Belum Ada Presensi (0)';
+        hubBadgePresensi.style.background = '#F1F5F9';
+        hubBadgePresensi.style.color = '#64748B';
       }
     }
 
     const hubBadgeSupervisi = document.getElementById('hub-badge-supervisi');
     if (hubBadgeSupervisi) {
-      const allSupervisi = StorageManager.get('supervisi_evaluations') || [];
-      const mySupervisi = allSupervisi.filter(function (s) {
-        return String(s.guru_id) === String(currentTeacherId);
+      const allSupervisi = StorageManager.get('supervisi_sesi') || [];
+      const mySupervisi = allSupervisi.find(function (s) {
+        return (String(s.teacher_id) === String(currentTeacherId)) ||
+               (teacher && teacher.nip && s.nip && String(s.nip).replace(/\D/g, '') === String(teacher.nip).replace(/\D/g, '')) ||
+               (s.teacher_name && cleanStr(s.teacher_name) === cleanStr(displayName));
       });
-      if (mySupervisi.length > 0 && mySupervisi[0].score) {
-        hubBadgeSupervisi.textContent = '⭐ Nilai: ' + mySupervisi[0].score + ' (' + (mySupervisi[0].grade || 'Baik') + ')';
+      if (mySupervisi && mySupervisi.nilai_akhir > 0) {
+        hubBadgeSupervisi.textContent = '⭐ Nilai: ' + mySupervisi.nilai_akhir.toFixed(1) + ' (' + (mySupervisi.predikat || 'Baik') + ')';
+        hubBadgeSupervisi.style.background = '#FEF3C7';
+        hubBadgeSupervisi.style.color = '#92400E';
+      } else if (mySupervisi && mySupervisi.status && mySupervisi.status !== 'Belum Dijadwalkan') {
+        hubBadgeSupervisi.textContent = '⏳ ' + mySupervisi.status;
+        hubBadgeSupervisi.style.background = '#EFF6FF';
+        hubBadgeSupervisi.style.color = '#1D4ED8';
       } else {
-        hubBadgeSupervisi.textContent = '⭐ Terjadwal / Siap';
+        hubBadgeSupervisi.textContent = '⏳ Belum Dijadwalkan';
+        hubBadgeSupervisi.style.background = '#F1F5F9';
+        hubBadgeSupervisi.style.color = '#64748B';
       }
     }
 
