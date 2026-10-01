@@ -27,6 +27,78 @@ const ALLOWED_TABLES = [
     'supervisi_sesi', 'supervisi_rtl', 'supervisi_manajerial'
 ];
 
+$action = $_GET['action'] ?? '';
+
+// ─────────────────────────────────────────────────────────────
+// Action khusus: Reset Administrasi & Berkas Guru ke 0% (Clean Slate)
+// ─────────────────────────────────────────────────────────────
+if ($action === 'reset_admin') {
+    try {
+        $db = getDB();
+
+        // 1. Kosongkan tabel berkas, jurnal, dan presensi guru
+        $db->exec("TRUNCATE TABLE `guru_documents`");
+        $db->exec("TRUNCATE TABLE `guru_journals`");
+        $db->exec("TRUNCATE TABLE `guru_attendance`");
+
+        // 2. Bersihkan file fisik yang pernah diunggah di folder uploads/
+        $uploadDirs = [
+            UPLOAD_BASE_DIR . 'dokumen/',
+            UPLOAD_BASE_DIR . 'jurnal/'
+        ];
+        foreach ($uploadDirs as $dir) {
+            if (is_dir($dir)) {
+                $files = glob($dir . '*');
+                if ($files) {
+                    foreach ($files as $file) {
+                        if (is_file($file) && !in_array(basename($file), ['README.md', '.gitkeep', 'index.html'])) {
+                            @unlink($file);
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. Reset tabel teacher_admin agar status semua guru kembali ke 'Belum' (0%)
+        $db->exec("TRUNCATE TABLE `teacher_admin`");
+        $stmtTeachers = $db->query("SELECT id, name, nip, department, subject FROM `teachers` ORDER BY `id` ASC");
+        $teachers = $stmtTeachers->fetchAll();
+
+        $insertStmt = $db->prepare("INSERT INTO `teacher_admin` 
+            (id, teacher_id, prota, prosem, modul_ajar, rps, capaian_pembelajaran, atp, jurnal_mengajar, absensi_siswa, penilaian, completion_pct, data_json) 
+            VALUES (?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00, ?)");
+
+        foreach ($teachers as $t) {
+            $tId = $t['id'];
+            $dataJson = json_encode([
+                'teacher_id'     => $tId,
+                'name'           => $t['name'],
+                'nip'            => $t['nip'] ?? '-',
+                'department'     => $t['department'] ?? 'Umum',
+                'subject'        => $t['subject'] ?? 'Mata Pelajaran',
+                'rpp_status'     => 'Belum',
+                'jurnal_status'  => 'Belum',
+                'jurnal_count'   => 0,
+                'silabus_status' => 'Belum',
+                'asesmen_status' => 'Belum',
+                'notes'          => 'Belum mengumpulkan perangkat administrasi',
+                'updated_at'     => '-'
+            ]);
+            $insertStmt->execute([$tId, $tId, $dataJson]);
+        }
+
+        sendSuccess([
+            'reset'          => true,
+            'teachers_count' => count($teachers),
+            'guru_documents' => 0,
+            'guru_journals'  => 0,
+            'guru_attendance'=> 0
+        ], 'Seluruh administrasi dan berkas guru berhasil direset ke status awal (0%).');
+    } catch (Throwable $e) {
+        sendError('Gagal mereset database: ' . $e->getMessage(), 500);
+    }
+}
+
 // Validasi collection
 $collection = $_GET['collection'] ?? '';
 if (empty($collection) || !in_array($collection, ALLOWED_TABLES, true)) {

@@ -5149,14 +5149,14 @@
 
     const file = fileInput && fileInput.files && fileInput.files[0];
 
-    // Must provide either a file or a Google Drive link
+    // Dokumen wajib memilih file untuk disimpan ke Home Server
     if (!file && !fileLink) {
-      showToast('Harap tempelkan tautan Google Drive atau pilih berkas dokumen untuk diunggah.', 'warning');
+      showToast('Harap pilih berkas dokumen (PDF, DOCX, XLSX) untuk diunggah ke Home Server.', 'warning');
       return;
     }
 
-    const fileName = file ? file.name : (fileLink ? 'Tautan Google Drive (Akun Belajar.id)' : (title.replace(/\s+/g, '_') + '.pdf'));
-    const fileSize = file ? (file.size / 1024 / 1024).toFixed(1) + ' MB' : 'Cloud Link';
+    const fileName = file ? file.name : (fileLink ? 'Tautan Eksternal' : (title.replace(/\s+/g, '_') + '.pdf'));
+    const fileSize = file ? (file.size / 1024 / 1024).toFixed(1) + ' MB' : 'Server File';
 
     function commitDoc(fileDataUrl, uploadedUrl) {
       const newDoc = {
@@ -8153,11 +8153,13 @@
         showToast('Gagal sinkronisasi: ' + err.message, 'error');
       }
     },
-    resetTeacherAdminToZero: function () {
-      if (!confirm('Apakah Anda yakin ingin mereset seluruh status administrasi guru ke status awal (0% / belum ada yang mengumpulkan)? Data jurnal dan dokumen guru juga akan dikosongkan.')) {
+    resetTeacherAdminToZero: async function () {
+      if (!confirm('Apakah Anda yakin ingin mereset seluruh status administrasi guru ke status awal (0% / belum ada yang mengumpulkan)?\n\nSeluruh data dokumen berkas guru, jurnal mengajar, dan absensi akan dikosongkan baik di browser ini maupun di database server.')) {
         return;
       }
-      const teachers = StorageManager.get('teachers');
+      showToast('🔄 Mereset seluruh administrasi & berkas guru...', 'info');
+
+      const teachers = StorageManager.get('teachers') || [];
       const zeroMonitoring = teachers.map(function (t) {
         return {
           teacher_id: t.id,
@@ -8180,11 +8182,15 @@
       StorageManager.set('guru_attendance', []);
 
       if (window.FirebaseService && typeof window.FirebaseService.resetAdministrationInFirestore === 'function') {
-        window.FirebaseService.resetAdministrationInFirestore();
+        try {
+          await window.FirebaseService.resetAdministrationInFirestore();
+        } catch (e) {
+          console.warn('Reset error:', e);
+        }
       }
 
       refreshActiveScreen();
-      showToast('🎉 Seluruh administrasi guru telah direset ke 0 (Belum ada yang mengumpulkan).', 'success');
+      showToast('🎉 Seluruh berkas & administrasi guru berhasil direset ke status awal (0%).', 'success', 4000);
     },
     // Supervisi Akademik & Manajerial Methods (PRD SMKN 1 Banjarmasin)
     renderSupervisi: renderSupervisi,

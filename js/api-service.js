@@ -420,27 +420,9 @@ class ApiService {
   async resetAdministrationInFirestore() {
     if (this.status !== 'CONNECTED') return;
     try {
-      const sm = window.PORTAL_STORAGE;
-      if (!sm) return;
-
-      const items = sm.get('teacher_admin') || [];
-      for (const item of items) {
-        await this.saveDoc('teacher_admin', item.teacher_id || item.id, {
-          ...item,
-          _syncedAt: new Date().toISOString()
-        });
-      }
-
-      // Hapus jurnal, dokumen, absensi guru
-      const clearCollections = ['guru_journals', 'guru_documents', 'guru_attendance'];
-      for (const key of clearCollections) {
-        const existing = await this.getCollection(key);
-        for (const item of existing) {
-          await this.deleteDoc(key, item.id);
-        }
-      }
-
-      console.log('✅ [API] Teacher administration reset di database Local Home Server.');
+      const res = await this._fetch('crud.php?action=reset_admin', { method: 'POST' });
+      console.log('✅ [API] Teacher administration reset di database Local Home Server:', res);
+      return res;
     } catch (err) {
       console.warn('⚠️ [API] Reset error:', err.message);
     }
